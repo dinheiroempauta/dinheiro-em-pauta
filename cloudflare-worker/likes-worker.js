@@ -8,10 +8,13 @@
  * Requer um KV namespace vinculado como "LIKES" (ver wrangler.toml).
  */
 
-const ALLOWED_ORIGIN = "https://independenciacalculada.com.br";
+const ALLOWED_ORIGINS = [
+  "https://independenciacalculada.com.br",
+  "https://independenciacalculada-droid.github.io",
+];
 
 function corsHeaders(origin) {
-  const allow = origin === ALLOWED_ORIGIN ? origin : ALLOWED_ORIGIN;
+  const allow = ALLOWED_ORIGINS.includes(origin) ? origin : ALLOWED_ORIGINS[0];
   return {
     "Access-Control-Allow-Origin": allow,
     "Access-Control-Allow-Methods": "GET, POST, OPTIONS",
