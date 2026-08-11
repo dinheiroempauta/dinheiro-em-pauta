@@ -185,29 +185,14 @@
     font-family: 'IBM Plex Mono', monospace;
   }
 
-  .prose{ margin-top: 36px; }
-  .prose p{ margin: 0 0 20px; }
-  h2{
-    font-family:'Fraunces', serif;
-    font-weight: 600;
-    font-size: 1.55rem;
-    letter-spacing: -0.01em;
-    margin: 54px 0 4px;
-  }
-  h2 .num{
-    font-family:'IBM Plex Mono', monospace;
-    font-size: 13px;
-    color: var(--gold);
-    display:block;
-    letter-spacing: .1em;
-    margin-bottom: 6px;
-  }
-  h3{
-    font-family:'Fraunces', serif;
-    font-weight: 600;
-    font-size: 1.15rem;
-    margin: 30px 0 10px;
-  }
+/* ---------- Prose ---------- */
+.prose{ margin-top: 20px; }
+.prose p{ margin: 0 0 20px; }
+.section-lead{ color: var(--muted); font-size: 1.02rem; margin-bottom: 22px; }
+
+h2{ font-family: var(--font-display); font-weight: 600; font-size: 1.55rem; letter-spacing: -0.01em; margin: 54px 0 4px; color: var(--ink); }
+h2 .num{ font-family: var(--font-mono); font-size: 13px; color: var(--gold); display:block; letter-spacing: .1em; margin-bottom: 6px; }
+h3{ font-family: var(--font-display); font-weight: 600; font-size: 1.15rem; margin: 30px 0 10px; color: var(--ink); }
 
   .glossary{
     display:grid;
@@ -331,6 +316,7 @@
     border-radius: 3px;
     padding: 22px 22px 18px;
     margin: 30px 0 32px;
+    position: relative;
   }
   .chart-head{ margin-bottom: 6px; }
   .chart-title{
@@ -339,7 +325,7 @@
     font-size: 1.05rem;
   }
   .chart-sub{ font-size: 13px; color: var(--muted); margin-top: 2px; }
-  .chart-svg-wrap{ margin: 14px 0 6px; }
+  .chart-svg-wrap{ margin: 14px 0 6px; position: relative; }
   svg.chart{ width:100%; height:auto; display:block; }
   .chart-legend{
     display:flex; flex-wrap:wrap; gap: 16px;
@@ -351,6 +337,29 @@
   .chart-legend .sw{ display:inline-flex; align-items:center; gap:6px; }
   .chart-legend .dot{ width:10px; height:10px; border-radius:50%; display:inline-block; }
   .chart-caption{ font-size: 13.5px; color: var(--muted); margin-top: 12px; }
+
+  .chart-tooltip{
+    position: absolute;
+    pointer-events: none;
+    background: #171A18;
+    color: #F7F5EF;
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 12px;
+    line-height: 1.4;
+    padding: 7px 11px;
+    border-radius: 4px;
+    white-space: nowrap;
+    transform: translate(-50%, calc(-100% - 12px));
+    opacity: 0;
+    transition: opacity 0.08s ease;
+    z-index: 6;
+    top: 0; left: 0;
+  }
+  .chart-tooltip.visible{ opacity: 1; }
+  .chart-tooltip .tt-label{ color: #B98B32; font-weight: 600; margin-right: 8px; }
+  .chart-tooltip .tt-val-pos{ color: #6FCF9E; font-weight: 600; }
+  .chart-tooltip .tt-val-neg{ color: #E38C74; font-weight: 600; }
+  .hit-col{ cursor: crosshair; }
 
   .summary-table-wrap{ margin: 26px 0 32px; }
   table.summary{
@@ -667,6 +676,70 @@
   details.toggle .toggle-scroll{ overflow-x:auto; }
   details.toggle table.data{ font-size: 12px; }
   details.toggle table.data th{ font-size: 10.5px; }
+
+  /* ============ MELHORIAS DE LEITURA ============ */
+
+  .progress-rail{
+    position: fixed; top:0; left:0; right:0; height: 3px;
+    background: transparent; z-index: 60;
+  }
+  .progress-fill{
+    height: 100%; width:0%;
+    background: linear-gradient(90deg, var(--gold), var(--green));
+    transition: width .08s linear;
+  }
+
+  .back-to-top{
+    position: fixed;
+    right: 22px; bottom: 22px;
+    width: 42px; height:42px;
+    border-radius: 50%;
+    background: var(--ink);
+    color: var(--paper);
+    border: none;
+    display:flex; align-items:center; justify-content:center;
+    cursor:pointer;
+    opacity:0; visibility:hidden; transform: translateY(8px);
+    transition: opacity .25s ease, transform .25s ease, background .15s ease;
+    z-index: 55;
+    box-shadow: 0 4px 14px rgba(0,0,0,.18);
+  }
+  .back-to-top.show{ opacity:1; visibility:visible; transform:translateY(0); }
+  .back-to-top:hover{ background: var(--green); }
+  .back-to-top svg{ width:16px; height:16px; }
+
+  .toc-rail{
+    position: fixed;
+    top: 50%; transform: translateY(-50%);
+    right: max(14px, calc((100vw - var(--maxw)) / 2 - 46px));
+    display:flex; flex-direction:column; gap: 13px;
+    z-index: 40;
+  }
+  .toc-rail a{
+    width: 9px; height:9px; border-radius:50%;
+    background: var(--line-strong);
+    position:relative;
+    text-decoration:none;
+    display:block;
+    transition: background .2s ease, transform .2s ease;
+  }
+  .toc-rail a:hover, .toc-rail a.active{ background: var(--green); transform: scale(1.3); }
+  .toc-rail a .toc-label{
+    position:absolute; right: 20px; top:50%; transform: translateY(-50%);
+    font-family:'IBM Plex Mono', monospace;
+    font-size: 11px;
+    color: var(--ink);
+    background: var(--paper-raised);
+    border: 1px solid var(--line-strong);
+    padding: 4px 9px;
+    border-radius: 3px;
+    white-space: nowrap;
+    opacity:0; visibility:hidden;
+    transition: opacity .15s ease;
+    pointer-events:none;
+  }
+  .toc-rail a:hover .toc-label{ opacity:1; visibility:visible; }
+  @media (max-width: 1240px){ .toc-rail{ display:none; } }
 </style>
 <meta name="theme-color" content="#1E6B4F">
 <link rel="icon" type="image/png" href="../favicon.png">
@@ -702,6 +775,21 @@
 </head>
 <body>
 
+<div class="progress-rail"><div class="progress-fill" id="progressFill"></div></div>
+
+<nav class="toc-rail" id="tocRail" aria-label="Navegação do artigo">
+  <a href="#sec-01" data-label="01"><span class="toc-label">Dois desfechos possíveis</span></a>
+  <a href="#sec-02" data-label="02"><span class="toc-label">Colocando números na conta</span></a>
+  <a href="#sec-03" data-label="03"><span class="toc-label">Risco de sequência de retornos</span></a>
+  <a href="#sec-04" data-label="04"><span class="toc-label">A regra dos 4%</span></a>
+  <a href="#sec-05" data-label="05"><span class="toc-label">Resultados bem diferentes</span></a>
+  <a href="#sec-06" data-label="06"><span class="toc-label">Como se proteger</span></a>
+</nav>
+
+<button type="button" class="back-to-top" id="backToTop" aria-label="Voltar ao topo">
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M12 19V5M5 12l7-7 7 7"/></svg>
+</button>
+
 <div class="site-bar"><div class="site-bar-inner"><a href="../">&larr; Todos os artigos</a></div></div>
 <div class="masthead">
   <div class="masthead-inner">
@@ -736,7 +824,7 @@
     <p>Para saber quanto você pode retirar do patrimônio acumulado, é preciso primeiro decidir que tipo de desfecho você quer.</p>
   </div>
 
-  <h2><span class="num">01</span>Dois desfechos possíveis</h2>
+  <h2 id="sec-01"><span class="num">01</span>Dois desfechos possíveis</h2>
   <div class="prose">
     <p>Existem, essencialmente, dois caminhos:</p>
     <p><strong>(A) Sobrevivência</strong> — fazer retiradas de forma que o patrimônio dure, com boa probabilidade, até o fim de um período definido. <strong>(B) Perpetuidade</strong> — fazer retiradas de forma que o patrimônio seja, no mínimo, corrigido pela inflação.</p>
@@ -761,7 +849,7 @@
     <p>Vale notar: A e B são <em>faixas</em>, não pontos. No caso A, o patrimônio pode empatar com a inflação ou superá-la com folga pequena, média ou grande. No caso B, ele pode chegar a zero exatamente no dia do seu falecimento — ou chegar lá com folga. Decidir onde nesse espectro você quer estar é algo que só você pode decidir. Nenhum planejador, assessor ou influencer decide isso por você: o contexto de cada pessoa é diferente, e a pergunta "o que é suficiente para eu dormir tranquilo?" tem uma resposta pessoal.</p>
   </div>
 
-  <h2><span class="num">02</span>Colocando números na conta</h2>
+  <h2 id="sec-02"><span class="num">02</span>Colocando números na conta</h2>
   <div class="prose">
     <p>Entendido o desfecho desejado, o segundo passo é levantar quatro informações: sua carteira de investimentos (ativos, alocação, comportamento histórico), sua necessidade de fluxo de caixa, a inflação relevante para você, e o tamanho do seu patrimônio investido. Vamos usar um casal fictício para colocar números nisso.</p>
   </div>
@@ -1171,7 +1259,7 @@
     <p>A SWR de ≈ 5,56% encontrada acima só é válida para uma carteira de R$ 2MM e horizonte de 30 anos com retorno real <em>constante</em> de 4% ao ano, enquanto a PWR de ≈ 3,85% também, apesar de não importar o prazo (já que é perpétua). Essa <strong>constância perfeita</strong> não existe na vida real. É aqui que a história fica interessante.</p>
   </div>
 
-  <h2><span class="num">03</span>Problema 2 de 2: o risco da sequência de retornos negativos</h2>
+  <h2 id="sec-03"><span class="num">03</span>Problema 2 de 2: o risco da sequência de retornos negativos</h2>
   <div class="prose">
     <p>Nenhuma carteira rende 4% real de forma constante e garantida todos os anos — a não ser que você use títulos públicos indexados com fluxo garantido (Renda+ e Educa+ estão no rol de títulos do Tesouro Direto, mas ambos zeram o capital ao final do prazo; não servem para o objetivo de perpetuidade de Alberto e Vera). Sua carteira real vai ter anos bons e anos ruins. A pergunta é: isso muda alguma coisa, se a <em>média</em> continuar em 4% ao ano?</p>
   </div>
@@ -1305,6 +1393,7 @@
     </div>
     <div class="chart-svg-wrap">
       <svg class="chart" id="chart1" viewBox="0 0 720 380" role="img" aria-label="Gráfico de linha comparando dois cenários de patrimônio ao longo de 30 anos, cada um com os mesmos retornos anuais em ordem diferente. O Cenário X termina acima dos R$ 2 milhões iniciais; o Cenário Y esgota o patrimônio no ano 18."></svg>
+      <div class="chart-tooltip" id="chart1Tooltip"></div>
     </div>
     <div class="chart-legend">
       <span class="sw"><span class="dot" style="background:var(--green);"></span> ano com retorno positivo</span>
@@ -1319,7 +1408,7 @@
     </details>
   </div>
 
-  <h2><span class="num">04</span>A regra dos 4% (e por que não é uma lei da física)</h2>
+  <h2 id="sec-04"><span class="num">04</span>A regra dos 4% (e por que não é uma lei da física)</h2>
   <div class="prose">
     <p>A "regra de bolso" mais famosa do tema — a que usei nos exemplos acima — vem de um estudo<sup>1</sup> de William Bengen, de 1994, e foi popularizada pelo <em>Trinity Study</em>.<sup>2</sup> Ela estabelece que, no primeiro ano de aposentadoria, deve-se retirar 4% do patrimônio total e, nos anos seguintes, apenas reajustar esse valor nominal pela inflação. Essa porcentagem foi definida ao testar a estratégia contra os piores cenários históricos de uma carteira composta por 50% em ações americanas (S&P 500) e 50% em títulos públicos americanos, considerando um horizonte de 30 anos.</p>
     <p>A chamada "Regra dos 4%" não é universal, e não deveria ser chamada de "Regra". Ela é apenas uma Taxa Segura de Retirada (SWR — Safe Withdrawal Rate) empírica, fruto puramente de simulações com dados históricos (backtesting).</p>
@@ -1331,7 +1420,7 @@
     <p>É possível estimar sua própria SWR usando os retornos históricos da sua carteira (<em>backtesting</em>), para o horizonte que você quiser. Isso não garante nada sobre o futuro — crises podem ser piores, mais longas ou mais frequentes do que qualquer coisa já vista — mas é uma boa aproximação. No planejamento financeiro profissional, esse cálculo normalmente usa <strong>simulação de Monte Carlo</strong> (gera cenários novos a partir de uma distribuição teórica) e/ou <strong>bootstrapping</strong> (reamostra os próprios dados históricos), não uma única sequência fixa como fizemos aqui neste artigo para fins didáticos.</p>
   </div>
 
-  <h2><span class="num">05</span>Quando a "mesma" carteira dá resultados bem diferentes</h2>
+  <h2 id="sec-05"><span class="num">05</span>Quando a "mesma" carteira dá resultados bem diferentes</h2>
   <div class="prose">
     <p>Voltando à carteira que sofreu com a sequência ruim (a do Cenário Y, que quebrou no ano 18 usando a "regra" dos 4% a.a.): qual seria a taxa de retirada que ela realmente suportaria por 30 anos? Fazendo essa conta, chegamos a uma SWR de aproximadamente <strong>3,08%</strong> — bem abaixo dos 4% da regra de bolso. Se o objetivo fosse preservar o capital perpetuamente (PWR), a taxa cairia para <strong>2,13%</strong>.</p>
     <p>Agora vamos ao pior caso plausível: reordenar essa mesma sequência de 30 retornos do <em>pior para o melhor</em> — ou seja, concentrar toda a dor logo no início. O CAGR de 30 anos continua idêntico (a média geométrica não muda com a ordem), mas a Taxa Segura de Retirada (SWR) despenca para <strong>1,48%</strong>, e a PWR para <strong>1,03%</strong>.</p>
@@ -1357,6 +1446,7 @@
     </div>
     <div class="chart-svg-wrap">
       <svg class="chart" id="chart2" viewBox="0 0 720 380" role="img" aria-label="Gráfico de linha comparando a trajetória do patrimônio em três cenários com o mesmo CAGR de 30 anos, cada um usando sua própria taxa de retirada sustentável: 5,56% para retorno constante, 3,08% para a sequência real, e 1,48% para o pior caso, todos zerando por volta do ano 30."></svg>
+      <div class="chart-tooltip" id="chart2Tooltip"></div>
     </div>
     <div class="chart-legend">
       <span class="sw"><span class="dot" style="background:#5B6B75;"></span> retorno real 4% a.a. constante · SWR 5,56%</span>
@@ -1381,7 +1471,7 @@
     <p>Vale adiantar: existem estratégias de retirada mais sofisticadas do que "retirar X% no primeiro ano e corrigir pela inflação nos anos seguintes" — como os <em>guardrails</em> de Guyton-Klinger, que ajustam a retirada para cima ou para baixo conforme o desempenho da carteira, ou modelos que consideram a valuation do mercado no momento da aposentadoria. Isso foge do escopo deste artigo, mas é o próximo passo natural depois de entender SWR e PWR.</p>
   </div>
 
-  <h2><span class="num">06</span>Como se proteger da falência do patrimônio na aposentadoria?</h2>
+  <h2 id="sec-06"><span class="num">06</span>Como se proteger da falência do patrimônio na aposentadoria?</h2>
   <div class="mitigation-grid">
     <div class="mit-card">
       <div class="idx">01 · carteira</div>
@@ -1498,6 +1588,59 @@
 
 <script>
 (function(){
+  "use strict";
+
+  /* ---------- barra de progresso de leitura ---------- */
+  var progressFill = document.getElementById('progressFill');
+  function updateProgress(){
+    var h = document.documentElement;
+    var scrollTop = h.scrollTop || document.body.scrollTop;
+    var scrollHeight = (h.scrollHeight || document.body.scrollHeight) - h.clientHeight;
+    var pct = scrollHeight > 0 ? (scrollTop / scrollHeight) * 100 : 0;
+    progressFill.style.width = pct.toFixed(2) + '%';
+  }
+
+  /* ---------- botão voltar ao topo ---------- */
+  var backToTop = document.getElementById('backToTop');
+  function updateBackToTop(){
+    if(window.scrollY > 600){ backToTop.classList.add('show'); }
+    else{ backToTop.classList.remove('show'); }
+  }
+  backToTop.addEventListener('click', function(){
+    window.scrollTo({ top:0, behavior: 'smooth' });
+  });
+
+  window.addEventListener('scroll', function(){
+    updateProgress();
+    updateBackToTop();
+  }, { passive:true });
+  updateProgress();
+  updateBackToTop();
+
+  /* ---------- navegação lateral (TOC) ---------- */
+  var tocLinks = Array.prototype.slice.call(document.querySelectorAll('#tocRail a'));
+  var sections = tocLinks.map(function(a){
+    return document.getElementById(a.getAttribute('href').slice(1));
+  }).filter(Boolean);
+
+  if('IntersectionObserver' in window && sections.length){
+    var tocObserver = new IntersectionObserver(function(entries){
+      entries.forEach(function(entry){
+        var link = document.querySelector('#tocRail a[href="#' + entry.target.id + '"]');
+        if(!link) return;
+        if(entry.isIntersecting){
+          tocLinks.forEach(function(l){ l.classList.remove('active'); });
+          link.classList.add('active');
+        }
+      });
+    }, { rootMargin: '-45% 0px -50% 0px', threshold: 0 });
+    sections.forEach(function(s){ tocObserver.observe(s); });
+  }
+})();
+</script>
+
+<script>
+(function(){
   const NS = "http://www.w3.org/2000/svg";
   function el(tag, attrs){
     const e = document.createElementNS(NS, tag);
@@ -1540,6 +1683,78 @@
 
   function xAt(i){ return padL + (i/30)*plotW; }
   function yAt(v, domainMax){ return padT + plotH - (v/domainMax)*plotH; }
+
+  function addHoverColumns(svg, maxIndex){
+    const colW = plotW/30;
+    for(let i=0;i<=maxIndex;i++){
+      const cx = xAt(i);
+      svg.appendChild(el('rect',{
+        class:'hit-col', 'data-i':i,
+        x:(cx-colW/2).toFixed(1), y:(padT-8), width:colW.toFixed(1), height:(plotH+16),
+        fill:'transparent'
+      }));
+    }
+  }
+
+  /* ---------- posicionamento de tooltip com folga maior e sem vazar do card ---------- */
+  /* GAP maior que o padrão (12px) para não ficar colado no cursor — especialmente
+     relevante para cursores grandes, que já cobrem boa área ao redor do ponteiro. */
+  function positionTooltipClamped(e, wrap, tooltip){
+    const rect = wrap.getBoundingClientRect();
+    const x = e.clientX - rect.left;
+    const y = e.clientY - rect.top;
+    const GAP = 26;
+    const ttW = tooltip.offsetWidth || 150;
+    const ttH = tooltip.offsetHeight || 34;
+
+    let left = x;
+    const minLeft = ttW/2 + 4;
+    const maxLeft = rect.width - ttW/2 - 4;
+    if(left < minLeft) left = minLeft;
+    if(left > maxLeft) left = maxLeft;
+
+    const spaceAbove = y - GAP - ttH;
+    if(spaceAbove < 4){
+      tooltip.style.transform = 'translate(-50%, ' + GAP + 'px)';
+    } else {
+      tooltip.style.transform = 'translate(-50%, calc(-100% - ' + GAP + 'px))';
+    }
+
+    tooltip.style.left = left + 'px';
+    tooltip.style.top = y + 'px';
+  }
+
+  function wireChartTooltip(svgId, tooltipId, seriesList){
+    const svg = document.getElementById(svgId);
+    const tooltip = document.getElementById(tooltipId);
+    if(!svg || !tooltip) return;
+    const wrap = svg.closest('.chart-svg-wrap') || svg.parentElement;
+    const hitCols = svg.querySelectorAll('.hit-col');
+
+    function positionTooltip(e){
+      positionTooltipClamped(e, wrap, tooltip);
+    }
+
+    hitCols.forEach(function(colEl){
+      colEl.addEventListener('mouseenter', function(e){
+        const i = parseInt(this.getAttribute('data-i'), 10);
+        let html = '<span class="tt-label">Ano ' + i + '</span><br>';
+        seriesList.forEach(function(s){
+          if(i >= s.values.length) return;
+          const v = s.values[i];
+          const cls = v >= 0 ? 'tt-val-pos' : 'tt-val-neg';
+          html += '<span style="color:' + s.color + ';">' + s.label + ':</span> <span class="' + cls + '">' + fmtMi(v) + '</span><br>';
+        });
+        tooltip.innerHTML = html;
+        tooltip.classList.add('visible');
+        positionTooltip(e);
+      });
+      colEl.addEventListener('mousemove', positionTooltip);
+      colEl.addEventListener('mouseleave', function(){
+        tooltip.classList.remove('visible');
+      });
+    });
+  }
 
   // ---------- CHART 1 ----------
   (function(){
@@ -1586,6 +1801,12 @@
     const lblX = el('text',{x:xAt(30)-4, y:yAt(2072680,domainMax)-10, 'text-anchor':'end','font-family':'IBM Plex Mono, monospace','font-size':11, fill:'#1E6B4F','font-weight':600});
     lblX.textContent = 'Cenário X';
     svg.appendChild(lblX);
+
+    addHoverColumns(svg, 30);
+    wireChartTooltip('chart1', 'chart1Tooltip', [
+      { label:'Cenário X', color:'#1E6B4F', values: cenarioX },
+      { label:'Cenário Y', color:'#A8402A', values: cenarioY }
+    ]);
   })();
 
   // ---------- CHART 2 ----------
@@ -1619,6 +1840,13 @@
     drawLine(constSeries, '#5B6B75');
     drawLine(moderateSeries, '#B98B32');
     drawLine(worstSeries, '#A8402A');
+
+    addHoverColumns(svg, 30);
+    wireChartTooltip('chart2', 'chart2Tooltip', [
+      { label:'Retorno constante (SWR 5,56%)', color:'#5B6B75', values: constSeries },
+      { label:'Cenário Y (SWR 3,08%)', color:'#B98B32', values: moderateSeries },
+      { label:'Pior caso (SWR 1,48%)', color:'#A8402A', values: worstSeries }
+    ]);
   })();
 
   // ---------- FULL TABLES (built from the same data as the charts) ----------

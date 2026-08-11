@@ -4,8 +4,95 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>A confusão generalizada sobre os Títulos IPCA+ — Independência Calculada</title>
+<meta name="description" content="A narrativa de que inflação alta 'quebra' a rentabilidade dos Títulos IPCA+ usa uma fórmula errada de Imposto de Renda. Com a fórmula certa, mostro por que isso só é matematicamente possível numa combinação rara de prazo curto e juro real baixo — e trago um simulador interativo.">
+<meta name="robots" content="index, follow, max-image-preview:large">
+<meta name="author" content="Independência Calculada">
+<link rel="canonical" href="https://independenciacalculada.com.br/ipca-hiperinflacao">
+
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="Independência Calculada">
+<meta property="og:locale" content="pt_BR">
+<meta property="og:url" content="https://independenciacalculada.com.br/ipca-hiperinflacao">
+<meta property="og:title" content="A confusão generalizada sobre os Títulos IPCA+">
+<meta property="og:description" content="A fórmula usada para 'provar' que a inflação alta destrói a rentabilidade dos Títulos IPCA+ está errada. Mostro a fórmula certa, com simulador interativo.">
+<meta property="og:image" content="https://independenciacalculada.com.br/assets/og-cover-ipca-hiperinflacao.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Independência Calculada — A confusão generalizada sobre os Títulos IPCA+">
+<meta property="article:published_time" content="2026-08-06">
+<meta property="article:section" content="Renda Fixa">
+
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="A confusão generalizada sobre os Títulos IPCA+">
+<meta name="twitter:description" content="A fórmula usada para 'provar' que a inflação alta destrói a rentabilidade dos Títulos IPCA+ está errada. Mostro a fórmula certa, com simulador interativo.">
+<meta name="twitter:image" content="https://independenciacalculada.com.br/assets/og-cover-ipca-hiperinflacao.png">
+
 <meta name="theme-color" content="#1E6B4F">
 <link rel="icon" type="image/png" href="../favicon.png">
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Article",
+  "headline": "A confusão generalizada sobre os Títulos IPCA+",
+  "description": "A narrativa de que inflação alta destrói a rentabilidade dos Títulos IPCA+ usa uma fórmula errada de Imposto de Renda. Mostro a fórmula certa e quando a rentabilidade real líquida pode, de fato, ficar negativa.",
+  "image": "https://independenciacalculada.com.br/assets/og-cover-ipca-hiperinflacao.png",
+  "datePublished": "2026-08-06",
+  "dateModified": "2026-08-06",
+  "inLanguage": "pt-BR",
+  "articleSection": "Renda Fixa",
+  "keywords": "Tesouro IPCA+, Tesouro Direto, inflação, Imposto de Renda, renda fixa, taxa real líquida, hiperinflação, FIRE, independência financeira",
+  "about": ["Tesouro IPCA+", "Renda fixa", "Imposto de Renda sobre renda fixa"],
+  "author": {"@type": "Organization", "name": "Independência Calculada", "url": "https://independenciacalculada.com.br"},
+  "publisher": {"@type": "Organization", "name": "Independência Calculada"},
+  "mainEntityOfPage": {"@type": "WebPage", "@id": "https://independenciacalculada.com.br/ipca-hiperinflacao"},
+  "isPartOf": {"@type": "WebSite", "name": "Independência Calculada", "url": "https://independenciacalculada.com.br"}
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {"@type": "ListItem", "position": 1, "name": "Independência Calculada", "item": "https://independenciacalculada.com.br"},
+    {"@type": "ListItem", "position": 2, "name": "Renda Fixa", "item": "https://independenciacalculada.com.br/renda-fixa"},
+    {"@type": "ListItem", "position": 3, "name": "A confusão generalizada sobre os Títulos IPCA+", "item": "https://independenciacalculada.com.br/ipca-hiperinflacao"}
+  ]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "Por que a narrativa de que inflação alta 'quebra' os Títulos IPCA+ está errada?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Essa narrativa usa uma fórmula incorreta para calcular a taxa real líquida de Imposto de Renda desses títulos. A fórmula certa mostra que, para títulos longos como o Tesouro IPCA+ 2050, mesmo cenários de inflação extremamente alta não derrubam a rentabilidade real líquida para negativo — o IR incide sobre o ganho de capital, mas o efeito não se comporta como o alarme sugere."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "A rentabilidade real líquida de um Tesouro IPCA+ pode ficar negativa por causa da inflação?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "É matematicamente possível, mas exige uma combinação específica e pouco comum: prazo curto (menor que 10 anos) combinado com uma taxa real contratada baixa (por exemplo, IPCA + 2% ao ano). Para investidores de longo prazo, com títulos como o IPCA+ 2050, isso não acontece mesmo em cenários de inflação muito alta."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "O resgate antecipado de um Tesouro IPCA+ pode dar prejuízo?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Sim, mas o motivo não é a inflação — é a marcação a mercado. Se as taxas de juros negociadas pelo Tesouro sobem depois da sua compra, o preço do título cai no curto prazo, gerando prejuízo caso você resgate antes do vencimento. Segurando até o vencimento, esse risco não se realiza."
+      }
+    }
+  ]
+}
+</script>
+
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@0,400;0,500;0,600;0,700;1,500;1,600&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
@@ -162,29 +249,14 @@
     font-family: 'IBM Plex Mono', monospace;
   }
 
-  .prose{ margin-top: 36px; }
-  .prose p{ margin: 0 0 20px; }
-  h2{
-    font-family:'Fraunces', serif;
-    font-weight: 600;
-    font-size: 1.55rem;
-    letter-spacing: -0.01em;
-    margin: 54px 0 4px;
-  }
-  h2 .num{
-    font-family:'IBM Plex Mono', monospace;
-    font-size: 13px;
-    color: var(--gold);
-    display:block;
-    letter-spacing: .1em;
-    margin-bottom: 6px;
-  }
-  h3{
-    font-family:'Fraunces', serif;
-    font-weight: 600;
-    font-size: 1.15rem;
-    margin: 30px 0 10px;
-  }
+/* ---------- Prose ---------- */
+.prose{ margin-top: 20px; }
+.prose p{ margin: 0 0 20px; }
+.section-lead{ color: var(--muted); font-size: 1.02rem; margin-bottom: 22px; }
+
+h2{ font-family: var(--font-display); font-weight: 600; font-size: 1.55rem; letter-spacing: -0.01em; margin: 54px 0 4px; color: var(--ink); }
+h2 .num{ font-family: var(--font-mono); font-size: 13px; color: var(--gold); display:block; letter-spacing: .1em; margin-bottom: 6px; }
+h3{ font-family: var(--font-display); font-weight: 600; font-size: 1.15rem; margin: 30px 0 10px; color: var(--ink); }
 
   .glossary{
     display:grid;
@@ -310,6 +382,7 @@
     border-radius: 3px;
     padding: 22px 22px 18px;
     margin: 30px 0 32px;
+    position: relative;
   }
   .chart-head{ margin-bottom: 6px; }
   .chart-title{
@@ -318,7 +391,7 @@
     font-size: 1.05rem;
   }
   .chart-sub{ font-size: 13px; color: var(--muted); margin-top: 2px; }
-  .chart-svg-wrap{ margin: 14px 0 6px; }
+  .chart-svg-wrap{ margin: 14px 0 6px; position: relative; }
   svg.chart{ width:100%; height:auto; display:block; }
   .chart-legend{
     display:flex; flex-wrap:wrap; gap: 16px;
@@ -330,6 +403,29 @@
   .chart-legend .sw{ display:inline-flex; align-items:center; gap:6px; }
   .chart-legend .dot{ width:10px; height:10px; border-radius:50%; display:inline-block; }
   .chart-caption{ font-size: 13.5px; color: var(--muted); margin-top: 12px; }
+
+  .chart-tooltip{
+    position: absolute;
+    pointer-events: none;
+    background: #171A18;
+    color: #F7F5EF;
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 12px;
+    line-height: 1.4;
+    padding: 7px 11px;
+    border-radius: 4px;
+    white-space: nowrap;
+    transform: translate(-50%, calc(-100% - 12px));
+    opacity: 0;
+    transition: opacity 0.08s ease;
+    z-index: 6;
+    top: 0; left: 0;
+  }
+  .chart-tooltip.visible{ opacity: 1; }
+  .chart-tooltip .tt-label{ color: #B98B32; font-weight: 600; margin-right: 8px; }
+  .chart-tooltip .tt-val-pos{ color: #6FCF9E; font-weight: 600; }
+  .chart-tooltip .tt-val-neg{ color: #E38C74; font-weight: 600; }
+  .hit-col{ cursor: crosshair; }
 
   /* --- formula box (novo componente, reaproveitando linguagem visual do site) --- */
   .formula-box{
@@ -1001,25 +1097,25 @@
 
   <h2 id="sec-01" class="reveal"><span class="num">01</span>O ponto de partida: um exemplo simples</h2>
   <div class="prose">
-    <p>Imagine o Tesouro IPCA+ 2050. No momento em que escrevo este artigo, ele está com juro real de <strong>7,43% a.a.</strong> e preço unitário de <strong>R$ 856,93</strong>. No vencimento, você recebe o valor investido, corrigido pelo IPCA do período e remunerado pela taxa real contratada.</p>
+    <p>Imagine o Tesouro IPCA+ 2050. No momento em que escrevo este artigo, ele está com juro real de <strong>7,42% a.a.</strong> e preço unitário de <strong>R$ 858,84</strong>. No vencimento, você recebe o valor investido, corrigido pelo IPCA do período e remunerado pela taxa real contratada.</p>
   </div>
 
   <div class="stat-card">
     <div class="cap">Simulação — 10 anos, inflação de 5% a.a.</div>
     <div class="stat-grid">
-      <div><b>R$ 856,93</b><span>preço unitário hoje</span></div>
-      <div><b>7,43% a.a.</b><span>juro real contratado</span></div>
+      <div><b>R$ 858,84</b><span>preço unitário hoje</span></div>
+      <div><b>7,42% a.a.</b><span>juro real contratado</span></div>
       <div><b>1,628×</b><span>fator de correção do IPCA em 10 anos (5% a.a.)</span></div>
-      <div><b>2,047×</b><span>fator de juro real em 10 anos</span></div>
+      <div><b>2,045×</b><span>fator de juro real em 10 anos</span></div>
     </div>
   </div>
 
   <div class="prose">
     <p>Ficando 10 anos investido, com inflação de 5% ao ano, o valor do título no vencimento seria:</p>
-    <p class="mono" style="font-size:15px;">R$ 856,93 × 1,628 × 2,047 ≈ <strong>R$ 2.858,08</strong></p>
-    <p>Se a inflação fosse zero, o valor final seria fruto apenas do juro real de 7,43% a.a. por 10 anos: aproximadamente <strong>R$ 1.754,13</strong>. A existência da inflação, portanto, elevou o valor nominal do investimento em cerca de <strong>R$ 1.103,95</strong> — e é justamente esse valor que também entra na base de cálculo do IR, porque o imposto incide sobre o ganho de capital nominal, sem distinguir "ganho real" de "correção monetária".</p>
-    <p class="mono" style="font-size:15px;">IRRF = (Valor final − Valor inicial) × 15%<br>(R$ 2.858,08 − R$ 856,93) × 15% ≈ <strong>R$ 300,17</strong></p>
-    <p>Sem inflação, o IRRF seria menor: (R$ 1.754,13 − R$ 856,93) × 15% ≈ R$ 134,58. Ou seja, só por conta da inflação também ser tributada, você paga <strong>R$ 165,59 a mais</strong> de imposto nesse exemplo. Essa distorção, em tese, pioraria bastante se a inflação fosse muito alta — como ocorreu no Brasil antes do Plano Real.</p>
+    <p class="mono" style="font-size:15px;">R$ 858,84 × 1,628 × 2,045 ≈ <strong>R$ 2.861,91</strong></p>
+    <p>Se a inflação fosse zero, o valor final seria fruto apenas do juro real de 7,42% a.a. por 10 anos: aproximadamente <strong>R$ 1.756,96</strong>. A existência da inflação, portanto, elevou o valor nominal do investimento em cerca de <strong>R$ 1.104,95</strong> — e é justamente esse valor que também entra na base de cálculo do IR, porque o imposto incide sobre o ganho de capital nominal, sem distinguir "ganho real" de "correção monetária".</p>
+    <p class="mono" style="font-size:15px;">IRRF = (Valor final − Valor inicial) × 15%<br>(R$ 2.861,91 − R$ 858,84) × 15% ≈ <strong>R$ 300,46</strong></p>
+    <p>Sem inflação, o IRRF seria menor: (R$ 1.756,96 − R$ 858,84) × 15% ≈ R$ 134,71. Ou seja, só por conta da inflação também ser tributada, você paga <strong>R$ 165,74 a mais</strong> de imposto nesse exemplo. Essa distorção, em tese, pioraria bastante se a inflação fosse muito alta — como ocorreu no Brasil antes do Plano Real.</p>
   </div>
 
   <div class="note">
@@ -1035,13 +1131,10 @@
   <div class="formula-box">
     <div class="cap">Fórmula errada</div>
     <div class="formula">
-      <span class="bracket">[</span>
-      1&nbsp;+&nbsp;
       <span class="frac">
-        <span class="num">((1+B)(1+C)&nbsp;−&nbsp;1)(1−F)</span>
+        <span class="num">[((1+B)(1+C)&nbsp;−&nbsp;1)(1−F)]&nbsp;+&nbsp;1</span>
         <span class="den">1+C</span>
       </span>
-      <span class="bracket">]</span>
       &nbsp;−&nbsp;1
     </div>
     <div class="formula-vars">
@@ -1053,47 +1146,47 @@
 
   <div class="prose">
     <p>Essa fórmula tributa a inflação de maneira direta, gerando perda real em cenários de IPCA elevado. E tem um problema estrutural adicional: <strong>ela não é sensibilizada pelo prazo</strong> que o valor ficou investido — o tempo simplesmente não é uma variável na conta. Isso já deveria soar como um alerta, porque sabemos que a diluição do IR ao longo do tempo é justamente um dos efeitos mais relevantes de títulos de longo prazo.</p>
-    <p>Assumindo B = 7,43% a.a., C variando de 0% a 10.240% a.a. e F = 15%, a "fórmula errada" de fato produz uma rentabilidade real líquida negativa a partir de determinado nível de inflação:</p>
+    <p>Assumindo B = 7,42% a.a., C variando de 0% a 10.240% a.a. e F = 15%, a "fórmula errada" de fato produz uma rentabilidade real líquida negativa a partir de determinado nível de inflação:</p>
   </div>
 
   <div class="chart-card">
     <div class="chart-head">
       <div class="chart-title">Fórmula errada — taxa real líquida (Tesouro IPCA+ 2050)</div>
-      <div class="chart-sub">Simulação para IPCA de 0% a 10.240% a.a., mantendo B = 7,43% e F = 15% fixos</div>
+      <div class="chart-sub">Simulação para IPCA de 0% a 10.240% a.a., mantendo B = 7,42% e F = 15% fixos</div>
     </div>
     <div class="chart-svg-wrap">
-      <svg class="chart" viewBox="0 0 720 340" role="img" aria-label="Gráfico de barras mostrando a taxa real líquida calculada pela fórmula errada, caindo de cerca de 6900% em IPCA=0% até negativa a partir de IPCA=80%, chegando a aproximadamente -7900% em IPCA=10240%.">
+      <svg class="chart" id="chartErrada" viewBox="0 0 720 340" role="img" aria-label="Gráfico de barras mostrando a taxa real líquida calculada pela fórmula errada, caindo de 6,307% em IPCA=0% até negativa a partir de IPCA=80%, chegando a -8,548% em IPCA=10240%.">
         <!-- eixo zero e gridlines -->
         <line x1="60" y1="170" x2="704" y2="170" stroke="#171A18" stroke-width="1.4"/>
         <text x="52" y="174" text-anchor="end" font-family="IBM Plex Mono, monospace" font-size="11" fill="#5B6259">0%</text>
-        <text x="52" y="44" text-anchor="end" font-family="IBM Plex Mono, monospace" font-size="11" fill="#5B6259">+7000%</text>
+        <text x="52" y="44" text-anchor="end" font-family="IBM Plex Mono, monospace" font-size="11" fill="#5B6259">+7%</text>
         <line x1="60" y1="48" x2="704" y2="48" stroke="#D7DBCF" stroke-width="1"/>
-        <text x="52" y="296" text-anchor="end" font-family="IBM Plex Mono, monospace" font-size="11" fill="#5B6259">−7900%</text>
+        <text x="52" y="296" text-anchor="end" font-family="IBM Plex Mono, monospace" font-size="11" fill="#5B6259">−9%</text>
         <line x1="60" y1="292" x2="704" y2="292" stroke="#D7DBCF" stroke-width="1"/>
 
-        <!-- barras: 12 categorias, altura proporcional a valores ilustrativos (aprox. a partir do relato original) -->
-        <!-- baseline y=170, escala ~7000%->122px acima, -7900%->122px abaixo -->
+        <!-- barras: 13 categorias, altura proporcional aos valores exatos calculados pela fórmula errada -->
+        <!-- baseline y=170, escala +7%->122px acima, -9%->122px abaixo -->
         <g>
-          <rect x="66" y="48" width="38" height="122" fill="#1E6B4F"/>
-          <rect x="115" y="59" width="38" height="111" fill="#1E6B4F"/>
-          <rect x="164" y="72" width="38" height="98" fill="#1E6B4F"/>
-          <rect x="213" y="95" width="38" height="75" fill="#1E6B4F"/>
-          <rect x="262" y="169" width="38" height="1.5" fill="#1E6B4F"/>
-          <rect x="311" y="170" width="38" height="18" fill="#A8402A"/>
-          <rect x="360" y="170" width="38" height="40" fill="#A8402A"/>
-          <rect x="409" y="170" width="38" height="66" fill="#A8402A"/>
-          <rect x="458" y="170" width="38" height="84" fill="#A8402A"/>
-          <rect x="507" y="170" width="38" height="98" fill="#A8402A"/>
-          <rect x="556" y="170" width="38" height="110" fill="#A8402A"/>
-          <rect x="605" y="170" width="38" height="118" fill="#A8402A"/>
-          <rect x="654" y="170" width="38" height="122" fill="#A8402A"/>
+          <rect x="66" y="60.1" width="38" height="109.9" fill="#1E6B4F"/>
+          <rect x="115" y="72.5" width="38" height="97.5" fill="#1E6B4F"/>
+          <rect x="164" y="83.9" width="38" height="86.1" fill="#1E6B4F"/>
+          <rect x="213" y="103.6" width="38" height="66.4" fill="#1E6B4F"/>
+          <rect x="262" y="134.8" width="38" height="35.2" fill="#1E6B4F"/>
+          <rect x="311" y="170" width="38" height="4.9" fill="#A8402A"/>
+          <rect x="360" y="170" width="38" height="39.6" fill="#A8402A"/>
+          <rect x="409" y="170" width="38" height="69.4" fill="#A8402A"/>
+          <rect x="458" y="170" width="38" height="90.4" fill="#A8402A"/>
+          <rect x="507" y="170" width="38" height="103.1" fill="#A8402A"/>
+          <rect x="556" y="170" width="38" height="110.2" fill="#A8402A"/>
+          <rect x="605" y="170" width="38" height="113.9" fill="#A8402A"/>
+          <rect x="654" y="170" width="38" height="115.9" fill="#A8402A"/>
         </g>
 
-        <!-- rótulos de valor: só nos pontos que contam a história (início, inflexão perto de zero, fim) -->
+        <!-- rótulos de valor: só nos pontos que contam a história (início, inflexão, fim) -->
         <g font-family="IBM Plex Mono, monospace" font-size="10.5" font-weight="600">
-          <text x="85" y="40" text-anchor="middle" fill="#1E6B4F">6936%</text>
-          <text x="281" y="40" text-anchor="middle" fill="#1E6B4F">0,27%</text>
-          <text x="673" y="305" text-anchor="middle" fill="#A8402A">−7919%</text>
+          <text x="85" y="52" text-anchor="middle" fill="#1E6B4F">6,307%</text>
+          <text x="330" y="157" text-anchor="middle" fill="#A8402A">−0,360%</text>
+          <text x="673" y="305" text-anchor="middle" fill="#A8402A">−8,548%</text>
         </g>
 
         <!-- eixo x: uma única linha de base para todas as categorias de IPCA, sem sobreposição -->
@@ -1112,7 +1205,25 @@
           <text x="624" y="322" text-anchor="middle">5120%</text>
           <text x="673" y="322" text-anchor="middle">10240%</text>
         </g>
+
+        <!-- colunas de hover -->
+        <g>
+          <rect class="hit-col" data-i="0" x="66" y="10" width="49" height="320" fill="transparent"/>
+          <rect class="hit-col" data-i="1" x="115" y="10" width="49" height="320" fill="transparent"/>
+          <rect class="hit-col" data-i="2" x="164" y="10" width="49" height="320" fill="transparent"/>
+          <rect class="hit-col" data-i="3" x="213" y="10" width="49" height="320" fill="transparent"/>
+          <rect class="hit-col" data-i="4" x="262" y="10" width="49" height="320" fill="transparent"/>
+          <rect class="hit-col" data-i="5" x="311" y="10" width="49" height="320" fill="transparent"/>
+          <rect class="hit-col" data-i="6" x="360" y="10" width="49" height="320" fill="transparent"/>
+          <rect class="hit-col" data-i="7" x="409" y="10" width="49" height="320" fill="transparent"/>
+          <rect class="hit-col" data-i="8" x="458" y="10" width="49" height="320" fill="transparent"/>
+          <rect class="hit-col" data-i="9" x="507" y="10" width="49" height="320" fill="transparent"/>
+          <rect class="hit-col" data-i="10" x="556" y="10" width="49" height="320" fill="transparent"/>
+          <rect class="hit-col" data-i="11" x="605" y="10" width="49" height="320" fill="transparent"/>
+          <rect class="hit-col" data-i="12" x="654" y="10" width="49" height="320" fill="transparent"/>
+        </g>
       </svg>
+      <div class="chart-tooltip" id="chartErradaTooltip"></div>
     </div>
     <div class="chart-legend">
       <span class="sw"><span class="dot" style="background:#1E6B4F;"></span>Taxa real líquida positiva</span>
@@ -1185,7 +1296,7 @@
       <div class="chart-sub">Mesma faixa de IPCA simulada, agora com a fórmula que considera o prazo</div>
     </div>
     <div class="chart-svg-wrap">
-      <svg class="chart" viewBox="0 0 720 300" role="img" aria-label="Gráfico de linha mostrando que a taxa real líquida pela fórmula certa começa em 6,64% com IPCA=0% e estabiliza rapidamente em torno de 6,51%, permanecendo positiva mesmo com IPCA extremamente alto.">
+      <svg class="chart" id="chartCerta" viewBox="0 0 720 300" role="img" aria-label="Gráfico de linha mostrando que a taxa real líquida pela fórmula certa começa em 6,64% com IPCA=0% e estabiliza rapidamente em torno de 6,51%, permanecendo positiva mesmo com IPCA extremamente alto.">
         <line x1="60" y1="250" x2="704" y2="250" stroke="#BFC5B8" stroke-width="1"/>
         <line x1="60" y1="40" x2="60" y2="250" stroke="#BFC5B8" stroke-width="1"/>
         <text x="52" y="44" text-anchor="end" font-family="IBM Plex Mono, monospace" font-size="11" fill="#5B6259">6,70%</text>
@@ -1213,7 +1324,24 @@
           <text x="486" y="266" text-anchor="middle">1280%</text>
           <text x="698" y="266" text-anchor="middle">10240%</text>
         </g>
+
+        <!-- colunas de hover -->
+        <g>
+          <rect class="hit-col" data-i="0" x="36" y="10" width="60" height="270" fill="transparent"/>
+          <rect class="hit-col" data-i="1" x="96" y="10" width="60" height="270" fill="transparent"/>
+          <rect class="hit-col" data-i="2" x="156" y="10" width="60" height="270" fill="transparent"/>
+          <rect class="hit-col" data-i="3" x="216" y="10" width="60" height="270" fill="transparent"/>
+          <rect class="hit-col" data-i="4" x="276" y="10" width="60" height="270" fill="transparent"/>
+          <rect class="hit-col" data-i="5" x="336" y="10" width="60" height="270" fill="transparent"/>
+          <rect class="hit-col" data-i="6" x="396" y="10" width="60" height="270" fill="transparent"/>
+          <rect class="hit-col" data-i="7" x="456" y="10" width="60" height="270" fill="transparent"/>
+          <rect class="hit-col" data-i="8" x="516" y="10" width="60" height="270" fill="transparent"/>
+          <rect class="hit-col" data-i="9" x="576" y="10" width="60" height="270" fill="transparent"/>
+          <rect class="hit-col" data-i="10" x="636" y="10" width="62" height="270" fill="transparent"/>
+          <rect class="hit-col" data-i="11" x="698" y="10" width="16" height="270" fill="transparent"/>
+        </g>
       </svg>
+      <div class="chart-tooltip" id="chartCertaTooltip"></div>
     </div>
     <div class="chart-caption">Eixo horizontal em IPCA (a.a.), escala não-linear. A taxa real líquida sai de 6,639% em IPCA = 0% e estabiliza em 6,507% a partir de aproximadamente IPCA = 40%, permanecendo nesse patamar mesmo para IPCA = 10.240%.</div>
   </div>
@@ -1252,7 +1380,7 @@
   </details>
 
   <details class="toggle" style="margin-bottom: 28px;">
-    <summary>Memória de cálculo detalhada — cenário com IPCA = 40% a.a.</summary>
+    <summary>Memória de cálculo detalhada — cenário com IPCA = 40% a.a. (Tesouro IPCA+ 2050)</summary>
     <div class="toggle-body">
       <div class="table-wrap" style="overflow-x:auto; padding-bottom:18px;">
         <table class="data">
@@ -1284,7 +1412,7 @@
           <caption>Check: quanto se recebe vs. quanto a inflação por si só teria corrigido</caption>
           <tbody>
             <tr><td>Valor líquido no vencimento</td><td>R$ 17.765.515,68</td></tr>
-            <tr><td>Valor corrigido só pelo IPCA (40% a.a.)</td><td>R$ 3.147.704,21</td></tr>
+            <tr><td>Valor nominal no vencimento (sem prêmio, só correção pelo IPCA)</td><td>R$ 3.703.029,86</td></tr>
           </tbody>
         </table>
       </div>
@@ -1369,6 +1497,7 @@
         <div class="chart-sub">Preço, juro real, custódia e prazo fixos nos valores acima — só o IPCA varia, de 0% a 10.240% a.a.</div>
       </div>
       <div class="chart-svg-wrap" id="sim-chart-wrap"></div>
+      <div class="chart-tooltip" id="simChartTooltip"></div>
       <div class="chart-legend">
         <span class="sw"><span class="dot" style="background:#1E6B4F;"></span>Taxa real líquida positiva</span>
         <span class="sw"><span class="dot" style="background:#A8402A;"></span>Taxa real líquida negativa</span>
@@ -1390,7 +1519,7 @@
       <div class="chart-sub">Prazo curto + juro real baixo é o único combo em que a inflação alta consegue derrubar o resultado abaixo de zero</div>
     </div>
     <div class="chart-svg-wrap">
-      <svg class="chart" viewBox="0 0 720 300" role="img" aria-label="Gráfico de linha mostrando que, para um título curto com juro real hipotético de 2%, a taxa real líquida cai de 1,537% em IPCA=0% para valores negativos a partir de aproximadamente IPCA=20%, estabilizando perto de -0,82%.">
+      <svg class="chart" id="chartCurto" viewBox="0 0 720 300" role="img" aria-label="Gráfico de linha mostrando que, para um título curto com juro real hipotético de 2%, a taxa real líquida cai de 1,537% em IPCA=0% para valores negativos a partir de aproximadamente IPCA=20%, estabilizando perto de -0,929%.">
         <!-- gridlines superior/inferior -->
         <line x1="60" y1="40" x2="704" y2="40" stroke="#D7DBCF" stroke-width="1"/>
         <text x="52" y="44" text-anchor="end" font-family="IBM Plex Mono, monospace" font-size="11" fill="#5B6259">+1,9%</text>
@@ -1403,19 +1532,19 @@
 
         <!-- trecho positivo -->
         <polyline fill="none" stroke="#1E6B4F" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"
-          points="60,61.2 113.7,96.7 167.3,122.5 217.8,153.5"/>
+          points="60,61.6 113.7,97.0 167.3,123.0 214.7,153.5"/>
         <!-- trecho negativo -->
         <polyline fill="none" stroke="#A8402A" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"
-          points="217.8,153.5 221,155.5 274.7,184.5 328.3,198.9 382,202.4 435.7,202.8 489.3,202.8 543,202.8 596.7,202.8 650.3,202.8 704,202.8"/>
+          points="214.7,153.5 221,156.8 274.7,187.3 328.3,203.3 382,207.4 435.7,207.9 489.3,207.9 543,207.9 596.7,207.9 650.3,207.9 704,207.9"/>
 
-        <circle cx="60" cy="61.2" r="4" fill="#171A18" stroke="#1E6B4F" stroke-width="1.5"/>
+        <circle cx="60" cy="61.6" r="4" fill="#171A18" stroke="#1E6B4F" stroke-width="1.5"/>
         <text x="60" y="34" text-anchor="start" font-family="IBM Plex Mono, monospace" font-size="11" fill="#1E6B4F" font-weight="600">1,537% (IPCA=0%)</text>
 
-        <circle cx="217.8" cy="153.5" r="4" fill="#B98B32" stroke="#171A18" stroke-width="1"/>
-        <text x="217.8" y="140" text-anchor="middle" font-family="IBM Plex Mono, monospace" font-size="11" fill="#B98B32" font-weight="600">cruza 0% perto de IPCA=20%</text>
+        <circle cx="214.7" cy="153.5" r="4" fill="#B98B32" stroke="#171A18" stroke-width="1"/>
+        <text x="214.7" y="140" text-anchor="middle" font-family="IBM Plex Mono, monospace" font-size="11" fill="#B98B32" font-weight="600">cruza 0% perto de IPCA=20%</text>
 
-        <circle cx="704" cy="202.8" r="4" fill="#171A18" stroke="#A8402A" stroke-width="1.5"/>
-        <text x="704" y="196" text-anchor="end" font-family="IBM Plex Mono, monospace" font-size="11" fill="#A8402A" font-weight="600">−0,821% (IPCA=10240%)</text>
+        <circle cx="704" cy="207.9" r="4" fill="#171A18" stroke="#A8402A" stroke-width="1.5"/>
+        <text x="704" y="196" text-anchor="end" font-family="IBM Plex Mono, monospace" font-size="11" fill="#A8402A" font-weight="600">−0,929% (IPCA=10240%)</text>
 
         <!-- eixo x: uma única linha de base para todas as categorias de IPCA -->
         <g font-family="IBM Plex Mono, monospace" font-size="9.5" fill="#5B6259">
@@ -1433,7 +1562,25 @@
           <text x="650.3" y="246" text-anchor="middle">5120%</text>
           <text x="704" y="246" text-anchor="middle">10240%</text>
         </g>
+
+        <!-- colunas de hover -->
+        <g>
+          <rect class="hit-col" data-i="0" x="33" y="10" width="53.8" height="255" fill="transparent"/>
+          <rect class="hit-col" data-i="1" x="86.8" y="10" width="53.7" height="255" fill="transparent"/>
+          <rect class="hit-col" data-i="2" x="140.5" y="10" width="53.7" height="255" fill="transparent"/>
+          <rect class="hit-col" data-i="3" x="194.2" y="10" width="53.7" height="255" fill="transparent"/>
+          <rect class="hit-col" data-i="4" x="247.8" y="10" width="53.7" height="255" fill="transparent"/>
+          <rect class="hit-col" data-i="5" x="301.5" y="10" width="53.6" height="255" fill="transparent"/>
+          <rect class="hit-col" data-i="6" x="355.1" y="10" width="53.7" height="255" fill="transparent"/>
+          <rect class="hit-col" data-i="7" x="408.9" y="10" width="53.6" height="255" fill="transparent"/>
+          <rect class="hit-col" data-i="8" x="462.5" y="10" width="53.6" height="255" fill="transparent"/>
+          <rect class="hit-col" data-i="9" x="516.1" y="10" width="53.7" height="255" fill="transparent"/>
+          <rect class="hit-col" data-i="10" x="569.9" y="10" width="53.6" height="255" fill="transparent"/>
+          <rect class="hit-col" data-i="11" x="623.5" y="10" width="53.6" height="255" fill="transparent"/>
+          <rect class="hit-col" data-i="12" x="677.1" y="10" width="41.9" height="255" fill="transparent"/>
+        </g>
       </svg>
+      <div class="chart-tooltip" id="chartCurtoTooltip"></div>
     </div>
     <div class="chart-legend">
       <span class="sw"><span class="dot" style="background:#1E6B4F;"></span>Taxa real líquida positiva</span>
@@ -1441,6 +1588,76 @@
     </div>
     <div class="chart-caption">Simulação hipotética para um título curto (vencimento em 2032) com juro real de apenas 2% a.a. — bem diferente do IPCA+ 2050 usado nos exemplos anteriores.</div>
   </div>
+
+
+  <details class="toggle" style="margin-bottom: 28px;">
+    <summary>Tabela completa — taxa real líquida pela fórmula certa (Tesouro IPCA+ 2032)</summary>
+    <div class="toggle-body">
+      <div class="table-wrap" style="overflow-x:auto; padding-bottom:18px;">
+        <table class="data">
+          <caption>Taxa real líquida de IR, fórmula certa, para cada nível de IPCA simulado</caption>
+          <thead>
+            <tr><th>IPCA (a.a.)</th><th>Taxa real líquida</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>0%</td><td class="pos">1,536886674%</td></tr>
+            <tr><td>5%</td><td class="pos">0,940059676%</td></tr>
+            <tr><td>10%</td><td class="pos">0,501329298%</td></tr>
+            <tr><td>20%</td><td class="pos">-0,067336818%</td></tr>
+            <tr><td>40%</td><td class="pos">-0,582327207%</td></tr>
+            <tr><td>80%</td><td class="pos">-0,851676968%</td></tr>
+            <tr><td>160%</td><td class="pos">-0,920636320%</td></tr>
+            <tr><td>320%</td><td class="pos">-0,928740756%</td></tr>
+            <tr><td>640%</td><td class="pos">-0,929210734%</td></tr>
+            <tr><td>1280%</td><td class="pos">-0,929226709%</td></tr>
+            <tr><td>2560%</td><td class="pos">-0,929227094%</td></tr>
+            <tr><td>5120%</td><td class="pos">-0,929227101%</td></tr>
+            <tr><td>10240%</td><td class="pos">-0,929227101%</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </details>
+
+  <details class="toggle" style="margin-bottom: 28px;">
+    <summary>Memória de cálculo detalhada — cenário com IPCA = 40% a.a. (Tesouro IPCA+ 2032)</summary>
+    <div class="toggle-body">
+      <div class="table-wrap" style="overflow-x:auto; padding-bottom:18px;">
+        <table class="data">
+          <caption>Tesouro IPCA+ 2032 — decomposição do cálculo com IPCA = 40% a.a.</caption>
+          <tbody>
+            <tr><td>Taxa de custódia B3 (a.a.)</td><td>0,20%</td></tr>
+            <tr><td>Taxa prefixada de juro real (a.a.)</td><td>2,00%</td></tr>
+            <tr><td>IPCA (a.a.)</td><td>40,00%</td></tr>
+            <tr><td>Juros nominal (a.a.)</td><td>42,80%</td></tr>
+            <tr><td>Juros nominal, sem tx. custódia (a.a.)</td><td>42,51%</td></tr>
+            <tr><td>Data de hoje</td><td>06/08/2026</td></tr>
+            <tr><td>Data de vencimento</td><td>15/08/2032</td></tr>
+            <tr><td>Prazo de vencimento (du)</td><td>1.509</td></tr>
+            <tr><td>Prazo de vencimento (anos)</td><td>5,988</td></tr>
+            <tr><td>VNA futuro</td><td>R$ 25.035,33</td></tr>
+            <tr><td>Preço de hoje</td><td>R$ 2.965,01</td></tr>
+            <tr><td>Valor no vencimento, sem tx. custódia</td><td>R$ 24.737,59</td></tr>
+            <tr><td>Ganho de capital</td><td>R$ 21.772,58</td></tr>
+            <tr><td>Taxa do IR</td><td>15,00%</td></tr>
+            <tr><td>Abatimento do IR</td><td>R$ 3.265,89</td></tr>
+            <tr><td>Valor líquido no vencimento</td><td><strong>R$ 21.471,70</strong></td></tr>
+            <tr><td>Taxa nominal líquida (a.a.)</td><td>39,185%</td></tr>
+            <tr><td>Taxa real líquida (a.a.)</td><td class="pos"><strong>-0,582%</strong></td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="table-wrap" style="overflow-x:auto; padding-bottom:18px; margin-top:18px;">
+        <table class="data">
+          <caption>Check: quanto se recebe vs. quanto a inflação por si só teria corrigido</caption>
+          <tbody>
+            <tr><td>Valor líquido no vencimento</td><td>R$ 21.471,70</td></tr>
+            <tr><td>Valor nominal no vencimento (sem prêmio, só correção pelo IPCA)</td><td> R$ 22.235,90</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </details>
 
   <div class="prose">
     <p>Ou seja, apesar de ser matematicamente possível a rentabilidade real líquida ficar negativa por conta da inflação, isso exige uma combinação específica e pouco comum — prazo curto e juro real baixo — muito distante do pânico generalizado que a narrativa do alarme sugere. Se você é investidor de longo prazo, com horizonte maior que 10 anos, pode dormir tranquilo com Títulos IPCA+ na carteira.</p>
@@ -1617,6 +1834,89 @@
   } else {
     revealEls.forEach(function(el){ el.classList.add('visible'); });
   }
+
+  /* ---------- posicionamento de tooltip com folga maior e sem vazar do card ---------- */
+  /* GAP maior que o padrão (12px) para não ficar colado no cursor — especialmente
+     relevante para cursores grandes, que já cobrem boa área ao redor do ponteiro. */
+  function positionTooltipClamped(e, wrap, tooltip){
+    var rect = wrap.getBoundingClientRect();
+    var x = e.clientX - rect.left;
+    var y = e.clientY - rect.top;
+    var GAP = 26;
+    var ttW = tooltip.offsetWidth || 150;
+    var ttH = tooltip.offsetHeight || 34;
+
+    // eixo X: centraliza no cursor, mas sem deixar vazar pelas bordas do gráfico
+    var left = x;
+    var minLeft = ttW/2 + 4;
+    var maxLeft = rect.width - ttW/2 - 4;
+    if(left < minLeft) left = minLeft;
+    if(left > maxLeft) left = maxLeft;
+
+    // eixo Y: fica acima do cursor com folga extra; se não houver espaço acima
+    // (perto do topo do gráfico), joga para abaixo do cursor em vez de vazar
+    // por cima do card e cobrir o título/rótulos.
+    var top = y;
+    var spaceAbove = y - GAP - ttH;
+    if(spaceAbove < 4){
+      tooltip.style.transform = 'translate(-50%, ' + (GAP) + 'px)';
+    } else {
+      tooltip.style.transform = 'translate(-50%, calc(-100% - ' + GAP + 'px))';
+    }
+
+    tooltip.style.left = left + 'px';
+    tooltip.style.top = top + 'px';
+  }
+
+  /* ---------- tooltips dos gráficos estáticos (hover) ---------- */
+  function wireStaticChartTooltip(svgId, tooltipId, labels, values, suffix){
+    var svg = document.getElementById(svgId);
+    var tooltip = document.getElementById(tooltipId);
+    if(!svg || !tooltip) return;
+    var wrap = svg.closest('.chart-svg-wrap') || svg.parentElement;
+    var hitCols = svg.querySelectorAll('.hit-col');
+
+    function positionTooltip(e){
+      positionTooltipClamped(e, wrap, tooltip);
+    }
+
+    hitCols.forEach(function(el){
+      el.addEventListener('mouseenter', function(e){
+        var i = parseInt(this.getAttribute('data-i'), 10);
+        var v = values[i];
+        var cls = v >= 0 ? 'tt-val-pos' : 'tt-val-neg';
+        var sign = v >= 0 ? '+' : '';
+        tooltip.innerHTML = '<span class="tt-label">IPCA ' + labels[i] + '</span><span class="' + cls + '">' + sign + v.toFixed(3).replace('.', ',') + suffix + '</span>';
+        tooltip.classList.add('visible');
+        positionTooltip(e);
+      });
+      el.addEventListener('mousemove', positionTooltip);
+      el.addEventListener('mouseleave', function(){
+        tooltip.classList.remove('visible');
+      });
+    });
+  }
+
+  wireStaticChartTooltip(
+    'chartErrada', 'chartErradaTooltip',
+    ["0%","5%","10%","20%","40%","80%","160%","320%","640%","1280%","2560%","5120%","10240%"],
+    [6.307000000, 5.592714286, 4.943363636, 3.807000000, 2.021285714, -0.359666667, -2.923769231, -5.121571429, -6.665972973, -7.606043478, -8.129090226, -8.405643678, -8.547932302],
+    '%'
+  );
+
+  wireStaticChartTooltip(
+    'chartCerta', 'chartCertaTooltip',
+    ["0%","5%","10%","20%","40%","80%","160%","320%","640%","1280%","2560%","10240%"],
+    [6.639310967, 6.547002216, 6.519886629, 6.508832889, 6.507427860, 6.507396869, 6.507396809, 6.507396809, 6.507396809, 6.507396809, 6.507396809, 6.507396809],
+    '%'
+  );
+
+  wireStaticChartTooltip(
+    'chartCurto', 'chartCurtoTooltip',
+    ["0%","5%","10%","20%","40%","80%","160%","320%","640%","1280%","2560%","5120%","10240%"],
+    [1.536886674, 0.940059676, 0.501329298, -0.067336818, -0.582327207, -0.851676968, -0.920636320, -0.928740756, -0.929210734, -0.929226709, -0.929227094, -0.929227101, -0.929227101],
+    '%'
+  );
 
   /* =========================================================
      SIMULADOR — fórmula certa (mesma lógica da planilha)
@@ -1812,6 +2112,15 @@
     });
     svg += '</g>';
 
+    // colunas de hover (uma por ponto simulado, para tooltip com valor exato)
+    svg += '<g>';
+    pts.forEach(function(p, i){
+      var xLeft = i === 0 ? padL : (pts[i-1].x + p.x) / 2;
+      var xRight = i === pts.length-1 ? (w - padR) : (p.x + pts[i+1].x) / 2;
+      svg += '<rect class="hit-col" data-i="'+i+'" x="'+xLeft.toFixed(1)+'" y="'+(plotTop-10)+'" width="'+(xRight-xLeft).toFixed(1)+'" height="'+(plotBottom-plotTop+30)+'" fill="transparent"/>';
+    });
+    svg += '</g>';
+
     svg += '</svg>';
     return svg;
   }
@@ -1882,12 +2191,40 @@
       return calcularTaxaRealLiquida(A, B, c, D, E, TAXA_IR).taxaRealLiquida;
     });
     elChartWrap.innerHTML = renderChart(sweepValues);
+    wireSimChartTooltip(sweepValues);
 
     var minSweep = Math.min.apply(null, sweepValues);
     var everNegative = minSweep < 0;
     elChartCaption.textContent = everNegative
       ? 'Com esse prazo e essa taxa real, a inflação alta consegue derrubar a taxa real líquida abaixo de zero (mínimo simulado: ' + fmtPctFull.format(minSweep*100) + '%).'
       : 'Nesse prazo e taxa real, mesmo em cenários de hiperinflação extrema a taxa real líquida permanece positiva e estabiliza em torno de ' + fmtPctFull.format(sweepValues[sweepValues.length-1]*100) + '%.';
+  }
+
+  function wireSimChartTooltip(sweepValues){
+    var tooltip = document.getElementById('simChartTooltip');
+    if(!tooltip) return;
+    var hitCols = elChartWrap.querySelectorAll('.hit-col');
+    var posAnchor = elChartWrap.closest('.chart-card') || elChartWrap;
+
+    function positionTooltip(e){
+      positionTooltipClamped(e, posAnchor, tooltip);
+    }
+
+    hitCols.forEach(function(el){
+      el.addEventListener('mouseenter', function(e){
+        var i = parseInt(this.getAttribute('data-i'), 10);
+        var v = sweepValues[i] * 100;
+        var cls = v >= 0 ? 'tt-val-pos' : 'tt-val-neg';
+        var sign = v >= 0 ? '+' : '';
+        tooltip.innerHTML = '<span class="tt-label">IPCA ' + IPCA_SWEEP_LABELS[i] + '</span><span class="' + cls + '">' + sign + fmtPctFull.format(v) + '%</span>';
+        tooltip.classList.add('visible');
+        positionTooltip(e);
+      });
+      el.addEventListener('mousemove', positionTooltip);
+      el.addEventListener('mouseleave', function(){
+        tooltip.classList.remove('visible');
+      });
+    });
   }
 
   function attachListeners(){
