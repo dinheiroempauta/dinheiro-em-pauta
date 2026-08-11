@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+<channel>
+  <title>Independência Calculada</title>
+  <link>https://independenciacalculada-droid.github.io/independencia-calculada/</link>
+  <description>Estudos quantitativos sobre FIRE, taxa de retirada, renda fixa e alocação de carteira, com metodologia aberta e calculadoras interativas.</description>
+  <language>pt-BR</language>
+  <atom:link href="https://independenciacalculada-droid.github.io/independencia-calculada/feed.xml" rel="self" type="application/rss+xml"/>
+
+  <item>
+    <title>Qual é a PWR da minha carteira? Um estudo com 20 anos de dados reais</title>
+    <link>https://independenciacalculada-droid.github.io/independencia-calculada/pwr-carteira-fire/</link>
+    <guid>https://independenciacalculada-droid.github.io/independencia-calculada/pwr-carteira-fire/</guid>
+    <description>PWR@90% = 5,16% e PWR@95% = 4,75% ao ano, em termos reais — calculado via bootstrap estacionário sobre dados de 2006 a 2026. Metodologia completa e calculadora interativa.</description>
+    <pubDate>Sun, 09 Aug 2026 00:00:00 GMT</pubDate>
+  </item>
+
+  <item>
+    <title>A confusão generalizada sobre os Títulos IPCA+</title>
+    <link>https://independenciacalculada-droid.github.io/independencia-calculada/ipca-hiperinflacao/</link>
+    <guid>https://independenciacalculada-droid.github.io/independencia-calculada/ipca-hiperinflacao/</guid>
+    <description>A fórmula usada para "provar" que a inflação alta destrói a rentabilidade dos Títulos IPCA+ está errada. Mostro a fórmula certa, com simulador interativo.</description>
+    <pubDate>Thu, 06 Aug 2026 00:00:00 GMT</pubDate>
+  </item>
+
+  <item>
+    <title>Quanto posso retirar dos meus investimentos durante a aposentadoria?</title>
+    <link>https://independenciacalculada-droid.github.io/independencia-calculada/quanto-posso-retirar-aposentadoria/</link>
+    <guid>https://independenciacalculada-droid.github.io/independencia-calculada/quanto-posso-retirar-aposentadoria/</guid>
+    <description>As taxas de retirada e o risco da sequência de retornos negativos — explicado com rigor técnico e simulações.</description>
+    <pubDate>Thu, 06 Aug 2026 00:00:00 GMT</pubDate>
+  </item>
+
+</channel>
+</rss>

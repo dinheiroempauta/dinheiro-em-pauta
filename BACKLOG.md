@@ -11,20 +11,20 @@ para a seção "Concluído", no fim, com a data).
 - [ ] **Domínio próprio** — migrar do endereço temporário do GitHub Pages para
       um domínio comprado (ex: independenciacalculada.com.br). Melhora
       credibilidade e SEO. Processo já documentado, sem risco de quebrar nada.
-- [ ] **Favicon** — criar/subir um arquivo `favicon.png` (512×512) na raiz do
-      repositório. Os arquivos já referenciam esse caminho, só falta o arquivo.
 - [ ] **Conectar Claude direto ao GitHub** — via MCP connector, quando assinar
       um plano pago do Claude. Elimina o passo de copiar arquivos manualmente.
 
 ## SEO e descoberta
 
-- [ ] **Google Search Console** — cadastrar o site (gratuito) para pedir
-      indexação e monitorar como os artigos aparecem nas buscas.
-- [ ] **Sitemap.xml** — gerar um arquivo listando todos os artigos, para o
-      Google encontrar e indexar mais rápido.
-- [ ] **Meta tags de SEO no artigo do IPCA** — description, Open Graph e
-      JSON-LD ainda estão incompletas nesse artigo (os outros 2 já têm).
-- [ ] **RSS feed** — para quem acompanha blogs por leitor de feeds.
+- [ ] **Google Search Console** — em andamento: propriedade sendo cadastrada
+      (endereço temporário do GitHub Pages). Falta enviar a tag de verificação
+      e confirmar o envio do sitemap.xml. **Atenção:** ao migrar pro domínio
+      próprio, será preciso verificar de novo e reenviar o sitemap.
+- [ ] **Imagens de compartilhamento (og:image) não existem** — os 3 artigos
+      apontam pra `assets/og-cover-*.png`, mas esse arquivo não existe no
+      repositório. Hoje, ao compartilhar um link no WhatsApp/LinkedIn/X, não
+      aparece nenhuma imagem de prévia. Precisa criar as 3 imagens (1200×630)
+      e subir na pasta `assets/`.
 
 ## Analytics
 
@@ -60,4 +60,13 @@ para a seção "Concluído", no fim, com a data).
 
 ## Concluído
 
-*(nada ainda — mova itens pra cá conforme forem implementados, com a data)*
+- [x] **Sitemap.xml** — criado e publicado na raiz, listando home + 3
+      artigos. *(11 ago. 2026)*
+- [x] **RSS feed** — `feed.xml` criado e publicado, com tag de descoberta
+      (`<link rel="alternate">`) na home e nos 3 artigos. *(11 ago. 2026)*
+- [x] **Meta tags de SEO no artigo do IPCA** — confirmado que a versão mais
+      recente do conteúdo (enviada pelo usuário) já veio com description,
+      Open Graph, Twitter Card e JSON-LD completos. *(11 ago. 2026)*
+- [x] **Favicon** — monograma "IC" (verde escuro + creme/dourado, mesma
+      paleta do site) criado, publicado na raiz do repositório e testado.
+      *(11 ago. 2026)*
