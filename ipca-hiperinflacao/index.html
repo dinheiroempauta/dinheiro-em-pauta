@@ -1,0 +1,1960 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>A confusão generalizada sobre os Títulos IPCA+ — Independência Calculada</title>
+<meta name="theme-color" content="#1E6B4F">
+<link rel="icon" type="image/png" href="/favicon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@0,400;0,500;0,600;0,700;1,500;1,600&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --paper: #EEF1EC;
+    --paper-raised: #F9FAF6;
+    --ink: #171A18;
+    --muted: #5B6259;
+    --green: #1E6B4F;
+    --green-deep: #123B2A;
+    --green-light: #6FA382;
+    --brick: #A8402A;
+    --gold: #B98B32;
+    --gold-soft: #EDE0C4;
+    --brick-soft: #F3DED8;
+    --line: #D7DBCF;
+    --line-strong: #BFC5B8;
+    --maxw: 1000px;
+    --font-display: 'Fraunces', serif;
+    --font-body: 'IBM Plex Sans', sans-serif;
+    --font-mono: 'IBM Plex Mono', monospace;
+  }
+
+  @media (prefers-reduced-motion: no-preference){
+    .fade-in{ animation: fadeUp .7s ease-out both; }
+    .fade-in.d1{ animation-delay: .08s; }
+    .fade-in.d2{ animation-delay: .16s; }
+    @keyframes fadeUp{
+      from{ opacity:0; transform: translateY(10px); }
+      to{ opacity:1; transform: translateY(0); }
+    }
+  }
+
+  *{ box-sizing: border-box; }
+
+  html{ scroll-behavior: smooth; }
+
+  body{
+    margin:0;
+    background: var(--paper);
+    color: var(--ink);
+    font-family: 'IBM Plex Sans', sans-serif;
+    font-size: 17px;
+    line-height: 1.65;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  a{ color: var(--green); text-decoration-thickness: 1px; text-underline-offset: 2px; }
+  a:focus-visible, button:focus-visible{ outline: 2px solid var(--gold); outline-offset: 3px; }
+
+  .mono{ font-family: 'IBM Plex Mono', monospace; }
+
+  .masthead{
+    border-bottom: 1px solid var(--line-strong);
+    padding: 18px 24px;
+  }
+  .masthead-inner{
+    max-width: var(--maxw);
+    margin: 0 auto;
+    display:flex;
+    align-items:center;
+    justify-content: space-between;
+  }
+  .wordmark{
+    font-family: 'IBM Plex Mono', monospace;
+    font-weight: 600;
+    font-size: 13px;
+    letter-spacing: .12em;
+    text-transform: uppercase;
+    color: var(--ink);
+  }
+  .wordmark span{ color: var(--green); }
+  .masthead-tag{
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 11px;
+    color: var(--muted);
+    letter-spacing: .04em;
+  }
+
+  main{ max-width: var(--maxw); margin: 0 auto; padding: 0 24px 90px; }
+
+  .eyebrow{
+    margin-top: 46px;
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 12px;
+    letter-spacing: .1em;
+    text-transform: uppercase;
+    color: var(--green);
+    display:flex;
+    align-items:center;
+    gap: 10px;
+  }
+  .eyebrow::before{
+    content:"";
+    width: 22px; height: 1px;
+    background: var(--green);
+    display:inline-block;
+  }
+
+  h1.title{
+    font-family:'Fraunces', serif;
+    font-weight: 600;
+    font-size: clamp(2rem, 5vw, 2.9rem);
+    line-height: 1.08;
+    letter-spacing: -0.01em;
+    margin: 14px 0 8px;
+  }
+  .subtitle{
+    font-family:'Fraunces', serif;
+    font-style: italic;
+    font-weight: 500;
+    font-size: clamp(1.05rem, 2.4vw, 1.3rem);
+    color: var(--muted);
+    margin: 0 0 22px;
+  }
+  .meta{
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 12px;
+    color: var(--muted);
+    display:flex; gap:16px; flex-wrap:wrap;
+    padding-bottom: 26px;
+    border-bottom: 1px solid var(--line);
+  }
+  .meta b{ color: var(--ink); }
+
+  .promise{
+    margin: 30px 0 8px;
+    background: var(--paper-raised);
+    border: 1px solid var(--line-strong);
+    border-radius: 3px;
+    padding: 22px 24px;
+  }
+  .promise-label{
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 11px;
+    letter-spacing: .1em;
+    text-transform: uppercase;
+    color: var(--green);
+    margin-bottom: 10px;
+  }
+  .promise ul{ margin:0; padding-left: 0; list-style:none; }
+  .promise li{
+    position:relative;
+    padding-left: 22px;
+    margin-bottom: 9px;
+    font-size: 15.5px;
+  }
+  .promise li:last-child{ margin-bottom:0; }
+  .promise li::before{
+    content:"—";
+    position:absolute; left:0; top:0;
+    color: var(--gold);
+    font-family: 'IBM Plex Mono', monospace;
+  }
+
+  .prose{ margin-top: 36px; }
+  .prose p{ margin: 0 0 20px; }
+  h2{
+    font-family:'Fraunces', serif;
+    font-weight: 600;
+    font-size: 1.55rem;
+    letter-spacing: -0.01em;
+    margin: 54px 0 4px;
+  }
+  h2 .num{
+    font-family:'IBM Plex Mono', monospace;
+    font-size: 13px;
+    color: var(--gold);
+    display:block;
+    letter-spacing: .1em;
+    margin-bottom: 6px;
+  }
+  h3{
+    font-family:'Fraunces', serif;
+    font-weight: 600;
+    font-size: 1.15rem;
+    margin: 30px 0 10px;
+  }
+
+  .glossary{
+    display:grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 14px;
+    margin: 22px 0 28px;
+  }
+  @media (max-width: 560px){ .glossary{ grid-template-columns: 1fr; } }
+  .gloss-item{
+    border: 1px solid var(--line-strong);
+    background: var(--paper-raised);
+    border-radius: 3px;
+    padding: 16px 18px;
+  }
+  .gloss-item .abbr{
+    font-family:'IBM Plex Mono', monospace;
+    font-weight:600;
+    font-size: 13px;
+    color: var(--green);
+    letter-spacing: .04em;
+  }
+  .gloss-item .full{
+    font-family:'IBM Plex Mono', monospace;
+    font-size: 11px;
+    color: var(--muted);
+    margin: 2px 0 8px;
+  }
+  .gloss-item p{ margin:0; font-size: 14.5px; }
+
+  .stat-card{
+    border: 1px solid var(--line-strong);
+    background: var(--paper-raised);
+    border-radius: 3px;
+    padding: 20px 22px;
+    margin: 24px 0 28px;
+  }
+  .stat-card .cap{
+    font-family:'IBM Plex Mono', monospace;
+    font-size: 11px;
+    letter-spacing:.08em;
+    text-transform:uppercase;
+    color:var(--muted);
+    margin-bottom:12px;
+  }
+  .stat-grid{
+    display:grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 14px 20px;
+  }
+  @media (max-width: 480px){ .stat-grid{ grid-template-columns: 1fr; } }
+  .stat-grid div{ font-size: 14.5px; }
+  .stat-grid b{
+    display:block;
+    font-family:'IBM Plex Mono', monospace;
+    font-size: 1.05rem;
+    color: var(--ink);
+    font-variant-numeric: tabular-nums;
+  }
+  .stat-grid span{ color: var(--muted); font-size: 13px; }
+
+  .table-wrap{ margin: 22px 0 10px; overflow-x:auto; }
+  table.data{
+    width:100%;
+    border-collapse: collapse;
+    font-family:'IBM Plex Mono', monospace;
+    font-size: 13px;
+    font-variant-numeric: tabular-nums;
+  }
+  table.data caption{
+    text-align:left;
+    font-family:'IBM Plex Sans', sans-serif;
+    font-size: 13px;
+    color: var(--muted);
+    margin-bottom: 8px;
+    caption-side: top;
+  }
+  table.data th{
+    text-align:right;
+    font-weight:600;
+    padding: 8px 10px;
+    border-bottom: 1.5px solid var(--ink);
+    white-space:nowrap;
+    font-size:11.5px;
+    letter-spacing:.02em;
+  }
+  table.data th:first-child, table.data td:first-child{ text-align:left; }
+  table.data td{
+    text-align:right;
+    padding: 7px 10px;
+    border-bottom: 1px solid var(--line);
+    white-space:nowrap;
+  }
+  table.data tr.ellipsis td{ color: var(--muted); text-align:center; letter-spacing:.2em; }
+  table.data td.neg{ color: var(--brick); }
+  table.data td.pos{ color: var(--green); }
+
+  .note{
+    border-left: 3px solid var(--gold);
+    background: var(--paper-raised);
+    padding: 16px 20px;
+    margin: 26px 0;
+    font-size: 14.5px;
+  }
+  .note .cap{
+    font-family:'IBM Plex Mono', monospace;
+    font-size: 11px;
+    letter-spacing:.08em;
+    text-transform:uppercase;
+    color: var(--gold);
+    margin-bottom:6px;
+  }
+  .note p{ margin:0 0 8px; }
+  .note p:last-child{ margin-bottom:0; }
+
+  .note.brick{ border-left-color: var(--brick); }
+  .note.brick .cap{ color: var(--brick); }
+  .note.green{ border-left-color: var(--green); }
+  .note.green .cap{ color: var(--green); }
+
+  .chart-card{
+    border: 1px solid var(--line-strong);
+    background: var(--paper-raised);
+    border-radius: 3px;
+    padding: 22px 22px 18px;
+    margin: 30px 0 32px;
+  }
+  .chart-head{ margin-bottom: 6px; }
+  .chart-title{
+    font-family:'Fraunces', serif;
+    font-weight:600;
+    font-size: 1.05rem;
+  }
+  .chart-sub{ font-size: 13px; color: var(--muted); margin-top: 2px; }
+  .chart-svg-wrap{ margin: 14px 0 6px; }
+  svg.chart{ width:100%; height:auto; display:block; }
+  .chart-legend{
+    display:flex; flex-wrap:wrap; gap: 16px;
+    font-family:'IBM Plex Mono', monospace;
+    font-size: 12px;
+    color: var(--muted);
+    margin-top: 4px;
+  }
+  .chart-legend .sw{ display:inline-flex; align-items:center; gap:6px; }
+  .chart-legend .dot{ width:10px; height:10px; border-radius:50%; display:inline-block; }
+  .chart-caption{ font-size: 13.5px; color: var(--muted); margin-top: 12px; }
+
+  /* --- formula box (novo componente, reaproveitando linguagem visual do site) --- */
+  .formula-box{
+    border: 1px solid var(--line-strong);
+    background: var(--paper-raised);
+    border-radius: 3px;
+    padding: 26px 24px;
+    margin: 22px 0 26px;
+    overflow-x: auto;
+  }
+  .formula-box .cap{
+    font-family:'IBM Plex Mono', monospace;
+    font-size: 11px;
+    letter-spacing:.08em;
+    text-transform:uppercase;
+    color: var(--muted);
+    margin-bottom: 16px;
+  }
+  .formula{
+    font-family:'IBM Plex Mono', monospace;
+    font-size: 16px;
+    color: var(--ink);
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    gap: 6px;
+    min-width: max-content;
+    padding: 6px 4px;
+  }
+  .formula .bracket{ font-size: 30px; color: var(--muted); font-weight: 300; }
+  .frac{
+    display:inline-flex;
+    flex-direction:column;
+    align-items:center;
+    vertical-align:middle;
+    margin: 0 4px;
+  }
+  .frac .num{ padding: 0 4px 3px; border-bottom: 1.4px solid var(--ink); }
+  .frac .den{ padding: 3px 4px 0; }
+  .formula .exp{ font-size: 11px; vertical-align: super; color: var(--green); }
+  .formula-vars{
+    margin-top: 18px;
+    padding-top: 16px;
+    border-top: 1px solid var(--line);
+    display:flex;
+    flex-wrap: wrap;
+    row-gap: 10px;
+    column-gap: 36px;
+    font-size: 13.5px;
+  }
+  .formula-vars .fv{ white-space: nowrap; }
+  .formula-vars .fv b{
+    font-family:'IBM Plex Mono', monospace;
+    color: var(--green);
+    margin-right: 6px;
+  }
+
+  .steps-list{ margin: 18px 0 26px; padding-left: 0; list-style:none; counter-reset: step; }
+  .steps-list li{
+    counter-increment: step;
+    position:relative;
+    padding: 10px 0 10px 40px;
+    border-bottom: 1px solid var(--line);
+    font-size: 15px;
+  }
+  .steps-list li:last-child{ border-bottom:none; }
+  .steps-list li::before{
+    content: counter(step);
+    position:absolute; left:0; top:8px;
+    width: 24px; height: 24px;
+    border-radius: 50%;
+    background: var(--green);
+    color: var(--paper-raised);
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 12px;
+    font-weight:600;
+    display:flex; align-items:center; justify-content:center;
+  }
+
+  .summary-table-wrap{ margin: 26px 0 32px; }
+  table.summary{
+    width:100%;
+    border-collapse: collapse;
+    font-size: 14.5px;
+  }
+  table.summary th{
+    font-family:'IBM Plex Mono', monospace;
+    font-size: 11px;
+    text-transform:uppercase;
+    letter-spacing:.05em;
+    text-align: right;
+    padding: 10px 12px;
+    border-bottom: 1.5px solid var(--ink);
+  }
+  table.summary th:first-child{ text-align:left; }
+  table.summary td{
+    padding: 12px;
+    border-bottom: 1px solid var(--line);
+    text-align:right;
+    font-family:'IBM Plex Mono', monospace;
+    font-variant-numeric: tabular-nums;
+  }
+  table.summary td:first-child{
+    text-align:left;
+    font-family:'IBM Plex Sans', sans-serif;
+    font-weight:500;
+  }
+  table.summary tr:last-child td{ font-weight:600; color:var(--brick); }
+
+  blockquote.pull{
+    font-family:'Fraunces', serif;
+    font-style: italic;
+    font-weight: 500;
+    font-size: clamp(1.2rem, 3vw, 1.55rem);
+    line-height: 1.4;
+    color: var(--ink);
+    border-left: 3px solid var(--green);
+    padding: 4px 0 4px 24px;
+    margin: 38px 0;
+  }
+  blockquote.pull cite{
+    display:block;
+    font-family:'IBM Plex Mono', monospace;
+    font-style: normal;
+    font-size: 12px;
+    color: var(--muted);
+    margin-top: 10px;
+  }
+
+  .mitigation-grid{
+    display:grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 18px;
+    margin: 22px 0 28px;
+  }
+  @media (max-width: 560px){ .mitigation-grid{ grid-template-columns: 1fr; } }
+  .mit-card{
+    border: 1px solid var(--line-strong);
+    border-radius: 3px;
+    padding: 18px 20px;
+    background: var(--paper-raised);
+  }
+  .mit-card .idx{
+    font-family:'IBM Plex Mono', monospace;
+    font-size: 12px;
+    color: var(--green);
+    letter-spacing:.05em;
+  }
+  .mit-card h3{ margin: 6px 0 10px; font-size: 1.05rem; }
+  .mit-card p{ font-size: 14.5px; margin:0; }
+
+  .recap{
+    background: var(--ink);
+    color: var(--paper);
+    border-radius: 4px;
+    padding: 28px 26px;
+    margin: 46px 0 28px;
+  }
+  .recap .cap{
+    font-family:'IBM Plex Mono', monospace;
+    font-size: 11px;
+    letter-spacing:.1em;
+    text-transform:uppercase;
+    color: #9FD9BE;
+    margin-bottom: 14px;
+  }
+  .recap ol{ margin:0; padding-left: 20px; }
+  .recap li{ margin-bottom: 10px; font-size: 15px; }
+  .recap li:last-child{ margin-bottom:0; }
+  .recap li::marker{ font-family:'IBM Plex Mono', monospace; color:#9FD9BE; }
+
+  .cta{
+    border: 1px solid var(--line-strong);
+    border-radius: 3px;
+    padding: 24px 24px;
+    margin: 30px 0;
+    display:flex;
+    justify-content: space-between;
+    align-items:center;
+    gap: 20px;
+    flex-wrap: wrap;
+  }
+  .cta-text h3{ margin:0 0 6px; font-size:1.1rem; }
+  .cta-text p{ margin:0; font-size:14px; color:var(--muted); max-width: 40ch; }
+  .cta-btn{
+    font-family:'IBM Plex Mono', monospace;
+    font-size: 13px;
+    font-weight:600;
+    letter-spacing:.03em;
+    background: var(--green);
+    color: var(--paper-raised);
+    border: none;
+    padding: 12px 20px;
+    border-radius: 3px;
+    cursor:pointer;
+    white-space:nowrap;
+    text-decoration:none;
+    display:inline-block;
+  }
+  .cta-btn:hover{ background:#175A41; }
+
+  .cta-buttons{
+  display: flex;
+  gap: 16px;
+  flex-wrap: wrap;
+  align-items: center;
+  }
+
+  .cta-related{
+    width: 100%;
+    margin-top: 4px;
+    padding-top: 16px;
+    border-top: 1px solid var(--line);
+  }
+
+  .cta-related-label{
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 11px;
+    letter-spacing: .1em;
+    text-transform: uppercase;
+    color: var(--green);
+    margin-bottom: 12px;
+  }
+  .cta-related-link{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 12px 0;
+    border-bottom: 1px solid var(--line);
+    color: var(--ink);
+    text-decoration: none;
+  }
+  .cta-related-link:last-child{
+    border-bottom: none;
+  }
+  .cta-related-title{
+    font-family: 'Fraunces', serif;
+    font-weight: 500;
+    font-size: 15px;
+  }
+  .cta-related-arrow{
+    color: var(--gold);
+    font-family: 'IBM Plex Mono', monospace;
+    transition: transform .15s ease;
+  }
+  .cta-related-link:hover .cta-related-arrow{
+    transform: translateX(4px);
+  }
+  .cta-related-link:hover .cta-related-title{
+    color: var(--green);
+  }
+
+  .disclaimer{
+    font-size: 13px;
+    color: var(--muted);
+    border-top: 1px solid var(--line);
+    padding-top: 20px;
+    margin-top: 40px;
+  }
+
+  .disclaimer-spacer{
+    font-size: 13px;
+    color: var(--muted);
+    border-top: 1px solid var(--line);
+    padding-top: 20px;
+    margin-top: 12px;
+  }
+
+  .disclaimer .cap{
+    font-family:'IBM Plex Mono', monospace;
+    font-size: 11px;
+    letter-spacing:.08em;
+    text-transform:uppercase;
+    margin-bottom: 8px;
+    color: var(--ink);
+  }
+
+  .refs{
+    margin-top: 30px;
+    font-size: 13px;
+    color: var(--muted);
+  }
+  .refs .cap{
+    font-family:'IBM Plex Mono', monospace;
+    font-size: 11px;
+    letter-spacing:.08em;
+    text-transform:uppercase;
+    color: var(--ink);
+    margin-bottom: 10px;
+  }
+  .refs ol{ padding-left: 18px; margin:0; }
+  .refs li{ margin-bottom: 8px; }
+
+  footer{
+    max-width: var(--maxw);
+    margin: 0 auto;
+    padding: 30px 24px 60px;
+    font-family:'IBM Plex Mono', monospace;
+    font-size: 12px;
+    color: var(--muted);
+    text-align:center;
+  }
+
+/* ---------- Site bar (voltar para artigos) ---------- */
+.site-bar{ background: var(--ink); }
+.site-bar-inner{ max-width: var(--maxw); margin: 0 auto; padding: 9px 24px; }
+.site-bar a{ font-family: var(--font-mono); font-size: 11px; letter-spacing: .05em; color: #9FD9BE; text-decoration: none; }
+.site-bar a:hover{ color: #fff; }
+
+/* ---------- Engagement (curtir + compartilhar) ---------- */
+.engage{ margin: 46px 0 32px; padding: 22px 24px; border: 1px solid var(--line-strong); border-radius: 3px; background: var(--paper-raised); }
+.engage-row{ display:flex; align-items:center; justify-content: space-between; gap: 20px; flex-wrap: wrap; }
+.like-btn{ display:inline-flex; align-items:center; gap: 10px; font-family: var(--font-mono); font-size: 13px; font-weight: 600; letter-spacing: .02em; color: var(--ink); background: var(--paper); border: 1px solid var(--line-strong); border-radius: 3px; padding: 10px 16px; cursor: pointer; transition: border-color .15s ease, color .15s ease, background .15s ease; }
+.like-btn:hover{ border-color: var(--green); color: var(--green); }
+.like-btn .like-icon{ width:16px; height:16px; transition: transform .2s ease; }
+.like-btn.liked{ background: var(--green); color: #fff; border-color: var(--green); }
+.like-btn.liked .like-icon{ fill: currentColor; transform: scale(1.12); }
+.like-btn .like-count{ font-variant-numeric: tabular-nums; color: var(--muted); }
+.like-btn.liked .like-count{ color: #DDEFE5; }
+.share-group{ display:flex; align-items:center; gap: 10px; flex-wrap: wrap; }
+.share-label{ font-family: var(--font-mono); font-size: 11px; text-transform: uppercase; letter-spacing:.08em; color: var(--muted); margin-right: 4px; }
+.share-btn{ display:inline-flex; align-items:center; justify-content:center; width: 34px; height: 34px; border: 1px solid var(--line-strong); border-radius: 3px; background: var(--paper); color: var(--muted); text-decoration:none; cursor:pointer; transition: border-color .15s ease, color .15s ease; }
+.share-btn:hover{ border-color: var(--green); color: var(--green); }
+.share-btn svg{ width:15px; height:15px; }
+.share-btn.copied{ border-color: var(--gold); color: var(--gold); }
+
+/* ---------- Comentários ---------- */
+.comments-section{ margin: 8px 0 40px; padding-top: 30px; border-top: 1px solid var(--line); }
+.comments-section .cap{ font-family: var(--font-mono); font-size: 11px; letter-spacing: .08em; text-transform: uppercase; color: var(--ink); margin-bottom: 8px; }
+.comments-note{ font-size: 13px; color: var(--muted); margin: 0 0 18px; }
+
+@media (max-width: 560px){
+  .engage-row{ flex-direction: column; align-items: flex-start; }
+}
+
+
+  details.toggle{
+    margin-top: 16px;
+    border: 1px solid var(--line-strong);
+    border-radius: 3px;
+    background: var(--paper-raised);
+  }
+  details.toggle summary{
+    list-style: none;
+    cursor: pointer;
+    padding: 13px 16px;
+    display:flex;
+    align-items:center;
+    gap: 10px;
+    font-family:'IBM Plex Mono', monospace;
+    font-size: 12.5px;
+    letter-spacing: .03em;
+    color: var(--green);
+    user-select:none;
+  }
+  details.toggle summary::-webkit-details-marker{ display:none; }
+  details.toggle summary::before{
+    content:"+";
+    display:inline-flex;
+    align-items:center;
+    justify-content:center;
+    width:16px; height:16px;
+    border:1px solid var(--green);
+    border-radius:2px;
+    font-size:12px;
+    line-height:1;
+    flex-shrink:0;
+  }
+  details.toggle[open] summary::before{ content:"–"; }
+  details.toggle summary:hover{ background: rgba(30,107,79,.06); }
+  details.toggle .toggle-body{
+    padding: 4px 16px 18px;
+    border-top: 1px solid var(--line);
+  }
+  details.toggle .toggle-body h4{
+    font-family:'IBM Plex Mono', monospace;
+    font-size: 12px;
+    letter-spacing:.05em;
+    text-transform:uppercase;
+    color: var(--muted);
+    margin: 18px 0 8px;
+  }
+  details.toggle .toggle-body h4:first-child{ margin-top: 14px; }
+  details.toggle .toggle-scroll{ overflow-x:auto; }
+  details.toggle table.data{ font-size: 12px; }
+  details.toggle table.data th{ font-size: 10.5px; }
+
+  /* ============ MELHORIAS DE LEITURA ============ */
+
+  .progress-rail{
+    position: fixed; top:0; left:0; right:0; height: 3px;
+    background: transparent; z-index: 60;
+  }
+  .progress-fill{
+    height: 100%; width:0%;
+    background: linear-gradient(90deg, var(--gold), var(--green));
+    transition: width .08s linear;
+  }
+
+  .back-to-top{
+    position: fixed;
+    right: 22px; bottom: 22px;
+    width: 42px; height:42px;
+    border-radius: 50%;
+    background: var(--ink);
+    color: var(--paper);
+    border: none;
+    display:flex; align-items:center; justify-content:center;
+    cursor:pointer;
+    opacity:0; visibility:hidden; transform: translateY(8px);
+    transition: opacity .25s ease, transform .25s ease, background .15s ease;
+    z-index: 55;
+    box-shadow: 0 4px 14px rgba(0,0,0,.18);
+  }
+  .back-to-top.show{ opacity:1; visibility:visible; transform:translateY(0); }
+  .back-to-top:hover{ background: var(--green); }
+  .back-to-top svg{ width:16px; height:16px; }
+
+  .toc-rail{
+    position: fixed;
+    top: 50%; transform: translateY(-50%);
+    right: max(14px, calc((100vw - var(--maxw)) / 2 - 46px));
+    display:flex; flex-direction:column; gap: 13px;
+    z-index: 40;
+  }
+  .toc-rail a{
+    width: 9px; height:9px; border-radius:50%;
+    background: var(--line-strong);
+    position:relative;
+    text-decoration:none;
+    display:block;
+    transition: background .2s ease, transform .2s ease;
+  }
+  .toc-rail a:hover, .toc-rail a.active{ background: var(--green); transform: scale(1.3); }
+  .toc-rail a .toc-label{
+    position:absolute; right: 20px; top:50%; transform: translateY(-50%);
+    font-family:'IBM Plex Mono', monospace;
+    font-size: 11px;
+    color: var(--ink);
+    background: var(--paper-raised);
+    border: 1px solid var(--line-strong);
+    padding: 4px 9px;
+    border-radius: 3px;
+    white-space: nowrap;
+    opacity:0; visibility:hidden;
+    transition: opacity .15s ease;
+    pointer-events:none;
+  }
+  .toc-rail a:hover .toc-label{ opacity:1; visibility:visible; }
+  @media (max-width: 1240px){ .toc-rail{ display:none; } }
+
+  .reveal{ opacity:0; transform: translateY(16px); transition: opacity .6s ease, transform .6s ease; }
+  .reveal.visible{ opacity:1; transform:translateY(0); }
+  @media (prefers-reduced-motion: reduce){
+    .reveal{ opacity:1; transform:none; transition:none; }
+  }
+
+  /* ============ SIMULADOR INTERATIVO ============ */
+
+  .simulator{
+    border: 1px solid var(--line-strong);
+    background: var(--paper-raised);
+    border-radius: 4px;
+    padding: 30px 28px 28px;
+    margin: 30px 0 34px;
+    position: relative;
+  }
+  .simulator::before{
+    content:"";
+    position:absolute; top:0; left:0; right:0; height: 3px;
+    background: linear-gradient(90deg, var(--green), var(--gold));
+    border-radius: 4px 4px 0 0;
+  }
+  .sim-head h3{ margin: 6px 0 0; font-size: 1.35rem; }
+
+  .sim-grid{
+    display:grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 16px;
+    margin: 24px 0 6px;
+  }
+  @media (max-width: 720px){ .sim-grid{ grid-template-columns: 1fr 1fr; } }
+  @media (max-width: 480px){ .sim-grid{ grid-template-columns: 1fr; } }
+
+  .sim-field label{
+    display:block;
+    font-family:'IBM Plex Mono', monospace;
+    font-size: 11px;
+    letter-spacing:.03em;
+    color: var(--muted);
+    margin-bottom: 6px;
+  }
+  .sim-input-wrap{
+    display:flex; align-items:stretch;
+    border: 1px solid var(--line-strong);
+    border-radius: 3px;
+    background: var(--paper);
+    overflow:hidden;
+  }
+  .sim-input-wrap:focus-within, .sim-field input[type="date"]:focus-visible{
+    border-color: var(--gold);
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(185,139,50,.18);
+  }
+  .sim-prefix, .sim-suffix{
+    font-family:'IBM Plex Mono', monospace;
+    font-size: 13px;
+    color: var(--muted);
+    display:flex; align-items:center;
+    padding: 0 10px;
+    background: var(--line);
+    flex-shrink:0;
+  }
+  .sim-field input[type="number"]{
+    flex:1; min-width:0;
+    border:none; background:transparent;
+    font-family:'IBM Plex Mono', monospace;
+    font-size: 14.5px;
+    color: var(--ink);
+    padding: 10px 10px;
+    font-variant-numeric: tabular-nums;
+  }
+  .sim-field input[type="number"]:focus{ outline:none; }
+  .sim-field input[type="date"]{
+    width:100%;
+    border: 1px solid var(--line-strong);
+    border-radius: 3px;
+    background: var(--paper);
+    font-family:'IBM Plex Mono', monospace;
+    font-size: 13.5px;
+    color: var(--ink);
+    padding: 10px 10px;
+  }
+  .sim-field input[type="date"]:focus{ outline:none; }
+
+  .sim-note{
+    margin-top: 16px;
+    border-left: 3px solid var(--brick);
+    background: rgba(168,64,42,.07);
+    color: var(--brick);
+    font-size: 13.5px;
+    padding: 10px 14px;
+    border-radius: 0 3px 3px 0;
+  }
+
+  .sim-results{
+    margin-top: 28px;
+    padding-top: 24px;
+    border-top: 1px dashed var(--line-strong);
+    display:grid;
+    grid-template-columns: 1fr 1.4fr;
+    gap: 26px;
+    align-items:center;
+  }
+  @media (max-width: 720px){ .sim-results{ grid-template-columns: 1fr; } }
+  .sim-results > *{ min-width: 0; }
+
+  .sim-hero{ text-align:left; min-width:0; }
+  .sim-hero-label{
+    font-family:'IBM Plex Mono', monospace;
+    font-size: 11px;
+    letter-spacing:.08em;
+    text-transform:uppercase;
+    color: var(--muted);
+    margin-bottom: 6px;
+  }
+  .sim-hero-value{
+    font-family:'Fraunces', serif;
+    font-weight: 600;
+    font-size: clamp(1.7rem, 5vw, 3.1rem);
+    line-height: 1.05;
+    color: var(--green);
+    letter-spacing:-0.01em;
+    font-variant-numeric: tabular-nums;
+    overflow-wrap: anywhere;
+  }
+  .sim-hero-value.neg{ color: var(--brick); }
+  .sim-hero-sub{ font-size: 13px; color: var(--muted); margin-top: 8px; }
+
+  .sim-stat-grid{
+    display:grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 14px 20px;
+    min-width: 0;
+  }
+  @media (max-width: 420px){ .sim-stat-grid{ grid-template-columns: 1fr; } }
+  .sim-stat-grid div{ font-size: 13.5px; min-width: 0; }
+  .sim-stat-grid b{
+    display:block;
+    font-family:'IBM Plex Mono', monospace;
+    font-size: clamp(0.8rem, 2.4vw, 1.05rem);
+    color: var(--ink);
+    font-variant-numeric: tabular-nums;
+    overflow-wrap: anywhere;
+    line-height: 1.25;
+  }
+  .sim-stat-grid span{ color: var(--muted); font-size: 12.5px; }
+
+  .simulator details.toggle{ margin-top: 24px; }
+
+  .sim-reset{
+    margin-top: 22px;
+    font-family:'IBM Plex Mono', monospace;
+    font-size: 12px;
+    letter-spacing:.03em;
+    color: var(--green);
+    background: transparent;
+    border: 1px solid var(--line-strong);
+    padding: 9px 16px;
+    border-radius: 3px;
+    cursor:pointer;
+    transition: background .15s ease, border-color .15s ease;
+  }
+  .sim-reset:hover{ background: rgba(30,107,79,.08); border-color: var(--green); }
+</style>
+</head>
+<body>
+
+<div class="progress-rail"><div class="progress-fill" id="progressFill"></div></div>
+
+<nav class="toc-rail" id="tocRail" aria-label="Navegação do artigo">
+  <a href="#sec-01" data-label="01"><span class="toc-label">O ponto de partida</span></a>
+  <a href="#sec-02" data-label="02"><span class="toc-label">A fórmula errada</span></a>
+  <a href="#sec-03" data-label="03"><span class="toc-label">A fórmula certa</span></a>
+  <a href="#sec-04" data-label="04"><span class="toc-label">Simulador interativo</span></a>
+  <a href="#sec-05" data-label="05"><span class="toc-label">Quando pode ficar negativa</span></a>
+  <a href="#sec-06" data-label="06"><span class="toc-label">Objeções comuns</span></a>
+</nav>
+
+<button type="button" class="back-to-top" id="backToTop" aria-label="Voltar ao topo">
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M12 19V5M5 12l7-7 7 7"/></svg>
+</button>
+
+<div class="site-bar"><div class="site-bar-inner"><a href="/">&larr; Todos os artigos</a></div></div>
+<div class="masthead">
+  <div class="masthead-inner">
+    <a href="/" class="wordmark"><span>Independência</span>Calculada</a>
+    <div class="masthead-tag">Planejamento financeiro para atingir sua liberdade</div>
+  </div>
+</div>
+
+<main>
+  <div class="eyebrow fade-in">Renda fixa · Tesouro Direto</div>
+  <h1 class="title fade-in d1">A confusão generalizada sobre os Títulos IPCA+</h1>
+  <p class="subtitle fade-in d1">O alarme sobre "inflação alta destrói a rentabilidade" usa uma fórmula matematicamente errada — e a certa conta uma história bem diferente</p>
+  <div class="meta fade-in d2">
+    <span><b>Publicado em</b> 6 ago. 2026</span>
+    <span><b>~12 min</b> de leitura</span>
+    <span>nível <b>avançado</b></span>
+    <span>inclui <b>simulador interativo</b></span>
+  </div>
+
+  <div class="promise">
+    <div class="promise-label">Neste artigo, você vai entender</div>
+    <ul>
+      <li>Por que a narrativa de que Títulos IPCA+ "quebram" em cenários de inflação alta ou hiperinflação está apoiada em uma fórmula incorreta</li>
+      <li>Qual é a fórmula certa para calcular a taxa real líquida de IR desses títulos — e o que ela realmente diz sobre inflação</li>
+      <li>Em quais condições (raras) a rentabilidade real líquida de um Tesouro IPCA+ pode, sim, ficar negativa</li>
+      <li>Como responder às objeções mais comuns: "o IR também tributa a inflação" e "o IPCA é uma fraude"</li>
+      <li>Um <strong>simulador com a fórmula certa</strong> para você testar com o seu próprio título, prazo e cenário de inflação</li>
+    </ul>
+  </div>
+
+  <div class="prose prose-intro">
+    <p>De vez em quando aparece alguém para fazer um alarme enorme sobre os Títulos IPCA+, dizendo que eles não protegem contra cenários de inflação alta ou hiperinflação. Essa narrativa se ancora em algo intuitivo: o Imposto de Renda para Pessoa Física nesses papéis é aplicado em cima do ganho de capital, que também considera a inflação. Logo, quanto maior a inflação, maior o imposto — e, em algum ponto, isso comeria toda a rentabilidade real. Faz sentido de ouvido. O problema é que a conta usada para "provar" isso está errada.</p>
+
+    <p>Vou mostrar o cálculo certo, o cálculo errado, e por que a diferença entre os dois muda completamente a conclusão.</p>
+  </div>
+
+  <h2 id="sec-01" class="reveal"><span class="num">01</span>O ponto de partida: um exemplo simples</h2>
+  <div class="prose">
+    <p>Imagine o Tesouro IPCA+ 2050. No momento em que escrevo este artigo, ele está com juro real de <strong>7,43% a.a.</strong> e preço unitário de <strong>R$ 856,93</strong>. No vencimento, você recebe o valor investido, corrigido pelo IPCA do período e remunerado pela taxa real contratada.</p>
+  </div>
+
+  <div class="stat-card">
+    <div class="cap">Simulação — 10 anos, inflação de 5% a.a.</div>
+    <div class="stat-grid">
+      <div><b>R$ 856,93</b><span>preço unitário hoje</span></div>
+      <div><b>7,43% a.a.</b><span>juro real contratado</span></div>
+      <div><b>1,628×</b><span>fator de correção do IPCA em 10 anos (5% a.a.)</span></div>
+      <div><b>2,047×</b><span>fator de juro real em 10 anos</span></div>
+    </div>
+  </div>
+
+  <div class="prose">
+    <p>Ficando 10 anos investido, com inflação de 5% ao ano, o valor do título no vencimento seria:</p>
+    <p class="mono" style="font-size:15px;">R$ 856,93 × 1,628 × 2,047 ≈ <strong>R$ 2.858,08</strong></p>
+    <p>Se a inflação fosse zero, o valor final seria fruto apenas do juro real de 7,43% a.a. por 10 anos: aproximadamente <strong>R$ 1.754,13</strong>. A existência da inflação, portanto, elevou o valor nominal do investimento em cerca de <strong>R$ 1.103,95</strong> — e é justamente esse valor que também entra na base de cálculo do IR, porque o imposto incide sobre o ganho de capital nominal, sem distinguir "ganho real" de "correção monetária".</p>
+    <p class="mono" style="font-size:15px;">IRRF = (Valor final − Valor inicial) × 15%<br>(R$ 2.858,08 − R$ 856,93) × 15% ≈ <strong>R$ 300,17</strong></p>
+    <p>Sem inflação, o IRRF seria menor: (R$ 1.754,13 − R$ 856,93) × 15% ≈ R$ 134,58. Ou seja, só por conta da inflação também ser tributada, você paga <strong>R$ 165,59 a mais</strong> de imposto nesse exemplo. Essa distorção, em tese, pioraria bastante se a inflação fosse muito alta — como ocorreu no Brasil antes do Plano Real.</p>
+  </div>
+
+  <div class="note">
+    <div class="cap">Onde a "narrativa do alarme" entra</div>
+    <p>É a partir daqui que surgem os "especialistas" afirmando que, a partir de determinado nível de inflação, a rentabilidade real líquida dos Títulos IPCA+ poderia até ficar negativa. O problema é que quase nunca apresentam provas — é uma fala genérica, escorada em algo intuitivo, difícil de discordar de ouvido. E quando tentam demonstrar com números, normalmente usam a fórmula errada abaixo.</p>
+  </div>
+
+  <h2 id="sec-02" class="reveal"><span class="num">02</span>A fórmula errada</h2>
+  <div class="prose">
+    <p>Essa é a fórmula (inconscientemente) usada para "provar" que a rentabilidade dos Títulos IPCA+ pode ficar negativa em cenários de inflação elevada:</p>
+  </div>
+
+  <div class="formula-box">
+    <div class="cap">Fórmula errada</div>
+    <div class="formula">
+      <span class="bracket">[</span>
+      1&nbsp;+&nbsp;
+      <span class="frac">
+        <span class="num">((1+B)(1+C)&nbsp;−&nbsp;1)(1−F)</span>
+        <span class="den">1+C</span>
+      </span>
+      <span class="bracket">]</span>
+      &nbsp;−&nbsp;1
+    </div>
+    <div class="formula-vars">
+      <div class="fv"><b>B</b> Taxa prefixada de juro real (a.a.)</div>
+      <div class="fv"><b>C</b> IPCA (a.a.)</div>
+      <div class="fv"><b>F</b> Taxa do IR</div>
+    </div>
+  </div>
+
+  <div class="prose">
+    <p>Essa fórmula tributa a inflação de maneira direta, gerando perda real em cenários de IPCA elevado. E tem um problema estrutural adicional: <strong>ela não é sensibilizada pelo prazo</strong> que o valor ficou investido — o tempo simplesmente não é uma variável na conta. Isso já deveria soar como um alerta, porque sabemos que a diluição do IR ao longo do tempo é justamente um dos efeitos mais relevantes de títulos de longo prazo.</p>
+    <p>Assumindo B = 7,43% a.a., C variando de 0% a 10.240% a.a. e F = 15%, a "fórmula errada" de fato produz uma rentabilidade real líquida negativa a partir de determinado nível de inflação:</p>
+  </div>
+
+  <div class="chart-card">
+    <div class="chart-head">
+      <div class="chart-title">Fórmula errada — taxa real líquida (Tesouro IPCA+ 2050)</div>
+      <div class="chart-sub">Simulação para IPCA de 0% a 10.240% a.a., mantendo B = 7,43% e F = 15% fixos</div>
+    </div>
+    <div class="chart-svg-wrap">
+      <svg class="chart" viewBox="0 0 720 340" role="img" aria-label="Gráfico de barras mostrando a taxa real líquida calculada pela fórmula errada, caindo de cerca de 6900% em IPCA=0% até negativa a partir de IPCA=80%, chegando a aproximadamente -7900% em IPCA=10240%.">
+        <!-- eixo zero e gridlines -->
+        <line x1="60" y1="170" x2="704" y2="170" stroke="#171A18" stroke-width="1.4"/>
+        <text x="52" y="174" text-anchor="end" font-family="IBM Plex Mono, monospace" font-size="11" fill="#5B6259">0%</text>
+        <text x="52" y="44" text-anchor="end" font-family="IBM Plex Mono, monospace" font-size="11" fill="#5B6259">+7000%</text>
+        <line x1="60" y1="48" x2="704" y2="48" stroke="#D7DBCF" stroke-width="1"/>
+        <text x="52" y="296" text-anchor="end" font-family="IBM Plex Mono, monospace" font-size="11" fill="#5B6259">−7900%</text>
+        <line x1="60" y1="292" x2="704" y2="292" stroke="#D7DBCF" stroke-width="1"/>
+
+        <!-- barras: 12 categorias, altura proporcional a valores ilustrativos (aprox. a partir do relato original) -->
+        <!-- baseline y=170, escala ~7000%->122px acima, -7900%->122px abaixo -->
+        <g>
+          <rect x="66" y="48" width="38" height="122" fill="#1E6B4F"/>
+          <rect x="115" y="59" width="38" height="111" fill="#1E6B4F"/>
+          <rect x="164" y="72" width="38" height="98" fill="#1E6B4F"/>
+          <rect x="213" y="95" width="38" height="75" fill="#1E6B4F"/>
+          <rect x="262" y="169" width="38" height="1.5" fill="#1E6B4F"/>
+          <rect x="311" y="170" width="38" height="18" fill="#A8402A"/>
+          <rect x="360" y="170" width="38" height="40" fill="#A8402A"/>
+          <rect x="409" y="170" width="38" height="66" fill="#A8402A"/>
+          <rect x="458" y="170" width="38" height="84" fill="#A8402A"/>
+          <rect x="507" y="170" width="38" height="98" fill="#A8402A"/>
+          <rect x="556" y="170" width="38" height="110" fill="#A8402A"/>
+          <rect x="605" y="170" width="38" height="118" fill="#A8402A"/>
+          <rect x="654" y="170" width="38" height="122" fill="#A8402A"/>
+        </g>
+
+        <!-- rótulos de valor: só nos pontos que contam a história (início, inflexão perto de zero, fim) -->
+        <g font-family="IBM Plex Mono, monospace" font-size="10.5" font-weight="600">
+          <text x="85" y="40" text-anchor="middle" fill="#1E6B4F">6936%</text>
+          <text x="281" y="40" text-anchor="middle" fill="#1E6B4F">0,27%</text>
+          <text x="673" y="305" text-anchor="middle" fill="#A8402A">−7919%</text>
+        </g>
+
+        <!-- eixo x: uma única linha de base para todas as categorias de IPCA, sem sobreposição -->
+        <g font-family="IBM Plex Mono, monospace" font-size="9.5" fill="#5B6259">
+          <text x="85" y="322" text-anchor="middle">0%</text>
+          <text x="134" y="322" text-anchor="middle">5%</text>
+          <text x="183" y="322" text-anchor="middle">10%</text>
+          <text x="232" y="322" text-anchor="middle">20%</text>
+          <text x="281" y="322" text-anchor="middle">40%</text>
+          <text x="330" y="322" text-anchor="middle">80%</text>
+          <text x="379" y="322" text-anchor="middle">160%</text>
+          <text x="428" y="322" text-anchor="middle">320%</text>
+          <text x="477" y="322" text-anchor="middle">640%</text>
+          <text x="526" y="322" text-anchor="middle">1280%</text>
+          <text x="575" y="322" text-anchor="middle">2560%</text>
+          <text x="624" y="322" text-anchor="middle">5120%</text>
+          <text x="673" y="322" text-anchor="middle">10240%</text>
+        </g>
+      </svg>
+    </div>
+    <div class="chart-legend">
+      <span class="sw"><span class="dot" style="background:#1E6B4F;"></span>Taxa real líquida positiva</span>
+      <span class="sw"><span class="dot" style="background:#A8402A;"></span>Taxa real líquida negativa</span>
+    </div>
+    <div class="chart-caption">Valores aproximados a partir da simulação com a fórmula errada. Eixo horizontal em IPCA (a.a.), escala não-linear para caber os extremos.</div>
+  </div>
+
+  <div class="prose">
+    <p>Apesar do gráfico simular a fórmula errada especificamente para o Tesouro IPCA+ 2050, esse jeito de calcular é tão matematicamente equivocado que <strong>o prazo do título não faz a menor diferença</strong> — a fórmula simplesmente não tem essa variável. Um título vencendo em 3 anos ou em 30 anos daria exatamente o mesmo resultado, o que já é um forte indício de que algo está errado, porque sabemos que prazo importa para diluição de imposto.</p>
+  </div>
+
+  <blockquote class="pull">
+    "Como assim você não sabe que o IPCA+ é frágil em níveis altos de inflação? Leigo!" Pois é. É o efeito Dunning-Kruger no mundo dos investimentos: quem não sabe se sente seguro o suficiente para explicar publicamente e criticar quem discorda.
+  </blockquote>
+
+  <h2 id="sec-03" class="reveal"><span class="num">03</span>A fórmula certa</h2>
+  <div class="prose">
+    <p>A fórmula certa não é tão fácil de interpretar de cara, mas é a que reflete corretamente como o título funciona. Ela segue este passo a passo:</p>
+  </div>
+
+  <ol class="steps-list">
+    <li>Encontrar a taxa de juros nominal, já descontando a taxa de custódia.</li>
+    <li>Utilizá-la para determinar o valor no vencimento (sem aplicação de IR).</li>
+    <li>Abater o IR para achar o valor líquido.</li>
+    <li>Achar a taxa nominal líquida e transformá-la em taxa real líquida, abatendo a inflação.</li>
+  </ol>
+
+  <div class="formula-box">
+    <div class="cap">Fórmula certa</div>
+    <div class="formula" style="font-size:14px;">
+      <span class="bracket">[</span>
+      <span class="frac">
+        <span class="num">( A·((1+B)(1+C)/(1+D))<span class="exp">E</span> − ( A·((1+B)(1+C)/(1+D))<span class="exp">E</span> − A )·F )<span class="exp">1/E</span></span>
+        <span class="den">A</span>
+      </span>
+      &nbsp;÷&nbsp;(1+C)
+      <span class="bracket">]</span>
+      &nbsp;−&nbsp;1
+    </div>
+    <div class="formula-vars">
+      <div class="fv"><b>A</b> Preço unitário</div>
+      <div class="fv"><b>B</b> Taxa prefixada de juro real (a.a.)</div>
+      <div class="fv"><b>C</b> IPCA (a.a.)</div>
+      <div class="fv"><b>D</b> Taxa de custódia B3 (a.a.)</div>
+      <div class="fv"><b>E</b> Prazo de vencimento (anos)</div>
+      <div class="fv"><b>F</b> Taxa do IR</div>
+    </div>
+  </div>
+
+  <div class="prose">
+    <p>Note a diferença estrutural: a fórmula certa tem <strong>E</strong> (prazo) como variável, e por isso o resultado muda conforme o tempo até o vencimento — exatamente o que faltava na fórmula errada. Vamos testar com os dados do Tesouro IPCA+ 2050 no momento em que escrevo.</p>
+  </div>
+
+  <div class="stat-card">
+    <div class="cap">Parâmetros do teste — Tesouro IPCA+ 2050</div>
+    <div class="stat-grid">
+      <div><b>R$ 858,84</b><span>preço unitário (A)</span></div>
+      <div><b>7,42% a.a.</b><span>juro real contratado (B)</span></div>
+      <div><b>0,20% a.a.</b><span>taxa de custódia B3 (D)</span></div>
+      <div><b>24,873 anos</b><span>prazo até o vencimento (E)</span></div>
+      <div><b>15%</b><span>alíquota do IR (F)</span></div>
+      <div><b>0% a 10.240% a.a.</b><span>faixa de IPCA simulada (C)</span></div>
+    </div>
+  </div>
+
+  <div class="chart-card">
+    <div class="chart-head">
+      <div class="chart-title">Fórmula certa — taxa real líquida (Tesouro IPCA+ 2050)</div>
+      <div class="chart-sub">Mesma faixa de IPCA simulada, agora com a fórmula que considera o prazo</div>
+    </div>
+    <div class="chart-svg-wrap">
+      <svg class="chart" viewBox="0 0 720 300" role="img" aria-label="Gráfico de linha mostrando que a taxa real líquida pela fórmula certa começa em 6,64% com IPCA=0% e estabiliza rapidamente em torno de 6,51%, permanecendo positiva mesmo com IPCA extremamente alto.">
+        <line x1="60" y1="250" x2="704" y2="250" stroke="#BFC5B8" stroke-width="1"/>
+        <line x1="60" y1="40" x2="60" y2="250" stroke="#BFC5B8" stroke-width="1"/>
+        <text x="52" y="44" text-anchor="end" font-family="IBM Plex Mono, monospace" font-size="11" fill="#5B6259">6,70%</text>
+        <line x1="60" y1="40" x2="704" y2="40" stroke="#D7DBCF" stroke-width="1"/>
+        <text x="52" y="155" text-anchor="end" font-family="IBM Plex Mono, monospace" font-size="11" fill="#5B6259">6,50%</text>
+        <line x1="60" y1="152" x2="704" y2="152" stroke="#D7DBCF" stroke-width="1"/>
+        <text x="52" y="254" text-anchor="end" font-family="IBM Plex Mono, monospace" font-size="11" fill="#5B6259">6,30%</text>
+
+        <!-- pontos: 6.639, 6.547, 6.520, 6.509, 6.507, depois estável 6.5074 -->
+        <polyline fill="none" stroke="#1E6B4F" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"
+          points="66,54 126,110 186,140 246,150 306,152 366,153 426,153 486,153 546,153 606,153 666,153 698,153"/>
+        <circle cx="66" cy="54" r="3.5" fill="#171A18"/>
+        <text x="66" y="34" text-anchor="start" font-family="IBM Plex Mono, monospace" font-size="11" fill="#1E6B4F" font-weight="600">6,639% (IPCA=0%)</text>
+
+        <circle cx="306" cy="152" r="4" fill="#B98B32" stroke="#171A18" stroke-width="1"/>
+        <text x="306" y="176" text-anchor="middle" font-family="IBM Plex Mono, monospace" font-size="11" fill="#B98B32" font-weight="600">6,507% (IPCA=40%)</text>
+
+        <circle cx="698" cy="153" r="3.5" fill="#171A18"/>
+        <text x="698" y="176" text-anchor="end" font-family="IBM Plex Mono, monospace" font-size="11" fill="#1E6B4F" font-weight="600">6,507% (IPCA=10240%)</text>
+
+        <g font-family="IBM Plex Mono, monospace" font-size="10.5" fill="#5B6259">
+          <text x="66" y="266" text-anchor="middle">0%</text>
+          <text x="186" y="266" text-anchor="middle">10%</text>
+          <text x="306" y="266" text-anchor="middle">40%</text>
+          <text x="486" y="266" text-anchor="middle">1280%</text>
+          <text x="698" y="266" text-anchor="middle">10240%</text>
+        </g>
+      </svg>
+    </div>
+    <div class="chart-caption">Eixo horizontal em IPCA (a.a.), escala não-linear. A taxa real líquida sai de 6,639% em IPCA = 0% e estabiliza em 6,507% a partir de aproximadamente IPCA = 40%, permanecendo nesse patamar mesmo para IPCA = 10.240%.</div>
+  </div>
+
+  <div class="prose">
+    <p>Conclusão: <strong>quanto maior o prazo até o vencimento, menor o impacto da inflação no ganho real líquido</strong>, porque o efeito do imposto sobre a correção monetária é diluído ao longo dos anos. A inflação até reduz um pouco o ganho real líquido, mas essa redução é pequena e estabiliza a partir de um certo nível — o oposto do colapso sugerido pela fórmula errada.</p>
+  </div>
+
+  <details class="toggle" style="margin-bottom: 28px;">
+    <summary>Tabela completa — taxa real líquida pela fórmula certa (Tesouro IPCA+ 2050)</summary>
+    <div class="toggle-body">
+      <div class="table-wrap" style="overflow-x:auto; padding-bottom:18px;">
+        <table class="data">
+          <caption>Taxa real líquida de IR, fórmula certa, para cada nível de IPCA simulado</caption>
+          <thead>
+            <tr><th>IPCA (a.a.)</th><th>Taxa real líquida</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>0%</td><td class="pos">6,63931097%</td></tr>
+            <tr><td>5%</td><td class="pos">6,54700222%</td></tr>
+            <tr><td>10%</td><td class="pos">6,51988663%</td></tr>
+            <tr><td>20%</td><td class="pos">6,50883289%</td></tr>
+            <tr><td>40%</td><td class="pos">6,50742786%</td></tr>
+            <tr><td>80%</td><td class="pos">6,50739687%</td></tr>
+            <tr><td>160%</td><td class="pos">6,50739681%</td></tr>
+            <tr><td>320%</td><td class="pos">6,50739681%</td></tr>
+            <tr><td>640%</td><td class="pos">6,50739681%</td></tr>
+            <tr><td>1280%</td><td class="pos">6,50739681%</td></tr>
+            <tr><td>2560%</td><td class="pos">6,50739681%</td></tr>
+            <tr><td>5120%</td><td class="pos">6,50739681%</td></tr>
+            <tr><td>10240%</td><td class="pos">6,50739681%</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </details>
+
+  <details class="toggle" style="margin-bottom: 28px;">
+    <summary>Memória de cálculo detalhada — cenário com IPCA = 40% a.a.</summary>
+    <div class="toggle-body">
+      <div class="table-wrap" style="overflow-x:auto; padding-bottom:18px;">
+        <table class="data">
+          <caption>Tesouro IPCA+ 2050 — decomposição do cálculo com IPCA = 40% a.a.</caption>
+          <tbody>
+            <tr><td>Taxa de custódia B3 (a.a.)</td><td>0,20%</td></tr>
+            <tr><td>Taxa prefixada de juro real (a.a.)</td><td>7,42%</td></tr>
+            <tr><td>IPCA (a.a.)</td><td>40,00%</td></tr>
+            <tr><td>Juros nominal (a.a.)</td><td>50,39%</td></tr>
+            <tr><td>Juros nominal, sem tx. custódia (a.a.)</td><td>50,09%</td></tr>
+            <tr><td>Data de hoje</td><td>06/08/2026</td></tr>
+            <tr><td>Data de vencimento</td><td>15/08/2050</td></tr>
+            <tr><td>Prazo de vencimento (du)</td><td>6.268</td></tr>
+            <tr><td>Prazo de vencimento (anos)</td><td>24,873</td></tr>
+            <tr><td>VNA futuro</td><td>R$ 21.965.373,62</td></tr>
+            <tr><td>Preço de hoje</td><td>R$ 858,84</td></tr>
+            <tr><td>Valor no vencimento, sem tx. custódia</td><td>R$ 20.900.455,13</td></tr>
+            <tr><td>Ganho de capital</td><td>R$ 20.899.596,29</td></tr>
+            <tr><td>Taxa do IR</td><td>15,00%</td></tr>
+            <tr><td>Abatimento do IR</td><td>R$ 3.134.939,44</td></tr>
+            <tr><td>Valor líquido no vencimento</td><td><strong>R$ 17.765.515,68</strong></td></tr>
+            <tr><td>Taxa nominal líquida (a.a.)</td><td>49,110%</td></tr>
+            <tr><td>Taxa real líquida (a.a.)</td><td class="pos"><strong>6,507%</strong></td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="table-wrap" style="overflow-x:auto; padding-bottom:18px; margin-top:18px;">
+        <table class="data">
+          <caption>Check: quanto se recebe vs. quanto a inflação por si só teria corrigido</caption>
+          <tbody>
+            <tr><td>Valor líquido no vencimento</td><td>R$ 17.765.515,68</td></tr>
+            <tr><td>Valor corrigido só pelo IPCA (40% a.a.)</td><td>R$ 3.147.704,21</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </details>
+
+  <div class="note green">
+    <div class="cap">Nota técnica</div>
+    <p>Os números acima usam valores de mercado do momento em que este artigo foi escrito e servem para ilustrar o método, não como recomendação de compra de um título específico. O ponto central independe da taxa exata: a fórmula certa incorpora prazo e mostra estabilização, a errada não incorpora prazo e mostra colapso.</p>
+  </div>
+
+  <h2 id="sec-04" class="reveal"><span class="num">04</span>Simulador: teste com o seu próprio título</h2>
+  <div class="prose">
+    <p>Em vez de confiar apenas nos exemplos acima, insira os dados do seu próprio Tesouro IPCA+ abaixo. O simulador aplica exatamente a fórmula certa que você acabou de ver — nada de aproximação: mesma sequência de cálculo, mesma memória, mesmo jeito de achar o prazo em dias úteis. Você só edita seis campos; todo o resto (juros nominal, prazo, IR, valor líquido) é calculado e exibido na memória de cálculo.</p>
+  </div>
+
+  <div class="simulator reveal" id="simulador">
+    <div class="sim-head">
+      <div class="promise-label">Simulador — fórmula certa</div>
+      <h3>Ajuste os seus números</h3>
+      <p style="margin:6px 0 0;color:var(--muted);font-size:14.5px;max-width:64ch;">Altere qualquer campo e veja o resultado recalculado na hora, incluindo o gráfico com a inflação variando de 0% a 10.240% a.a.</p>
+    </div>
+
+    <div class="sim-grid">
+      <div class="sim-field">
+        <label for="sim-preco">Preço unitário</label>
+        <div class="sim-input-wrap"><span class="sim-prefix">R$</span><input type="number" id="sim-preco" value="858.84" step="0.01" min="0.01" inputmode="decimal"></div>
+      </div>
+      <div class="sim-field">
+        <label for="sim-juro">Taxa prefixada de juro real (a.a.)</label>
+        <div class="sim-input-wrap"><input type="number" id="sim-juro" value="7.42" step="0.01" inputmode="decimal"><span class="sim-suffix">%</span></div>
+      </div>
+      <div class="sim-field">
+        <label for="sim-custodia">Taxa de custódia B3 (a.a.)</label>
+        <div class="sim-input-wrap"><input type="number" id="sim-custodia" value="0.20" step="0.01" min="0" inputmode="decimal"><span class="sim-suffix">%</span></div>
+      </div>
+      <div class="sim-field">
+        <label for="sim-ipca">IPCA (a.a.)</label>
+        <div class="sim-input-wrap"><input type="number" id="sim-ipca" value="5.00" step="0.01" inputmode="decimal"><span class="sim-suffix">%</span></div>
+      </div>
+      <div class="sim-field">
+        <label for="sim-compra">Data de compra</label>
+        <input type="date" id="sim-compra">
+      </div>
+      <div class="sim-field">
+        <label for="sim-vencimento">Data de vencimento</label>
+        <input type="date" id="sim-vencimento" value="2050-08-15">
+      </div>
+    </div>
+
+    <div class="sim-note" id="sim-error" role="alert" hidden></div>
+
+    <div class="sim-results">
+      <div class="sim-hero">
+        <div class="sim-hero-label">Taxa real líquida (a.a.)</div>
+        <div class="sim-hero-value" id="res-taxa-real">—</div>
+        <div class="sim-hero-sub" id="res-taxa-real-sub"></div>
+      </div>
+      <div class="sim-stat-grid">
+        <div><b id="res-prazo">—</b><span>prazo até o vencimento</span></div>
+        <div><b id="res-liquido">—</b><span>valor líquido no vencimento</span></div>
+        <div><b id="res-ganho">—</b><span>ganho líquido no período</span></div>
+        <div><b id="res-nominal">—</b><span>taxa nominal líquida (a.a.)</span></div>
+      </div>
+    </div>
+
+    <details class="toggle">
+      <summary>Memória de cálculo completa</summary>
+      <div class="toggle-body">
+        <div class="table-wrap">
+          <table class="data">
+            <caption>Passo a passo da fórmula certa com os seus dados</caption>
+            <tbody id="sim-memoria-body"></tbody>
+          </table>
+        </div>
+      </div>
+    </details>
+
+    <div class="chart-card" style="margin-top:26px;">
+      <div class="chart-head">
+        <div class="chart-title">Sua taxa real líquida em função do IPCA</div>
+        <div class="chart-sub">Preço, juro real, custódia e prazo fixos nos valores acima — só o IPCA varia, de 0% a 10.240% a.a.</div>
+      </div>
+      <div class="chart-svg-wrap" id="sim-chart-wrap"></div>
+      <div class="chart-legend">
+        <span class="sw"><span class="dot" style="background:#1E6B4F;"></span>Taxa real líquida positiva</span>
+        <span class="sw"><span class="dot" style="background:#A8402A;"></span>Taxa real líquida negativa</span>
+      </div>
+      <div class="chart-caption" id="sim-chart-caption"></div>
+    </div>
+
+    <button type="button" class="sim-reset" id="sim-reset">Restaurar valores do exemplo (Tesouro IPCA+ 2050)</button>
+  </div>
+
+  <h2 id="sec-05" class="reveal"><span class="num">05</span>Quando a rentabilidade real líquida pode, sim, ficar negativa</h2>
+  <div class="prose">
+    <p>A fórmula certa não diz que Títulos IPCA+ são infalíveis em qualquer cenário — ela só mostra que, para títulos longos como o IPCA+ 2050, a inflação alta não é o problema. O único jeito realista da rentabilidade real líquida de um Tesouro IPCA+ mantido até o vencimento ficar negativa é a combinação de <strong>vencimento bem mais curto</strong> (por exemplo, menor que 10 anos) com <strong>rentabilidade real contratada bem mais baixa</strong> (por exemplo, IPCA + 2% a.a.).</p>
+  </div>
+
+  <div class="chart-card">
+    <div class="chart-head">
+      <div class="chart-title">Fórmula certa — taxa real líquida (IPCA+ 2032, juro real hipotético de 2% a.a.)</div>
+      <div class="chart-sub">Prazo curto + juro real baixo é o único combo em que a inflação alta consegue derrubar o resultado abaixo de zero</div>
+    </div>
+    <div class="chart-svg-wrap">
+      <svg class="chart" viewBox="0 0 720 300" role="img" aria-label="Gráfico de linha mostrando que, para um título curto com juro real hipotético de 2%, a taxa real líquida cai de 1,537% em IPCA=0% para valores negativos a partir de aproximadamente IPCA=20%, estabilizando perto de -0,82%.">
+        <!-- gridlines superior/inferior -->
+        <line x1="60" y1="40" x2="704" y2="40" stroke="#D7DBCF" stroke-width="1"/>
+        <text x="52" y="44" text-anchor="end" font-family="IBM Plex Mono, monospace" font-size="11" fill="#5B6259">+1,9%</text>
+        <line x1="60" y1="224" x2="704" y2="224" stroke="#D7DBCF" stroke-width="1"/>
+        <text x="52" y="228" text-anchor="end" font-family="IBM Plex Mono, monospace" font-size="11" fill="#5B6259">−1,2%</text>
+
+        <!-- linha de zero, em destaque -->
+        <line x1="60" y1="153.5" x2="704" y2="153.5" stroke="#171A18" stroke-width="1.2"/>
+        <text x="52" y="157.5" text-anchor="end" font-family="IBM Plex Mono, monospace" font-size="11" fill="#5B6259">0%</text>
+
+        <!-- trecho positivo -->
+        <polyline fill="none" stroke="#1E6B4F" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"
+          points="60,61.2 113.7,96.7 167.3,122.5 217.8,153.5"/>
+        <!-- trecho negativo -->
+        <polyline fill="none" stroke="#A8402A" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"
+          points="217.8,153.5 221,155.5 274.7,184.5 328.3,198.9 382,202.4 435.7,202.8 489.3,202.8 543,202.8 596.7,202.8 650.3,202.8 704,202.8"/>
+
+        <circle cx="60" cy="61.2" r="4" fill="#171A18" stroke="#1E6B4F" stroke-width="1.5"/>
+        <text x="60" y="34" text-anchor="start" font-family="IBM Plex Mono, monospace" font-size="11" fill="#1E6B4F" font-weight="600">1,537% (IPCA=0%)</text>
+
+        <circle cx="217.8" cy="153.5" r="4" fill="#B98B32" stroke="#171A18" stroke-width="1"/>
+        <text x="217.8" y="140" text-anchor="middle" font-family="IBM Plex Mono, monospace" font-size="11" fill="#B98B32" font-weight="600">cruza 0% perto de IPCA=20%</text>
+
+        <circle cx="704" cy="202.8" r="4" fill="#171A18" stroke="#A8402A" stroke-width="1.5"/>
+        <text x="704" y="196" text-anchor="end" font-family="IBM Plex Mono, monospace" font-size="11" fill="#A8402A" font-weight="600">−0,821% (IPCA=10240%)</text>
+
+        <!-- eixo x: uma única linha de base para todas as categorias de IPCA -->
+        <g font-family="IBM Plex Mono, monospace" font-size="9.5" fill="#5B6259">
+          <text x="60" y="246" text-anchor="middle">0%</text>
+          <text x="113.7" y="246" text-anchor="middle">5%</text>
+          <text x="167.3" y="246" text-anchor="middle">10%</text>
+          <text x="221" y="246" text-anchor="middle">20%</text>
+          <text x="274.7" y="246" text-anchor="middle">40%</text>
+          <text x="328.3" y="246" text-anchor="middle">80%</text>
+          <text x="382" y="246" text-anchor="middle">160%</text>
+          <text x="435.7" y="246" text-anchor="middle">320%</text>
+          <text x="489.3" y="246" text-anchor="middle">640%</text>
+          <text x="543" y="246" text-anchor="middle">1280%</text>
+          <text x="596.7" y="246" text-anchor="middle">2560%</text>
+          <text x="650.3" y="246" text-anchor="middle">5120%</text>
+          <text x="704" y="246" text-anchor="middle">10240%</text>
+        </g>
+      </svg>
+    </div>
+    <div class="chart-legend">
+      <span class="sw"><span class="dot" style="background:#1E6B4F;"></span>Taxa real líquida positiva</span>
+      <span class="sw"><span class="dot" style="background:#A8402A;"></span>Taxa real líquida negativa</span>
+    </div>
+    <div class="chart-caption">Simulação hipotética para um título curto (vencimento em 2032) com juro real de apenas 2% a.a. — bem diferente do IPCA+ 2050 usado nos exemplos anteriores.</div>
+  </div>
+
+  <div class="prose">
+    <p>Ou seja, apesar de ser matematicamente possível a rentabilidade real líquida ficar negativa por conta da inflação, isso exige uma combinação específica e pouco comum — prazo curto e juro real baixo — muito distante do pânico generalizado que a narrativa do alarme sugere. Se você é investidor de longo prazo, com horizonte maior que 10 anos, pode dormir tranquilo com Títulos IPCA+ na carteira.</p>
+  </div>
+
+  <div class="note brick">
+    <div class="cap">Sobre resgate antecipado</div>
+    <p>Se você não levar o título até o vencimento, resgatando antes, aí sim pode ter retornos negativos, tanto nominais quanto reais — mas não por conta da inflação, e sim por um aumento na taxa de juros negociada pelo Tesouro, que marca o preço do título para baixo (marcação a mercado). É um risco real, só que diferente do que a narrativa do alarme descreve.</p>
+  </div>
+
+  <h2 id="sec-06" class="reveal"><span class="num">06</span>Duas objeções comuns — e por que não sustentam o alarme</h2>
+
+  <div class="mitigation-grid">
+    <div class="mit-card">
+      <div class="idx">01 · "o IPCA é uma fraude"</div>
+      <h3>A metodologia é pública e auditável</h3>
+      <p>Volte algumas casas e estude como a metodologia do IPCA funciona — ela é pública, comparável às metodologias de medição de inflação de outros países, e o IBGE tem mais de 40 anos de série histórica sem nenhuma comprovação de fraude. Discordar do índice é legítimo; chamá-lo de fraude sem evidência, não.</p>
+    </div>
+    <div class="mit-card">
+      <div class="idx">02 · "minha inflação pessoal é diferente"</div>
+      <h3>Verdade, mas isso não invalida o benchmark</h3>
+      <p>O IPCA é uma média — por definição, existem casos acima e abaixo dele, porque sua cesta de consumo não é exatamente a mesma que o IBGE utiliza. Mas isso não muda o fato de que o IPCA é o benchmark de comparação para qualquer carteira. Se sua inflação pessoal for consistentemente maior que 8% ou 10% ao ano (o que é improvável), não existe investimento legalizado no mundo que pague isso com consistência de longo prazo — nem uma carteira majoritariamente em renda variável.</p>
+    </div>
+  </div>
+
+  <div class="recap">
+    <div class="cap">Para levar com você</div>
+    <ol>
+      <li>A fórmula usada para "provar" que Títulos IPCA+ quebram em inflação alta ignora o prazo do título — é matematicamente incompleta.</li>
+      <li>A fórmula certa mostra o oposto: quanto maior o prazo, menor o impacto da inflação na taxa real líquida, porque o efeito do imposto sobre a correção monetária se dilui ao longo do tempo.</li>
+      <li>Para o Tesouro IPCA+ 2050, a taxa real líquida sai de 6,639% em IPCA = 0% e estabiliza em 6,507% mesmo em cenários de hiperinflação extrema.</li>
+      <li>A rentabilidade real líquida só fica negativa por conta da inflação em uma combinação pouco comum: prazo curto e juro real baixo.</li>
+      <li>"O IPCA é uma fraude" e "minha inflação pessoal é diferente" são objeções que não resistem a um exame mais cuidadoso.</li>
+    </ol>
+  </div>
+
+<div class="cta">
+  <div class="cta-text">
+    <h3>O que você pode aprender na sequência?</h3>
+    <p>Como decidir entre Tesouro IPCA+ curto e longo dentro de uma carteira de aposentadoria.</p>
+  </div>
+
+  <div class="cta-buttons">
+    <a class="cta-btn" href="#">Assinar a newsletter</a>
+    <a class="cta-btn" href="#">Sugira um tema</a>
+  </div>
+
+  <div class="cta-related">
+    <div class="cta-related-label">Continue lendo</div>
+    <a class="cta-related-link" href="/quanto-posso-retirar-aposentadoria">
+      <span class="cta-related-title">Quanto posso retirar dos meus investimentos durante a aposentadoria?</span>
+      <span class="cta-related-arrow">→</span>
+    </a>
+    <a class="cta-related-link" href="/artigo-y.html">
+      <span class="cta-related-title">Título do artigo relacionado 2</span>
+      <span class="cta-related-arrow">→</span>
+    </a>
+  </div>
+</div>
+
+  <div class="disclaimer">
+    <div class="cap">Notas e referências</div>
+    <ol>
+      <li>Banco Central do Brasil. Sistema Gerenciador de Séries Temporais — série 433 (IPCA). Disponível em: https://www3.bcb.gov.br/sgspub/consultarvalores/consultarValoresSeries.do?method=consultarSeries&series=433. Acesso em: 6 ago. 2026.</li>
+      <li>Valores de preço unitário e taxa do Tesouro IPCA+ 2050 referem-se ao momento da escrita deste artigo e mudam diariamente conforme o mercado.</li>
+    </ol>
+  </div>
+
+  <div class="disclaimer-spacer"></div>
+
+  <div class="disclaimer">
+    <div class="cap">Isenção de responsabilidade</div>
+    <p>Este artigo tem finalidade exclusivamente educacional e não constitui recomendação de investimento, tributária ou de planejamento financeiro personalizada. O conteúdo publicado neste espaço é fornecido exclusivamente para fins educacionais e de entretenimento, com base na liberdade de expressão garantida pelos artigos 5º, inciso IV, e 220 da Constituição Federal de 1988. Nada contido neste site deve ser interpretado como recomendação direta de compra/venda de ativos ou aconselhamento financeiro individualizado. Os ativos, estratégias, cenários ou ferramentas apresentados refletem apenas minhas opiniões, simulações e experiências pessoais, que podem não ser adequadas ao seu perfil de risco ou aos seus objetivos. Rendimentos e resultados passados não garantem retornos futuros. Calculadoras e ferramentas de simulação geram apenas estimativas probabilísticas, e não previsões exatas de mercado. Como autor deste site, não me responsabilizo por eventuais perdas, danos ou consequências financeiras decorrentes de decisões tomadas com base no conteúdo lido. As opiniões registradas por leitores na área de comentários são de responsabilidade exclusiva de quem as publica e não representam meu posicionamento oficial. Todo o conteúdo é direcionado primariamente ao público residente no Brasil - acessos originados de outros países exigem a verificação de conformidade com as leis e regulamentações locais.</p>
+  </div>
+
+  <div class="engage">
+    <div class="engage-row">
+      <button type="button" class="like-btn" id="likeBtn" aria-pressed="false">
+        <svg class="like-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 10v11"/><path d="M7 10 11 2a2.5 2.5 0 0 1 2.5 2.5V9h5.3a2 2 0 0 1 1.98 2.3l-1.2 8A2 2 0 0 1 17.6 21H7"/></svg>
+        <span>Achei útil</span>
+        <span class="like-count" id="likeCount">&ndash;</span>
+      </button>
+      <div class="share-group">
+        <span class="share-label">Compartilhar</span>
+        <a class="share-btn" href="https://api.whatsapp.com/send?text=A%20confus%C3%A3o%20generalizada%20sobre%20os%20T%C3%ADtulos%20IPCA%2B%20https%3A//independenciacalculada.com.br/ipca-hiperinflacao/" target="_blank" rel="noopener" aria-label="Compartilhar no WhatsApp"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M17.5 14.4c-.3-.1-1.7-.9-2-1-.3-.1-.5-.1-.7.1-.2.3-.8 1-.9 1.2-.2.2-.3.2-.6.1-.3-.1-1.2-.4-2.3-1.4-.9-.8-1.4-1.7-1.6-2-.2-.3 0-.5.1-.6.1-.1.3-.3.4-.5.1-.1.2-.3.3-.5.1-.2 0-.4 0-.5C10 9 9.5 7.8 9.3 7.3c-.2-.5-.4-.4-.6-.4h-.5c-.2 0-.5.1-.7.3-.2.3-.9.9-.9 2.2s1 2.5 1.1 2.7c.1.2 2 3 4.8 4.3.7.3 1.2.5 1.6.6.7.2 1.3.2 1.8.1.5-.1 1.7-.7 1.9-1.3.2-.6.2-1.2.2-1.3-.1-.1-.3-.2-.6-.3z"/><path d="M12 2a10 10 0 0 0-8.5 15.2L2 22l4.9-1.5A10 10 0 1 0 12 2zm0 18a8 8 0 0 1-4.3-1.3l-.3-.2-3 .9.9-2.9-.2-.3A8 8 0 1 1 12 20z"/></svg></a>
+        <a class="share-btn" href="https://www.linkedin.com/sharing/share-offsite/?url=https%3A//independenciacalculada.com.br/ipca-hiperinflacao/" target="_blank" rel="noopener" aria-label="Compartilhar no LinkedIn"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M6.94 5a2 2 0 1 1-4-.02 2 2 0 0 1 4 .02zM7 8.48H3V21h4V8.48zM13.32 8.48H9.5V21h3.8v-6.4c0-1.7.32-3.34 2.42-3.34 2.07 0 2.1 1.94 2.1 3.45V21H21.8v-7.02c0-3.63-.78-6.42-5.02-6.42-2.04 0-3.4 1.12-3.96 2.18h-.05V8.48z"/></svg></a>
+        <a class="share-btn" href="https://twitter.com/intent/tweet?url=https%3A//independenciacalculada.com.br/ipca-hiperinflacao/&amp;text=A%20confus%C3%A3o%20generalizada%20sobre%20os%20T%C3%ADtulos%20IPCA%2B" target="_blank" rel="noopener" aria-label="Compartilhar no X"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M18.9 2H22l-7.6 8.7L23.3 22h-7l-5.5-7.2L4.5 22H1.4l8.1-9.3L1 2h7.2l5 6.6L18.9 2zm-1.2 18h1.7L7.4 3.9H5.6L17.7 20z"/></svg></a>
+        <button type="button" class="share-btn" id="copyLinkBtn" aria-label="Copiar link"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.5.5l2-2a5 5 0 0 0-7-7l-1.2 1.1"/><path d="M14 11a5 5 0 0 0-7.5-.5l-2 2a5 5 0 0 0 7 7l1.1-1.1"/></svg></button>
+      </div>
+    </div>
+  </div>
+
+  <div class="comments-section">
+    <div class="cap">Comentários</div>
+    <p class="comments-note">Deixe seu comentário abaixo — ele passa por moderação manual antes de aparecer publicamente.</p>
+    <div id="cusdis_thread"
+      data-host="https://cusdis.com"
+      data-app-id="SEU_APP_ID_CUSDIS"
+      data-page-id="ipca-hiperinflacao"
+      data-page-url="https://independenciacalculada.com.br/ipca-hiperinflacao/"
+      data-page-title="A confusão generalizada sobre os Títulos IPCA+"></div>
+    <script async defer src="https://cusdis.com/js/cusdis.es.js"></script>
+  </div>
+
+</main>
+
+<footer>
+  Independência Calculada — conteúdo educacional, não é recomendação de investimento.
+</footer>
+
+<script>
+(function(){
+  "use strict";
+
+  /* ---------- barra de progresso de leitura ---------- */
+  var progressFill = document.getElementById('progressFill');
+  function updateProgress(){
+    var h = document.documentElement;
+    var scrollTop = h.scrollTop || document.body.scrollTop;
+    var scrollHeight = (h.scrollHeight || document.body.scrollHeight) - h.clientHeight;
+    var pct = scrollHeight > 0 ? (scrollTop / scrollHeight) * 100 : 0;
+    progressFill.style.width = pct.toFixed(2) + '%';
+  }
+
+  /* ---------- botão voltar ao topo ---------- */
+  var backToTop = document.getElementById('backToTop');
+  function updateBackToTop(){
+    if(window.scrollY > 600){ backToTop.classList.add('show'); }
+    else{ backToTop.classList.remove('show'); }
+  }
+  backToTop.addEventListener('click', function(){
+    window.scrollTo({ top:0, behavior: 'smooth' });
+  });
+
+  window.addEventListener('scroll', function(){
+    updateProgress();
+    updateBackToTop();
+  }, { passive:true });
+  updateProgress();
+  updateBackToTop();
+
+  /* ---------- navegação lateral (TOC) ---------- */
+  var tocLinks = Array.prototype.slice.call(document.querySelectorAll('#tocRail a'));
+  var sections = tocLinks.map(function(a){
+    return document.getElementById(a.getAttribute('href').slice(1));
+  }).filter(Boolean);
+
+  if('IntersectionObserver' in window && sections.length){
+    var tocObserver = new IntersectionObserver(function(entries){
+      entries.forEach(function(entry){
+        var link = document.querySelector('#tocRail a[href="#' + entry.target.id + '"]');
+        if(!link) return;
+        if(entry.isIntersecting){
+          tocLinks.forEach(function(l){ l.classList.remove('active'); });
+          link.classList.add('active');
+        }
+      });
+    }, { rootMargin: '-45% 0px -50% 0px', threshold: 0 });
+    sections.forEach(function(s){ tocObserver.observe(s); });
+  }
+
+  /* ---------- reveal on scroll ---------- */
+  var revealEls = document.querySelectorAll('.reveal');
+  if('IntersectionObserver' in window && revealEls.length){
+    var revealObserver = new IntersectionObserver(function(entries, obs){
+      entries.forEach(function(entry){
+        if(entry.isIntersecting){
+          entry.target.classList.add('visible');
+          obs.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.12 });
+    revealEls.forEach(function(el){ revealObserver.observe(el); });
+  } else {
+    revealEls.forEach(function(el){ el.classList.add('visible'); });
+  }
+
+  /* =========================================================
+     SIMULADOR — fórmula certa (mesma lógica da planilha)
+     ========================================================= */
+
+  var elPreco = document.getElementById('sim-preco');
+  var elJuro = document.getElementById('sim-juro');
+  var elCustodia = document.getElementById('sim-custodia');
+  var elIpca = document.getElementById('sim-ipca');
+  var elCompra = document.getElementById('sim-compra');
+  var elVencimento = document.getElementById('sim-vencimento');
+  var elError = document.getElementById('sim-error');
+  var elChartWrap = document.getElementById('sim-chart-wrap');
+  var elChartCaption = document.getElementById('sim-chart-caption');
+  var elMemoriaBody = document.getElementById('sim-memoria-body');
+  var elResetBtn = document.getElementById('sim-reset');
+
+  var TAXA_IR = 0.15; // fixa — regressiva de longo prazo (>720 dias), padrão Tesouro IPCA+
+
+  var fmtPct = new Intl.NumberFormat('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 3 });
+  var fmtPctFull = new Intl.NumberFormat('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 5 });
+  var fmtBRL = new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL', minimumFractionDigits: 2, maximumFractionDigits: 2 });
+  var fmtNum = new Intl.NumberFormat('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+  var fmtInt = new Intl.NumberFormat('pt-BR');
+
+  // valores em cenários extremos (juros/IPCA muito altos por muitos anos) podem virar
+  // números astronômicos — acima de 1 trilhão, mostramos em notação científica compacta
+  // para nunca quebrar o layout, em vez de uma sequência gigante de dígitos
+  var LIMITE_NOTACAO_CIENTIFICA = 1e12;
+  function fmtBRLSmart(value){
+    var absVal = Math.abs(value);
+    if(!isFinite(value)) return '—';
+    if(absVal < LIMITE_NOTACAO_CIENTIFICA) return fmtBRL.format(value);
+    var exp = Math.floor(Math.log10(absVal));
+    var mantissa = value / Math.pow(10, exp);
+    return 'R$ ' + fmtNum.format(mantissa) + ' × 10^' + exp;
+  }
+
+  function pad2(n){ return n < 10 ? '0'+n : ''+n; }
+  function dateToISO(d){ return d.getFullYear() + '-' + pad2(d.getMonth()+1) + '-' + pad2(d.getDate()); }
+  function fmtDateBR(d){ return pad2(d.getDate()) + '/' + pad2(d.getMonth()+1) + '/' + d.getFullYear(); }
+  function parseISO(str){
+    var parts = str.split('-');
+    return new Date(parseInt(parts[0],10), parseInt(parts[1],10)-1, parseInt(parts[2],10));
+  }
+
+  // dias úteis (seg-sex), inclusivo em ambas as pontas — equivalente ao NETWORKDAYS
+  // usado na planilha (a coluna de feriados referenciada está vazia, então só fins de semana contam)
+  function businessDaysInclusive(d1, d2){
+    if(d2 < d1) return 0;
+    var count = 0;
+    var cur = new Date(d1.getTime());
+    while(cur <= d2){
+      var day = cur.getDay();
+      if(day !== 0 && day !== 6) count++;
+      cur.setDate(cur.getDate()+1);
+    }
+    return count;
+  }
+
+  function calcularTaxaRealLiquida(A, B, C, D, E, F){
+    // A: preço unitário | B: juro real | C: IPCA | D: custódia | E: prazo (anos) | F: taxa IR
+    var jurosNominal = (1+B)*(1+C) - 1;
+    var jurosSemCustodia = (1+jurosNominal)/(1+D) - 1;
+    var valorVencimento = A * Math.pow(1+jurosSemCustodia, E);
+    var ganhoCapital = valorVencimento - A;
+    var ir = ganhoCapital * F;
+    var valorLiquido = valorVencimento - ir;
+    var taxaNominalLiquida = Math.pow(valorLiquido/A, 1/E) - 1;
+    var taxaRealLiquida = (1+taxaNominalLiquida)/(1+C) - 1;
+    return {
+      jurosNominal: jurosNominal,
+      jurosSemCustodia: jurosSemCustodia,
+      valorVencimento: valorVencimento,
+      ganhoCapital: ganhoCapital,
+      ir: ir,
+      valorLiquido: valorLiquido,
+      taxaNominalLiquida: taxaNominalLiquida,
+      taxaRealLiquida: taxaRealLiquida
+    };
+  }
+
+  // mesmos degraus de IPCA usados na planilha e no restante do artigo
+  var IPCA_SWEEP = [0, 0.05, 0.10, 0.20, 0.40, 0.80, 1.60, 3.20, 6.40, 12.80, 25.60, 51.20, 102.40];
+  var IPCA_SWEEP_LABELS = ['0%','5%','10%','20%','40%','80%','160%','320%','640%','1280%','2560%','5120%','10240%'];
+
+  function buildMemoriaRow(label, value){
+    return '<tr><td>' + label + '</td><td>' + value + '</td></tr>';
+  }
+
+  function fmtPctAxis(v){
+    var absV = Math.abs(v);
+    if(absV < 1000) return fmtPct.format(v);
+    if(absV < 1e6) return fmtInt.format(Math.round(v));
+    var exp = Math.floor(Math.log10(absV));
+    var mantissa = v / Math.pow(10, exp);
+    return fmtNum.format(mantissa) + '×10^' + exp;
+  }
+
+  function renderChart(values){
+    var w = 720, h = 300;
+    var padL = 68, padR = 20, padT = 40, padB = 50;
+    var plotW = w - padL - padR;
+    var plotTop = padT, plotBottom = h - padB;
+
+    var minV = Math.min.apply(null, values);
+    var maxV = Math.max.apply(null, values);
+    var rawMin = minV, rawMax = maxV;
+    var range = maxV - minV;
+    // se a diferença entre min e max for irrisória perto da magnitude dos valores,
+    // é ruído de ponto flutuante (comum em potências com expoentes grandes) — não
+    // o real. Tratamos como reta e evitamos ampliar esse ruído no eixo Y.
+    var magnitude = Math.max(Math.abs(minV), Math.abs(maxV), 1e-9);
+    if(range / magnitude < 1e-6){
+      var flatPad = Math.max(magnitude * 0.05, 0.01);
+      minV -= flatPad; maxV += flatPad;
+      range = maxV - minV;
+    } else if(range === 0){
+      minV -= 0.01; maxV += 0.01; range = maxV - minV;
+    }
+    var pad = range * 0.14;
+    var yMin = minV - pad, yMax = maxV + pad;
+
+    function xAt(i){ return padL + (i/(values.length-1)) * plotW; }
+    function yAt(v){ return plotBottom - ((v - yMin)/(yMax-yMin)) * (plotBottom-plotTop); }
+
+    var pts = values.map(function(v,i){ return { x: xAt(i), y: yAt(v), v: v }; });
+
+    // gradiente para colorir a linha conforme sinal (verde >=0, tijolo <0)
+    var hasNeg = rawMin < 0;
+    var hasPos = rawMax >= 0;
+    var gradId = 'simGrad';
+    var gradStops = '';
+    if(hasNeg && hasPos){
+      // encontra a fração aproximada de cruzamento do zero ao longo do range de valores
+      var idxCross = 0;
+      for(var i=0;i<pts.length-1;i++){
+        if((pts[i].v >= 0 && pts[i+1].v < 0) || (pts[i].v < 0 && pts[i+1].v >= 0)){ idxCross = i; break; }
+      }
+      var v1 = pts[idxCross].v, v2 = pts[idxCross+1].v;
+      var frac = Math.abs(v1) / (Math.abs(v1)+Math.abs(v2));
+      var xCross = pts[idxCross].x + frac * (pts[idxCross+1].x - pts[idxCross].x);
+      var offsetPct = ((xCross - padL) / plotW * 100).toFixed(2);
+      var c1 = v1 >= 0 ? '#1E6B4F' : '#A8402A';
+      var c2 = v2 >= 0 ? '#1E6B4F' : '#A8402A';
+      gradStops = '<stop offset="0%" stop-color="'+c1+'"/><stop offset="'+offsetPct+'%" stop-color="'+c1+'"/><stop offset="'+offsetPct+'%" stop-color="'+c2+'"/><stop offset="100%" stop-color="'+c2+'"/>';
+    } else {
+      var solid = hasNeg ? '#A8402A' : '#1E6B4F';
+      gradStops = '<stop offset="0%" stop-color="'+solid+'"/><stop offset="100%" stop-color="'+solid+'"/>';
+    }
+
+    var polylinePts = pts.map(function(p){ return p.x.toFixed(1)+','+p.y.toFixed(1); }).join(' ');
+
+    var svg = '<svg class="chart" viewBox="0 0 '+w+' '+h+'" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Gráfico mostrando a taxa real líquida calculada para cada nível de IPCA simulado, de 0% a 10.240% ao ano.">';
+    svg += '<defs><linearGradient id="'+gradId+'" x1="0" y1="0" x2="1" y2="0">'+gradStops+'</linearGradient></defs>';
+
+    // linha de zero, se estiver dentro do range
+    if(yMin < 0 && yMax > 0){
+      var yZero = yAt(0);
+      svg += '<line x1="'+padL+'" y1="'+yZero.toFixed(1)+'" x2="'+(w-padR)+'" y2="'+yZero.toFixed(1)+'" stroke="#171A18" stroke-width="1.2"/>';
+      svg += '<text x="'+(padL-8)+'" y="'+(yZero+4).toFixed(1)+'" text-anchor="end" font-family="IBM Plex Mono, monospace" font-size="11" fill="#5B6259">0%</text>';
+    } else {
+      svg += '<line x1="'+padL+'" y1="'+plotBottom+'" x2="'+(w-padR)+'" y2="'+plotBottom+'" stroke="#BFC5B8" stroke-width="1"/>';
+    }
+
+    // gridlines topo/base + labels de eixo Y
+    svg += '<line x1="'+padL+'" y1="'+plotTop+'" x2="'+(w-padR)+'" y2="'+plotTop+'" stroke="#D7DBCF" stroke-width="1"/>';
+    svg += '<text x="'+(padL-8)+'" y="'+(plotTop+4)+'" text-anchor="end" font-family="IBM Plex Mono, monospace" font-size="11" fill="#5B6259">'+fmtPctAxis(yMax*100)+'%</text>';
+    svg += '<line x1="'+padL+'" y1="'+plotBottom+'" x2="'+(w-padR)+'" y2="'+plotBottom+'" stroke="#D7DBCF" stroke-width="1"/>';
+    svg += '<text x="'+(padL-8)+'" y="'+(plotBottom+4)+'" text-anchor="end" font-family="IBM Plex Mono, monospace" font-size="11" fill="#5B6259">'+fmtPctAxis(yMin*100)+'%</text>';
+
+    // linha principal
+    svg += '<polyline fill="none" stroke="url(#'+gradId+')" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" points="'+polylinePts+'"/>';
+
+    // pontos + rótulo do primeiro e do último
+    pts.forEach(function(p, i){
+      var isEdge = (i===0 || i===pts.length-1);
+      var color = p.v >= 0 ? '#1E6B4F' : '#A8402A';
+      svg += '<circle cx="'+p.x.toFixed(1)+'" cy="'+p.y.toFixed(1)+'" r="'+(isEdge?4:2.6)+'" fill="'+(isEdge?'#171A18':color)+'"'+(isEdge?' stroke="'+color+'" stroke-width="1.5"':'')+'/>';
+      if(isEdge){
+        var labelY = p.y < (plotTop+24) ? p.y+18 : p.y-10;
+        var anchor = i===0 ? 'start' : 'end';
+        var lx = i===0 ? p.x : p.x;
+        svg += '<text x="'+lx.toFixed(1)+'" y="'+labelY.toFixed(1)+'" text-anchor="'+anchor+'" font-family="IBM Plex Mono, monospace" font-size="11" fill="'+color+'" font-weight="600">'+fmtPctFull.format(p.v*100)+'% ('+IPCA_SWEEP_LABELS[i]+')</text>';
+      }
+    });
+
+    // rótulos do eixo X (subconjunto para não poluir)
+    var xLabelIdx = [0,2,4,9,12];
+    svg += '<g font-family="IBM Plex Mono, monospace" font-size="10.5" fill="#5B6259">';
+    xLabelIdx.forEach(function(i){
+      svg += '<text x="'+pts[i].x.toFixed(1)+'" y="'+(plotBottom+22)+'" text-anchor="middle">'+IPCA_SWEEP_LABELS[i]+'</text>';
+    });
+    svg += '</g>';
+
+    svg += '</svg>';
+    return svg;
+  }
+
+  function recalcular(){
+    var A = parseFloat(elPreco.value);
+    var B = parseFloat(elJuro.value) / 100;
+    var C = parseFloat(elIpca.value) / 100;
+    var D = parseFloat(elCustodia.value) / 100;
+    var compraStr = elCompra.value;
+    var vencStr = elVencimento.value;
+
+    var invalid = isNaN(A) || A <= 0 || isNaN(B) || isNaN(C) || isNaN(D) || !compraStr || !vencStr;
+    if(!invalid){
+      var d1 = parseISO(compraStr);
+      var d2 = parseISO(vencStr);
+      if(d2 <= d1) invalid = 'datas';
+    }
+
+    if(invalid){
+      elError.hidden = false;
+      elError.textContent = invalid === 'datas'
+        ? 'A data de vencimento precisa ser posterior à data de compra.'
+        : 'Preencha todos os campos com valores válidos (preço unitário maior que zero).';
+      return;
+    }
+    elError.hidden = true;
+
+    var du = businessDaysInclusive(d1, d2);
+    var E = du / 252;
+
+    var r = calcularTaxaRealLiquida(A, B, C, D, E, TAXA_IR);
+
+    // ---- resultados em destaque ----
+    var heroEl = document.getElementById('res-taxa-real');
+    var isNeg = r.taxaRealLiquida < 0;
+    heroEl.textContent = (isNeg ? '' : '+') + fmtPctFull.format(r.taxaRealLiquida*100) + '%';
+    heroEl.classList.toggle('neg', isNeg);
+    document.getElementById('res-taxa-real-sub').textContent = 'com IPCA a ' + fmtPct.format(C*100) + '% a.a., já líquida de IR (' + fmtInt.format(TAXA_IR*100) + '%)';
+    document.getElementById('res-prazo').textContent = fmtNum.format(E) + ' anos';
+    document.getElementById('res-liquido').textContent = fmtBRLSmart(r.valorLiquido);
+    document.getElementById('res-ganho').textContent = fmtBRLSmart(r.valorLiquido - A);
+    document.getElementById('res-nominal').textContent = fmtPct.format(r.taxaNominalLiquida*100) + '%';
+
+    // ---- memória de cálculo ----
+    var rows = [];
+    rows.push(buildMemoriaRow('Taxa de custódia B3 (a.a.)', fmtPct.format(D*100)+'%'));
+    rows.push(buildMemoriaRow('Taxa prefixada de juro real (a.a.)', fmtPct.format(B*100)+'%'));
+    rows.push(buildMemoriaRow('IPCA (a.a.)', fmtPct.format(C*100)+'%'));
+    rows.push(buildMemoriaRow('Juros nominal (a.a.)', fmtPct.format(r.jurosNominal*100)+'%'));
+    rows.push(buildMemoriaRow('Juros nominal, sem tx. custódia (a.a.)', fmtPct.format(r.jurosSemCustodia*100)+'%'));
+    rows.push(buildMemoriaRow('Data de compra', fmtDateBR(d1)));
+    rows.push(buildMemoriaRow('Data de vencimento', fmtDateBR(d2)));
+    rows.push(buildMemoriaRow('Prazo de vencimento (du)', fmtInt.format(du)));
+    rows.push(buildMemoriaRow('Prazo de vencimento (anos)', fmtNum.format(E)));
+    rows.push(buildMemoriaRow('Preço de hoje (unitário)', fmtBRL.format(A)));
+    rows.push(buildMemoriaRow('Valor no vencimento, sem tx. custódia', fmtBRLSmart(r.valorVencimento)));
+    rows.push(buildMemoriaRow('Ganho de capital', fmtBRLSmart(r.ganhoCapital)));
+    rows.push(buildMemoriaRow('Taxa do IR', fmtInt.format(TAXA_IR*100)+'%'));
+    rows.push(buildMemoriaRow('Abatimento do IR', fmtBRLSmart(r.ir)));
+    rows.push('<tr><td>Valor líquido no vencimento</td><td><strong>'+fmtBRLSmart(r.valorLiquido)+'</strong></td></tr>');
+    rows.push(buildMemoriaRow('Taxa nominal líquida (a.a.)', fmtPct.format(r.taxaNominalLiquida*100)+'%'));
+    rows.push('<tr><td>Taxa real líquida (a.a.)</td><td class="'+(isNeg?'neg':'pos')+'"><strong>'+fmtPctFull.format(r.taxaRealLiquida*100)+'%</strong></td></tr>');
+    elMemoriaBody.innerHTML = rows.join('');
+
+    // ---- gráfico: sweep de IPCA de 0% a 10.240%, mantendo A, B, D, E fixos ----
+    var sweepValues = IPCA_SWEEP.map(function(c){
+      return calcularTaxaRealLiquida(A, B, c, D, E, TAXA_IR).taxaRealLiquida;
+    });
+    elChartWrap.innerHTML = renderChart(sweepValues);
+
+    var minSweep = Math.min.apply(null, sweepValues);
+    var everNegative = minSweep < 0;
+    elChartCaption.textContent = everNegative
+      ? 'Com esse prazo e essa taxa real, a inflação alta consegue derrubar a taxa real líquida abaixo de zero (mínimo simulado: ' + fmtPctFull.format(minSweep*100) + '%).'
+      : 'Nesse prazo e taxa real, mesmo em cenários de hiperinflação extrema a taxa real líquida permanece positiva e estabiliza em torno de ' + fmtPctFull.format(sweepValues[sweepValues.length-1]*100) + '%.';
+  }
+
+  function attachListeners(){
+    [elPreco, elJuro, elCustodia, elIpca, elCompra, elVencimento].forEach(function(el){
+      el.addEventListener('input', recalcular);
+      el.addEventListener('change', recalcular);
+    });
+    elResetBtn.addEventListener('click', function(){
+      elPreco.value = '858.84';
+      elJuro.value = '7.42';
+      elCustodia.value = '0.20';
+      elIpca.value = '5.00';
+      elVencimento.value = '2050-08-15';
+      elCompra.value = dateToISO(new Date());
+      recalcular();
+    });
+  }
+
+  // data de compra padrão = hoje
+  elCompra.value = dateToISO(new Date());
+
+  attachListeners();
+  recalcular();
+
+})();
+</script>
+
+<script>
+(function(){
+  var API = 'https://independencia-likes.SEU-SUBDOMINIO.workers.dev';
+  var slug = 'ipca-hiperinflacao';
+  var btn = document.getElementById('likeBtn');
+  var countEl = document.getElementById('likeCount');
+  var storageKey = 'liked_' + slug;
+
+  function setCount(n){ countEl.textContent = n; }
+
+  fetch(API + '/likes?slug=' + slug)
+    .then(function(r){ return r.json(); })
+    .then(function(data){ setCount(data.count); })
+    .catch(function(){ setCount('\u2013'); });
+
+  if (localStorage.getItem(storageKey)) {
+    btn.classList.add('liked');
+    btn.setAttribute('aria-pressed', 'true');
+  }
+
+  btn.addEventListener('click', function(){
+    if (localStorage.getItem(storageKey)) return;
+    btn.classList.add('liked');
+    btn.setAttribute('aria-pressed', 'true');
+    localStorage.setItem(storageKey, '1');
+    fetch(API + '/likes?slug=' + slug, { method: 'POST' })
+      .then(function(r){ return r.json(); })
+      .then(function(data){ setCount(data.count); });
+  });
+
+  var copyBtn = document.getElementById('copyLinkBtn');
+  if (copyBtn) {
+    copyBtn.addEventListener('click', function(){
+      navigator.clipboard.writeText(window.location.href).then(function(){
+        copyBtn.classList.add('copied');
+        setTimeout(function(){ copyBtn.classList.remove('copied'); }, 1600);
+      });
+    });
+  }
+})();
+</script>
+</body>
+</html>

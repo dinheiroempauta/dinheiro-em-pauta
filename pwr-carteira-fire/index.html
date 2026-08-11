@@ -1,0 +1,1539 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Qual é a PWR da minha carteira? Um estudo com 20 anos de dados reais | Independência Calculada</title>
+<meta name="description" content="PWR de uma carteira 40/30/20/5/5 (B5P211, VWRA11, DIVO11, CDIB11, GOLD11): 5,16% a.a. real a 90% de confiança e 4,75% a 95%, via bootstrap estacionário sobre 20 anos de dados. Com calculadora interativa.">
+<meta name="robots" content="index, follow">
+<meta name="author" content="Independência Calculada">
+<link rel="canonical" href="https://independenciacalculada.com.br/pwr-carteira-fire">
+<meta property="og:title" content="Qual é a PWR da minha carteira? Um estudo com 20 anos de dados reais">
+<meta property="og:description" content="PWR@90% = 5,16% e PWR@95% = 4,75% ao ano, em termos reais — calculado via bootstrap estacionário sobre dados de 2006 a 2026. Metodologia completa e calculadora interativa.">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://independenciacalculada.com.br/pwr-carteira-fire">
+<meta property="og:site_name" content="Independência Calculada">
+<meta property="og:locale" content="pt_BR">
+<meta property="article:published_time" content="2026-08-09">
+<meta property="article:section" content="Série SWR/PWR">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Qual é a PWR da minha carteira? Um estudo com 20 anos de dados reais">
+<meta name="twitter:description" content="PWR@90% = 5,16% e PWR@95% = 4,75% ao ano, real — bootstrap estacionário sobre 20 anos de dados reais, com calculadora interativa.">
+<meta name="theme-color" content="#1E6B4F">
+<link rel="icon" type="image/png" href="/favicon.png">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Article",
+  "headline": "Qual é a PWR da minha carteira? Um estudo com 20 anos de dados reais",
+  "description": "Cálculo da taxa de retirada perpétua (PWR) de uma carteira diversificada via bootstrap estacionário sobre retornos reais mensais de 2006 a 2026.",
+  "datePublished": "2026-08-09",
+  "dateModified": "2026-08-09",
+  "inLanguage": "pt-BR",
+  "keywords": "PWR, Perpetual Withdrawal Rate, taxa de retirada perpétua, FIRE, independência financeira, bootstrap estacionário, aposentadoria, carteira de investimentos, VWRA11, DIVO11, B5P211, CDIB11, GOLD11",
+  "about": ["Taxa de retirada perpétua", "Independência financeira", "FIRE", "Alocação de ativos"],
+  "author": {"@type": "Organization", "name": "Independência Calculada", "url": "https://independenciacalculada.com.br"},
+  "publisher": {"@type": "Organization", "name": "Independência Calculada"},
+  "mainEntityOfPage": {"@type": "WebPage", "@id": "https://independenciacalculada.com.br/pwr-carteira-fire"},
+  "isPartOf": {"@type": "WebSite", "name": "Independência Calculada", "url": "https://independenciacalculada.com.br"}
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {"@type": "ListItem", "position": 1, "name": "Independência Calculada", "item": "https://independenciacalculada.com.br"},
+    {"@type": "ListItem", "position": 2, "name": "Série SWR/PWR", "item": "https://independenciacalculada.com.br/serie-swr-pwr"},
+    {"@type": "ListItem", "position": 3, "name": "Qual é a PWR da minha carteira?", "item": "https://independenciacalculada.com.br/pwr-carteira-fire"}
+  ]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "Qual é o tamanho e período do histórico de dados usado, e quais as consequências práticas dessa escolha?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Para rodar simulações computacionais a fim de encontrar a PWR da carteira, é importante um volume substancial de dados históricos. A metodologia captura a performance da carteira de janeiro de 2006 até junho de 2026, período com cinco acontecimentos de grande stress no mercado de capitais: Subprime (2008), Crise Europeia (2011), Recessão Brasil (2015), Covid-19 (2020) e Inflação Global (2022). Esse período não contempla a época de Meta-Selic muito acima de 15% ao ano no Brasil, o que é positivo, porque tal cenário não parece fazer mais sentido na macroeconomia brasileira. Como nenhum dos cinco ETFs selecionados tem histórico suficiente na B3 para uma análise de 20 anos, foi usado o índice ou ativo subjacente de cada um como aproximação, descontando a taxa de administração."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "O que é o bootstrap estacionário usado para calcular a PWR?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "É uma técnica que corta o histórico de retornos em blocos de cerca de 1 ano e os reamostra com reposição para montar milhares de trajetórias futuras alternativas, todas construídas a partir dos mesmos dados reais, mas recombinadas em ordens diferentes. Isso preserva o padrão de que meses ruins tendem a vir agrupados, algo que uma reamostragem mês a mês destruiria."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Qual é a PWR calculada para a carteira 40/30/20/5/5?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Para a carteira composta por 40% B5P211, 30% VWRA11, 20% DIVO11, 5% CDIB11 e 5% GOLD11, a PWR é de 5,16% ao ano em termos reais a 90% de confiança e de 4,75% ao ano a 95% de confiança, calculada por bootstrap estacionário sobre retornos mensais reais de 2006 a 2026, simulados ao longo de um horizonte de 60 anos."
+      }
+    }
+  ]
+}
+</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@0,400;0,500;0,600;0,700;1,500;1,600&family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --paper: #EEF1EC;
+  --paper-raised: #F9FAF6;
+  --ink: #171A18;
+  --muted: #5B6259;
+  --green: #1E6B4F;
+  --green-deep: #123B2A;
+  --green-light: #6FA382;
+  --brick: #A8402A;
+  --gold: #B98B32;
+  --gold-soft: #EDE0C4;
+  --brick-soft: #F3DED8;
+  --line: #D7DBCF;
+  --line-strong: #BFC5B8;
+  --maxw: 1000px;
+  --font-display: 'Fraunces', serif;
+  --font-body: 'IBM Plex Sans', sans-serif;
+  --font-mono: 'IBM Plex Mono', monospace;
+}
+
+@media (prefers-reduced-motion: no-preference){
+  .fade-in{ animation: fadeUp .7s ease-out both; }
+  .fade-in.d1{ animation-delay: .08s; }
+  .fade-in.d2{ animation-delay: .16s; }
+  @keyframes fadeUp{
+    from{ opacity:0; transform: translateY(10px); }
+    to{ opacity:1; transform: translateY(0); }
+  }
+}
+
+*{ box-sizing: border-box; }
+html{ scroll-behavior: smooth; }
+
+body{
+  margin:0;
+  background: var(--paper);
+  color: var(--ink);
+  font-family: var(--font-body);
+  font-size: 17px;
+  line-height: 1.65;
+  -webkit-font-smoothing: antialiased;
+}
+
+a{ color: var(--green); text-decoration-thickness: 1px; text-underline-offset: 2px; }
+a:hover{ color: var(--brick); }
+a:focus-visible, button:focus-visible, input:focus-visible{ outline: 2px solid var(--gold); outline-offset: 3px; }
+
+.mono{ font-family: var(--font-mono); }
+
+/* ---------- Reading UX chrome ---------- */
+.progress-rail{ position: fixed; top:0; left:0; right:0; height: 3px; background: transparent; z-index: 60; }
+.progress-fill{ height: 100%; width:0%; background: linear-gradient(90deg, var(--gold), var(--green)); transition: width .08s linear; }
+
+.back-to-top{
+  position: fixed; right: 22px; bottom: 22px; width: 42px; height:42px; border-radius: 50%;
+  background: var(--ink); color: var(--paper); border: none;
+  display:flex; align-items:center; justify-content:center; cursor:pointer;
+  opacity:0; visibility:hidden; transform: translateY(8px);
+  transition: opacity .25s ease, transform .25s ease, background .15s ease;
+  z-index: 55; box-shadow: 0 4px 14px rgba(0,0,0,.18);
+}
+.back-to-top.show{ opacity:1; visibility:visible; transform:translateY(0); }
+.back-to-top:hover{ background: var(--green); }
+.back-to-top svg{ width:16px; height:16px; }
+
+.toc-rail{
+  position: fixed; top: 50%; transform: translateY(-50%);
+  right: max(14px, calc((100vw - var(--maxw)) / 2 - 46px));
+  display:flex; flex-direction:column; gap: 11px; z-index: 40;
+}
+.toc-rail a{
+  width: 9px; height:9px; border-radius:50%; background: var(--line-strong);
+  position:relative; text-decoration:none; display:block;
+  transition: background .2s ease, transform .2s ease;
+}
+.toc-rail a:hover, .toc-rail a.active{ background: var(--green); transform: scale(1.3); }
+.toc-rail a .toc-label{
+  position:absolute; right: 20px; top:50%; transform: translateY(-50%);
+  font-family: var(--font-mono); font-size: 11px; color: var(--ink);
+  background: var(--paper-raised); border: 1px solid var(--line-strong);
+  padding: 4px 9px; border-radius: 3px; white-space: nowrap;
+  opacity:0; visibility:hidden; transition: opacity .15s ease; pointer-events:none;
+}
+.toc-rail a:hover .toc-label{ opacity:1; visibility:visible; }
+@media (max-width: 1240px){ .toc-rail{ display:none; } }
+
+.reveal{ opacity:0; transform: translateY(16px); transition: opacity .6s ease, transform .6s ease; }
+.reveal.visible{ opacity:1; transform:translateY(0); }
+@media (prefers-reduced-motion: reduce){ .reveal{ opacity:1; transform:none; transition:none; } }
+
+/* ---------- Masthead ---------- */
+.masthead{ border-bottom: 1px solid var(--line-strong); padding: 18px 24px; }
+.masthead-inner{ max-width: var(--maxw); margin: 0 auto; display:flex; align-items:center; justify-content: space-between; gap: 12px; flex-wrap: wrap; }
+.wordmark{ font-family: var(--font-mono); font-weight: 600; font-size: 13px; letter-spacing: .12em; text-transform: uppercase; color: var(--ink); }
+.wordmark span{ color: var(--green); }
+.masthead-tag{ font-family: var(--font-mono); font-size: 11px; color: var(--muted); letter-spacing: .04em; }
+
+main{ max-width: var(--maxw); margin: 0 auto; padding: 0 24px 90px; }
+
+.eyebrow{
+  margin-top: 46px; font-family: var(--font-mono); font-size: 12px; letter-spacing: .1em;
+  text-transform: uppercase; color: var(--green); display:flex; align-items:center; gap: 10px;
+}
+.eyebrow::before{ content:""; width: 22px; height: 1px; background: var(--green); display:inline-block; }
+
+h1.title{
+  font-family: var(--font-display); font-weight: 600;
+  font-size: clamp(2rem, 5vw, 2.9rem); line-height: 1.08; letter-spacing: -0.01em;
+  margin: 14px 0 8px; color: var(--ink);
+}
+.subtitle{
+  font-family: var(--font-display); font-style: normal; font-weight: 400;
+  font-size: clamp(1.05rem, 2.4vw, 1.25rem); color: var(--muted);
+  margin: 0 0 22px; max-width: 62ch;
+}
+.meta{
+  font-family: var(--font-mono); font-size: 12px; color: var(--muted);
+  display:flex; gap:16px; flex-wrap:wrap; padding-bottom: 26px; border-bottom: 1px solid var(--line);
+}
+.meta b{ color: var(--ink); }
+
+/* ---------- Hero stats (PWR headline numbers) ---------- */
+.hero-stats{
+  display:grid; grid-template-columns: 1fr 1fr; gap: 1px;
+  background: var(--line-strong); border: 1px solid var(--line-strong);
+  margin: 26px 0 8px; border-radius: 4px; overflow:hidden;
+}
+.hero-stat-cell{ background: var(--paper-raised); padding: 22px 24px; }
+.hero-stat-cell .label{
+  font-family: var(--font-mono); font-size: 11px; text-transform: uppercase;
+  letter-spacing: .07em; color: var(--muted); margin-bottom: 8px;
+}
+.hero-stat-cell .value{
+  font-family: var(--font-display); font-size: clamp(1.7rem, 4vw, 2.15rem); font-weight: 600; color: var(--green-deep);
+}
+.hero-stat-cell .value small{ font-size: .95rem; font-weight: 400; color: var(--muted); font-family: var(--font-body); }
+@media (max-width: 560px){ .hero-stats{ grid-template-columns: 1fr; } }
+
+/* ---------- Promise box ---------- */
+.promise{ margin: 30px 0 8px; background: var(--paper-raised); border: 1px solid var(--line-strong); border-radius: 3px; padding: 22px 24px; }
+.promise-label{ font-family: var(--font-mono); font-size: 11px; letter-spacing: .1em; text-transform: uppercase; color: var(--green); margin-bottom: 10px; }
+.promise ul{ margin:0; padding-left: 0; list-style:none; }
+.promise li{ position:relative; padding-left: 22px; margin-bottom: 9px; font-size: 15.5px; }
+.promise li:last-child{ margin-bottom:0; }
+.promise li::before{ content:"—"; position:absolute; left:0; top:0; color: var(--gold); font-family: var(--font-mono); }
+
+/* ---------- Prose ---------- */
+.prose{ margin-top: 20px; }
+.prose p{ margin: 0 0 20px; }
+.section-lead{ color: var(--muted); font-size: 1.02rem; margin-bottom: 22px; }
+
+h2{ font-family: var(--font-display); font-weight: 600; font-size: 1.55rem; letter-spacing: -0.01em; margin: 54px 0 4px; color: var(--ink); }
+h2 .num{ font-family: var(--font-mono); font-size: 13px; color: var(--gold); display:block; letter-spacing: .1em; margin-bottom: 6px; }
+h3{ font-family: var(--font-display); font-weight: 600; font-size: 1.15rem; margin: 30px 0 10px; color: var(--ink); }
+
+/* ---------- Note / callout ---------- */
+.note{ border-left: 3px solid var(--gold); background: var(--paper-raised); padding: 18px 22px; margin: 26px 0; font-size: 15px; border-radius: 0 3px 3px 0; }
+.note .cap{ font-family: var(--font-mono); font-size: 11px; letter-spacing: .08em; text-transform: uppercase; color: var(--gold); margin-bottom: 8px; }
+.note p{ margin:0; }
+.note strong{ color: var(--ink); }
+.note.green{ border-left-color: var(--green); }
+.note.green .cap{ color: var(--green); }
+
+/* ---------- Allocation bar ---------- */
+.alloc-bar{ display: flex; height: 38px; border-radius: 3px; overflow: hidden; margin: 22px 0 14px; border: 1px solid var(--line-strong); }
+.alloc-seg{ display: flex; align-items: center; justify-content: center; font-family: var(--font-mono); font-size: 12px; color: #fff; font-weight: 600; }
+.alloc-legend{ display: flex; flex-wrap: wrap; gap: 14px 22px; font-size: 13px; font-family: var(--font-mono); margin-bottom: 24px; color: var(--muted); }
+.alloc-legend span.dot{ width: 10px; height: 10px; border-radius: 2px; display: inline-block; margin-right: 6px; vertical-align: -1px; }
+
+/* ---------- Tables ---------- */
+.table-wrap{ margin: 22px 0 10px; overflow-x:auto; }
+table.data{ width:100%; border-collapse: collapse; font-size: 14.5px; margin: 20px 0; }
+table.data caption{ text-align:left; font-family: var(--font-body); font-size: 13px; color: var(--muted); margin-bottom: 8px; caption-side: top; }
+table.data th{ text-align:left; font-family: var(--font-mono); font-weight:600; padding: 10px 12px; border-bottom: 1.5px solid var(--ink); font-size:11.5px; letter-spacing:.03em; text-transform: uppercase; color: var(--muted); }
+table.data td{ text-align:left; padding: 10px 12px; border-bottom: 1px solid var(--line); }
+table.data td.num, table.data th.num{ text-align:right; font-family: var(--font-mono); font-variant-numeric: tabular-nums; }
+table.data tr.highlight td{ background: var(--gold-soft); font-weight: 600; color: var(--ink); }
+
+/* ---------- Details / toggle ---------- */
+details.toggle{ margin-top: 16px; margin-bottom: 18px; border: 1px solid var(--line-strong); border-radius: 3px; background: var(--paper-raised); }
+details.toggle summary{
+  list-style: none; cursor: pointer; padding: 14px 16px; display:flex; align-items:center; gap: 10px;
+  font-family: var(--font-mono); font-size: 13px; letter-spacing: .02em; color: var(--green); user-select:none;
+}
+details.toggle summary::-webkit-details-marker{ display:none; }
+details.toggle summary::before{
+  content:"+"; display:inline-flex; align-items:center; justify-content:center; width:18px; height:18px;
+  border:1px solid var(--green); border-radius:2px; font-size:13px; line-height:1; flex-shrink:0;
+}
+details.toggle[open] summary::before{ content:"–"; }
+details.toggle summary:hover{ background: rgba(30,107,79,.06); }
+details.toggle .toggle-body{ padding: 4px 16px 18px; border-top: 1px solid var(--line); font-size: 15px; color: var(--muted); }
+details.toggle .toggle-body p{ margin: 14px 0 0; }
+
+/* ---------- Steps ---------- */
+.steps-list{ margin: 18px 0 26px; padding-left: 0; list-style:none; counter-reset: step; }
+.steps-list li{ counter-increment: step; position:relative; padding: 12px 0 12px 44px; border-bottom: 1px solid var(--line); }
+.steps-list li:last-child{ border-bottom:none; }
+.steps-list li::before{
+  content: counter(step); position:absolute; left:0; top:10px; width: 26px; height: 26px; border-radius: 50%;
+  background: var(--green); color: var(--paper-raised); font-family: var(--font-mono); font-size: 12px; font-weight:600;
+  display:flex; align-items:center; justify-content:center;
+}
+.steps-list .step-title{ font-weight: 600; color: var(--ink); margin-bottom: 4px; font-size: 15.5px; }
+.steps-list .step-desc{ color: var(--muted); font-size: 14.5px; }
+
+/* ---------- Window toggle (rolling CAGR selector) ---------- */
+.window-toggle{ display: flex; gap: 8px; flex-wrap: wrap; margin: 4px 0 0; }
+.window-btn{
+  font-family: var(--font-mono); font-size: 12.5px; font-weight: 600; letter-spacing: .02em;
+  background: var(--paper); color: var(--muted); border: 1px solid var(--line-strong);
+  padding: 8px 16px; border-radius: 20px; cursor: pointer; transition: background .15s ease, color .15s ease, border-color .15s ease;
+}
+.window-btn:hover{ border-color: var(--green); color: var(--green); }
+.window-btn.active{ background: var(--green); color: #fff; border-color: var(--green); }
+
+/* ---------- Chart card ---------- */
+.chart-card{ border: 1px solid var(--line-strong); background: var(--paper-raised); border-radius: 3px; padding: 22px 22px 18px; margin: 24px 0 30px; position: relative; }
+.chart-svg-wrap{ margin: 4px 0 6px; position: relative; }
+.chart-tooltip{
+  position: absolute;
+  pointer-events: none;
+  background: #171A18;
+  color: #F7F5EF;
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 12px;
+  line-height: 1.4;
+  padding: 7px 11px;
+  border-radius: 4px;
+  white-space: nowrap;
+  transform: translate(-50%, calc(-100% - 12px));
+  opacity: 0;
+  transition: opacity 0.08s ease;
+  z-index: 6;
+  top: 0; left: 0;
+}
+.chart-tooltip.visible{ opacity: 1; }
+.chart-tooltip .tt-year{ color: #B98B32; font-weight: 600; margin-right: 8px; }
+.chart-tooltip .tt-val-pos{ color: #6FCF9E; font-weight: 600; }
+.chart-tooltip .tt-val-neg{ color: #E38C74; font-weight: 600; }
+svg.chart{ width:100%; height:auto; display:block; }
+.chart-legend{ display:flex; flex-wrap:wrap; gap: 16px; font-family: var(--font-mono); font-size: 12px; color: var(--muted); margin-top: 10px; }
+.chart-legend .sw{ display:inline-flex; align-items:center; gap:6px; }
+.chart-legend .dot{ width:10px; height:10px; border-radius:50%; display:inline-block; }
+.chart-caption{ font-size: 13px; color: var(--muted); margin-top: 12px; }
+svg text{ font-family: var(--font-mono); }
+
+/* ---------- Simulator (calculator) ---------- */
+.simulator{ border: 1px solid var(--line-strong); background: var(--paper-raised); border-radius: 4px; padding: 30px 28px 28px; margin: 22px 0 30px; position: relative; }
+.simulator::before{ content:""; position:absolute; top:0; left:0; right:0; height: 3px; background: linear-gradient(90deg, var(--green), var(--gold)); border-radius: 4px 4px 0 0; }
+.sim-head h3{ margin: 6px 0 0; font-size: 1.3rem; }
+.sim-row{ display: flex; align-items: baseline; justify-content: space-between; margin: 22px 0 8px; flex-wrap: wrap; gap: 6px; }
+.sim-label{ font-family: var(--font-mono); font-size: 12px; color: var(--muted); text-transform: uppercase; letter-spacing: .05em; }
+.sim-value{ font-family: var(--font-display); font-size: 1.7rem; font-weight: 600; color: var(--green); }
+input[type="range"]{ width: 100%; margin: 6px 0 8px; accent-color: var(--gold); }
+.sim-results{ margin-top: 24px; padding-top: 22px; border-top: 1px dashed var(--line-strong); display:grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+.sim-cell{ background: var(--paper); border: 1px solid var(--line-strong); border-radius: 3px; padding: 16px 18px; }
+.sim-cell .l{ font-family: var(--font-mono); font-size: 11px; text-transform: uppercase; color: var(--muted); margin-bottom: 6px; letter-spacing: .04em; }
+.sim-cell .v{ font-family: var(--font-display); font-size: 1.55rem; font-weight: 600; color: var(--ink); }
+.sim-bar-track{ height: 8px; background: var(--line); border-radius: 4px; margin-top: 10px; overflow: hidden; }
+.sim-bar-fill{ height: 100%; background: var(--gold); transition: width .15s ease; }
+.sim-note{ font-size: 13px; color: var(--muted); margin-top: 18px; }
+@media (max-width: 560px){ .sim-results{ grid-template-columns: 1fr; } }
+
+/* ---------- Limitations ---------- */
+.limits-list{ list-style: none; padding: 0; margin: 0 0 8px; }
+.limits-list li{ padding: 13px 0 13px 26px; border-bottom: 1px solid var(--line); position: relative; font-size: 15px; color: var(--muted); }
+.limits-list li:last-child{ border-bottom: none; }
+.limits-list li::before{ content: "!"; position: absolute; left: 0; top: 13px; font-family: var(--font-mono); font-weight: 700; color: var(--brick); }
+.limits-list li strong{ color: var(--ink); }
+
+/* ---------- References ---------- */
+.refs{ margin-top: 12px; font-size: 13px; color: var(--muted); }
+.refs .cap{ font-family: var(--font-mono); font-size: 11px; letter-spacing:.08em; text-transform:uppercase; color: var(--ink); margin-bottom: 10px; }
+.refs ol{ padding-left: 18px; margin:0; }
+.refs li{ margin-bottom: 10px; line-height: 1.6; }
+
+/* ---------- Recap (para levar) ---------- */
+.recap{ background: var(--ink); color: var(--paper); border-radius: 4px; padding: 28px 26px; margin: 46px 0 28px; }
+.recap .cap{ font-family: var(--font-mono); font-size: 11px; letter-spacing:.1em; text-transform:uppercase; color: #9FD9BE; margin-bottom: 14px; }
+.recap ol{ margin:0; padding-left: 20px; }
+.recap li{ margin-bottom: 10px; font-size: 15px; }
+.recap li:last-child{ margin-bottom:0; }
+.recap li::marker{ font-family: var(--font-mono); color:#9FD9BE; }
+
+/* ---------- CTA ---------- */
+  .cta{
+    border: 1px solid var(--line-strong);
+    border-radius: 3px;
+    padding: 24px 24px;
+    margin: 30px 0;
+    display:flex;
+    justify-content: space-between;
+    align-items:center;
+    gap: 20px;
+    flex-wrap: wrap;
+  }
+  .cta-text h3{ margin:0 0 6px; font-size:1.1rem; }
+  .cta-text p{ margin:0; font-size:14px; color:var(--muted); max-width: 40ch; }
+  .cta-btn{
+    font-family:'IBM Plex Mono', monospace;
+    font-size: 13px;
+    font-weight:600;
+    letter-spacing:.03em;
+    background: var(--green);
+    color: var(--paper-raised);
+    border: none;
+    padding: 12px 20px;
+    border-radius: 3px;
+    cursor:pointer;
+    white-space:nowrap;
+    text-decoration:none;
+    display:inline-block;
+  }
+  .cta-btn:hover{ background:#175A41; }
+
+  .cta-buttons{
+  display: flex;
+  gap: 16px;
+  flex-wrap: wrap;
+  align-items: center;
+  }
+
+  .cta-related{
+    width: 100%;
+    margin-top: 4px;
+    padding-top: 16px;
+    border-top: 1px solid var(--line);
+  }
+
+  .cta-related-label{
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 11px;
+    letter-spacing: .1em;
+    text-transform: uppercase;
+    color: var(--green);
+    margin-bottom: 12px;
+  }
+  .cta-related-link{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 12px 0;
+    border-bottom: 1px solid var(--line);
+    color: var(--ink);
+    text-decoration: none;
+  }
+  .cta-related-link:last-child{
+    border-bottom: none;
+  }
+  .cta-related-title{
+    font-family: 'Fraunces', serif;
+    font-weight: 500;
+    font-size: 15px;
+  }
+  .cta-related-arrow{
+    color: var(--gold);
+    font-family: 'IBM Plex Mono', monospace;
+    transition: transform .15s ease;
+  }
+  .cta-related-link:hover .cta-related-arrow{
+    transform: translateX(4px);
+  }
+  .cta-related-link:hover .cta-related-title{
+    color: var(--green);
+  }
+
+/* ---------- Disclaimer ---------- */
+.disclaimer{ font-size: 13px; color: var(--muted); border-top: 1px solid var(--line); padding-top: 20px; margin-top: 40px; }
+.disclaimer .cap{ font-family: var(--font-mono); font-size: 11px; letter-spacing:.08em; text-transform:uppercase; margin-bottom: 8px; color: var(--ink); }
+.disclaimer-spacer{ margin-top: 12px; }
+
+footer{ max-width: var(--maxw); margin: 0 auto; padding: 30px 24px 60px; font-family: var(--font-mono); font-size: 12px; color: var(--muted); text-align:center; line-height: 1.8; }
+
+/* ---------- Site bar (voltar para artigos) ---------- */
+.site-bar{ background: var(--ink); }
+.site-bar-inner{ max-width: var(--maxw); margin: 0 auto; padding: 9px 24px; }
+.site-bar a{ font-family: var(--font-mono); font-size: 11px; letter-spacing: .05em; color: #9FD9BE; text-decoration: none; }
+.site-bar a:hover{ color: #fff; }
+
+/* ---------- Engagement (curtir + compartilhar) ---------- */
+.engage{ margin: 46px 0 32px; padding: 22px 24px; border: 1px solid var(--line-strong); border-radius: 3px; background: var(--paper-raised); }
+.engage-row{ display:flex; align-items:center; justify-content: space-between; gap: 20px; flex-wrap: wrap; }
+.like-btn{ display:inline-flex; align-items:center; gap: 10px; font-family: var(--font-mono); font-size: 13px; font-weight: 600; letter-spacing: .02em; color: var(--ink); background: var(--paper); border: 1px solid var(--line-strong); border-radius: 3px; padding: 10px 16px; cursor: pointer; transition: border-color .15s ease, color .15s ease, background .15s ease; }
+.like-btn:hover{ border-color: var(--green); color: var(--green); }
+.like-btn .like-icon{ width:16px; height:16px; transition: transform .2s ease; }
+.like-btn.liked{ background: var(--green); color: #fff; border-color: var(--green); }
+.like-btn.liked .like-icon{ fill: currentColor; transform: scale(1.12); }
+.like-btn .like-count{ font-variant-numeric: tabular-nums; color: var(--muted); }
+.like-btn.liked .like-count{ color: #DDEFE5; }
+.share-group{ display:flex; align-items:center; gap: 10px; flex-wrap: wrap; }
+.share-label{ font-family: var(--font-mono); font-size: 11px; text-transform: uppercase; letter-spacing:.08em; color: var(--muted); margin-right: 4px; }
+.share-btn{ display:inline-flex; align-items:center; justify-content:center; width: 34px; height: 34px; border: 1px solid var(--line-strong); border-radius: 3px; background: var(--paper); color: var(--muted); text-decoration:none; cursor:pointer; transition: border-color .15s ease, color .15s ease; }
+.share-btn:hover{ border-color: var(--green); color: var(--green); }
+.share-btn svg{ width:15px; height:15px; }
+.share-btn.copied{ border-color: var(--gold); color: var(--gold); }
+
+/* ---------- Comentários ---------- */
+.comments-section{ margin: 8px 0 40px; padding-top: 30px; border-top: 1px solid var(--line); }
+.comments-section .cap{ font-family: var(--font-mono); font-size: 11px; letter-spacing: .08em; text-transform: uppercase; color: var(--ink); margin-bottom: 8px; }
+.comments-note{ font-size: 13px; color: var(--muted); margin: 0 0 18px; }
+
+@media (max-width: 560px){
+  .engage-row{ flex-direction: column; align-items: flex-start; }
+}
+
+
+@media (max-width: 600px){
+  .hero-stats{ grid-template-columns: 1fr; }
+}
+</style>
+</head>
+<body>
+
+<div class="progress-rail"><div class="progress-fill" id="progressFill"></div></div>
+
+<nav class="toc-rail" id="tocRail" aria-label="Navegação do artigo">
+  <a href="#carteira" data-label="01"><span class="toc-label">A carteira</span></a>
+  <a href="#bootstrap-explicacao" data-label="02"><span class="toc-label">Como funciona o bootstrap</span></a>
+  <a href="#metodologia" data-label="03"><span class="toc-label">O passo a passo</span></a>
+  <a href="#resultados" data-label="04"><span class="toc-label">Resultados</span></a>
+  <a href="#calculadora" data-label="05"><span class="toc-label">Calculadora</span></a>
+  <a href="#robustez" data-label="06"><span class="toc-label">Robustez do método</span></a>
+  <a href="#limitacoes" data-label="07"><span class="toc-label">Limitações</span></a>
+</nav>
+
+<button type="button" class="back-to-top" id="backToTop" aria-label="Voltar ao topo">
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M12 19V5M5 12l7-7 7 7"/></svg>
+</button>
+
+<div class="site-bar"><div class="site-bar-inner"><a href="/">&larr; Todos os artigos</a></div></div>
+<div class="masthead">
+  <div class="masthead-inner">
+    <a href="/" class="wordmark"><span>Independência</span>Calculada</a>
+    <div class="masthead-tag">Planejamento financeiro para atingir sua liberdade</div>
+  </div>
+</div>
+
+<main>
+  <div class="eyebrow fade-in">Estudo quantitativo · Série SWR/PWR</div>
+  <h1 class="title fade-in d1">Qual é a PWR da minha carteira?</h1>
+  <p class="subtitle fade-in d1">Um estudo com 20 anos de dados reais</p>
+
+  <div class="meta fade-in d2">
+    <span><b>Publicado em</b> 9 ago. 2026</span>
+    <span><b>~12 min</b> de leitura</span>
+    <span>inclui <b>calculadora interativa</b></span>
+  </div>
+
+  <div class="hero-stats fade-in d2">
+    <div class="hero-stat-cell">
+      <div class="label">PWR @ 90% de confiança</div>
+      <div class="value">5,16% <small>a.a. real</small></div>
+    </div>
+    <div class="hero-stat-cell">
+      <div class="label">PWR @ 95% de confiança</div>
+      <div class="value">4,75% <small>a.a. real</small></div>
+    </div>
+  </div>
+
+  <div class="promise">
+    <div class="promise-label">Neste artigo, você vai entender e conhecer</div>
+    <ul>
+      <li>Qual é a carteira de longo prazo que eu utilizo para a minha própria aposentadoria, seu desempenho real ano a ano de 2006 - 2026 e seu CAGR real em janelas móveis de diferentes tamanhos</li>
+      <li>Como lidei com a restrição do tamanho do histórico de dados na simulação da PWR</li>
+      <li>Qual foi o passo a passo para simular a PWR usando bootstrap estacionário</li>
+      <li>Os resulados da PWR em várias taxas de sucesso, não apenas um número único, com <strong>calculadora interativa</strong></li>
+      <li>As verificações de robustez do método e as limitações honestas do estudo</li>
+      <li>Referências clássicas e atuais sobre cálculo de PWR</li>
+    </ul>
+  </div>
+
+  <div id="recap" class="note green">
+    <div class="cap">Recapitulando</div>
+    <p>
+      Em <a href="/quanto-posso-retirar-aposentadoria">outro artigo desta série</a>, expliquei a
+      diferença entre SWR (taxa segura de retirada, horizonte finito) e PWR (taxa perpétua de retirada, horizonte
+      infinito), demonstrando os conceitos com exemplos mais simples. Neste artigo, vamos aprofundar um pouco mais e fazer cálculos para uma carteira real, a que eu mesmo uso nos meus próprios investimentos. Para nivelamento rápido, entenda que a PWR é a taxa de retirada que mantém, perpetuamente e em valores reais, o capital do início da aposentadoria.
+    </p>
+  </div>
+
+  <h2 id="carteira" class="reveal"><span class="num">01</span>A carteira</h2>
+  <div class="prose">
+    <p>Você verá um portfólio de longo prazo, para fins de aposentadoria, selecionado com bastante critério para a minha própria realidade (não é recomendação de investimentos, não copie). Neste artigo não vou explicar por que e como escolhi as classes, os ativos e os pesos — isto é tópico de outra conversa.</p>
+    <p>Para maximizar diversificação, diminuir custos, diminuir gasto de tempo, melhorar consistência de retorno e aumentar a eficiência tributária, montei esta carteira usando apenas ETFs passivos negociados na B3. Como esses fundos têm histórico curto demais para uma análise robusta, usei o índice ou ativo subjacente de cada um como proxy, descontando a taxa de administração do ETF. São cinco ativos, com pesos fixos e rebalanceamento mensal.</p>
+  </div>
+
+  <div class="alloc-bar">
+    <div class="alloc-seg" style="width:40%; background:#1E6B4F;">Inflação Curta</div>
+    <div class="alloc-seg" style="width:30%; background:#6FA382;">Ações Globais</div>
+    <div class="alloc-seg" style="width:20%; background:#B98B32;">Ações BR</div>
+    <div class="alloc-seg" style="width:5%; background:#A8402A; font-size:9px;">CDI</div>
+    <div class="alloc-seg" style="width:5%; background:#D3A65C; font-size:9px;">Ouro</div>
+  </div>
+  <div class="alloc-legend">
+    <span><span class="dot" style="background:#1E6B4F;"></span>B5P211 — 40%</span>
+    <span><span class="dot" style="background:#6FA382;"></span>VWRA11 — 30%</span>
+    <span><span class="dot" style="background:#B98B32;"></span>DIVO11 — 20%</span>
+    <span><span class="dot" style="background:#A8402A;"></span>CDIB11 — 5%</span>
+    <span><span class="dot" style="background:#D3A65C;"></span>GOLD11 — 5%</span>
+  </div>
+
+  <div class="table-wrap">
+    <table class="data">
+      <caption>Composição da carteira e proxy histórico usado para cada ETF</caption>
+      <thead>
+        <tr>
+          <th>ETF</th>
+          <th class="num">Peso</th>
+          <th>Proxy usado</th>
+          <th class="num">Taxa adm.</th>
+          <th>Ajuste cambial</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr><td>VWRA11</td><td class="num">30%</td><td>FTSE All-World (Total Return, USD)</td><td class="num">0,49% a.a.</td><td>PTAX USD/BRL</td></tr>
+        <tr><td>DIVO11</td><td class="num">20%</td><td>IDIV (B3, Total Return)</td><td class="num">0,50% a.a.</td><td>—</td></tr>
+        <tr><td>B5P211</td><td class="num">40%</td><td>IMA-B5</td><td class="num">0,20% a.a.</td><td>—</td></tr>
+        <tr><td>CDIB11</td><td class="num">5%</td><td>CDI</td><td class="num">0,15% a.a.</td><td>—</td></tr>
+        <tr><td>GOLD11</td><td class="num">5%</td><td>Ouro (USD/oz)</td><td class="num">0,57% a.a.</td><td>PTAX USD/BRL</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <details class="toggle">
+    <summary>Qual é o tamanho/período do histórico de dados e quais as consequências práticas dessa escolha para a análise?</summary>
+    <div class="toggle-body">
+      <p>
+        Para rodar simulações computacionais a fim de encontrar a PWR da carteira, é importante um volume substancial de dados históricos. Assim, ao idealizar a metodologia deste exercício, busquei por uma série de pelo menos duas décadas. Quis capturar a performance da carteira de Jan/2006 até Junho/2026, porque este é um período com cinco acontecimentos de grande stress no mercado de capitais - Subprime (2008), Crise Europeia (2011), Recessão Brasil (2015), Covid-19 (2020) e Inflação Global (2022). Por outro lado, esse período não contempla a época de Meta-Selic muito acima de 15% ao ano no Brasil, o que é positivo, porque tal cenário não parece fazer mais sentido na macroeconomia brasileira.
+      </p>
+      <p>
+        Como nenhum dos cinco ETFs selecionados tem histórico suficiente na B3 para uma análise de 20 anos, precisei utilizar o índice (ou ativo) subjacente de cada um como aproximação, descontando a taxa de administração. É claro que, como toda proxy, há imperfeição, por exemplo: CDIB11 não é CDI puro, porque tem NTN-B Longa junto, assim como B5P211 não segue o IMA-B5, mas sim uma variação dele com mecanismo de controle do Prazo Médio de Repactuação (PMR) dos títulos, o IMA-B5 P2. Isso não é um problema, porque não queremos ser milimétricos nos resultados, queremos ser razoáveis. Para fins de planejamento financeiro, ainda mais se tratando de PWR, essa lógica é absolutamente suficiente.
+      </p>
+    </div>
+  </details>
+
+  <details class="toggle">
+    <summary>Ver gráfico: desempenho da carteira ano a ano (backtest 2006–2026)</summary>
+    <div class="toggle-body">
+      <p>
+        Retorno real (já descontado o IPCA) de cada ano do backtest. Passe o cursor sobre uma barra para ver o valor exato daquele ano.
+      </p>
+      <div class="chart-card" style="margin: 18px 0 8px;">
+        <div class="chart-svg-wrap" id="annualChartWrap"></div>
+        <div class="chart-tooltip" id="annualTooltip"></div>
+        <div class="chart-legend">
+          <span class="sw"><span class="dot" style="background:#1E6B4F;"></span>Retorno real do ano</span>
+        </div>
+        <div class="chart-caption" id="annualChartCaption"></div>
+      </div>
+    </div>
+  </details>
+
+  <details class="toggle">
+    <summary>Ver gráfico: CAGR real em janelas móveis (1, 3, 5 ou 10 anos)</summary>
+    <div class="toggle-body">
+      <p>
+        Taxa de crescimento anual composta (CAGR), em termos reais, calculada em janelas móveis de diferentes durações ao longo do backtest. Janelas mais curtas mostram mais volatilidade; janelas mais longas convergem para o retorno de longo prazo da carteira.
+      </p>
+      <div class="window-toggle" role="group" aria-label="Selecionar janela móvel">
+        <button type="button" class="window-btn" data-window="1">1 ano</button>
+        <button type="button" class="window-btn" data-window="3">3 anos</button>
+        <button type="button" class="window-btn" data-window="5">5 anos</button>
+        <button type="button" class="window-btn active" data-window="10">10 anos</button>
+      </div>
+      <div class="chart-card" style="margin: 16px 0 8px;">
+        <div class="chart-svg-wrap" id="rollingChartWrap"></div>
+        <div class="chart-tooltip" id="rollingTooltip"></div>
+        <div class="chart-legend">
+          <span class="sw"><span class="dot" style="background:#1E6B4F;"></span>CAGR real da janela selecionada</span>
+          <span class="sw"><span class="dot" style="background:#B98B32; border-radius:0; width:14px; height:2px;"></span>CAGR real do período completo (7,01% a.a.)</span>
+        </div>
+        <div class="chart-caption" id="rollingChartCaption"></div>
+      </div>
+    </div>
+  </details>
+
+  <h2 id="bootstrap-explicacao" class="reveal"><span class="num">02</span>Como 20 anos de dados se transformaram em milhares de futuros possíveis?</h2>
+  <p class="section-lead">Antes de ver os números, vale entender alguns conceitos fundamentais para a simulação.</p>
+
+  <h3>"O que é esse tal de bootstrap?"</h3>
+  <div class="prose">
+    <p>
+      O período de 20 anos de dados históricos da carteira
+      não é suficiente pra dizer que "retirar X% é seguro para preservar o patrimônio perpetuamente " — ele é apenas <em>um</em> caminho que os
+      mercados percorreram, entre infinitos outros que poderiam ter acontecido. Se a crise de 2008
+      tivesse vindo em outro momento, ou se dois anos ruins seguidos tivessem caído logo no início em
+      vez de no meio, o resultado poderia ser bem diferente. Achar a PWR sem simulação computacional seria pressupor que os próximos 20, 40, 60, 80, X anos, seriam exatamente como foram os 20 anos que acabaram de ocorrer, o que é praticamente impossível.
+    </p>
+    <p>
+      A técnica de bootstrap resolve isso assim: imagine cortar esses 20 anos em pedaços de cerca de 1 ano cada — como cartas de baralho, só que cada carta é "um ano de retornos reais da carteira". Agora
+      embaralhe essas cartas e vá puxando uma atrás da outra, com reposição (a mesma carta pode sair
+      mais de uma vez), até formar uma sequência de 60 anos. Repita esse embaralhamento 10.000 vezes,
+      e você tem 10.000 "histórias alternativas" — todas construídas com pedaços de dados reais, mas
+      em ordens diferentes, que nunca aconteceram exatamente assim, mas poderiam ter acontecido.
+    </p>
+    <p>
+      Por que não simplesmente sortear meses aleatórios um por um, soltos, sem manter os pedaços de 1
+      ano juntos? Porque isso apagaria um padrão real e importante dos mercados: crises andam em
+      grupo. Um mês ruim tende a vir seguido de outro mês ruim (pense em 2008 ou início de 2020) —
+      testamos isso diretamente nos dados da carteira, e o padrão está lá. Cortar em pedaços de ~1
+      ano e embaralhar esses pedaços preserva esse "clima" de mercado dentro de cada pedaço, em vez
+      de embaralhar mês a mês e destruir essa informação.
+    </p>
+  </div>
+
+  <h3>"Se a PWR é 'perpétua', por que simular só 60 anos?"</h3>
+  <div class="prose">
+    <p>
+      Porque simular literalmente um número infinito de anos não é possível num computador — e nem
+      precisa ser. Fizemos o teste: simulamos a mesma carteira em 40, 60, 80 e 100 anos, e vimos
+      quanto a taxa de retirada calculada mudava a cada vez que se aumentava o horizonte.
+    </p>
+    <p>
+      O resultado: entre 40 e 60 anos, a taxa ainda muda um pouco. Mas entre 80 e 100 anos, ela quase
+      não se mexe mais — a diferença é menor que um centésimo de ponto percentual. 60 anos já está perto o suficiente do "ponto de estabilização" pra servir
+      como um substituto confiável de "para sempre".
+    </p>
+  </div>
+
+  <h3>"Por que a retirada é mensal, e não uma vez por ano?"</h3>
+  <div class="prose">
+    <p>
+      Porque é assim que uma pessoa de fato vive: aposentados não sacam o dinheiro do ano inteiro em janeiro e
+      guarda embaixo do colchão até dezembro. A cada mês, sai uma fatia (1/12 da taxa de retirada
+      anual), sempre no mesmo valor em poder de compra — se a inflação sobe, o valor sacado acompanha,
+      porque toda a simulação já trabalha em termos reais desde o início. É também a abordagem mais
+      usada em réplicas modernas dos estudos clássicos de aposentadoria, que hoje em dia têm acesso a
+      dados mensais (os estudos originais dos anos 1990 só tinham dados anuais disponíveis, e por
+      isso retiravam uma vez por ano).
+    </p>
+  </div>
+
+  <h2 id="metodologia" class="reveal"><span class="num">03</span>O passo a passo</h2>
+  <p class="section-lead">Juntando tudo: da planilha de dados brutos até o número final de PWR.</p>
+
+  <ol class="steps-list">
+    <li>
+      <div class="step-title">Montar os retornos mensais reais da carteira</div>
+      <div class="step-desc">
+        Juntei os 5 ativos pelos pesos-alvo (40/30/20/5/5), com rebalanceamento mensal, descontei a
+        taxa de administração de cada ETF e corrigi tudo pela inflação brasileira (IPCA). O resultado são 246
+        "fotos mensais" de como essa carteira teria se comportado, em poder de compra real, de
+        jan/2006 a jun/2026 (backtest).
+      </div>
+    </li>
+    <li>
+      <div class="step-title">Verificar se os meses "andam juntos"</div>
+      <div class="step-desc">
+        Testei estatisticamente se meses ruins tendem a vir agrupados (explicado na seção acima) e a resposta foi um "sim". Isso definiu o tamanho dos "pedaços" usados no embaralhamento do próximo passo — cerca de 12 meses cada.
+      </div>
+    </li>
+    <li>
+      <div class="step-title">Embaralhar e esticar até 60 anos</div>
+      <div class="step-desc">
+        Bootstrap estacionário (a técnica de embaralhar pedaços de ~1 ano, com reposição, explicada
+        na seção acima). Gerei 10.000 trajetórias de 60 anos cada, todas construídas a partir dos mesmos 246
+        meses reais, só que recombinados de formas diferentes.
+      </div>
+    </li>
+    <li>
+      <div class="step-title">Testar cada taxa de retirada, mês a mês</div>
+      <div class="step-desc">
+        Para uma taxa de retirada candidata (ex: 5% ao ano), simulei a carteira sacando 1/12 desse
+        valor todo mês, ao longo dos 60 anos, em cada uma das 10.000 trajetórias. Uma trajetória é
+        "sucesso" se o patrimônio real no final ainda está igual ou maior que o valor inicial —
+        mesmo que tenha caído no meio do caminho e se recuperado depois.
+      </div>
+    </li>
+    <li>
+      <div class="step-title">Achar a taxa certa por tentativa e erro</div>
+      <div class="step-desc">
+        Testei várias taxas de retirada até achar a maior que proporcionasse 90% ou 95% de sucesso nas
+        10.000 trajetórias. Repeti tudo com o dobro e o quádruplo de trajetórias, e com horizontes
+        diferentes, só para confirmar que o resultado não estava mudando por acaso — e não mudou.
+      </div>
+    </li>
+  </ol>
+
+  <h2 id="resultados" class="reveal"><span class="num">04</span>Resultados</h2>
+  <p class="section-lead">
+    A PWR não é um número único — é uma curva. Quanto maior a taxa de retirada, menor a
+    probabilidade de que o patrimônio real se preserve ao final dos 60 anos em todas as carteiras.
+  </p>
+
+  <div class="chart-card">
+    <div class="chart-svg-wrap">
+      <svg class="chart" id="resultsSvg" viewBox="0 0 800 360" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Gráfico mostrando a taxa de sucesso simulada em 60 anos para cada taxa de retirada anual real, de 1% a 9%. A curva começa em 100% de sucesso e cai progressivamente, cruzando 90% perto de 5,16% e 95% perto de 4,75%.">
+        <g stroke="#D7DBCF" stroke-width="1">
+          <line x1="50" y1="20" x2="50" y2="320"/>
+          <line x1="50" y1="320" x2="780" y2="320"/>
+          <line x1="50" y1="245" x2="780" y2="245" stroke-dasharray="2,3"/>
+          <line x1="50" y1="170" x2="780" y2="170" stroke-dasharray="2,3"/>
+          <line x1="50" y1="95" x2="780" y2="95" stroke-dasharray="2,3"/>
+        </g>
+        <g fill="#5B6259" font-size="11">
+          <text x="40" y="324" text-anchor="end">0%</text>
+          <text x="40" y="249" text-anchor="end">25%</text>
+          <text x="40" y="174" text-anchor="end">50%</text>
+          <text x="40" y="99" text-anchor="end">75%</text>
+          <text x="40" y="24" text-anchor="end">100%</text>
+        </g>
+        <g fill="#5B6259" font-size="11">
+          <text x="50" y="338">1%</text>
+          <text x="232" y="338" text-anchor="middle">3%</text>
+          <text x="414" y="338" text-anchor="middle">5%</text>
+          <text x="596" y="338" text-anchor="middle">7%</text>
+          <text x="780" y="338" text-anchor="end">9%</text>
+        </g>
+        <text x="415" y="356" text-anchor="middle" font-size="12" fill="#5B6259">Taxa de retirada anual (real)</text>
+
+        <path d="M 50.0,20.0 L 59.1,20.0 L 68.2,20.0 L 77.4,20.0 L 86.5,20.0 L 95.6,20.0 L 104.8,20.0 L 113.9,20.0 L 123.0,20.0 L 132.1,20.0 L 141.2,20.0 L 150.4,20.0 L 159.5,20.0 L 168.6,20.0 L 177.8,20.0 L 186.9,20.0 L 196.0,20.0 L 205.1,20.0 L 214.2,20.0 L 223.4,20.1 L 232.5,20.1 L 241.6,20.1 L 250.8,20.2 L 259.9,20.2 L 269.0,20.4 L 278.1,20.7 L 287.2,20.9 L 296.4,21.3 L 305.5,21.6 L 314.6,22.2 L 323.8,22.8 L 332.9,23.7 L 342.0,24.6 L 351.1,25.9 L 360.3,27.2 L 369.4,28.7 L 378.5,31.2 L 387.6,33.5 L 396.8,36.7 L 405.9,39.6 L 415.0,43.3 L 424.1,47.4 L 433.2,51.6 L 442.4,56.8 L 451.5,62.0 L 460.6,68.1 L 469.7,74.5 L 478.9,80.7 L 488.0,88.6 L 497.1,96.3 L 506.2,104.3 L 515.4,112.3 L 524.5,120.6 L 533.6,129.4 L 542.8,138.7 L 551.9,147.6 L 561.0,156.3 L 570.1,165.7 L 579.2,174.5 L 588.4,182.9 L 597.5,192.4 L 606.6,201.5 L 615.8,210.1 L 624.9,218.8 L 634.0,227.7 L 643.1,236.1 L 652.2,243.4 L 661.4,249.6 L 670.5,256.3 L 679.6,262.1 L 688.8,268.2 L 697.9,273.9 L 707.0,278.9 L 716.1,283.4 L 725.2,287.8 L 734.4,291.9 L 743.5,295.1 L 752.6,298.4 L 761.8,301.2 L 770.9,304.0 L 780.0,306.2"
+          fill="none" stroke="#1E6B4F" stroke-width="2.5" stroke-linecap="round"/>
+
+        <circle cx="429.8" cy="50.0" r="5" fill="#B98B32" stroke="#fff" stroke-width="1.5"/>
+        <circle cx="391.9" cy="35.0" r="5" fill="#A8402A" stroke="#fff" stroke-width="1.5"/>
+
+        <rect x="600" y="34" width="180" height="66" rx="4" fill="#F9FAF6" stroke="#D7DBCF" stroke-width="1"/>
+        <circle cx="618" cy="54" r="5" fill="#B98B32"/>
+        <text x="632" y="58" font-size="12.5" fill="#171A18" font-weight="600">PWR@90% = 5,16%</text>
+        <circle cx="618" cy="80" r="5" fill="#A8402A"/>
+        <text x="632" y="84" font-size="12.5" fill="#171A18" font-weight="600">PWR@95% = 4,75%</text>
+
+        <line id="resultsHoverLine" x1="0" y1="20" x2="0" y2="320" stroke="#171A18" stroke-width="1" stroke-dasharray="3,3" opacity="0"/>
+        <circle id="resultsHoverDot" cx="0" cy="0" r="5" fill="#171A18" stroke="#F7F5EF" stroke-width="2" opacity="0"/>
+        <rect id="resultsHoverCapture" x="50" y="20" width="730" height="300" fill="transparent"/>
+      </svg>
+    </div>
+    <div class="chart-tooltip" id="resultsTooltip"></div>
+    <div class="chart-caption">Taxa de retirada anual real (eixo x) vs. taxa de sucesso simulada em 60 anos (eixo y) — 10.000 trajetórias, bootstrap estacionário. Passe o cursor para ver o par exato.</div>
+  </div>
+
+  <div class="table-wrap">
+    <table class="data">
+      <caption>PWR real anual para diferentes níveis de taxa de sucesso desejada</caption>
+      <thead>
+        <tr><th>Taxa de sucesso</th><th class="num">PWR (real, a.a.)</th><th class="num">Nunca-drawdown*</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>75%</td><td class="num">5,880%</td><td class="num">10,16%</td></tr>
+        <tr><td>80%</td><td class="num">5,687%</td><td class="num">11,39%</td></tr>
+        <tr><td>85%</td><td class="num">5,443%</td><td class="num">12,63%</td></tr>
+        <tr class="highlight"><td>90%</td><td class="num">5,163%</td><td class="num">14,02%</td></tr>
+        <tr class="highlight"><td>95%</td><td class="num">4,752%</td><td class="num">16,57%</td></tr>
+        <tr><td>99%</td><td class="num">4,022%</td><td class="num">20,07%</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <p style="font-size:13px; color:var(--muted);">
+    * Fração de trajetórias em que o patrimônio real nunca cai abaixo do valor inicial em nenhum
+    momento — métrica complementar mais estrita que a definição de PWR usada (que permite
+    drawdown temporário, desde que recupere até o final do horizonte).
+  </p>
+
+  <h2 id="calculadora" class="reveal"><span class="num">05</span>Calculadora: teste a taxa de retirada</h2>
+  <p class="section-lead">
+    Ajuste o slider para ver a taxa de sucesso simulada para qualquer taxa de retirada entre 1% e
+    9% ao ano, em termos reais, para esta carteira específica.
+  </p>
+
+  <div class="simulator">
+    <div class="sim-head">
+      <div class="promise-label" style="margin-bottom:0;">Simulador</div>
+      <h3>Simulador de PWR</h3>
+    </div>
+
+    <div class="sim-row">
+      <span class="sim-label">Taxa de retirada anual (real)</span>
+      <span class="sim-value" id="wLabel">5,0%</span>
+    </div>
+    <input type="range" id="wSlider" min="1.0" max="9.0" step="0.1" value="5.0" aria-label="Taxa de retirada anual real, de 1% a 9%">
+
+    <div class="sim-results">
+      <div class="sim-cell">
+        <div class="l">Taxa de sucesso em 60 anos</div>
+        <div class="v" id="successLabel">92,22%</div>
+        <div class="sim-bar-track"><div class="sim-bar-fill" id="successBar" style="width:92%"></div></div>
+      </div>
+      <div class="sim-cell">
+        <div class="l">Sobre um patrimônio de</div>
+        <div class="v" id="amountLabel" style="font-size:1.15rem;">R$ 1.000.000</div>
+        <div class="mono" style="font-size: 13px; color: var(--muted); margin-top:8px;">
+          = <span id="monthlyLabel">R$ 4.167</span>/mês
+        </div>
+      </div>
+    </div>
+    <p class="sim-note">
+      Simulação sobre a carteira 40/30/20/5/5 (B5P211/VWRA11/DIVO11/CDIB11/GOLD11) descrita neste
+      artigo, com os retornos históricos de 2006–2026 reamostrados via bootstrap estacionário.
+      Não é recomendação de investimento e desempenho passado não garante resultado futuro.
+    </p>
+  </div>
+
+  <h2 id="robustez" class="reveal"><span class="num">06</span>Detalhes técnicos: verificação de robustez do método</h2>
+  <p class="section-lead">Toda escolha metodológica tem um grau de arbitrariedade. O importante é esclarecer as escolhas e testar o quão coerentes elas são.</p>
+
+  <h3>Tamanho de bloco do bootstrap</h3>
+  <div class="chart-card">
+    <div class="chart-svg-wrap">
+      <svg class="chart" viewBox="0 0 700 200" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Gráfico de barras mostrando a PWR@90% calculada para diferentes tamanhos de bloco do bootstrap: 5,17% para 6 meses, 5,16% para 9 meses, 5,17% para 12 meses (escolha usada), 5,27% para 18 meses e 5,37% para 24 meses.">
+        <g font-size="11" fill="#5B6259">
+          <text x="10" y="20">PWR@90%</text>
+        </g>
+        <g>
+          <rect x="60"  y="59"  width="90" height="111" fill="#6FA382"/>
+          <rect x="180" y="63"  width="90" height="107" fill="#6FA382"/>
+          <rect x="300" y="55"  width="90" height="115" fill="#1E6B4F"/>
+          <rect x="420" y="18"  width="90" height="152" fill="#B98B32"/>
+          <rect x="540" y="0"   width="90" height="170" fill="#A8402A"/>
+        </g>
+        <g font-family="IBM Plex Mono" font-size="12" fill="#171A18" text-anchor="middle">
+          <text x="105" y="185">6m</text>
+          <text x="225" y="185">9m</text>
+          <text x="345" y="185" font-weight="700">12m ✓</text>
+          <text x="465" y="185">18m</text>
+          <text x="585" y="185">24m</text>
+        </g>
+        <g font-family="IBM Plex Mono" font-size="11" fill="#fff" text-anchor="middle">
+          <text x="105" y="75">5,17%</text>
+          <text x="225" y="79">5,16%</text>
+          <text x="345" y="71">5,17%</text>
+          <text x="465" y="34">5,27%</text>
+          <text x="585" y="16">5,37%</text>
+        </g>
+      </svg>
+    </div>
+    <div class="chart-caption">PWR@90% por comprimento médio de bloco — estável até ~12 meses, diverge acima disso (amostra curta)</div>
+  </div>
+  <div class="prose">
+    <p>
+      O resultado é estável na faixa de 6 a 12 meses (variação de apenas ~0,01 p.p.), mas começa a
+      subir de forma mais perceptível em blocos de 18-24 meses. Isso acontece porque, com apenas 246
+      meses de amostra, blocos muito longos deixam poucas combinações possíveis de reamostragem — o
+      bootstrap passa a produzir trajetórias parecidas demais com a única história observada, o que
+      tende a desfigurar a PWR estimada. A escolha de 12 meses está na região estável da curva, não na
+      região distorcida.
+    </p>
+  </div>
+
+  <h3>Horizonte de simulação</h3>
+  <div class="table-wrap">
+    <table class="data">
+      <caption>PWR calculada para diferentes horizontes de simulação, mostrando convergência</caption>
+      <thead><tr><th>Horizonte</th><th class="num">PWR@90%</th><th class="num">PWR@95%</th></tr></thead>
+      <tbody>
+        <tr><td>40 anos</td><td class="num">5,071%</td><td class="num">4,615%</td></tr>
+        <tr class="highlight"><td>60 anos (usado)</td><td class="num">5,167%</td><td class="num">4,741%</td></tr>
+        <tr><td>80 anos</td><td class="num">5,187%</td><td class="num">4,774%</td></tr>
+        <tr><td>100 anos</td><td class="num">5,196%</td><td class="num">4,785%</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="prose">
+    <p>
+      A diferença entre 80 e 100 anos já é menor que 0,01 p.p. — a curva está claramente achatando.
+      60 anos captura a maior parte da convergência para o valor "verdadeiramente perpétuo", que
+      deve estar apenas alguns centésimos de ponto percentual acima do que reportamos aqui.
+    </p>
+  </div>
+
+  <h3>Piso de sanidade: pior janela histórica real</h3>
+  <div class="prose">
+    <p>
+      Sem qualquer reamostragem — olhando só para a história realmente observada — a pior janela
+      rolante de 10 anos teve CAGR real de <strong>4,49% a.a.</strong>, na mesma ordem de grandeza da
+      PWR@95% calculada (4,75%). É um sinal de consistência: o resultado simulado não está
+      artificialmente otimista frente ao que de fato aconteceu no pior momento observado.
+    </p>
+  </div>
+
+  <h2 id="limitacoes" class="reveal"><span class="num">07</span>Limitações do estudo</h2>
+  <ul class="limits-list">
+    <li><strong>Amostra de ~20 anos</strong> para estimar um comportamento pensado para "sempre" — é uma extrapolação relativamente longa a partir de uma janela de dados curta.</li>
+    <li><strong>Os índices usados no lugar dos ETFs</strong> não capturam eventuais diferenças de rastreamento entre o ETF real e o índice que ele persegue (tracking error).</li>
+    <li><strong>Retornos passados</strong> não necessariamente se repetirão no futuro. Por mais que tenhamos usado bootstrap, os blocos de 1 ano que reamostramos pertencem ao passado, que se fez com acontecimentos específicos. Momentos inéditos de bull ou bear market podem surgir.</li>
+  </ul>
+
+  <div class="recap">
+    <div class="cap">Para levar com você</div>
+    <ol>
+      <li>PWR e SWR são coisas completamente diferentes! A ideia da "regra dos 4%" não tem conexão direta com este artigo, porque ela é uma SWR de 30 anos, simulada com dados anuais de 1926 a 1995 para uma carteira de 50% RV e 50% RF dos EUA.</li>
+      <li>Carteiras devem servir às necessidades específicas de cada objetivo de cada investidor. Todas são diferentes entre si e têm um histórico (backtest) diferente, logo, não faz sentido tentar achar uma "PWR para o Brasil" ou "PWR Universal". </li>
+      <li>Um bom cálculo de PWR precisa de simulação computacional, onde os dados históricos são utilizados para criar milhares de futuros possíveis.</li>
+      <li>Encontrar a PWR depende da taxa de sucesso desejada, ela não é um número único. Quanto mais próximo do 100% de sucesso (o que é desnecesariamente cauteloso), muito menor será a PWR.</li>
+      <li>A limitação da amostra de dados pode ser contornada usando proxies e técnicas como bootstrap estacionário, mas não muda o fato de que a limitação ainda está lá.</li>
+      <li>Com Python e Inteligência Artificial, você mesmo pode calcular a PWR para a sua carteira de aposentadoria. Achar esse dado de maneira personalizada é muito melhor do que usar regras de bolso.</li>
+      <li>PWR e SWR são assuntos que só fazem sentido se você possui uma estratégia de investimento muito bem montada e seguida com disciplina. Não faz sentido pensar em taxa de retirada se nem uma carteira "sólida" você tem.</li>
+    </ol>
+  </div>
+
+<div class="cta">
+  <div class="cta-text">
+    <h3>O que você pode aprender na sequência?</h3>
+    <p>Simulação de SWR em diferentes janelas com dados reais em uma carteira de Aposentadoria.</p>
+  </div>
+
+  <div class="cta-buttons">
+    <a class="cta-btn" href="#">Assinar a newsletter</a>
+    <a class="cta-btn" href="#">Sugira um tema</a>
+  </div>
+
+  <div class="cta-related">
+    <div class="cta-related-label">Continue lendo</div>
+    <a class="cta-related-link" href="/artigo-x.html">
+      <span class="cta-related-title">Título do artigo relacionado 1</span>
+      <span class="cta-related-arrow">→</span>
+    </a>
+    <a class="cta-related-link" href="/artigo-y.html">
+      <span class="cta-related-title">Título do artigo relacionado 2</span>
+      <span class="cta-related-arrow">→</span>
+    </a>
+  </div>
+</div>
+
+  <div class="disclaimer">
+    <div class="cap">Referências técnicas</div>
+    <ol>
+      <li>BENGEN, William P. Determining withdrawal rates using historical data. <em>Journal of Financial Planning</em>, v. 7, n. 4, p. 171-180, out. 1994.</li>
+      <li>COOLEY, Philip L.; HUBBARD, Carl M.; WALZ, Daniel T. Retirement savings: choosing a withdrawal rate that is sustainable. <em>AAII Journal</em>, v. 20, n. 2, p. 16-21, fev. 1998.</li>
+      <li>FORSYTH, Peter A. A stochastic control approach to defined contribution plan decumulation: "the nastiest, hardest problem in finance". <em>arXiv preprint</em>, arXiv:2101.02760, 2021. Disponível em: https://arxiv.org/abs/2101.02760. Acesso em: 09 ago. 2026.</li>
+      <li>PATTON, Andrew; POLITIS, Dimitris N.; WHITE, Halbert. Correction to "Automatic block-length selection for the dependent bootstrap" by D. Politis and H. White. <em>Econometric Reviews</em>, v. 28, n. 4, p. 372-375, 2009.</li>
+      <li>POLITIS, Dimitris N.; ROMANO, Joseph P. The stationary bootstrap. <em>Journal of the American Statistical Association</em>, v. 89, n. 428, p. 1303-1313, 1994.</li>
+      <li>POLITIS, Dimitris N.; WHITE, Halbert. Automatic block-length selection for the dependent bootstrap. <em>Econometric Reviews</em>, v. 23, n. 1, p. 53-70, 2004.</li>
+      <li>PORTFOLIO CHARTS. <em>Withdrawal rates methodology</em>. Disponível em: https://portfoliocharts.com/withdrawal-rates-methodology/. Acesso em: 09 ago. 2026.</li>
+      <li>THE POOR SWISS. <em>Updated Trinity study for 2026 — more withdrawal rates!</em> Disponível em: https://thepoorswiss.com/updated-trinity-study/. Acesso em: 09 ago. 2026.</li>
+    </ol>
+  </div>
+
+  <div class="disclaimer">
+    <div class="cap">Bases de dados utilizadas</div>
+    <ol>
+      <li>Proxy do B5P211 = IMA-B5. Disponível em: https://data.anbima.com.br/indices/consulta/ima/resultados-diarios/ima-b-5. Acesso em: 09 ago. 2026.</li>
+      <li>Proxy do DIVO11 = IDIV. Disponível em: https://www.b3.com.br/pt_br/market-data-e-indices/indices/indices-de-segmentos-e-setoriais/indice-dividendos-idiv-estatisticas-historicas.htm. Acesso em: 09 ago. 2026.</li>
+      <li>Proxy do CDIB11 = CDI. Disponível em: https://www.soscalculos.com.br/informacoes/indexadores-economicos/cdi-historico/?periodo=all. Acesso em: 09 ago. 2026.</li>
+      <li>Proxy do VWRA11 = FTSE All World (USD). Disponível em: https://curvo.eu/backtest/pt/indice/ftse-all-world?currency=usd. Acesso em: 09 ago. 2026.</li>
+      <li>Proxy do GOLD11 = Gold (USD/oz). Disponível em: https://eco3min.fr/en/gold-price-history-dataset/. Acesso em: 09 ago. 2026.</li>
+      <li>Dados sobre Câmbio:https://maisretorno.com/indice/dolar. Acesso em: 09 ago. 2026.</li>
+      <li>Dados sobre IPCA:https://www.ipeadata.gov.br/ExibeSerie.aspx?serid=38590&module=M. Acesso em: 09 ago. 2026.</li>
+    </ol>
+  </div>
+
+  <div class="disclaimer">
+    <div class="cap">Isenção de responsabilidade</div>
+    <p>Este artigo tem finalidade exclusivamente educacional e não constitui recomendação de investimento, tributária ou de planejamento financeiro personalizada. O conteúdo publicado neste espaço é fornecido exclusivamente para fins educacionais e de entretenimento, com base na liberdade de expressão garantida pelos artigos 5º, inciso IV, e 220 da Constituição Federal de 1988. Nada contido neste site deve ser interpretado como recomendação direta de compra/venda de ativos ou aconselhamento financeiro individualizado. Os ativos, estratégias, cenários ou ferramentas apresentados refletem apenas minhas opiniões, simulações e experiências pessoais, que podem não ser adequadas ao seu perfil de risco ou aos seus objetivos. Rendimentos e resultados passados não garantem retornos futuros. Calculadoras e ferramentas de simulação geram apenas estimativas probabilísticas, e não previsões exatas de mercado. Como autor deste site, não me responsabilizo por eventuais perdas, danos ou consequências financeiras decorrentes de decisões tomadas com base no conteúdo lido. As opiniões registradas por leitores na área de comentários são de responsabilidade exclusiva de quem as publica e não representam meu posicionamento oficial. Todo o conteúdo é direcionado primariamente ao público residente no Brasil - acessos originados de outros países exigem a verificação de conformidade com as leis e regulamentações locais.</p>
+  </div>
+
+  <div class="engage">
+    <div class="engage-row">
+      <button type="button" class="like-btn" id="likeBtn" aria-pressed="false">
+        <svg class="like-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 10v11"/><path d="M7 10 11 2a2.5 2.5 0 0 1 2.5 2.5V9h5.3a2 2 0 0 1 1.98 2.3l-1.2 8A2 2 0 0 1 17.6 21H7"/></svg>
+        <span>Achei útil</span>
+        <span class="like-count" id="likeCount">&ndash;</span>
+      </button>
+      <div class="share-group">
+        <span class="share-label">Compartilhar</span>
+        <a class="share-btn" href="https://api.whatsapp.com/send?text=Qual%20%C3%A9%20a%20PWR%20da%20minha%20carteira%3F%20https%3A//independenciacalculada.com.br/pwr-carteira-fire/" target="_blank" rel="noopener" aria-label="Compartilhar no WhatsApp"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M17.5 14.4c-.3-.1-1.7-.9-2-1-.3-.1-.5-.1-.7.1-.2.3-.8 1-.9 1.2-.2.2-.3.2-.6.1-.3-.1-1.2-.4-2.3-1.4-.9-.8-1.4-1.7-1.6-2-.2-.3 0-.5.1-.6.1-.1.3-.3.4-.5.1-.1.2-.3.3-.5.1-.2 0-.4 0-.5C10 9 9.5 7.8 9.3 7.3c-.2-.5-.4-.4-.6-.4h-.5c-.2 0-.5.1-.7.3-.2.3-.9.9-.9 2.2s1 2.5 1.1 2.7c.1.2 2 3 4.8 4.3.7.3 1.2.5 1.6.6.7.2 1.3.2 1.8.1.5-.1 1.7-.7 1.9-1.3.2-.6.2-1.2.2-1.3-.1-.1-.3-.2-.6-.3z"/><path d="M12 2a10 10 0 0 0-8.5 15.2L2 22l4.9-1.5A10 10 0 1 0 12 2zm0 18a8 8 0 0 1-4.3-1.3l-.3-.2-3 .9.9-2.9-.2-.3A8 8 0 1 1 12 20z"/></svg></a>
+        <a class="share-btn" href="https://www.linkedin.com/sharing/share-offsite/?url=https%3A//independenciacalculada.com.br/pwr-carteira-fire/" target="_blank" rel="noopener" aria-label="Compartilhar no LinkedIn"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M6.94 5a2 2 0 1 1-4-.02 2 2 0 0 1 4 .02zM7 8.48H3V21h4V8.48zM13.32 8.48H9.5V21h3.8v-6.4c0-1.7.32-3.34 2.42-3.34 2.07 0 2.1 1.94 2.1 3.45V21H21.8v-7.02c0-3.63-.78-6.42-5.02-6.42-2.04 0-3.4 1.12-3.96 2.18h-.05V8.48z"/></svg></a>
+        <a class="share-btn" href="https://twitter.com/intent/tweet?url=https%3A//independenciacalculada.com.br/pwr-carteira-fire/&amp;text=Qual%20%C3%A9%20a%20PWR%20da%20minha%20carteira%3F" target="_blank" rel="noopener" aria-label="Compartilhar no X"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M18.9 2H22l-7.6 8.7L23.3 22h-7l-5.5-7.2L4.5 22H1.4l8.1-9.3L1 2h7.2l5 6.6L18.9 2zm-1.2 18h1.7L7.4 3.9H5.6L17.7 20z"/></svg></a>
+        <button type="button" class="share-btn" id="copyLinkBtn" aria-label="Copiar link"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.5.5l2-2a5 5 0 0 0-7-7l-1.2 1.1"/><path d="M14 11a5 5 0 0 0-7.5-.5l-2 2a5 5 0 0 0 7 7l1.1-1.1"/></svg></button>
+      </div>
+    </div>
+  </div>
+
+  <div class="comments-section">
+    <div class="cap">Comentários</div>
+    <p class="comments-note">Deixe seu comentário abaixo — ele passa por moderação manual antes de aparecer publicamente.</p>
+    <div id="cusdis_thread"
+      data-host="https://cusdis.com"
+      data-app-id="SEU_APP_ID_CUSDIS"
+      data-page-id="pwr-carteira-fire"
+      data-page-url="https://independenciacalculada.com.br/pwr-carteira-fire/"
+      data-page-title="Qual é a PWR da minha carteira?"></div>
+    <script async defer src="https://cusdis.com/js/cusdis.es.js"></script>
+  </div>
+
+</main>
+
+<footer>
+  Independência Calculada — Planejamento financeiro para atingir sua liberdade.<br>
+  Metodologia completa, dados e código: disponíveis mediante solicitação.<br>
+  Conteúdo educacional, não é recomendação de investimento.
+</footer>
+
+<script>
+(function() {
+  "use strict";
+
+  /* ---------- barra de progresso de leitura ---------- */
+  var progressFill = document.getElementById('progressFill');
+  function updateProgress(){
+    var h = document.documentElement;
+    var scrollTop = h.scrollTop || document.body.scrollTop;
+    var scrollHeight = (h.scrollHeight || document.body.scrollHeight) - h.clientHeight;
+    var pct = scrollHeight > 0 ? (scrollTop / scrollHeight) * 100 : 0;
+    progressFill.style.width = pct.toFixed(2) + '%';
+  }
+
+  /* ---------- botão voltar ao topo ---------- */
+  var backToTop = document.getElementById('backToTop');
+  function updateBackToTop(){
+    if(window.scrollY > 600){ backToTop.classList.add('show'); }
+    else{ backToTop.classList.remove('show'); }
+  }
+  backToTop.addEventListener('click', function(){
+    window.scrollTo({ top:0, behavior: 'smooth' });
+  });
+
+  window.addEventListener('scroll', function(){
+    updateProgress();
+    updateBackToTop();
+  }, { passive:true });
+  updateProgress();
+  updateBackToTop();
+
+  /* ---------- navegação lateral (TOC) ---------- */
+  var tocLinks = Array.prototype.slice.call(document.querySelectorAll('#tocRail a'));
+  var sections = tocLinks.map(function(a){
+    return document.getElementById(a.getAttribute('href').slice(1));
+  }).filter(Boolean);
+
+  if('IntersectionObserver' in window && sections.length){
+    var tocObserver = new IntersectionObserver(function(entries){
+      entries.forEach(function(entry){
+        var link = document.querySelector('#tocRail a[href="#' + entry.target.id + '"]');
+        if(!link) return;
+        if(entry.isIntersecting){
+          tocLinks.forEach(function(l){ l.classList.remove('active'); });
+          link.classList.add('active');
+        }
+      });
+    }, { rootMargin: '-45% 0px -50% 0px', threshold: 0 });
+    sections.forEach(function(s){ tocObserver.observe(s); });
+  }
+
+  /* ---------- reveal on scroll ---------- */
+  var revealEls = document.querySelectorAll('.reveal');
+  if('IntersectionObserver' in window && revealEls.length){
+    var revealObserver = new IntersectionObserver(function(entries, obs){
+      entries.forEach(function(entry){
+        if(entry.isIntersecting){
+          entry.target.classList.add('visible');
+          obs.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.12 });
+    revealEls.forEach(function(el){ revealObserver.observe(el); });
+  } else {
+    revealEls.forEach(function(el){ el.classList.add('visible'); });
+  }
+
+  /* ---------- dados: gráficos ano a ano e CAGR em janelas móveis ---------- */
+  var ANNUAL_LABELS = ["2006", "2007", "2008", "2009", "2010", "2011", "2012", "2013", "2014", "2015", "2016", "2017", "2018", "2019", "2020", "2021", "2022", "2023", "2024", "2025", "2026*"];
+  var ANNUAL_RETURN_PCT = [16.91, 6.5, -10.37, 12.04, 4.84, 5.48, 13.37, 4.31, 0.61, 2.9, 7.59, 15.29, 6.83, 19.6, 15.31, -1.45, -6.54, 9.74, 13.15, 11.1, 2.01];
+  var FULL_PERIOD_CAGR = 7.009;
+  var ROLLING_DATA = {"1": {"labels": ["2006-12", "2007-01", "2007-02", "2007-03", "2007-04", "2007-05", "2007-06", "2007-07", "2007-08", "2007-09", "2007-10", "2007-11", "2007-12", "2008-01", "2008-02", "2008-03", "2008-04", "2008-05", "2008-06", "2008-07", "2008-08", "2008-09", "2008-10", "2008-11", "2008-12", "2009-01", "2009-02", "2009-03", "2009-04", "2009-05", "2009-06", "2009-07", "2009-08", "2009-09", "2009-10", "2009-11", "2009-12", "2010-01", "2010-02", "2010-03", "2010-04", "2010-05", "2010-06", "2010-07", "2010-08", "2010-09", "2010-10", "2010-11", "2010-12", "2011-01", "2011-02", "2011-03", "2011-04", "2011-05", "2011-06", "2011-07", "2011-08", "2011-09", "2011-10", "2011-11", "2011-12", "2012-01", "2012-02", "2012-03", "2012-04", "2012-05", "2012-06", "2012-07", "2012-08", "2012-09", "2012-10", "2012-11", "2012-12", "2013-01", "2013-02", "2013-03", "2013-04", "2013-05", "2013-06", "2013-07", "2013-08", "2013-09", "2013-10", "2013-11", "2013-12", "2014-01", "2014-02", "2014-03", "2014-04", "2014-05", "2014-06", "2014-07", "2014-08", "2014-09", "2014-10", "2014-11", "2014-12", "2015-01", "2015-02", "2015-03", "2015-04", "2015-05", "2015-06", "2015-07", "2015-08", "2015-09", "2015-10", "2015-11", "2015-12", "2016-01", "2016-02", "2016-03", "2016-04", "2016-05", "2016-06", "2016-07", "2016-08", "2016-09", "2016-10", "2016-11", "2016-12", "2017-01", "2017-02", "2017-03", "2017-04", "2017-05", "2017-06", "2017-07", "2017-08", "2017-09", "2017-10", "2017-11", "2017-12", "2018-01", "2018-02", "2018-03", "2018-04", "2018-05", "2018-06", "2018-07", "2018-08", "2018-09", "2018-10", "2018-11", "2018-12", "2019-01", "2019-02", "2019-03", "2019-04", "2019-05", "2019-06", "2019-07", "2019-08", "2019-09", "2019-10", "2019-11", "2019-12", "2020-01", "2020-02", "2020-03", "2020-04", "2020-05", "2020-06", "2020-07", "2020-08", "2020-09", "2020-10", "2020-11", "2020-12", "2021-01", "2021-02", "2021-03", "2021-04", "2021-05", "2021-06", "2021-07", "2021-08", "2021-09", "2021-10", "2021-11", "2021-12", "2022-01", "2022-02", "2022-03", "2022-04", "2022-05", "2022-06", "2022-07", "2022-08", "2022-09", "2022-10", "2022-11", "2022-12", "2023-01", "2023-02", "2023-03", "2023-04", "2023-05", "2023-06", "2023-07", "2023-08", "2023-09", "2023-10", "2023-11", "2023-12", "2024-01", "2024-02", "2024-03", "2024-04", "2024-05", "2024-06", "2024-07", "2024-08", "2024-09", "2024-10", "2024-11", "2024-12", "2025-01", "2025-02", "2025-03", "2025-04", "2025-05", "2025-06", "2025-07", "2025-08", "2025-09", "2025-10", "2025-11", "2025-12", "2026-01", "2026-02", "2026-03", "2026-04", "2026-05", "2026-06"], "values": [16.914, 13.732, 13.554, 12.926, 15.404, 16.515, 19.09, 15.786, 17.246, 17.348, 14.302, 10.268, 6.496, 3.917, 3.817, 2.862, 2.716, 1.996, -4.296, -5.339, -8.083, -10.135, -16.886, -14.21, -10.374, -10.053, -11.811, -8.966, -9.351, -8.159, -4.189, 0.598, 4.037, 6.495, 14.185, 14.327, 12.039, 14.608, 15.123, 14.522, 9.605, 5.481, 5.967, 6.921, 3.45, 5.282, 8.575, 4.275, 4.836, 3.932, 5.432, 3.063, 4.257, 6.132, 6.104, 1.659, 3.77, 3.304, 1.767, 5.382, 5.484, 6.462, 9.131, 11.799, 13.774, 11.543, 15.322, 17.905, 16.198, 15.124, 14.721, 14.21, 13.374, 12.04, 7.513, 5.143, 4.02, 7.09, 2.482, 4.31, 5.623, 4.903, 6.257, 5.464, 4.307, 2.817, 4.484, 3.876, 3.765, 3.392, 6.215, 5.302, 6.67, 4.712, 2.083, 2.437, 0.614, 0.026, 5.518, 7.039, 7.452, 7.938, 4.269, 4.673, 0.317, 2.011, 6.122, 1.697, 2.905, 3.207, -1.383, -0.482, 0.946, -0.948, -0.706, 0.892, 3.714, 3.832, 2.444, 7.66, 7.587, 11.777, 13.237, 11.713, 11.096, 12.087, 15.935, 11.829, 13.704, 15.682, 15.726, 12.103, 15.286, 16.66, 13.262, 13.073, 13.481, 13.085, 10.644, 11.553, 12.281, 8.458, 5.267, 10.292, 6.826, 7.445, 9.303, 9.377, 9.616, 9.514, 13.491, 12.264, 12.828, 16.372, 18.386, 17.069, 19.6, 17.93, 14.532, 7.566, 12.369, 17.361, 18.243, 19.36, 18.965, 14.669, 13.596, 14.394, 15.311, 13.987, 14.611, 23.659, 16.151, 12.245, 6.248, 4.463, 1.294, 2.017, 2.986, -0.691, -1.448, -3.619, -5.379, -7.975, -10.323, -11.197, -10.282, -7.687, -7.433, -8.023, -6.705, -3.933, -6.54, -2.294, -1.232, -1.062, 2.232, 3.599, 6.869, 5.678, 5.341, 6.451, 3.059, 5.255, 9.742, 6.975, 10.303, 12.029, 11.39, 12.488, 13.828, 14.184, 17.177, 16.867, 19.902, 17.455, 13.15, 13.306, 10.69, 8.434, 9.711, 10.715, 7.517, 6.362, 5.196, 7.302, 8.697, 7.199, 11.098, 12.853, 15.28, 13.611, 13.165, 10.72, 11.115]}, "3": {"labels": ["2008-12", "2009-01", "2009-02", "2009-03", "2009-04", "2009-05", "2009-06", "2009-07", "2009-08", "2009-09", "2009-10", "2009-11", "2009-12", "2010-01", "2010-02", "2010-03", "2010-04", "2010-05", "2010-06", "2010-07", "2010-08", "2010-09", "2010-10", "2010-11", "2010-12", "2011-01", "2011-02", "2011-03", "2011-04", "2011-05", "2011-06", "2011-07", "2011-08", "2011-09", "2011-10", "2011-11", "2011-12", "2012-01", "2012-02", "2012-03", "2012-04", "2012-05", "2012-06", "2012-07", "2012-08", "2012-09", "2012-10", "2012-11", "2012-12", "2013-01", "2013-02", "2013-03", "2013-04", "2013-05", "2013-06", "2013-07", "2013-08", "2013-09", "2013-10", "2013-11", "2013-12", "2014-01", "2014-02", "2014-03", "2014-04", "2014-05", "2014-06", "2014-07", "2014-08", "2014-09", "2014-10", "2014-11", "2014-12", "2015-01", "2015-02", "2015-03", "2015-04", "2015-05", "2015-06", "2015-07", "2015-08", "2015-09", "2015-10", "2015-11", "2015-12", "2016-01", "2016-02", "2016-03", "2016-04", "2016-05", "2016-06", "2016-07", "2016-08", "2016-09", "2016-10", "2016-11", "2016-12", "2017-01", "2017-02", "2017-03", "2017-04", "2017-05", "2017-06", "2017-07", "2017-08", "2017-09", "2017-10", "2017-11", "2017-12", "2018-01", "2018-02", "2018-03", "2018-04", "2018-05", "2018-06", "2018-07", "2018-08", "2018-09", "2018-10", "2018-11", "2018-12", "2019-01", "2019-02", "2019-03", "2019-04", "2019-05", "2019-06", "2019-07", "2019-08", "2019-09", "2019-10", "2019-11", "2019-12", "2020-01", "2020-02", "2020-03", "2020-04", "2020-05", "2020-06", "2020-07", "2020-08", "2020-09", "2020-10", "2020-11", "2020-12", "2021-01", "2021-02", "2021-03", "2021-04", "2021-05", "2021-06", "2021-07", "2021-08", "2021-09", "2021-10", "2021-11", "2021-12", "2022-01", "2022-02", "2022-03", "2022-04", "2022-05", "2022-06", "2022-07", "2022-08", "2022-09", "2022-10", "2022-11", "2022-12", "2023-01", "2023-02", "2023-03", "2023-04", "2023-05", "2023-06", "2023-07", "2023-08", "2023-09", "2023-10", "2023-11", "2023-12", "2024-01", "2024-02", "2024-03", "2024-04", "2024-05", "2024-06", "2024-07", "2024-08", "2024-09", "2024-10", "2024-11", "2024-12", "2025-01", "2025-02", "2025-03", "2025-04", "2025-05", "2025-06", "2025-07", "2025-08", "2025-09", "2025-10", "2025-11", "2025-12", "2026-01", "2026-02", "2026-03", "2026-04", "2026-05", "2026-06"], "values": [3.724, 2.059, 1.305, 1.879, 2.425, 2.96, 2.977, 3.309, 3.886, 3.944, 2.749, 2.647, 2.261, 2.321, 1.769, 2.356, 0.68, -0.399, -0.954, 0.602, -0.359, 0.252, 1.004, 0.752, 1.727, 2.326, 2.294, 2.423, 1.181, 0.93, 2.512, 3.023, 3.752, 5.019, 8.056, 7.902, 7.405, 8.24, 9.823, 9.684, 9.143, 7.685, 9.045, 8.621, 7.647, 7.782, 8.225, 7.866, 7.83, 7.425, 7.348, 6.604, 7.256, 8.23, 7.836, 7.73, 8.395, 7.653, 7.449, 8.274, 7.648, 7.039, 7.026, 6.884, 7.087, 7.29, 7.874, 9.002, 9.396, 8.139, 7.56, 7.256, 5.965, 4.838, 5.831, 5.345, 5.066, 6.122, 4.311, 4.761, 4.166, 3.867, 4.802, 3.187, 2.597, 2.007, 2.827, 3.431, 4.02, 3.397, 3.218, 3.604, 3.534, 3.512, 3.533, 3.898, 3.662, 4.888, 5.622, 5.97, 6.414, 6.218, 6.275, 5.702, 5.762, 7.008, 7.955, 7.068, 8.473, 10.407, 8.145, 7.924, 8.368, 7.88, 8.398, 7.969, 9.809, 9.216, 7.664, 10.003, 9.834, 11.898, 11.919, 11.377, 11.386, 11.552, 13.336, 11.882, 12.936, 13.447, 12.982, 13.119, 13.779, 13.914, 12.343, 9.982, 11.81, 13.275, 14.083, 14.339, 14.652, 13.115, 12.284, 13.884, 13.787, 13.038, 12.788, 13.312, 12.68, 12.994, 12.552, 11.863, 10.783, 10.83, 11.467, 9.971, 10.77, 9.016, 7.493, 6.972, 5.386, 5.368, 4.07, 4.8, 3.71, 2.471, 2.959, 2.957, 2.028, 2.39, 2.316, 4.032, 2.117, 1.077, 0.62, 0.632, -0.411, -0.038, -0.328, 0.139, 0.359, 0.245, 1.018, 0.662, 0.702, 1.15, 2.958, 3.662, 4.544, 4.594, 4.855, 5.9, 5.087, 5.8, 6.44, 6.321, 7.703, 8.866, 9.36, 8.674, 9.097, 10.107, 10.334, 9.842, 11.321, 11.007, 12.069, 11.336, 11.413, 11.305, 10.79]}, "5": {"labels": ["2010-12", "2011-01", "2011-02", "2011-03", "2011-04", "2011-05", "2011-06", "2011-07", "2011-08", "2011-09", "2011-10", "2011-11", "2011-12", "2012-01", "2012-02", "2012-03", "2012-04", "2012-05", "2012-06", "2012-07", "2012-08", "2012-09", "2012-10", "2012-11", "2012-12", "2013-01", "2013-02", "2013-03", "2013-04", "2013-05", "2013-06", "2013-07", "2013-08", "2013-09", "2013-10", "2013-11", "2013-12", "2014-01", "2014-02", "2014-03", "2014-04", "2014-05", "2014-06", "2014-07", "2014-08", "2014-09", "2014-10", "2014-11", "2014-12", "2015-01", "2015-02", "2015-03", "2015-04", "2015-05", "2015-06", "2015-07", "2015-08", "2015-09", "2015-10", "2015-11", "2015-12", "2016-01", "2016-02", "2016-03", "2016-04", "2016-05", "2016-06", "2016-07", "2016-08", "2016-09", "2016-10", "2016-11", "2016-12", "2017-01", "2017-02", "2017-03", "2017-04", "2017-05", "2017-06", "2017-07", "2017-08", "2017-09", "2017-10", "2017-11", "2017-12", "2018-01", "2018-02", "2018-03", "2018-04", "2018-05", "2018-06", "2018-07", "2018-08", "2018-09", "2018-10", "2018-11", "2018-12", "2019-01", "2019-02", "2019-03", "2019-04", "2019-05", "2019-06", "2019-07", "2019-08", "2019-09", "2019-10", "2019-11", "2019-12", "2020-01", "2020-02", "2020-03", "2020-04", "2020-05", "2020-06", "2020-07", "2020-08", "2020-09", "2020-10", "2020-11", "2020-12", "2021-01", "2021-02", "2021-03", "2021-04", "2021-05", "2021-06", "2021-07", "2021-08", "2021-09", "2021-10", "2021-11", "2021-12", "2022-01", "2022-02", "2022-03", "2022-04", "2022-05", "2022-06", "2022-07", "2022-08", "2022-09", "2022-10", "2022-11", "2022-12", "2023-01", "2023-02", "2023-03", "2023-04", "2023-05", "2023-06", "2023-07", "2023-08", "2023-09", "2023-10", "2023-11", "2023-12", "2024-01", "2024-02", "2024-03", "2024-04", "2024-05", "2024-06", "2024-07", "2024-08", "2024-09", "2024-10", "2024-11", "2024-12", "2025-01", "2025-02", "2025-03", "2025-04", "2025-05", "2025-06", "2025-07", "2025-08", "2025-09", "2025-10", "2025-11", "2025-12", "2026-01", "2026-02", "2026-03", "2026-04", "2026-05", "2026-06"], "values": [5.561, 4.835, 4.762, 4.532, 4.191, 4.089, 4.19, 3.687, 3.776, 4.082, 3.69, 3.513, 3.411, 3.459, 3.933, 4.322, 3.895, 3.185, 3.522, 4.064, 3.59, 3.684, 3.765, 4.243, 4.714, 5.028, 4.663, 4.781, 4.158, 4.196, 4.948, 6.104, 6.51, 6.943, 8.991, 8.638, 7.939, 7.875, 8.273, 7.583, 7.011, 6.694, 7.135, 7.078, 7.044, 6.582, 6.576, 6.278, 5.642, 4.978, 6.403, 6.139, 6.588, 7.187, 6.789, 6.624, 6.387, 5.912, 6.089, 5.747, 5.25, 4.831, 4.99, 5.399, 5.902, 5.717, 5.382, 6.463, 6.376, 6.02, 6.23, 6.2, 5.666, 5.858, 5.768, 5.382, 5.398, 5.819, 5.493, 5.342, 5.915, 6.122, 6.416, 5.805, 6.02, 6.717, 6.876, 6.926, 7.249, 6.979, 7.123, 6.766, 7.218, 6.832, 6.217, 6.757, 6.527, 7.661, 7.844, 8.035, 8.433, 8.216, 8.552, 8.142, 8.428, 9.112, 9.412, 9.646, 10.275, 11.265, 9.627, 8.142, 9.407, 10.043, 11.317, 11.019, 12.189, 11.694, 10.911, 12.257, 12.814, 13.498, 12.972, 12.943, 12.521, 12.83, 12.834, 11.794, 11.661, 11.301, 11.028, 10.458, 10.852, 10.183, 8.986, 8.647, 7.803, 7.696, 7.195, 7.587, 7.161, 6.312, 6.345, 7.1, 6.295, 6.345, 6.042, 5.784, 5.575, 5.825, 6.453, 6.429, 5.802, 5.915, 5.895, 6.103, 6.869, 6.251, 6.235, 6.292, 5.915, 6.394, 6.516, 6.791, 6.606, 6.005, 6.165, 6.173, 5.691, 5.405, 5.513, 6.463, 5.409, 5.161, 4.509, 4.357, 4.015, 4.607, 5.233, 4.803, 4.907, 5.194, 5.636, 4.673, 4.861, 4.873, 5.45]}, "10": {"labels": ["2015-12", "2016-01", "2016-02", "2016-03", "2016-04", "2016-05", "2016-06", "2016-07", "2016-08", "2016-09", "2016-10", "2016-11", "2016-12", "2017-01", "2017-02", "2017-03", "2017-04", "2017-05", "2017-06", "2017-07", "2017-08", "2017-09", "2017-10", "2017-11", "2017-12", "2018-01", "2018-02", "2018-03", "2018-04", "2018-05", "2018-06", "2018-07", "2018-08", "2018-09", "2018-10", "2018-11", "2018-12", "2019-01", "2019-02", "2019-03", "2019-04", "2019-05", "2019-06", "2019-07", "2019-08", "2019-09", "2019-10", "2019-11", "2019-12", "2020-01", "2020-02", "2020-03", "2020-04", "2020-05", "2020-06", "2020-07", "2020-08", "2020-09", "2020-10", "2020-11", "2020-12", "2021-01", "2021-02", "2021-03", "2021-04", "2021-05", "2021-06", "2021-07", "2021-08", "2021-09", "2021-10", "2021-11", "2021-12", "2022-01", "2022-02", "2022-03", "2022-04", "2022-05", "2022-06", "2022-07", "2022-08", "2022-09", "2022-10", "2022-11", "2022-12", "2023-01", "2023-02", "2023-03", "2023-04", "2023-05", "2023-06", "2023-07", "2023-08", "2023-09", "2023-10", "2023-11", "2023-12", "2024-01", "2024-02", "2024-03", "2024-04", "2024-05", "2024-06", "2024-07", "2024-08", "2024-09", "2024-10", "2024-11", "2024-12", "2025-01", "2025-02", "2025-03", "2025-04", "2025-05", "2025-06", "2025-07", "2025-08", "2025-09", "2025-10", "2025-11", "2025-12", "2026-01", "2026-02", "2026-03", "2026-04", "2026-05", "2026-06"], "values": [5.405, 4.833, 4.876, 4.964, 5.043, 4.9, 4.784, 5.066, 5.068, 5.046, 4.952, 4.848, 4.533, 4.651, 4.847, 4.851, 4.644, 4.494, 4.503, 4.701, 4.746, 4.896, 5.082, 5.021, 5.365, 5.869, 5.764, 5.848, 5.692, 5.578, 6.03, 6.435, 6.863, 6.887, 7.595, 7.693, 7.231, 7.768, 8.058, 7.809, 7.72, 7.453, 7.841, 7.609, 7.734, 7.84, 7.984, 7.949, 7.934, 8.076, 8.003, 7.136, 7.988, 8.606, 9.029, 8.8, 9.25, 8.765, 8.473, 8.953, 8.966, 9.079, 8.908, 9.105, 9.161, 9.215, 9.044, 9.096, 8.986, 8.628, 8.603, 8.308, 8.228, 7.999, 7.365, 7.002, 6.594, 6.754, 6.341, 6.459, 6.536, 6.217, 6.381, 6.451, 6.158, 6.531, 6.458, 6.353, 6.409, 6.4, 6.787, 6.598, 6.508, 6.373, 6.056, 6.43, 6.698, 6.954, 7.037, 7.16, 7.166, 7.301, 7.529, 7.464, 7.513, 7.547, 7.776, 7.896, 7.959, 8.295, 7.55, 7.299, 7.389, 7.574, 7.859, 7.637, 8.025, 8.093, 8.035, 8.466, 8.789, 9.267, 9.242, 8.729, 8.624, 8.779, 9.079]}};
+
+  /* ---------- render: gráfico ano a ano (barras, com tooltip por ano) ---------- */
+  function renderAnnualChart(){
+    var wrap = document.getElementById('annualChartWrap');
+    if(!wrap) return;
+    var w = 720, h = 320;
+    var padL = 52, padR = 20, padT = 24, padB = 40;
+    var plotW = w - padL - padR;
+    var plotTop = padT, plotBottom = h - padB;
+    var n = ANNUAL_LABELS.length;
+
+    var minRet = Math.min.apply(null, ANNUAL_RETURN_PCT);
+    var maxRet = Math.max.apply(null, ANNUAL_RETURN_PCT);
+    var retPad = (maxRet - minRet) * 0.15;
+    var retMin = minRet - retPad, retMax = maxRet + retPad;
+
+    var slotW = plotW / n;
+    var barW = slotW * 0.52;
+
+    function xCenter(i){ return padL + slotW * (i + 0.5); }
+    function yRet(v){ return plotBottom - ((v - retMin) / (retMax - retMin)) * (plotBottom - plotTop); }
+    var yZero = yRet(0);
+
+    var svg = '<svg class="chart" viewBox="0 0 ' + w + ' ' + h + '" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Gráfico de barras do retorno real anual da carteira, variando de -10,37% em 2008 a 19,6% em 2019.">';
+
+    // gridline no zero
+    svg += '<line x1="' + padL + '" y1="' + yZero.toFixed(1) + '" x2="' + (w - padR) + '" y2="' + yZero.toFixed(1) + '" stroke="#171A18" stroke-width="1.2"/>';
+    svg += '<text x="' + (padL - 8) + '" y="' + (yZero + 4).toFixed(1) + '" text-anchor="end" font-family="IBM Plex Mono, monospace" font-size="10.5" fill="#5B6259">0%</text>';
+
+    // eixo esquerdo: min/max do retorno
+    svg += '<text x="' + (padL - 8) + '" y="' + (yRet(retMax) + 4).toFixed(1) + '" text-anchor="end" font-family="IBM Plex Mono, monospace" font-size="10.5" fill="#5B6259">' + Math.round(retMax) + '%</text>';
+    svg += '<text x="' + (padL - 8) + '" y="' + (yRet(retMin) + 4).toFixed(1) + '" text-anchor="end" font-family="IBM Plex Mono, monospace" font-size="10.5" fill="#5B6259">' + Math.round(retMin) + '%</text>';
+
+    // barras
+    for(var i = 0; i < n; i++){
+      var v = ANNUAL_RETURN_PCT[i];
+      var xC = xCenter(i);
+      var xBar = xC - barW / 2;
+      var yTop = v >= 0 ? yRet(v) : yZero;
+      var barH = Math.abs(yRet(v) - yZero);
+      var color = v >= 0 ? '#1E6B4F' : '#A8402A';
+      svg += '<rect class="annual-bar" data-i="' + i + '" x="' + xBar.toFixed(1) + '" y="' + yTop.toFixed(1) + '" width="' + barW.toFixed(1) + '" height="' + Math.max(barH,1).toFixed(1) + '" fill="' + color + '" opacity="0.88"/>';
+    }
+
+    // colunas de hover (largura total do slot, cobrindo todo o eixo vertical do plot,
+    // para facilitar passar o mouse sem precisar acertar a barra exatamente)
+    for(var j = 0; j < n; j++){
+      svg += '<rect class="hit-col" data-i="' + j + '" x="' + (padL + slotW * j).toFixed(1) + '" y="' + plotTop + '" width="' + slotW.toFixed(1) + '" height="' + (plotBottom - plotTop) + '" fill="transparent"/>';
+    }
+
+    // rótulos do eixo X (a cada ~3 anos para não poluir)
+    svg += '<g font-family="IBM Plex Mono, monospace" font-size="10" fill="#5B6259">';
+    ANNUAL_LABELS.forEach(function(lab, i){
+      if(i % 3 === 0 || i === n - 1){
+        svg += '<text x="' + xCenter(i).toFixed(1) + '" y="' + (plotBottom + 18) + '" text-anchor="middle">' + lab + '</text>';
+      }
+    });
+    svg += '</g>';
+
+    svg += '</svg>';
+    wrap.innerHTML = svg;
+
+    var caption = document.getElementById('annualChartCaption');
+    if(caption){
+      caption.textContent = 'Retorno real anual de cada ano do backtest — * 2026 é parcial, até jun/2026. Passe o cursor para ver o valor exato.';
+    }
+
+    // interação: tooltip por ano
+    var tooltip = document.getElementById('annualTooltip');
+    if(tooltip){
+      var posAnchor = wrap.closest('.chart-card') || wrap;
+      var hitCols = wrap.querySelectorAll('.hit-col');
+
+      function positionTooltip(e){
+        var rect = posAnchor.getBoundingClientRect();
+        tooltip.style.left = (e.clientX - rect.left) + 'px';
+        tooltip.style.top = (e.clientY - rect.top) + 'px';
+      }
+
+      hitCols.forEach(function(el){
+        el.addEventListener('mouseenter', function(e){
+          var i = parseInt(this.getAttribute('data-i'), 10);
+          var v = ANNUAL_RETURN_PCT[i];
+          var cls = v >= 0 ? 'tt-val-pos' : 'tt-val-neg';
+          var sign = v >= 0 ? '+' : '';
+          tooltip.innerHTML = '<span class="tt-year">' + ANNUAL_LABELS[i] + '</span><span class="' + cls + '">' + sign + v.toFixed(2).replace('.', ',') + '%</span>';
+          tooltip.classList.add('visible');
+          positionTooltip(e);
+        });
+        el.addEventListener('mousemove', positionTooltip);
+        el.addEventListener('mouseleave', function(){
+          tooltip.classList.remove('visible');
+        });
+      });
+    }
+  }
+
+  /* ---------- render: gráfico de CAGR em janelas móveis (com hover mês a mês) ---------- */
+  function renderRollingChart(windowKey){
+    var wrap = document.getElementById('rollingChartWrap');
+    if(!wrap) return;
+    var data = ROLLING_DATA[windowKey];
+    if(!data) return;
+    var labels = data.labels, values = data.values;
+
+    var w = 720, h = 300;
+    var padL = 52, padR = 20, padT = 24, padB = 40;
+    var plotW = w - padL - padR;
+    var plotTop = padT, plotBottom = h - padB;
+
+    var minV = Math.min.apply(null, values);
+    var maxV = Math.max.apply(null, values);
+    var pad = Math.max((maxV - minV) * 0.15, 0.3);
+    var yMin = minV - pad, yMax = maxV + pad;
+
+    function xAt(i){ return padL + (i / (values.length - 1)) * plotW; }
+    function yAt(v){ return plotBottom - ((v - yMin) / (yMax - yMin)) * (plotBottom - plotTop); }
+
+    var svg = '<svg class="chart" viewBox="0 0 ' + w + ' ' + h + '" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Gráfico de linha mostrando o CAGR real em janela móvel de ' + windowKey + ' ano(s), de ' + labels[0] + ' a ' + labels[labels.length-1] + ', variando entre ' + minV.toFixed(2) + '% e ' + maxV.toFixed(2) + '%.">';
+
+    // linha de referência: CAGR do período completo
+    var yFull = yAt(FULL_PERIOD_CAGR);
+    if(yFull >= plotTop && yFull <= plotBottom){
+      svg += '<line x1="' + padL + '" y1="' + yFull.toFixed(1) + '" x2="' + (w - padR) + '" y2="' + yFull.toFixed(1) + '" stroke="#B98B32" stroke-width="1.5" stroke-dasharray="4,3"/>';
+      svg += '<text x="' + (w - padR) + '" y="' + (yFull - 6).toFixed(1) + '" text-anchor="end" font-family="IBM Plex Mono, monospace" font-size="10.5" fill="#B98B32">período completo: ' + FULL_PERIOD_CAGR.toFixed(2) + '%</text>';
+    }
+
+    // eixo Y
+    svg += '<line x1="' + padL + '" y1="' + plotBottom + '" x2="' + (w - padR) + '" y2="' + plotBottom + '" stroke="#D7DBCF" stroke-width="1"/>';
+    svg += '<text x="' + (padL - 8) + '" y="' + (yAt(yMax) + 4).toFixed(1) + '" text-anchor="end" font-family="IBM Plex Mono, monospace" font-size="10.5" fill="#5B6259">' + yMax.toFixed(1) + '%</text>';
+    svg += '<text x="' + (padL - 8) + '" y="' + (yAt(yMin) + 4).toFixed(1) + '" text-anchor="end" font-family="IBM Plex Mono, monospace" font-size="10.5" fill="#5B6259">' + yMin.toFixed(1) + '%</text>';
+    if(yMin < 0 && yMax > 0){
+      var yZeroR = yAt(0);
+      svg += '<line x1="' + padL + '" y1="' + yZeroR.toFixed(1) + '" x2="' + (w - padR) + '" y2="' + yZeroR.toFixed(1) + '" stroke="#171A18" stroke-width="1"/>';
+      svg += '<text x="' + (padL - 8) + '" y="' + (yZeroR + 4).toFixed(1) + '" text-anchor="end" font-family="IBM Plex Mono, monospace" font-size="10.5" fill="#5B6259">0%</text>';
+    }
+
+    // linha principal
+    var pts = values.map(function(v, i){ return xAt(i).toFixed(1) + ',' + yAt(v).toFixed(1); });
+    svg += '<polyline fill="none" stroke="#1E6B4F" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" points="' + pts.join(' ') + '"/>';
+
+    // pontos min/max/último em destaque
+    var idxMinV = values.indexOf(minV), idxMaxV = values.indexOf(maxV);
+    [idxMinV, idxMaxV, values.length - 1].forEach(function(i){
+      var color = values[i] >= 0 ? '#1E6B4F' : '#A8402A';
+      svg += '<circle cx="' + xAt(i).toFixed(1) + '" cy="' + yAt(values[i]).toFixed(1) + '" r="4" fill="#171A18" stroke="' + color + '" stroke-width="1.5"/>';
+    });
+
+    // rótulos do eixo X (poucas datas para não poluir)
+    var nLabels = 6;
+    svg += '<g font-family="IBM Plex Mono, monospace" font-size="10" fill="#5B6259">';
+    for(var k = 0; k < nLabels; k++){
+      var idx = Math.round((k / (nLabels - 1)) * (labels.length - 1));
+      svg += '<text x="' + xAt(idx).toFixed(1) + '" y="' + (plotBottom + 18) + '" text-anchor="middle">' + labels[idx] + '</text>';
+    }
+    svg += '</g>';
+
+    // elementos de hover: linha-guia vertical + marcador, ocultos até o primeiro mousemove
+    svg += '<line id="rollingHoverLine" x1="0" y1="' + plotTop + '" x2="0" y2="' + plotBottom + '" stroke="#171A18" stroke-width="1" stroke-dasharray="3,3" opacity="0"/>';
+    svg += '<circle id="rollingHoverDot" cx="0" cy="0" r="5" fill="#171A18" stroke="#F7F5EF" stroke-width="2" opacity="0"/>';
+
+    // retângulo transparente cobrindo toda a área do gráfico, para capturar o hover
+    svg += '<rect id="rollingHoverCapture" x="' + padL + '" y="' + plotTop + '" width="' + plotW + '" height="' + (plotBottom - plotTop) + '" fill="transparent"/>';
+
+    svg += '</svg>';
+    wrap.innerHTML = svg;
+
+    var caption = document.getElementById('rollingChartCaption');
+    if(caption){
+      caption.textContent = 'Janela de ' + windowKey + ' ano(s): CAGR real mínimo de ' + minV.toFixed(2) + '% e máximo de ' + maxV.toFixed(2) + '% ao longo do backtest (' + labels[0] + ' a ' + labels[labels.length-1] + '). Passe o cursor para ver o CAGR de qualquer mês.';
+    }
+
+    // interação: segue o mouse, encontra o mês mais próximo e mostra o CAGR daquele mês
+    var tooltip = document.getElementById('rollingTooltip');
+    var svgEl = wrap.querySelector('svg');
+    var captureEl = document.getElementById('rollingHoverCapture');
+    var hoverLine = document.getElementById('rollingHoverLine');
+    var hoverDot = document.getElementById('rollingHoverDot');
+
+    if(captureEl && tooltip && svgEl){
+      var windowLabelMap = { '1': '1 ano', '3': '3 anos', '5': '5 anos', '10': '10 anos' };
+      var posAnchor = wrap.closest('.chart-card') || wrap;
+
+      function handleMove(e){
+        var svgRect = svgEl.getBoundingClientRect();
+        var scaleX = w / svgRect.width;
+        var mouseXsvg = (e.clientX - svgRect.left) * scaleX;
+        var rawIdx = ((mouseXsvg - padL) / plotW) * (values.length - 1);
+        var i = Math.round(rawIdx);
+        if(i < 0) i = 0;
+        if(i > values.length - 1) i = values.length - 1;
+
+        var xPix = xAt(i), yPix = yAt(values[i]);
+        hoverLine.setAttribute('x1', xPix.toFixed(1));
+        hoverLine.setAttribute('x2', xPix.toFixed(1));
+        hoverLine.setAttribute('opacity', '1');
+        hoverDot.setAttribute('cx', xPix.toFixed(1));
+        hoverDot.setAttribute('cy', yPix.toFixed(1));
+        hoverDot.setAttribute('opacity', '1');
+
+        var v = values[i];
+        var cls = v >= 0 ? 'tt-val-pos' : 'tt-val-neg';
+        var sign = v >= 0 ? '+' : '';
+        tooltip.innerHTML = '<span class="tt-year">' + labels[i] + ' · CAGR ' + (windowLabelMap[windowKey] || windowKey) + '</span><span class="' + cls + '">' + sign + v.toFixed(2).replace('.', ',') + '%</span>';
+        tooltip.classList.add('visible');
+
+        var wrapRect = posAnchor.getBoundingClientRect();
+        tooltip.style.left = (e.clientX - wrapRect.left) + 'px';
+        tooltip.style.top = (e.clientY - wrapRect.top) + 'px';
+      }
+
+      captureEl.addEventListener('mousemove', handleMove);
+      captureEl.addEventListener('mouseenter', handleMove);
+      captureEl.addEventListener('mouseleave', function(){
+        tooltip.classList.remove('visible');
+        hoverLine.setAttribute('opacity', '0');
+        hoverDot.setAttribute('opacity', '0');
+      });
+
+      // suporte a toque (mobile): mesma lógica no touchmove
+      captureEl.addEventListener('touchmove', function(e){
+        if(e.touches && e.touches[0]){
+          handleMove({ clientX: e.touches[0].clientX, clientY: e.touches[0].clientY });
+          e.preventDefault();
+        }
+      }, { passive: false });
+    }
+  }
+
+  /* ---------- inicialização dos gráficos e botões de janela ---------- */
+  renderAnnualChart();
+  renderRollingChart('10');
+
+  var windowButtons = document.querySelectorAll('.window-btn');
+  windowButtons.forEach(function(btn){
+    btn.addEventListener('click', function(){
+      windowButtons.forEach(function(b){ b.classList.remove('active'); });
+      btn.classList.add('active');
+      renderRollingChart(btn.getAttribute('data-window'));
+    });
+  });
+
+  // redesenha os gráficos quando os blocos recolhíveis são abertos, garantindo que o SVG
+  // tenha as dimensões corretas do container mesmo se o navegador tiver adiado o layout
+  document.querySelectorAll('details.toggle').forEach(function(det){
+    det.addEventListener('toggle', function(){
+      if(det.open){
+        if(det.querySelector('#annualChartWrap')) renderAnnualChart();
+        if(det.querySelector('#rollingChartWrap')){
+          var active = document.querySelector('.window-btn.active');
+          renderRollingChart(active ? active.getAttribute('data-window') : '10');
+        }
+      }
+    });
+  });
+
+  /* ---------- calculadora de PWR ---------- */
+  var grid = [{"taxa_retirada_pct": 1.0, "taxa_sucesso_pct": 100.0}, {"taxa_retirada_pct": 1.1, "taxa_sucesso_pct": 100.0}, {"taxa_retirada_pct": 1.2, "taxa_sucesso_pct": 100.0}, {"taxa_retirada_pct": 1.3, "taxa_sucesso_pct": 100.0}, {"taxa_retirada_pct": 1.4, "taxa_sucesso_pct": 100.0}, {"taxa_retirada_pct": 1.5, "taxa_sucesso_pct": 100.0}, {"taxa_retirada_pct": 1.6, "taxa_sucesso_pct": 100.0}, {"taxa_retirada_pct": 1.7, "taxa_sucesso_pct": 100.0}, {"taxa_retirada_pct": 1.8, "taxa_sucesso_pct": 100.0}, {"taxa_retirada_pct": 1.9, "taxa_sucesso_pct": 100.0}, {"taxa_retirada_pct": 2.0, "taxa_sucesso_pct": 100.0}, {"taxa_retirada_pct": 2.1, "taxa_sucesso_pct": 100.0}, {"taxa_retirada_pct": 2.2, "taxa_sucesso_pct": 100.0}, {"taxa_retirada_pct": 2.3, "taxa_sucesso_pct": 100.0}, {"taxa_retirada_pct": 2.4, "taxa_sucesso_pct": 100.0}, {"taxa_retirada_pct": 2.5, "taxa_sucesso_pct": 100.0}, {"taxa_retirada_pct": 2.6, "taxa_sucesso_pct": 100.0}, {"taxa_retirada_pct": 2.7, "taxa_sucesso_pct": 99.99}, {"taxa_retirada_pct": 2.8, "taxa_sucesso_pct": 99.99}, {"taxa_retirada_pct": 2.9, "taxa_sucesso_pct": 99.97}, {"taxa_retirada_pct": 3.0, "taxa_sucesso_pct": 99.95}, {"taxa_retirada_pct": 3.1, "taxa_sucesso_pct": 99.95}, {"taxa_retirada_pct": 3.2, "taxa_sucesso_pct": 99.94}, {"taxa_retirada_pct": 3.3, "taxa_sucesso_pct": 99.92}, {"taxa_retirada_pct": 3.4, "taxa_sucesso_pct": 99.87}, {"taxa_retirada_pct": 3.5, "taxa_sucesso_pct": 99.78}, {"taxa_retirada_pct": 3.6, "taxa_sucesso_pct": 99.69}, {"taxa_retirada_pct": 3.7, "taxa_sucesso_pct": 99.58}, {"taxa_retirada_pct": 3.8, "taxa_sucesso_pct": 99.45}, {"taxa_retirada_pct": 3.9, "taxa_sucesso_pct": 99.27}, {"taxa_retirada_pct": 4.0, "taxa_sucesso_pct": 99.06}, {"taxa_retirada_pct": 4.1, "taxa_sucesso_pct": 98.77}, {"taxa_retirada_pct": 4.2, "taxa_sucesso_pct": 98.47}, {"taxa_retirada_pct": 4.3, "taxa_sucesso_pct": 98.03}, {"taxa_retirada_pct": 4.4, "taxa_sucesso_pct": 97.61}, {"taxa_retirada_pct": 4.5, "taxa_sucesso_pct": 97.11}, {"taxa_retirada_pct": 4.6, "taxa_sucesso_pct": 96.27}, {"taxa_retirada_pct": 4.7, "taxa_sucesso_pct": 95.49}, {"taxa_retirada_pct": 4.8, "taxa_sucesso_pct": 94.44}, {"taxa_retirada_pct": 4.9, "taxa_sucesso_pct": 93.45}, {"taxa_retirada_pct": 5.0, "taxa_sucesso_pct": 92.22}, {"taxa_retirada_pct": 5.1, "taxa_sucesso_pct": 90.87}, {"taxa_retirada_pct": 5.2, "taxa_sucesso_pct": 89.47}, {"taxa_retirada_pct": 5.3, "taxa_sucesso_pct": 87.74}, {"taxa_retirada_pct": 5.4, "taxa_sucesso_pct": 86.0}, {"taxa_retirada_pct": 5.5, "taxa_sucesso_pct": 83.97}, {"taxa_retirada_pct": 5.6, "taxa_sucesso_pct": 81.85}, {"taxa_retirada_pct": 5.7, "taxa_sucesso_pct": 79.76}, {"taxa_retirada_pct": 5.8, "taxa_sucesso_pct": 77.12}, {"taxa_retirada_pct": 5.9, "taxa_sucesso_pct": 74.56}, {"taxa_retirada_pct": 6.0, "taxa_sucesso_pct": 71.89}, {"taxa_retirada_pct": 6.1, "taxa_sucesso_pct": 69.22}, {"taxa_retirada_pct": 6.2, "taxa_sucesso_pct": 66.47}, {"taxa_retirada_pct": 6.3, "taxa_sucesso_pct": 63.54}, {"taxa_retirada_pct": 6.4, "taxa_sucesso_pct": 60.44}, {"taxa_retirada_pct": 6.5, "taxa_sucesso_pct": 57.48}, {"taxa_retirada_pct": 6.6, "taxa_sucesso_pct": 54.58}, {"taxa_retirada_pct": 6.7, "taxa_sucesso_pct": 51.44}, {"taxa_retirada_pct": 6.8, "taxa_sucesso_pct": 48.5}, {"taxa_retirada_pct": 6.9, "taxa_sucesso_pct": 45.69}, {"taxa_retirada_pct": 7.0, "taxa_sucesso_pct": 42.53}, {"taxa_retirada_pct": 7.1, "taxa_sucesso_pct": 39.5}, {"taxa_retirada_pct": 7.2, "taxa_sucesso_pct": 36.63}, {"taxa_retirada_pct": 7.3, "taxa_sucesso_pct": 33.72}, {"taxa_retirada_pct": 7.4, "taxa_sucesso_pct": 30.78}, {"taxa_retirada_pct": 7.5, "taxa_sucesso_pct": 27.96}, {"taxa_retirada_pct": 7.6, "taxa_sucesso_pct": 25.54}, {"taxa_retirada_pct": 7.7, "taxa_sucesso_pct": 23.48}, {"taxa_retirada_pct": 7.8, "taxa_sucesso_pct": 21.24}, {"taxa_retirada_pct": 7.9, "taxa_sucesso_pct": 19.29}, {"taxa_retirada_pct": 8.0, "taxa_sucesso_pct": 17.28}, {"taxa_retirada_pct": 8.1, "taxa_sucesso_pct": 15.36}, {"taxa_retirada_pct": 8.2, "taxa_sucesso_pct": 13.69}, {"taxa_retirada_pct": 8.3, "taxa_sucesso_pct": 12.19}, {"taxa_retirada_pct": 8.4, "taxa_sucesso_pct": 10.74}, {"taxa_retirada_pct": 8.5, "taxa_sucesso_pct": 9.37}, {"taxa_retirada_pct": 8.6, "taxa_sucesso_pct": 8.31}, {"taxa_retirada_pct": 8.7, "taxa_sucesso_pct": 7.21}, {"taxa_retirada_pct": 8.8, "taxa_sucesso_pct": 6.25}, {"taxa_retirada_pct": 8.9, "taxa_sucesso_pct": 5.32}, {"taxa_retirada_pct": 9.0, "taxa_sucesso_pct": 4.61}];
+
+  /* ---------- hover no gráfico de resultados (retirada x sucesso) ---------- */
+  (function setupResultsHover(){
+    var svgEl = document.getElementById('resultsSvg');
+    var captureEl = document.getElementById('resultsHoverCapture');
+    var hoverLine = document.getElementById('resultsHoverLine');
+    var hoverDot = document.getElementById('resultsHoverDot');
+    var tooltip = document.getElementById('resultsTooltip');
+    if(!svgEl || !captureEl || !tooltip) return;
+
+    // mesmas constantes usadas para desenhar o path estático (viewBox 800x360)
+    var W = 800, H = 360, padL = 50, padR = 20, padT = 20, padB = 40;
+    var xMin = 1.0, xMax = 9.0, yMin = 0, yMax = 100;
+    function sx(x){ return padL + (x - xMin) / (xMax - xMin) * (W - padL - padR); }
+    function sy(y){ return H - padB - (y - yMin) / (yMax - yMin) * (H - padT - padB); }
+
+    var posAnchor = svgEl.closest('.chart-card') || svgEl;
+
+    function handleMove(e){
+      var svgRect = svgEl.getBoundingClientRect();
+      var scaleX = W / svgRect.width;
+      var mouseXsvg = (e.clientX - svgRect.left) * scaleX;
+      var dataX = xMin + (mouseXsvg - padL) / (W - padL - padR) * (xMax - xMin);
+
+      var idx = Math.round((dataX - grid[0].taxa_retirada_pct) / 0.1);
+      if(idx < 0) idx = 0;
+      if(idx > grid.length - 1) idx = grid.length - 1;
+      var point = grid[idx];
+
+      var xPix = sx(point.taxa_retirada_pct), yPix = sy(point.taxa_sucesso_pct);
+      hoverLine.setAttribute('x1', xPix.toFixed(1));
+      hoverLine.setAttribute('x2', xPix.toFixed(1));
+      hoverLine.setAttribute('opacity', '1');
+      hoverDot.setAttribute('cx', xPix.toFixed(1));
+      hoverDot.setAttribute('cy', yPix.toFixed(1));
+      hoverDot.setAttribute('opacity', '1');
+
+      tooltip.innerHTML = '<span class="tt-year">Retirada ' + point.taxa_retirada_pct.toFixed(1).replace('.', ',') + '%</span><span class="tt-val-pos">Sucesso ' + point.taxa_sucesso_pct.toFixed(2).replace('.', ',') + '%</span>';
+      tooltip.classList.add('visible');
+
+      var anchorRect = posAnchor.getBoundingClientRect();
+      tooltip.style.left = (e.clientX - anchorRect.left) + 'px';
+      tooltip.style.top = (e.clientY - anchorRect.top) + 'px';
+    }
+
+    captureEl.addEventListener('mousemove', handleMove);
+    captureEl.addEventListener('mouseenter', handleMove);
+    captureEl.addEventListener('mouseleave', function(){
+      tooltip.classList.remove('visible');
+      hoverLine.setAttribute('opacity', '0');
+      hoverDot.setAttribute('opacity', '0');
+    });
+    captureEl.addEventListener('touchmove', function(e){
+      if(e.touches && e.touches[0]){
+        handleMove({ clientX: e.touches[0].clientX, clientY: e.touches[0].clientY });
+        e.preventDefault();
+      }
+    }, { passive: false });
+  })();
+
+  function successForRate(w) {
+    var closest = grid[0];
+    var minDiff = Math.abs(grid[0].taxa_retirada_pct - w);
+    for (var i = 1; i < grid.length; i++) {
+      var diff = Math.abs(grid[i].taxa_retirada_pct - w);
+      if (diff < minDiff) { minDiff = diff; closest = grid[i]; }
+    }
+    return closest.taxa_sucesso_pct;
+  }
+
+  var slider = document.getElementById('wSlider');
+  var wLabel = document.getElementById('wLabel');
+  var successLabel = document.getElementById('successLabel');
+  var successBar = document.getElementById('successBar');
+  var monthlyLabel = document.getElementById('monthlyLabel');
+
+  function fmtBRL(v) {
+    return 'R$ ' + v.toLocaleString('pt-BR', {maximumFractionDigits: 0});
+  }
+
+  function update() {
+    var w = parseFloat(slider.value);
+    wLabel.textContent = w.toFixed(1).replace('.', ',') + '%';
+    var success = successForRate(w);
+    successLabel.textContent = success.toFixed(2).replace('.', ',') + '%';
+    successBar.style.width = success + '%';
+    successBar.style.background = success >= 90 ? '#1E6B4F' : (success >= 75 ? '#B98B32' : '#A8402A');
+    var monthly = (w/100 * 1000000) / 12;
+    monthlyLabel.textContent = fmtBRL(monthly);
+  }
+
+  slider.addEventListener('input', update);
+  update();
+})();
+</script>
+
+<script>
+(function(){
+  var API = 'https://independencia-likes.SEU-SUBDOMINIO.workers.dev';
+  var slug = 'pwr-carteira-fire';
+  var btn = document.getElementById('likeBtn');
+  var countEl = document.getElementById('likeCount');
+  var storageKey = 'liked_' + slug;
+
+  function setCount(n){ countEl.textContent = n; }
+
+  fetch(API + '/likes?slug=' + slug)
+    .then(function(r){ return r.json(); })
+    .then(function(data){ setCount(data.count); })
+    .catch(function(){ setCount('\u2013'); });
+
+  if (localStorage.getItem(storageKey)) {
+    btn.classList.add('liked');
+    btn.setAttribute('aria-pressed', 'true');
+  }
+
+  btn.addEventListener('click', function(){
+    if (localStorage.getItem(storageKey)) return;
+    btn.classList.add('liked');
+    btn.setAttribute('aria-pressed', 'true');
+    localStorage.setItem(storageKey, '1');
+    fetch(API + '/likes?slug=' + slug, { method: 'POST' })
+      .then(function(r){ return r.json(); })
+      .then(function(data){ setCount(data.count); });
+  });
+
+  var copyBtn = document.getElementById('copyLinkBtn');
+  if (copyBtn) {
+    copyBtn.addEventListener('click', function(){
+      navigator.clipboard.writeText(window.location.href).then(function(){
+        copyBtn.classList.add('copied');
+        setTimeout(function(){ copyBtn.classList.remove('copied'); }, 1600);
+      });
+    });
+  }
+})();
+</script>
+</body>
+</html>

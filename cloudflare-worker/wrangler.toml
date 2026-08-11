@@ -1,0 +1,9 @@
+name = "independencia-likes"
+main = "likes-worker.js"
+compatibility_date = "2024-11-01"
+
+# Depois de rodar `wrangler kv namespace create LIKES`,
+# cole aqui o "id" que o comando devolver.
+kv_namespaces = [
+  { binding = "LIKES", id = "COLE_AQUI_O_ID_DO_KV_NAMESPACE" }
+]

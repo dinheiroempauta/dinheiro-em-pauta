@@ -1,0 +1,125 @@
+# Independência Calculada — guia de configuração
+
+Este pacote já está pronto para publicar. Siga os passos abaixo uma única vez;
+depois disso, publicar um novo artigo leva menos de 1 minuto.
+
+## Estrutura do projeto
+
+```
+dist/
+  index.html                                 → página inicial (lista de artigos)
+  pwr-carteira-fire/index.html                → artigo 1
+  ipca-hiperinflacao/index.html                → artigo 2
+  quanto-posso-retirar-aposentadoria/index.html → artigo 3
+  .nojekyll                                   → obrigatório p/ GitHub Pages não processar o site com Jekyll
+  cloudflare-worker/
+    likes-worker.js                          → código do contador de curtidas
+    wrangler.toml                            → config de deploy do worker
+```
+
+Cada artigo fica em uma **pasta com o nome do artigo** contendo um `index.html`.
+Isso dá URLs limpas automaticamente: `independenciacalculada.com.br/pwr-carteira-fire`
+funciona em qualquer host estático, sem configuração extra.
+
+---
+
+## Passo 1 — Publicar no GitHub Pages (gratuito)
+
+1. Crie uma conta no [github.com](https://github.com) se ainda não tiver.
+2. Crie um repositório novo, público, chamado `independencia-calculada` (ou o nome que quiser).
+3. Suba todo o conteúdo da pasta `dist/` para a raiz do repositório (pode arrastar os arquivos direto na interface web do GitHub, em "Add file → Upload files").
+4. Vá em **Settings → Pages**.
+5. Em "Source", selecione a branch `main` e a pasta `/ (root)`. Salve.
+6. Em alguns minutos seu site estará no ar em `https://SEU-USUARIO.github.io/independencia-calculada/`.
+
+> Nesse endereço temporário os links internos (`/pwr-carteira-fire`, etc.) não vão
+> funcionar perfeitamente por causa do subcaminho do repositório. Isso se resolve
+> sozinho assim que você configurar o domínio próprio no Passo 2 — não se preocupe
+> com isso agora, é só um estágio intermediário.
+
+## Passo 2 — Domínio próprio (quando decidir comprar)
+
+1. Compre o domínio em qualquer registrador (Registro.br para `.com.br`, ou Namecheap/Cloudflare para outros).
+2. No DNS do domínio, crie:
+   - Um registro `A` apontando `@` para os IPs do GitHub Pages: `185.199.108.153`, `185.199.109.153`, `185.199.110.153`, `185.199.111.153`
+   - Um registro `CNAME` apontando `www` para `SEU-USUARIO.github.io`
+3. No repositório, crie um arquivo chamado `CNAME` (sem extensão) na raiz, contendo apenas:
+   ```
+   independenciacalculada.com.br
+   ```
+4. Em **Settings → Pages**, digite o domínio próprio no campo "Custom domain" e marque "Enforce HTTPS".
+
+Isso não quebra nada do que já está pronto — todos os links internos já foram
+escritos para o domínio final (`independenciacalculada.com.br`), então funcionam
+perfeitamente assim que o domínio estiver ativo.
+
+---
+
+## Passo 3 — Curtidas (Cloudflare Workers, gratuito)
+
+1. Crie uma conta gratuita em [cloudflare.com](https://cloudflare.com).
+2. Instale a CLI (requer Node.js instalado):
+   ```
+   npm install -g wrangler
+   wrangler login
+   ```
+3. Dentro da pasta `cloudflare-worker/`, crie o namespace de dados:
+   ```
+   wrangler kv namespace create LIKES
+   ```
+   Isso devolve um `id`. Cole esse `id` no arquivo `wrangler.toml`, no lugar de
+   `COLE_AQUI_O_ID_DO_KV_NAMESPACE`.
+4. Publique o worker:
+   ```
+   wrangler deploy
+   ```
+5. O comando devolve uma URL parecida com:
+   `https://independencia-likes.SEU-SUBDOMINIO.workers.dev`
+6. Em **cada** arquivo `index.html` de artigo, procure por (perto do fim do arquivo):
+   ```js
+   var API = 'https://independencia-likes.SEU-SUBDOMINIO.workers.dev';
+   ```
+   e substitua pela URL real que você recebeu no passo 5.
+7. Abra `cloudflare-worker/likes-worker.js` e confirme que `ALLOWED_ORIGIN`
+   está com o seu domínio final correto.
+
+## Passo 4 — Comentários anônimos com moderação (Cusdis, gratuito)
+
+1. Crie uma conta em [cusdis.com](https://cusdis.com).
+2. Crie um site novo, informando a URL do seu blog.
+3. Copie o **App ID** que o Cusdis gera.
+4. Em **cada** artigo, procure por `data-app-id="SEU_APP_ID_CUSDIS"` e substitua
+   pelo App ID real.
+5. No painel do Cusdis, em Settings, ative a opção de **moderação manual**
+   (comentários ficam pendentes até você aprovar).
+6. Todo comentário novo aparece no painel do Cusdis para você aprovar ou rejeitar
+   — o leitor não precisa de conta, só digita nome (e email opcional).
+
+## Passo 5 — Favicon
+
+Os arquivos já referenciam `/favicon.png`. Basta colocar um arquivo PNG
+quadrado (ex: 512×512) com esse nome exato na raiz do repositório.
+
+---
+
+## Fluxo de publicação de um novo artigo
+
+Esse é o fluxo que você já usa e que continua igual:
+
+1. Você escreve o conteúdo em Word.
+2. Me manda o conteúdo aqui no chat, junto com uma instrução do tipo
+   "gera esse artigo seguindo o padrão dos outros 3".
+3. Eu gero o HTML já no seu design system (mesmas cores, tipografia, componentes),
+   e já incluo automaticamente:
+   - bloco de curtir/compartilhar
+   - seção de comentários (Cusdis)
+   - barra de navegação "← Todos os artigos"
+   - meta tags de SEO (title, description, Open Graph, JSON-LD)
+4. Você cria uma pasta nova no repositório com o slug do artigo (ex: `nome-do-artigo/`)
+   e sobe o `index.html` gerado dentro dela.
+5. Me pede pra gerar também o card correspondente para a `index.html` (home) —
+   eu te devolvo o trecho pronto pra colar na lista de artigos.
+
+Isso significa que, a partir de agora, cada novo artigo que você me mandar já sai
+pronto com curtidas, comentários e compartilhamento — sem trabalho manual extra
+de sua parte.
