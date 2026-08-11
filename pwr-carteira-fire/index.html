@@ -1064,6 +1064,43 @@ footer{ max-width: var(--maxw); margin: 0 auto; padding: 30px 24px 60px; font-fa
       data-page-url="https://independenciacalculada.com.br/pwr-carteira-fire/"
       data-page-title="Qual é a PWR da minha carteira?"></div>
     <script async defer src="https://cusdis.com/js/cusdis.es.js"></script>
+    <script>
+    (function(){
+      var container = document.getElementById('cusdis_thread');
+      if (!container) return;
+      var applied = false;
+      var css = "html,body{font-family:'IBM Plex Sans',sans-serif !important;overflow:visible !important;height:auto !important;background:transparent !important;}"
+        + "textarea,input,button{font-family:'IBM Plex Sans',sans-serif !important;}"
+        + "::-webkit-scrollbar{display:none !important;}";
+      function styleFrame(node){
+        if (applied) return;
+        applied = true;
+        node.style.border = '0';
+        node.style.width = '100%';
+        node.style.colorScheme = 'light';
+        function inject(){
+          try{
+            var doc = node.contentDocument;
+            if (doc && doc.head){
+              var style = doc.createElement('style');
+              style.textContent = css;
+              doc.head.appendChild(style);
+            }
+          }catch(e){}
+        }
+        node.addEventListener('load', inject);
+        inject();
+      }
+      var observer = new MutationObserver(function(mutations){
+        mutations.forEach(function(m){
+          m.addedNodes.forEach(function(node){
+            if (node.tagName === 'IFRAME') styleFrame(node);
+          });
+        });
+      });
+      observer.observe(container, { childList: true, subtree: true });
+    })();
+    </script>
   </div>
 
 </main>
