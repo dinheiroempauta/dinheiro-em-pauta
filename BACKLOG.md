@@ -14,12 +14,37 @@ para a seção "Concluído", no fim, com a data).
 - [ ] **Conectar Claude direto ao GitHub** — via MCP connector, quando assinar
       um plano pago do Claude. Elimina o passo de copiar arquivos manualmente.
 
+## ⚠️ Checklist para quando migrar pro domínio próprio
+
+Vários itens já configurados hoje apontam pro endereço temporário do GitHub
+Pages e precisam ser atualizados assim que o domínio próprio estiver ativo:
+
+- [ ] **og:image / twitter:image dos 3 artigos** — trocar de volta pra
+      `https://independenciacalculada.com.br/assets/...` (hoje apontam pro
+      GitHub Pages).
+- [ ] **Cloudflare Worker (likes-worker.js)** — o `ALLOWED_ORIGINS` já inclui
+      o domínio final, então não precisa mexer no código; só confirmar que
+      segue funcionando depois da troca.
+- [ ] **Cusdis** — atualizar a URL do site cadastrada no painel (hoje está
+      com o endereço do GitHub Pages).
+- [ ] **Google Search Console** — verificar a propriedade de novo com o
+      domínio final e reenviar o sitemap.xml.
+- [ ] **sitemap.xml e feed.xml** — trocar todas as URLs internas do
+      GitHub Pages pro domínio final.
+- [ ] **CNAME** — criar o arquivo `CNAME` no repositório com o domínio
+      (passo já documentado no README.md).
+
+---
+
 ## SEO e descoberta
 
-- [ ] **Google Search Console** — em andamento: propriedade sendo cadastrada
-      (endereço temporário do GitHub Pages). Falta enviar a tag de verificação
-      e confirmar o envio do sitemap.xml. **Atenção:** ao migrar pro domínio
-      próprio, será preciso verificar de novo e reenviar o sitemap.
+- [ ] **Sitemap.xml no Search Console ainda com "não foi possível buscar"**
+      — provavelmente só fila de processamento do Google (arquivo confirmado
+      publicado e válido). Conferir de novo em 1-2 dias; se persistir, investigar.
+- [ ] **Testar a prévia de compartilhamento (og:image)** — imagens criadas e
+      publicadas (ver "Concluído"), mas ainda falta confirmar visualmente que
+      a prévia aparece corretamente no WhatsApp/LinkedIn (usar o Post
+      Inspector do LinkedIn ou colar o link no WhatsApp Web).
 - [ ] **Imagens de compartilhamento (og:image) não existem** — os 3 artigos
       apontam pra `assets/og-cover-*.png`, mas esse arquivo não existe no
       repositório. Hoje, ao compartilhar um link no WhatsApp/LinkedIn/X, não
@@ -59,6 +84,19 @@ para a seção "Concluído", no fim, com a data).
 ---
 
 ## Concluído
+
+- [x] **Imagens de compartilhamento (og:image)** — as 3 imagens (1200×630,
+      identidade visual do blog) foram criadas e publicadas em `assets/`.
+      As tags `og:image`/`twitter:image` foram apontadas para o endereço
+      temporário do GitHub Pages (ver pendência de migração de domínio
+      abaixo). *(11 ago. 2026)*
+
+- [x] **Google Search Console** — propriedade cadastrada e verificada (tag
+      HTML), indexação solicitada manualmente para a home e os 3 artigos.
+      Envio automático via sitemap ainda pendente de confirmação (ver item
+      em aberto acima). **Atenção:** ao migrar pro domínio próprio, será
+      preciso verificar de novo e reenviar o sitemap pro domínio final.
+      *(11 ago. 2026)*
 
 - [x] **Sitemap.xml** — criado e publicado na raiz, listando home + 3
       artigos. *(11 ago. 2026)*
