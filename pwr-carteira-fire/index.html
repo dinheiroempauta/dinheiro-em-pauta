@@ -1521,13 +1521,22 @@ footer{ max-width: var(--maxw); margin: 0 auto; padding: 30px 24px 60px; font-fa
   }
 
   btn.addEventListener('click', function(){
-    if (localStorage.getItem(storageKey)) return;
-    btn.classList.add('liked');
-    btn.setAttribute('aria-pressed', 'true');
-    localStorage.setItem(storageKey, '1');
-    fetch(API + '/likes?slug=' + slug, { method: 'POST' })
-      .then(function(r){ return r.json(); })
-      .then(function(data){ setCount(data.count); });
+    var isLiked = !!localStorage.getItem(storageKey);
+    if (isLiked) {
+      btn.classList.remove('liked');
+      btn.setAttribute('aria-pressed', 'false');
+      localStorage.removeItem(storageKey);
+      fetch(API + '/likes?slug=' + slug, { method: 'DELETE' })
+        .then(function(r){ return r.json(); })
+        .then(function(data){ setCount(data.count); });
+    } else {
+      btn.classList.add('liked');
+      btn.setAttribute('aria-pressed', 'true');
+      localStorage.setItem(storageKey, '1');
+      fetch(API + '/likes?slug=' + slug, { method: 'POST' })
+        .then(function(r){ return r.json(); })
+        .then(function(data){ setCount(data.count); });
+    }
   });
 
   var copyBtn = document.getElementById('copyLinkBtn');

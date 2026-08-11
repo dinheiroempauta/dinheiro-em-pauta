@@ -17,7 +17,7 @@ function corsHeaders(origin) {
   const allow = ALLOWED_ORIGINS.includes(origin) ? origin : ALLOWED_ORIGINS[0];
   return {
     "Access-Control-Allow-Origin": allow,
-    "Access-Control-Allow-Methods": "GET, POST, OPTIONS",
+    "Access-Control-Allow-Methods": "GET, POST, DELETE, OPTIONS",
     "Access-Control-Allow-Headers": "Content-Type",
     "Cache-Control": "no-store",
   };
@@ -51,6 +51,13 @@ export default {
     if (request.method === "POST") {
       const raw = await env.LIKES.get(slug);
       const count = (raw ? parseInt(raw, 10) : 0) + 1;
+      await env.LIKES.put(slug, String(count));
+      return new Response(JSON.stringify({ slug, count }), { headers });
+    }
+
+    if (request.method === "DELETE") {
+      const raw = await env.LIKES.get(slug);
+      const count = Math.max((raw ? parseInt(raw, 10) : 0) - 1, 0);
       await env.LIKES.put(slug, String(count));
       return new Response(JSON.stringify({ slug, count }), { headers });
     }
