@@ -1774,18 +1774,32 @@ h3{ font-family: var(--font-display); font-weight: 600; font-size: 1.15rem; marg
         node.style.border = '0';
         node.style.width = '100%';
         node.style.colorScheme = 'light';
-        function inject(){
+        node.style.minHeight = '120px';
+        function resize(doc){
+          try{
+            var h = Math.max(doc.documentElement.scrollHeight, doc.body ? doc.body.scrollHeight : 0);
+            if (h > 0) node.style.height = (h + 24) + 'px';
+          }catch(e){}
+        }
+        function setup(){
           try{
             var doc = node.contentDocument;
-            if (doc && doc.head){
-              var style = doc.createElement('style');
-              style.textContent = css;
-              doc.head.appendChild(style);
+            if (!doc || !doc.head) return;
+            var style = doc.createElement('style');
+            style.textContent = css;
+            doc.head.appendChild(style);
+            resize(doc);
+            if (window.ResizeObserver && doc.body){
+              var ro = new ResizeObserver(function(){ resize(doc); });
+              ro.observe(doc.body);
+            } else {
+              var iv = setInterval(function(){ resize(doc); }, 500);
+              setTimeout(function(){ clearInterval(iv); }, 20000);
             }
           }catch(e){}
         }
-        node.addEventListener('load', inject);
-        inject();
+        node.addEventListener('load', setup);
+        setup();
       }
       var observer = new MutationObserver(function(mutations){
         mutations.forEach(function(m){
