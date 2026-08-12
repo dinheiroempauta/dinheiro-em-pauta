@@ -44,15 +44,6 @@ Pages e precisam ser atualizados assim que o domínio próprio estiver ativo:
 Encontrado em 12 ago, comparando o BACKLOG contra os arquivos reais (não
 estava mapeado até então). No bloco `.cta` no fim de cada artigo:
 
-- [ ] **Links de "Continue lendo" quebrados** — em `pwr-carteira-fire` e
-      `quanto-posso-retirar-aposentadoria`, os dois links apontam pra
-      `/artigo-x.html` e `/artigo-y.html` (páginas que não existem), com o
-      texto literal "Título do artigo relacionado 1/2" — placeholder do
-      template, nunca preenchido. Em `ipca-hiperinflacao`, um dos dois já
-      foi preenchido corretamente (aponta pra
-      `quanto-posso-retirar-aposentadoria`), mas o segundo ainda é
-      `/artigo-y.html`. Correção é mecânica (só cruzar os 3 artigos entre
-      si), sem decisão editorial envolvida.
 - [ ] **Botões "Assinar a newsletter" e "Sugira um tema" sem destino**
       (`href="#"`) nos 3 artigos — depende do item "Newsletter" abaixo ser
       resolvido primeiro (ainda não há serviço escolhido pra apontar).
@@ -103,6 +94,14 @@ estava mapeado até então). No bloco `.cta` no fim de cada artigo:
 ---
 
 ## Concluído
+
+- [x] **Links de "Continue lendo" quebrados nos 3 artigos** —
+      `pwr-carteira-fire` e `quanto-posso-retirar-aposentadoria` tinham
+      placeholder do template ao vivo (`/artigo-x.html`, `/artigo-y.html`,
+      "Título do artigo relacionado 1/2"); `ipca-hiperinflacao` tinha um
+      link já preenchido mas com caminho absoluto quebrado (404 confirmado
+      com curl). Os 3 artigos agora se referenciam entre si com caminho
+      relativo (`../slug/`), testado e retornando 200. *(12 ago. 2026)*
 
 - [x] **Conectar Claude direto ao GitHub** — via GitHub MCP connector, já
       em uso: commit, push, PR e merge acontecem direto por aqui, sem copiar
