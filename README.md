@@ -109,17 +109,25 @@ Esse é o fluxo que você já usa e que continua igual:
 1. Você escreve o conteúdo em Word.
 2. Me manda o conteúdo aqui no chat, junto com uma instrução do tipo
    "gera esse artigo seguindo o padrão dos outros 3".
-3. Eu gero o HTML já no seu design system (mesmas cores, tipografia, componentes),
-   e já incluo automaticamente:
+3. Eu parto de `internal/template-artigo.html` (o esqueleto oficial do
+   design system) em vez de escrever o HTML do zero, e confiro o resultado
+   contra `internal/CHECKLIST-NOVO-ARTIGO.md` antes de entregar. Isso já
+   garante automaticamente:
+   - todas as meta tags de SEO (title, description, Open Graph, Twitter Card,
+     canonical, JSON-LD de Article + BreadcrumbList, e FAQPage quando cabível)
    - bloco de curtir/compartilhar
    - seção de comentários (Cusdis)
-   - barra de navegação "← Todos os artigos"
-   - meta tags de SEO (title, description, Open Graph, JSON-LD)
-4. Você cria uma pasta nova no repositório com o slug do artigo (ex: `nome-do-artigo/`)
-   e sobe o `index.html` gerado dentro dela.
-5. Me pede pra gerar também o card correspondente para a `index.html` (home) —
-   eu te devolvo o trecho pronto pra colar na lista de artigos.
+   - barra de navegação "← Todos os artigos", progress bar, TOC e botão
+     "voltar ao topo"
+4. Também gero a imagem de capa (og:image) seguindo o prompt padronizado em
+   `internal/prompt-og-image-independencia-calculada.md`.
+5. Você cria uma pasta nova no repositório com o slug do artigo (ex: `nome-do-artigo/`)
+   e sobe o `index.html` gerado dentro dela, junto com a imagem em `assets/`.
+6. Eu te devolvo também: o card pronto pra colar em `index.html` (home), a
+   entrada nova para `sitemap.xml` e o `<item>` novo para `feed.xml` — os
+   três últimos passos do checklist, pra nada ficar esquecido.
 
 Isso significa que, a partir de agora, cada novo artigo que você me mandar já sai
-pronto com curtidas, comentários e compartilhamento — sem trabalho manual extra
-de sua parte.
+pronto com curtidas, comentários, compartilhamento e todo o SEO — sem trabalho
+manual extra de sua parte, e sem depender da minha memória para não esquecer
+nenhum item: `internal/CHECKLIST-NOVO-ARTIGO.md` é a fonte de verdade.

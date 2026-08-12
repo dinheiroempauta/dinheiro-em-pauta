@@ -1,0 +1,672 @@
+<!--
+  TEMPLATE DE ARTIGO — Independência Calculada
+  Ponto de partida para todo artigo novo. Copie este arquivo para
+  <slug-do-artigo>/index.html e preencha os placeholders {{...}}.
+  Confira contra internal/CHECKLIST-NOVO-ARTIGO.md antes de publicar.
+
+  Placeholders a substituir (busque por "{{" no arquivo):
+  {{SLUG}}                 ex: pwr-carteira-fire
+  {{TITLE}}                título editorial completo (para <title> e og:title)
+  {{DESCRIPTION}}           meta description / og:description (1-2 frases)
+  {{PUBLISHED_DATE}}        AAAA-MM-DD
+  {{PUBLISHED_DATE_PT}}     "6 ago. 2026"
+  {{SECTION}}                categoria (article:section), ex: "Renda Fixa"
+  {{EYEBROW}}                 texto do .eyebrow, ex: "Renda fixa · Tesouro Direto"
+  {{SUBTITLE}}                subtítulo editorial (NÃO repetir o título)
+  {{READ_TIME}}               ex: "~12 min"
+  {{LEVEL}}                   ex: "avançado" (opcional, remova o <span> se não aplicar)
+  {{KEYWORDS}}                 lista separada por vírgula para o JSON-LD
+  Seções TOC, promise, corpo, FAQ, breadcrumb: preencher manualmente.
+-->
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>{{TITLE}} — Independência Calculada</title>
+<meta name="description" content="{{DESCRIPTION}}">
+<meta name="robots" content="index, follow, max-image-preview:large">
+<meta name="author" content="Independência Calculada">
+<link rel="canonical" href="https://independenciacalculada.com.br/{{SLUG}}">
+<link rel="alternate" type="application/rss+xml" title="Independência Calculada" href="../feed.xml">
+
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="Independência Calculada">
+<meta property="og:locale" content="pt_BR">
+<meta property="og:url" content="https://independenciacalculada.com.br/{{SLUG}}">
+<meta property="og:title" content="{{TITLE}}">
+<meta property="og:description" content="{{DESCRIPTION}}">
+<meta property="og:image" content="https://independenciacalculada-droid.github.io/independencia-calculada/assets/og-cover-{{SLUG}}.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Independência Calculada — {{TITLE}}">
+<meta property="article:published_time" content="{{PUBLISHED_DATE}}">
+<meta property="article:section" content="{{SECTION}}">
+
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="{{TITLE}}">
+<meta name="twitter:description" content="{{DESCRIPTION}}">
+<meta name="twitter:image" content="https://independenciacalculada-droid.github.io/independencia-calculada/assets/og-cover-{{SLUG}}.png">
+
+<meta name="theme-color" content="#1E6B4F">
+<link rel="icon" type="image/png" href="../favicon.png">
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Article",
+  "headline": "{{TITLE}}",
+  "description": "{{DESCRIPTION}}",
+  "image": "https://independenciacalculada-droid.github.io/independencia-calculada/assets/og-cover-{{SLUG}}.png",
+  "datePublished": "{{PUBLISHED_DATE}}",
+  "dateModified": "{{PUBLISHED_DATE}}",
+  "inLanguage": "pt-BR",
+  "articleSection": "{{SECTION}}",
+  "keywords": "{{KEYWORDS}}",
+  "about": [],
+  "author": {"@type": "Organization", "name": "Independência Calculada", "url": "https://independenciacalculada.com.br"},
+  "publisher": {"@type": "Organization", "name": "Independência Calculada"},
+  "mainEntityOfPage": {"@type": "WebPage", "@id": "https://independenciacalculada.com.br/{{SLUG}}"},
+  "isPartOf": {"@type": "WebSite", "name": "Independência Calculada", "url": "https://independenciacalculada.com.br"}
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {"@type": "ListItem", "position": 1, "name": "Independência Calculada", "item": "https://independenciacalculada.com.br"},
+    {"@type": "ListItem", "position": 2, "name": "{{SECTION}}", "item": "https://independenciacalculada.com.br/{{SLUG}}"},
+    {"@type": "ListItem", "position": 3, "name": "{{TITLE}}", "item": "https://independenciacalculada.com.br/{{SLUG}}"}
+  ]
+}
+</script>
+<!-- FAQPage: incluir só se o artigo tiver perguntas autocontidas (ver checklist) -->
+<!--
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {"@type": "Question", "name": "...", "acceptedAnswer": {"@type": "Answer", "text": "..."}}
+  ]
+}
+</script>
+-->
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@0,400;0,500;0,600;0,700;1,500;1,600&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500;600&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@0,400;0,500;0,600;0,700;1,500;1,600&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500;600&display=swap" media="print" onload="this.media='all'">
+<noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@0,400;0,500;0,600;0,700;1,500;1,600&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500;600&display=swap"></noscript>
+<style>
+  :root{
+    --paper: #EEF1EC;
+    --paper-raised: #F9FAF6;
+    --ink: #171A18;
+    --muted: #5B6259;
+    --green: #1E6B4F;
+    --green-deep: #123B2A;
+    --green-light: #6FA382;
+    --brick: #A8402A;
+    --gold: #7A5820;
+    --gold-soft: #EDE0C4;
+    --brick-soft: #F3DED8;
+    --line: #D7DBCF;
+    --line-strong: #BFC5B8;
+    --maxw: 1000px;
+    --font-display: 'Fraunces', serif;
+    --font-body: 'IBM Plex Sans', sans-serif;
+    --font-mono: 'IBM Plex Mono', monospace;
+  }
+
+  @media (prefers-reduced-motion: no-preference){
+    .fade-in{ animation: fadeUp .7s ease-out both; }
+    .fade-in.d1{ animation-delay: .08s; }
+    .fade-in.d2{ animation-delay: .16s; }
+    @keyframes fadeUp{
+      from{ opacity:0; transform: translateY(10px); }
+      to{ opacity:1; transform: translateY(0); }
+    }
+  }
+
+  *{ box-sizing: border-box; }
+  html{ scroll-behavior: smooth; }
+
+  body{
+    margin:0;
+    background: var(--paper);
+    color: var(--ink);
+    font-family: 'IBM Plex Sans', sans-serif;
+    font-size: 17px;
+    line-height: 1.65;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  a{ color: var(--green); text-decoration-thickness: 1px; text-underline-offset: 2px; }
+  a:focus-visible, button:focus-visible{ outline: 2px solid var(--gold); outline-offset: 3px; }
+  .mono{ font-family: 'IBM Plex Mono', monospace; }
+
+  .masthead{ border-bottom: 1px solid var(--line-strong); padding: 18px 24px; }
+  .masthead-inner{ max-width: var(--maxw); margin: 0 auto; display:flex; align-items:center; justify-content: space-between; }
+  .wordmark{ font-family: 'IBM Plex Mono', monospace; font-weight: 600; font-size: 13px; letter-spacing: .12em; text-transform: uppercase; color: var(--ink); text-decoration:none; }
+  .wordmark span{ color: var(--green); }
+  .masthead-tag{ font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: var(--muted); letter-spacing: .04em; }
+
+  main{ max-width: var(--maxw); margin: 0 auto; padding: 0 24px 90px; }
+
+  .eyebrow{
+    margin-top: 46px; font-family: 'IBM Plex Mono', monospace; font-size: 12px; letter-spacing: .1em;
+    text-transform: uppercase; color: var(--green); display:flex; align-items:center; gap: 10px;
+  }
+  .eyebrow::before{ content:""; width: 22px; height: 1px; background: var(--green); display:inline-block; }
+
+  h1.title{
+    font-family:'Fraunces', serif; font-weight: 600; font-size: clamp(2rem, 5vw, 2.9rem);
+    line-height: 1.08; letter-spacing: -0.01em; margin: 14px 0 8px;
+  }
+  .subtitle{
+    font-family:'Fraunces', serif; font-style: italic; font-weight: 500;
+    font-size: clamp(1.05rem, 2.4vw, 1.3rem); color: var(--muted); margin: 0 0 22px;
+  }
+  .meta{
+    font-family: 'IBM Plex Mono', monospace; font-size: 12px; color: var(--muted);
+    display:flex; gap:16px; flex-wrap:wrap; padding-bottom: 26px; border-bottom: 1px solid var(--line);
+  }
+  .meta b{ color: var(--ink); }
+
+  .promise{ margin: 30px 0 8px; background: var(--paper-raised); border: 1px solid var(--line-strong); border-radius: 3px; padding: 22px 24px; }
+  .promise-label{ font-family: 'IBM Plex Mono', monospace; font-size: 11px; letter-spacing: .1em; text-transform: uppercase; color: var(--green); margin-bottom: 10px; }
+  .promise ul{ margin:0; padding-left: 0; list-style:none; }
+  .promise li{ position:relative; padding-left: 22px; margin-bottom: 9px; font-size: 15.5px; }
+  .promise li:last-child{ margin-bottom:0; }
+  .promise li::before{ content:"—"; position:absolute; left:0; top:0; color: var(--gold); font-family: 'IBM Plex Mono', monospace; }
+
+  /* ---------- Prose ---------- */
+  .prose{ margin-top: 20px; }
+  .prose p{ margin: 0 0 20px; }
+  .section-lead{ color: var(--muted); font-size: 1.02rem; margin-bottom: 22px; }
+
+  h2{ font-family: var(--font-display); font-weight: 600; font-size: 1.55rem; letter-spacing: -0.01em; margin: 54px 0 4px; color: var(--ink); }
+  h2 .num{ font-family: var(--font-mono); font-size: 13px; color: var(--gold); display:block; letter-spacing: .1em; margin-bottom: 6px; }
+  h3{ font-family: var(--font-display); font-weight: 600; font-size: 1.15rem; margin: 30px 0 10px; color: var(--ink); }
+
+  .glossary{ display:grid; grid-template-columns: 1fr 1fr; gap: 14px; margin: 22px 0 28px; }
+  @media (max-width: 560px){ .glossary{ grid-template-columns: 1fr; } }
+  .gloss-item{ border: 1px solid var(--line-strong); background: var(--paper-raised); border-radius: 3px; padding: 16px 18px; }
+  .gloss-item .abbr{ font-family:'IBM Plex Mono', monospace; font-weight:600; font-size: 13px; color: var(--green); letter-spacing: .04em; }
+  .gloss-item .full{ font-family:'IBM Plex Mono', monospace; font-size: 11px; color: var(--muted); margin: 2px 0 8px; }
+  .gloss-item p{ margin:0; font-size: 14.5px; }
+
+  .stat-card{ border: 1px solid var(--line-strong); background: var(--paper-raised); border-radius: 3px; padding: 20px 22px; margin: 24px 0 28px; }
+  .stat-card .cap{ font-family:'IBM Plex Mono', monospace; font-size: 11px; letter-spacing:.08em; text-transform:uppercase; color:var(--muted); margin-bottom:12px; }
+  .stat-grid{ display:grid; grid-template-columns: 1fr 1fr; gap: 14px 20px; }
+  @media (max-width: 480px){ .stat-grid{ grid-template-columns: 1fr; } }
+  .stat-grid div{ font-size: 14.5px; }
+  .stat-grid b{ display:block; font-family:'IBM Plex Mono', monospace; font-size: 1.05rem; color: var(--ink); font-variant-numeric: tabular-nums; }
+  .stat-grid span{ color: var(--muted); font-size: 13px; }
+
+  .table-wrap{ margin: 22px 0 10px; overflow-x:auto; }
+  table.data{ width:100%; border-collapse: collapse; font-family:'IBM Plex Mono', monospace; font-size: 13px; font-variant-numeric: tabular-nums; }
+  table.data caption{ text-align:left; font-family:'IBM Plex Sans', sans-serif; font-size: 13px; color: var(--muted); margin-bottom: 8px; caption-side: top; }
+  table.data th{ text-align:right; font-weight:600; padding: 8px 10px; border-bottom: 1.5px solid var(--ink); white-space:nowrap; font-size:11.5px; letter-spacing:.02em; }
+  table.data th:first-child, table.data td:first-child{ text-align:left; }
+  table.data td{ text-align:right; padding: 7px 10px; border-bottom: 1px solid var(--line); white-space:nowrap; }
+  table.data tr.ellipsis td{ color: var(--muted); text-align:center; letter-spacing:.2em; }
+  table.data td.neg{ color: var(--brick); }
+  table.data td.pos{ color: var(--green); }
+
+  .note{ border-left: 3px solid var(--gold); background: var(--paper-raised); padding: 16px 20px; margin: 26px 0; font-size: 14.5px; }
+  .note .cap{ font-family:'IBM Plex Mono', monospace; font-size: 11px; letter-spacing:.08em; text-transform:uppercase; color: var(--gold); margin-bottom:6px; }
+  .note p{ margin:0 0 8px; }
+  .note p:last-child{ margin-bottom:0; }
+  .note.brick{ border-left-color: var(--brick); }
+  .note.brick .cap{ color: var(--brick); }
+  .note.green{ border-left-color: var(--green); }
+  .note.green .cap{ color: var(--green); }
+
+  .chart-card{ border: 1px solid var(--line-strong); background: var(--paper-raised); border-radius: 3px; padding: 22px 22px 18px; margin: 30px 0 32px; position: relative; }
+  .chart-head{ margin-bottom: 6px; }
+  .chart-title{ font-family:'Fraunces', serif; font-weight:600; font-size: 1.05rem; }
+  .chart-sub{ font-size: 13px; color: var(--muted); margin-top: 2px; }
+  .chart-svg-wrap{ margin: 14px 0 6px; position: relative; }
+  svg.chart{ width:100%; height:auto; display:block; }
+  .chart-legend{ display:flex; flex-wrap:wrap; gap: 16px; font-family:'IBM Plex Mono', monospace; font-size: 12px; color: var(--muted); margin-top: 4px; }
+  .chart-legend .sw{ display:inline-flex; align-items:center; gap:6px; }
+  .chart-legend .dot{ width:10px; height:10px; border-radius:50%; display:inline-block; }
+  .chart-caption{ font-size: 13.5px; color: var(--muted); margin-top: 12px; }
+
+  .formula-box{ border: 1px solid var(--line-strong); background: var(--paper-raised); border-radius: 3px; padding: 26px 24px; margin: 22px 0 26px; overflow-x: auto; }
+  .formula-box .cap{ font-family:'IBM Plex Mono', monospace; font-size: 11px; letter-spacing:.08em; text-transform:uppercase; color: var(--muted); margin-bottom: 16px; }
+  .formula{ font-family:'IBM Plex Mono', monospace; font-size: 16px; color: var(--ink); display:flex; align-items:center; justify-content:center; gap: 6px; min-width: max-content; padding: 6px 4px; }
+  .formula .bracket{ font-size: 30px; color: var(--muted); font-weight: 300; }
+  .frac{ display:inline-flex; flex-direction:column; align-items:center; vertical-align:middle; margin: 0 4px; }
+  .frac .num{ padding: 0 4px 3px; border-bottom: 1.4px solid var(--ink); }
+  .frac .den{ padding: 3px 4px 0; }
+  .formula .exp{ font-size: 11px; vertical-align: super; color: var(--green); }
+  .formula-vars{ margin-top: 18px; padding-top: 16px; border-top: 1px solid var(--line); display:flex; flex-wrap: wrap; row-gap: 10px; column-gap: 36px; font-size: 13.5px; }
+  .formula-vars .fv{ white-space: nowrap; }
+  .formula-vars .fv b{ font-family:'IBM Plex Mono', monospace; color: var(--green); margin-right: 6px; }
+
+  .steps-list{ margin: 18px 0 26px; padding-left: 0; list-style:none; counter-reset: step; }
+  .steps-list li{ counter-increment: step; position:relative; padding: 10px 0 10px 40px; border-bottom: 1px solid var(--line); font-size: 15px; }
+  .steps-list li:last-child{ border-bottom:none; }
+  .steps-list li::before{
+    content: counter(step); position:absolute; left:0; top:8px; width: 24px; height: 24px; border-radius: 50%;
+    background: var(--green); color: var(--paper-raised); font-family: 'IBM Plex Mono', monospace; font-size: 12px; font-weight:600;
+    display:flex; align-items:center; justify-content:center;
+  }
+
+  .summary-table-wrap{ margin: 26px 0 32px; }
+  table.summary{ width:100%; border-collapse: collapse; font-size: 14.5px; }
+  table.summary th{ font-family:'IBM Plex Mono', monospace; font-size: 11px; text-transform:uppercase; letter-spacing:.05em; text-align: right; padding: 10px 12px; border-bottom: 1.5px solid var(--ink); }
+  table.summary th:first-child{ text-align:left; }
+  table.summary td{ padding: 12px; border-bottom: 1px solid var(--line); text-align:right; font-family:'IBM Plex Mono', monospace; font-variant-numeric: tabular-nums; }
+  table.summary td:first-child{ text-align:left; font-family:'IBM Plex Sans', sans-serif; font-weight:500; }
+  table.summary tr:last-child td{ font-weight:600; color:var(--brick); }
+
+  blockquote.pull{
+    font-family:'Fraunces', serif; font-style: italic; font-weight: 500; font-size: clamp(1.2rem, 3vw, 1.55rem);
+    line-height: 1.4; color: var(--ink); border-left: 3px solid var(--green); padding: 4px 0 4px 24px; margin: 38px 0;
+  }
+  blockquote.pull cite{ display:block; font-family:'IBM Plex Mono', monospace; font-style: normal; font-size: 12px; color: var(--muted); margin-top: 10px; }
+
+  .mitigation-grid{ display:grid; grid-template-columns: 1fr 1fr; gap: 18px; margin: 22px 0 28px; }
+  @media (max-width: 560px){ .mitigation-grid{ grid-template-columns: 1fr; } }
+  .mit-card{ border: 1px solid var(--line-strong); border-radius: 3px; padding: 18px 20px; background: var(--paper-raised); }
+  .mit-card .idx{ font-family:'IBM Plex Mono', monospace; font-size: 12px; color: var(--green); letter-spacing:.05em; }
+  .mit-card h3{ margin: 6px 0 10px; font-size: 1.05rem; }
+  .mit-card p{ font-size: 14.5px; margin:0; }
+
+  .recap{ background: var(--ink); color: var(--paper); border-radius: 4px; padding: 28px 26px; margin: 46px 0 28px; }
+  .recap .cap{ font-family:'IBM Plex Mono', monospace; font-size: 11px; letter-spacing:.1em; text-transform:uppercase; color: #9FD9BE; margin-bottom: 14px; }
+  .recap ol{ margin:0; padding-left: 20px; }
+  .recap li{ margin-bottom: 10px; font-size: 15px; }
+  .recap li:last-child{ margin-bottom:0; }
+  .recap li::marker{ font-family:'IBM Plex Mono', monospace; color:#9FD9BE; }
+
+  .cta{ border: 1px solid var(--line-strong); border-radius: 3px; padding: 24px 24px; margin: 30px 0; display:flex; justify-content: space-between; align-items:center; gap: 20px; flex-wrap: wrap; }
+  .cta-text h3{ margin:0 0 6px; font-size:1.1rem; }
+  .cta-text p{ margin:0; font-size:14px; color:var(--muted); max-width: 40ch; }
+  .cta-btn{ font-family:'IBM Plex Mono', monospace; font-size: 13px; font-weight:600; letter-spacing:.03em; background: var(--green); color: var(--paper-raised); border: none; padding: 12px 20px; border-radius: 3px; cursor:pointer; white-space:nowrap; text-decoration:none; display:inline-block; }
+  .cta-btn:hover{ background:#175A41; }
+  .cta-buttons{ display: flex; gap: 16px; flex-wrap: wrap; align-items: center; }
+  .cta-related{ width: 100%; margin-top: 4px; padding-top: 16px; border-top: 1px solid var(--line); }
+  .cta-related-label{ font-family: 'IBM Plex Mono', monospace; font-size: 11px; letter-spacing: .1em; text-transform: uppercase; color: var(--green); margin-bottom: 12px; }
+  .cta-related-link{ display: flex; align-items: center; justify-content: space-between; padding: 12px 0; border-bottom: 1px solid var(--line); color: var(--ink); text-decoration: none; }
+  .cta-related-link:last-child{ border-bottom: none; }
+  .cta-related-title{ font-family: 'Fraunces', serif; font-weight: 500; font-size: 15px; }
+  .cta-related-arrow{ color: var(--gold); font-family: 'IBM Plex Mono', monospace; transition: transform .15s ease; }
+  .cta-related-link:hover .cta-related-arrow{ transform: translateX(4px); }
+  .cta-related-link:hover .cta-related-title{ color: var(--green); }
+
+  .disclaimer{ font-size: 13px; color: var(--muted); border-top: 1px solid var(--line); padding-top: 20px; margin-top: 40px; }
+  .disclaimer-spacer{ font-size: 13px; color: var(--muted); border-top: 1px solid var(--line); padding-top: 20px; margin-top: 12px; }
+  .disclaimer .cap{ font-family:'IBM Plex Mono', monospace; font-size: 11px; letter-spacing:.08em; text-transform:uppercase; margin-bottom: 8px; color: var(--ink); }
+
+  .refs{ margin-top: 30px; font-size: 13px; color: var(--muted); }
+  .refs .cap{ font-family:'IBM Plex Mono', monospace; font-size: 11px; letter-spacing:.08em; text-transform:uppercase; color: var(--ink); margin-bottom: 10px; }
+  .refs ol{ padding-left: 18px; margin:0; }
+  .refs li{ margin-bottom: 8px; }
+
+  footer{ max-width: var(--maxw); margin: 0 auto; padding: 30px 24px 60px; font-family:'IBM Plex Mono', monospace; font-size: 12px; color: var(--muted); text-align:center; }
+
+  /* ---------- Site bar (voltar para artigos) ---------- */
+  .site-bar{ background: var(--ink); }
+  .site-bar-inner{ max-width: var(--maxw); margin: 0 auto; padding: 9px 24px; }
+  .site-bar a{ font-family: var(--font-mono); font-size: 11px; letter-spacing: .05em; color: #9FD9BE; text-decoration: none; }
+  .site-bar a:hover{ color: #fff; }
+
+  /* ---------- Engagement (curtir + compartilhar) ---------- */
+  .engage{ margin: 46px 0 32px; padding: 22px 24px; border: 1px solid var(--line-strong); border-radius: 3px; background: var(--paper-raised); }
+  .engage-row{ display:flex; align-items:center; justify-content: space-between; gap: 20px; flex-wrap: wrap; }
+  .like-btn{ display:inline-flex; align-items:center; gap: 10px; font-family: var(--font-mono); font-size: 13px; font-weight: 600; letter-spacing: .02em; color: var(--ink); background: var(--paper); border: 1px solid var(--line-strong); border-radius: 3px; padding: 10px 16px; cursor: pointer; transition: border-color .15s ease, color .15s ease, background .15s ease; }
+  .like-btn:hover{ border-color: var(--green); color: var(--green); }
+  .like-btn .like-icon{ width:16px; height:16px; transition: transform .2s ease; }
+  .like-btn.liked{ background: var(--green); color: #fff; border-color: var(--green); }
+  .like-btn.liked .like-icon{ fill: currentColor; transform: scale(1.12); }
+  .like-btn .like-count{ font-variant-numeric: tabular-nums; color: var(--muted); }
+  .like-btn.liked .like-count{ color: #DDEFE5; }
+  .share-group{ display:flex; align-items:center; gap: 10px; flex-wrap: wrap; }
+  .share-label{ font-family: var(--font-mono); font-size: 11px; text-transform: uppercase; letter-spacing:.08em; color: var(--muted); margin-right: 4px; }
+  .share-btn{ display:inline-flex; align-items:center; justify-content:center; width: 34px; height: 34px; border: 1px solid var(--line-strong); border-radius: 3px; background: var(--paper); color: var(--muted); text-decoration:none; cursor:pointer; transition: border-color .15s ease, color .15s ease; }
+  .share-btn:hover{ border-color: var(--green); color: var(--green); }
+  .share-btn svg{ width:15px; height:15px; }
+  .share-btn.copied{ border-color: var(--gold); color: var(--gold); }
+
+  /* ---------- Comentários ---------- */
+  .comments-section{ margin: 8px 0 40px; padding-top: 30px; border-top: 1px solid var(--line); }
+  .comments-section .cap{ font-family: var(--font-mono); font-size: 11px; letter-spacing: .08em; text-transform: uppercase; color: var(--ink); margin-bottom: 8px; }
+  .comments-note{ font-size: 13px; color: var(--muted); margin: 0 0 18px; }
+
+  /* ============ MELHORIAS DE LEITURA ============ */
+  .progress-rail{ position: fixed; top:0; left:0; right:0; height: 3px; background: transparent; z-index: 60; }
+  .progress-fill{ height: 100%; width:0%; background: linear-gradient(90deg, var(--gold), var(--green)); transition: width .08s linear; }
+
+  .back-to-top{
+    position: fixed; right: 22px; bottom: 22px; width: 42px; height:42px; border-radius: 50%;
+    background: var(--ink); color: var(--paper); border: none; display:flex; align-items:center; justify-content:center;
+    cursor:pointer; opacity:0; visibility:hidden; transform: translateY(8px);
+    transition: opacity .25s ease, transform .25s ease, background .15s ease; z-index: 55; box-shadow: 0 4px 14px rgba(0,0,0,.18);
+  }
+  .back-to-top.show{ opacity:1; visibility:visible; transform:translateY(0); }
+  .back-to-top:hover{ background: var(--green); }
+  .back-to-top svg{ width:16px; height:16px; }
+
+  .toc-rail{ position: fixed; top: 50%; transform: translateY(-50%); right: max(14px, calc((100vw - var(--maxw)) / 2 - 46px)); display:flex; flex-direction:column; gap: 13px; z-index: 40; }
+  .toc-rail a{ width: 9px; height:9px; border-radius:50%; background: var(--line-strong); position:relative; text-decoration:none; display:block; transition: background .2s ease, transform .2s ease; }
+  .toc-rail a:hover, .toc-rail a.active{ background: var(--green); transform: scale(1.3); }
+  .toc-rail a .toc-label{
+    position:absolute; right: 20px; top:50%; transform: translateY(-50%); font-family:'IBM Plex Mono', monospace; font-size: 11px; color: var(--ink);
+    background: var(--paper-raised); border: 1px solid var(--line-strong); padding: 4px 9px; border-radius: 3px; white-space: nowrap;
+    opacity:0; visibility:hidden; transition: opacity .15s ease; pointer-events:none;
+  }
+  .toc-rail a:hover .toc-label{ opacity:1; visibility:visible; }
+  @media (max-width: 1240px){ .toc-rail{ display:none; } }
+
+  .reveal{ opacity:0; transform: translateY(16px); transition: opacity .6s ease, transform .6s ease; }
+  .reveal.visible{ opacity:1; transform:translateY(0); }
+  @media (prefers-reduced-motion: reduce){
+    .reveal{ opacity:1; transform:none; transition:none; }
+  }
+</style>
+</head>
+<body>
+
+<div class="progress-rail"><div class="progress-fill" id="progressFill"></div></div>
+
+<!-- TOC: um <a href="#sec-XX"> por seção do artigo, na ordem. Remova o <nav> se o artigo for curto. -->
+<nav class="toc-rail" id="tocRail" aria-label="Navegação do artigo">
+  <a href="#sec-01" data-label="01"><span class="toc-label">{{SEÇÃO 1}}</span></a>
+  <a href="#sec-02" data-label="02"><span class="toc-label">{{SEÇÃO 2}}</span></a>
+</nav>
+
+<button type="button" class="back-to-top" id="backToTop" aria-label="Voltar ao topo">
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M12 19V5M5 12l7-7 7 7"/></svg>
+</button>
+
+<div class="site-bar"><div class="site-bar-inner"><a href="../">&larr; Todos os artigos</a></div></div>
+<div class="masthead">
+  <div class="masthead-inner">
+    <a href="../" class="wordmark"><span>Independência</span>Calculada</a>
+    <div class="masthead-tag">Planejamento financeiro para atingir sua liberdade</div>
+  </div>
+</div>
+
+<main>
+  <div class="eyebrow fade-in">{{EYEBROW}}</div>
+  <h1 class="title fade-in d1">{{TITLE}}</h1>
+  <p class="subtitle fade-in d1">{{SUBTITLE}}</p>
+  <div class="meta fade-in d2">
+    <span><b>Publicado em</b> {{PUBLISHED_DATE_PT}}</span>
+    <span><b>{{READ_TIME}}</b> de leitura</span>
+    <!-- opcional: <span>nível <b>{{LEVEL}}</b></span> -->
+    <!-- opcional: <span>inclui <b>calculadora interativa</b></span> -->
+  </div>
+
+  <div class="promise">
+    <div class="promise-label">Neste artigo, você vai entender</div>
+    <ul>
+      <li>{{BULLET 1}}</li>
+      <li>{{BULLET 2}}</li>
+      <li>{{BULLET 3}}</li>
+    </ul>
+  </div>
+
+  <div class="prose">
+    <!--
+      Corpo do artigo. Use h2 (com <span class="num">01</span> quando
+      houver TOC), h3, e os componentes reutilizáveis conforme o
+      conteúdo pedir: .note / .stat-card / .chart-card / .formula-box /
+      .glossary / .steps-list / table.data / table.summary /
+      blockquote.pull / .mitigation-grid / .recap / .cta.
+      Cada seção com <h2 id="sec-01">...</h2> correspondente a um item do TOC.
+    -->
+    <h2 id="sec-01"><span class="num">01</span>{{SEÇÃO 1}}</h2>
+    <p>{{...}}</p>
+  </div>
+
+  <div class="disclaimer-spacer"></div>
+
+  <div class="disclaimer">
+    <div class="cap">Isenção de responsabilidade</div>
+    <p>Este artigo tem finalidade exclusivamente educacional e não constitui recomendação de investimento, tributária ou de planejamento financeiro personalizada. O conteúdo publicado neste espaço é fornecido exclusivamente para fins educacionais e de entretenimento, com base na liberdade de expressão garantida pelos artigos 5º, inciso IV, e 220 da Constituição Federal de 1988. Nada contido neste site deve ser interpretado como recomendação direta de compra/venda de ativos ou aconselhamento financeiro individualizado. Os ativos, estratégias, cenários ou ferramentas apresentados refletem apenas minhas opiniões, simulações e experiências pessoais, que podem não ser adequadas ao seu perfil de risco ou aos seus objetivos. Rendimentos e resultados passados não garantem retornos futuros. Calculadoras e ferramentas de simulação geram apenas estimativas probabilísticas, e não previsões exatas de mercado. Como autor deste site, não me responsabilizo por eventuais perdas, danos ou consequências financeiras decorrentes de decisões tomadas com base no conteúdo lido. As opiniões registradas por leitores na área de comentários são de responsabilidade exclusiva de quem as publica e não representam meu posicionamento oficial. Todo o conteúdo é direcionado primariamente ao público residente no Brasil - acessos originados de outros países exigem a verificação de conformidade com as leis e regulamentações locais.</p>
+  </div>
+
+  <div class="engage">
+    <div class="engage-row">
+      <button type="button" class="like-btn" id="likeBtn" aria-pressed="false">
+        <svg class="like-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 10v11"/><path d="M7 10 11 2a2.5 2.5 0 0 1 2.5 2.5V9h5.3a2 2 0 0 1 1.98 2.3l-1.2 8A2 2 0 0 1 17.6 21H7"/></svg>
+        <span>Achei útil</span>
+        <span class="like-count" id="likeCount">&ndash;</span>
+      </button>
+      <div class="share-group">
+        <span class="share-label">Compartilhar</span>
+        <a class="share-btn" href="https://api.whatsapp.com/send?text={{TITLE_URL_ENCODED}}%20https%3A//independenciacalculada-droid.github.io/independencia-calculada/{{SLUG}}/" target="_blank" rel="noopener" aria-label="Compartilhar no WhatsApp"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M17.5 14.4c-.3-.1-1.7-.9-2-1-.3-.1-.5-.1-.7.1-.2.3-.8 1-.9 1.2-.2.2-.3.2-.6.1-.3-.1-1.2-.4-2.3-1.4-.9-.8-1.4-1.7-1.6-2-.2-.3 0-.5.1-.6.1-.1.3-.3.4-.5.1-.1.2-.3.3-.5.1-.2 0-.4 0-.5C10 9 9.5 7.8 9.3 7.3c-.2-.5-.4-.4-.6-.4h-.5c-.2 0-.5.1-.7.3-.2.3-.9.9-.9 2.2s1 2.5 1.1 2.7c.1.2 2 3 4.8 4.3.7.3 1.2.5 1.6.6.7.2 1.3.2 1.8.1.5-.1 1.7-.7 1.9-1.3.2-.6.2-1.2.2-1.3-.1-.1-.3-.2-.6-.3z"/><path d="M12 2a10 10 0 0 0-8.5 15.2L2 22l4.9-1.5A10 10 0 1 0 12 2zm0 18a8 8 0 0 1-4.3-1.3l-.3-.2-3 .9.9-2.9-.2-.3A8 8 0 1 1 12 20z"/></svg></a>
+        <a class="share-btn" href="https://www.linkedin.com/sharing/share-offsite/?url=https%3A//independenciacalculada-droid.github.io/independencia-calculada/{{SLUG}}/" target="_blank" rel="noopener" aria-label="Compartilhar no LinkedIn"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M6.94 5a2 2 0 1 1-4-.02 2 2 0 0 1 4 .02zM7 8.48H3V21h4V8.48zM13.32 8.48H9.5V21h3.8v-6.4c0-1.7.32-3.34 2.42-3.34 2.07 0 2.1 1.94 2.1 3.45V21H21.8v-7.02c0-3.63-.78-6.42-5.02-6.42-2.04 0-3.4 1.12-3.96 2.18h-.05V8.48z"/></svg></a>
+        <a class="share-btn" href="https://twitter.com/intent/tweet?url=https%3A//independenciacalculada-droid.github.io/independencia-calculada/{{SLUG}}/&amp;text={{TITLE_URL_ENCODED}}" target="_blank" rel="noopener" aria-label="Compartilhar no X"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M18.9 2H22l-7.6 8.7L23.3 22h-7l-5.5-7.2L4.5 22H1.4l8.1-9.3L1 2h7.2l5 6.6L18.9 2zm-1.2 18h1.7L7.4 3.9H5.6L17.7 20z"/></svg></a>
+        <button type="button" class="share-btn" id="copyLinkBtn" aria-label="Copiar link"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.5.5l2-2a5 5 0 0 0-7-7l-1.2 1.1"/><path d="M14 11a5 5 0 0 0-7.5-.5l-2 2a5 5 0 0 0 7 7l1.1-1.1"/></svg></button>
+      </div>
+    </div>
+  </div>
+
+  <div class="comments-section">
+    <div class="cap">Comentários</div>
+    <p class="comments-note">Deixe seu comentário abaixo — ele passa por moderação manual antes de aparecer publicamente.</p>
+    <div id="cusdis_thread"
+      data-host="https://cusdis.com"
+      data-app-id="34b2bb82-3331-4dc5-a4cb-3d71f0c4138d"
+      data-page-id="{{SLUG}}"
+      data-page-url="https://independenciacalculada-droid.github.io/independencia-calculada/{{SLUG}}/"
+      data-page-title="{{TITLE}}"></div>
+    <script>
+      window.CUSDIS_LOCALE = {
+        "powered_by": "Comentários via Cusdis",
+        "post_comment": "Comentar",
+        "loading": "Carregando",
+        "email": "E-mail (opcional)",
+        "nickname": "Nome de usuário (anonimato)",
+        "reply_placeholder": "Escreva sua resposta...",
+        "reply_btn": "Responder",
+        "sending": "Enviando...",
+        "mod_badge": "Autor",
+        "content_is_required": "O comentário não pode ficar em branco",
+        "nickname_is_required": "Informe um nome de usuário",
+        "comment_has_been_sent": "Comentário enviado — ele passa por moderação antes de aparecer publicamente"
+      };
+    </script>
+    <script async defer src="https://cusdis.com/js/cusdis.es.js"></script>
+    <script>
+    (function(){
+      var container = document.getElementById('cusdis_thread');
+      if (!container) return;
+      var applied = false;
+      var css = ""
+        + "html,body{font-family:'IBM Plex Sans',sans-serif !important;color:#171A18 !important;background:transparent !important;overflow:visible !important;height:auto !important;}"
+        + "*{box-sizing:border-box;}"
+        + "::-webkit-scrollbar{display:none !important;}"
+        + "label{font-family:'IBM Plex Mono',monospace !important;font-size:11px !important;letter-spacing:.05em !important;text-transform:uppercase !important;color:#5B6259 !important;}"
+        + "input,textarea{font-family:'IBM Plex Sans',sans-serif !important;font-size:14px !important;border:1px solid #BFC5B8 !important;border-radius:3px !important;background:#F9FAF6 !important;color:#171A18 !important;padding:10px 12px !important;}"
+        + "input:focus,textarea:focus{outline:none !important;border-color:#1E6B4F !important;}"
+        + "input::placeholder,textarea::placeholder{color:#9AA396 !important;}"
+        + "button:not([type='button']){font-family:'IBM Plex Mono',monospace !important;font-size:12px !important;font-weight:600 !important;letter-spacing:.04em !important;text-transform:uppercase !important;background:#1E6B4F !important;color:#fff !important;border:1px solid #1E6B4F !important;border-radius:3px !important;padding:9px 18px !important;cursor:pointer !important;transition:background .15s ease, border-color .15s ease !important;}"
+        + "button:not([type='button']):hover{background:#123B2A !important;border-color:#123B2A !important;}"
+        + "button[type='button']{font-family:'IBM Plex Mono',monospace !important;font-size:11px !important;font-weight:600 !important;letter-spacing:.04em !important;text-transform:uppercase !important;background:transparent !important;color:#1E6B4F !important;border:0 !important;padding:4px 2px !important;cursor:pointer !important;}"
+        + "button[type='button']::before{content:'↳ ';}"
+        + "button[type='button']:hover{color:#123B2A !important;text-decoration:underline !important;}"
+        + "a{color:#1E6B4F !important;text-decoration:none !important;}"
+        + "a:hover{color:#A8402A !important;}"
+        + "hr{border-color:#D7DBCF !important;}";
+      function styleFrame(node){
+        if (applied) return;
+        applied = true;
+        node.style.border = '0';
+        node.style.width = '100%';
+        node.style.colorScheme = 'light';
+        node.style.minHeight = '120px';
+        function resize(doc){
+          try{
+            var h = Math.max(doc.documentElement.scrollHeight, doc.body ? doc.body.scrollHeight : 0);
+            if (h > 0) node.style.height = (h + 24) + 'px';
+          }catch(e){}
+        }
+        function setup(){
+          try{
+            var doc = node.contentDocument;
+            if (!doc || !doc.head) return;
+            var style = doc.createElement('style');
+            style.textContent = css;
+            doc.head.appendChild(style);
+            resize(doc);
+            if (window.ResizeObserver && doc.body){
+              var ro = new ResizeObserver(function(){ resize(doc); });
+              ro.observe(doc.body);
+            } else {
+              var iv = setInterval(function(){ resize(doc); }, 500);
+              setTimeout(function(){ clearInterval(iv); }, 20000);
+            }
+          }catch(e){}
+        }
+        node.addEventListener('load', setup);
+        setup();
+      }
+      var observer = new MutationObserver(function(mutations){
+        mutations.forEach(function(m){
+          m.addedNodes.forEach(function(node){
+            if (node.tagName === 'IFRAME') styleFrame(node);
+          });
+        });
+      });
+      observer.observe(container, { childList: true, subtree: true });
+    })();
+    </script>
+  </div>
+
+</main>
+
+<footer>
+  Independência Calculada — conteúdo educacional, não é recomendação de investimento.
+</footer>
+
+<script>
+(function(){
+  "use strict";
+
+  /* ---------- barra de progresso de leitura ---------- */
+  var progressFill = document.getElementById('progressFill');
+  function updateProgress(){
+    var h = document.documentElement;
+    var scrollTop = h.scrollTop || document.body.scrollTop;
+    var scrollHeight = (h.scrollHeight || document.body.scrollHeight) - h.clientHeight;
+    var pct = scrollHeight > 0 ? (scrollTop / scrollHeight) * 100 : 0;
+    progressFill.style.width = pct.toFixed(2) + '%';
+  }
+
+  /* ---------- botão voltar ao topo ---------- */
+  var backToTop = document.getElementById('backToTop');
+  function updateBackToTop(){
+    if(window.scrollY > 600){ backToTop.classList.add('show'); }
+    else{ backToTop.classList.remove('show'); }
+  }
+  backToTop.addEventListener('click', function(){
+    window.scrollTo({ top:0, behavior: 'smooth' });
+  });
+
+  window.addEventListener('scroll', function(){
+    updateProgress();
+    updateBackToTop();
+  }, { passive:true });
+  updateProgress();
+  updateBackToTop();
+
+  /* ---------- navegação lateral (TOC) ---------- */
+  var tocLinks = Array.prototype.slice.call(document.querySelectorAll('#tocRail a'));
+  var sections = tocLinks.map(function(a){
+    return document.getElementById(a.getAttribute('href').slice(1));
+  }).filter(Boolean);
+
+  if('IntersectionObserver' in window && sections.length){
+    var tocObserver = new IntersectionObserver(function(entries){
+      entries.forEach(function(entry){
+        var link = document.querySelector('#tocRail a[href="#' + entry.target.id + '"]');
+        if(!link) return;
+        if(entry.isIntersecting){
+          tocLinks.forEach(function(l){ l.classList.remove('active'); });
+          link.classList.add('active');
+        }
+      });
+    }, { rootMargin: '-45% 0px -50% 0px', threshold: 0 });
+    sections.forEach(function(s){ tocObserver.observe(s); });
+  }
+
+  /* ---------- reveal on scroll ---------- */
+  var revealEls = document.querySelectorAll('.reveal');
+  if('IntersectionObserver' in window && revealEls.length){
+    var revealObserver = new IntersectionObserver(function(entries, obs){
+      entries.forEach(function(entry){
+        if(entry.isIntersecting){
+          entry.target.classList.add('visible');
+          obs.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.1 });
+    revealEls.forEach(function(el){ revealObserver.observe(el); });
+  } else {
+    revealEls.forEach(function(el){ el.classList.add('visible'); });
+  }
+})();
+</script>
+
+<!-- Se o artigo tiver calculadora/simulador interativo, o script dele entra aqui. -->
+
+<script>
+(function(){
+  var API = 'https://independencia-likes.independenciacalculada.workers.dev';
+  var slug = '{{SLUG}}';
+  var btn = document.getElementById('likeBtn');
+  var countEl = document.getElementById('likeCount');
+  var storageKey = 'liked_' + slug;
+
+  function setCount(n){ countEl.textContent = n; }
+
+  fetch(API + '/likes?slug=' + slug)
+    .then(function(r){ return r.json(); })
+    .then(function(data){ setCount(data.count); })
+    .catch(function(){ setCount('–'); });
+
+  if (localStorage.getItem(storageKey)) {
+    btn.classList.add('liked');
+    btn.setAttribute('aria-pressed', 'true');
+  }
+
+  btn.addEventListener('click', function(){
+    var isLiked = !!localStorage.getItem(storageKey);
+    if (isLiked) {
+      btn.classList.remove('liked');
+      btn.setAttribute('aria-pressed', 'false');
+      localStorage.removeItem(storageKey);
+      fetch(API + '/likes?slug=' + slug, { method: 'DELETE' })
+        .then(function(r){ return r.json(); })
+        .then(function(data){ setCount(data.count); });
+    } else {
+      btn.classList.add('liked');
+      btn.setAttribute('aria-pressed', 'true');
+      localStorage.setItem(storageKey, '1');
+      fetch(API + '/likes?slug=' + slug, { method: 'POST' })
+        .then(function(r){ return r.json(); })
+        .then(function(data){ setCount(data.count); });
+    }
+  });
+
+  var copyBtn = document.getElementById('copyLinkBtn');
+  if (copyBtn) {
+    copyBtn.addEventListener('click', function(){
+      navigator.clipboard.writeText(window.location.href).then(function(){
+        copyBtn.classList.add('copied');
+        setTimeout(function(){ copyBtn.classList.remove('copied'); }, 1600);
+      });
+    });
+  }
+})();
+</script>
+</body></html>
