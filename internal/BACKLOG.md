@@ -39,12 +39,15 @@ Pages e precisam ser atualizados assim que o domínio próprio estiver ativo:
 ## SEO e descoberta
 
 - [ ] **Sitemap.xml no Search Console ainda com "não foi possível buscar"**
-      — provavelmente só fila de processamento do Google (arquivo confirmado
-      publicado e válido). Conferir de novo em 1-2 dias; se persistir, investigar.
-- [ ] **Testar a prévia de compartilhamento (og:image)** — imagens criadas e
-      publicadas (ver "Concluído"), mas ainda falta confirmar visualmente que
-      a prévia aparece corretamente no WhatsApp/LinkedIn (usar o Post
-      Inspector do LinkedIn ou colar o link no WhatsApp Web).
+      — Google confirmou "dados em processamento, volte em ~1 dia". Conferir
+      de novo amanhã; se persistir depois disso, investigar.
+- [ ] **Imagem de compartilhamento (og:image) — design ainda não aprovado**
+      — 2 versões geradas e rejeitadas pelo usuário (v1: fundo verde escuro
+      com gráfico decorativo; v2: fundo claro estilo página do blog, sem
+      gráfico, favicon no canto). Ambas descartadas. Precisa de uma nova
+      direção de design antes de gerar de novo. As tags `og:image` já
+      apontam pro caminho certo (`assets/og-cover-*.png`, endereço atual do
+      GitHub Pages) — só falta a imagem em si.
 - [ ] **Imagens de compartilhamento (og:image) não existem** — os 3 artigos
       apontam pra `assets/og-cover-*.png`, mas esse arquivo não existe no
       repositório. Hoje, ao compartilhar um link no WhatsApp/LinkedIn/X, não
@@ -85,11 +88,11 @@ Pages e precisam ser atualizados assim que o domínio próprio estiver ativo:
 
 ## Concluído
 
-- [x] **Imagens de compartilhamento (og:image)** — as 3 imagens (1200×630,
-      identidade visual do blog) foram criadas e publicadas em `assets/`.
-      As tags `og:image`/`twitter:image` foram apontadas para o endereço
-      temporário do GitHub Pages (ver pendência de migração de domínio
-      abaixo). *(11 ago. 2026)*
+- [x] **Bug encontrado e corrigido: botões de compartilhar apontavam pro
+      domínio final** — WhatsApp/LinkedIn/X estavam compartilhando
+      `independenciacalculada.com.br` (que ainda não existe) em vez do
+      endereço atual do GitHub Pages. Corrigido nos 3 artigos; o link
+      compartilhado agora abre a página real. *(11 ago. 2026)*
 
 - [x] **Google Search Console** — propriedade cadastrada e verificada (tag
       HTML), indexação solicitada manualmente para a home e os 3 artigos.
