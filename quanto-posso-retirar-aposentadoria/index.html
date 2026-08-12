@@ -529,6 +529,21 @@ h3{ font-family: var(--font-display); font-weight: 600; font-size: 1.15rem; marg
   .newsletter-note.success{ color: var(--green); font-weight: 600; }
   .newsletter-hidden-frame{ display:none; }
 
+  .suggest-form{ width: 100%; display:flex; flex-direction:column; gap: 10px; margin-top: 14px; padding-top: 14px; border-top: 1px solid var(--line); }
+  .suggest-form[hidden]{ display: none; }
+  .suggest-fields{ display:flex; flex-direction:column; gap: 8px; }
+  .suggest-form textarea{
+    font-family: 'IBM Plex Sans', sans-serif; font-size: 14px; padding: 10px 12px;
+    border: 1px solid var(--line-strong); border-radius: 3px; background: var(--paper);
+    color: var(--ink); resize: vertical; min-height: 90px;
+  }
+  .suggest-form textarea:focus{ outline:none; border-color: var(--green); }
+  .suggest-form textarea::placeholder{ color: #9AA396; }
+  .suggest-actions{ display:flex; align-items:center; justify-content:space-between; gap: 10px; flex-wrap: wrap; }
+  .suggest-counter{ font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: var(--muted); }
+  .suggest-honeypot{ position:absolute; left:-9999px; width:1px; height:1px; opacity:0; }
+  .newsletter-note.error{ color: var(--brick); font-weight: 600; }
+
   .cta-related{
     width: 100%;
     margin-top: 4px;
@@ -1549,7 +1564,7 @@ h3{ font-family: var(--font-display); font-weight: 600; font-size: 1.15rem; marg
 
   <div class="cta-buttons">
     <button type="button" class="cta-btn" id="newsletterToggle" aria-expanded="false" aria-controls="newsletterForm">Assinar a newsletter</button>
-    <a class="cta-btn" href="#">Sugira um tema</a>
+    <button type="button" class="cta-btn" id="suggestToggle" aria-expanded="false" aria-controls="suggestForm">Sugira um tema</button>
   </div>
 
   <form action="https://buttondown.com/api/emails/embed-subscribe/independencia_calculada" method="post" target="newsletterHiddenFrame"
@@ -1561,6 +1576,21 @@ h3{ font-family: var(--font-display); font-weight: 600; font-size: 1.15rem; marg
       <button type="submit" class="newsletter-submit">Inscrever</button>
     </div>
     <p class="newsletter-note" id="newsletterNote">Um aviso por e-mail a cada artigo novo — sem spam, cancele quando quiser.</p>
+  </form>
+
+  <form class="suggest-form" id="suggestForm" hidden>
+    <input type="hidden" name="access_key" value="7f403414-f060-4b88-a711-bb856d1a062a">
+    <input type="hidden" name="subject" value="Sugestão de tema — via artigo &quot;Quanto posso retirar dos meus investimentos durante a aposentadoria?&quot;">
+    <input type="checkbox" name="botcheck" class="suggest-honeypot" tabindex="-1" autocomplete="off">
+    <div class="suggest-fields" id="suggestFields">
+      <label for="suggest-message" class="newsletter-label">Sua sugestão</label>
+      <textarea id="suggest-message" name="message" maxlength="500" required placeholder="Que tema você gostaria de ver por aqui?"></textarea>
+      <div class="suggest-actions">
+        <span class="suggest-counter" id="suggestCounter">500 caracteres restantes</span>
+        <button type="submit" class="newsletter-submit">Enviar sugestão</button>
+      </div>
+    </div>
+    <p class="newsletter-note" id="suggestNote">Cai direto no nosso e-mail — sem cadastro, sem rastreamento.</p>
   </form>
   <iframe name="newsletterHiddenFrame" class="newsletter-hidden-frame" title="" aria-hidden="true" tabindex="-1"></iframe>
 
@@ -2123,6 +2153,71 @@ h3{ font-family: var(--font-display); font-weight: 600; font-size: 1.15rem; marg
       }
       if (fields) fields.style.display = 'none';
     }, 400);
+  });
+})();
+</script>
+
+<script>
+(function(){
+  var btn = document.getElementById('suggestToggle');
+  var form = document.getElementById('suggestForm');
+  if (!btn || !form) return;
+  var textarea = document.getElementById('suggest-message');
+  var counter = document.getElementById('suggestCounter');
+  var MAXLEN = 500;
+
+  function updateCounter(){
+    var remaining = MAXLEN - textarea.value.length;
+    counter.textContent = remaining + ' caracteres restantes';
+  }
+  if (textarea && counter) {
+    textarea.addEventListener('input', updateCounter);
+    updateCounter();
+  }
+
+  btn.addEventListener('click', function(){
+    var willShow = form.hidden;
+    form.hidden = !willShow;
+    btn.setAttribute('aria-expanded', String(willShow));
+    if (willShow && textarea) textarea.focus();
+  });
+
+  form.addEventListener('submit', function(e){
+    e.preventDefault();
+    var note = document.getElementById('suggestNote');
+    var fields = document.getElementById('suggestFields');
+    var submitBtn = form.querySelector('.newsletter-submit');
+    if (submitBtn) submitBtn.disabled = true;
+
+    fetch('https://api.web3forms.com/submit', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+      body: JSON.stringify(Object.fromEntries(new FormData(form)))
+    })
+      .then(function(r){ return r.json(); })
+      .then(function(data){
+        if (data.success) {
+          if (note) {
+            note.textContent = 'Sugestão enviada — obrigado!';
+            note.classList.remove('error');
+            note.classList.add('success');
+          }
+          if (fields) fields.style.display = 'none';
+        } else {
+          if (note) {
+            note.textContent = 'Não deu pra enviar agora. Tenta de novo em instantes.';
+            note.classList.add('error');
+          }
+          if (submitBtn) submitBtn.disabled = false;
+        }
+      })
+      .catch(function(){
+        if (note) {
+          note.textContent = 'Não deu pra enviar agora. Tenta de novo em instantes.';
+          note.classList.add('error');
+        }
+        if (submitBtn) submitBtn.disabled = false;
+      });
   });
 })();
 </script>

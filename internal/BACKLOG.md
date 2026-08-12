@@ -39,16 +39,6 @@ Pages e precisam ser atualizados assim que o domínio próprio estiver ativo:
 
 ---
 
-## ⚠️ Bug ao vivo — conteúdo de placeholder publicado nos 3 artigos
-
-Encontrado em 12 ago, comparando o BACKLOG contra os arquivos reais (não
-estava mapeado até então). No bloco `.cta` no fim de cada artigo:
-
-- [ ] **Botão "Sugira um tema" sem destino** (`href="#"`) nos 3 artigos —
-      não depende mais da newsletter (ver Concluído); falta decidir pra
-      onde apontar (ex: formulário simples, e-mail direto, ou reaproveitar
-      o mesmo Buttondown com uma pergunta extra no formulário).
-
 ## SEO e descoberta
 
 - [ ] **Sitemap.xml no Search Console ainda com "não foi possível buscar"**
@@ -91,6 +81,20 @@ estava mapeado até então). No bloco `.cta` no fim de cada artigo:
 ---
 
 ## Concluído
+
+- [x] **Botão "Sugira um tema" conectado (Web3Forms)** — abre um textarea
+      (limite de 500 caracteres, contador ao vivo) que envia direto pro
+      e-mail `independenciacalculada@gmail.com`, sem sair da página.
+      Diferente do Buttondown, a API do Web3Forms aceita `fetch` com CORS
+      liberado, então o site lê a resposta de verdade e mostra sucesso ou
+      erro reais (não é otimista como a newsletter). Campo honeypot
+      (`botcheck`) contra spam, sem captcha. `access_key` é pública (o
+      próprio Web3Forms confirma isso na tela de criação), sem risco de
+      exposição no HTML. Aplicado nos 3 artigos + template. Testado
+      localmente nos 3 (Chromium headless): toggle abre/fecha, contador de
+      caracteres funciona, `maxlength` é respeito de verdade, e o caminho
+      de erro de rede foi validado (sandbox sem acesso a api.web3forms.com)
+      sem quebrar a página. *(12 ago. 2026)*
 
 - [x] **Newsletter conectada (Buttondown)** — usuário escolheu Buttondown
       (grátis até 100 assinantes, sem venda de dados, analytics desligado
