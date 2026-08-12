@@ -36,12 +36,10 @@ de escrever o HTML do zero.
 - [ ] Bloco Twitter Card: `twitter:card=summary_large_image`, `twitter:title`,
       `twitter:description`, `twitter:image`
 - [ ] `theme-color` e `<link rel="icon" href="../favicon.png">`
-- [ ] Script do Plausible logo após o favicon (`<script defer
-      data-domain="independenciacalculada-droid.github.io"
-      src="https://plausible.io/js/script.js"></script>` — copiar
-      inalterado; o `data-domain` muda pro domínio final só quando a
-      migração acontecer, junto com os outros itens do checklist de
-      migração no `internal/BACKLOG.md`)
+- [ ] Script do Plausible logo após o favicon (bloco com
+      `pa-DHHLFbo44ABbubWFPznWd.js` — copiar inalterado do template; é
+      o mesmo ID de site pra todo artigo, o domínio rastreado fica
+      configurado no painel do Plausible, não no HTML)
 - [ ] JSON-LD **Article** (headline, description, image, datePublished,
       dateModified, articleSection, keywords, about, author/publisher,
       mainEntityOfPage, isPartOf)

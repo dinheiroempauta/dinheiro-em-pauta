@@ -36,12 +36,11 @@ Pages e precisam ser atualizados assim que o domínio próprio estiver ativo:
       GitHub Pages pro domínio final.
 - [ ] **CNAME** — criar o arquivo `CNAME` no repositório com o domínio
       (passo já documentado no README.md).
-- [ ] **Plausible (`data-domain`)** — trocar `data-domain` do script de
-      analytics, hoje `independenciacalculada-droid.github.io`, pro
-      domínio final, na home + 3 artigos + template. Sem isso o
-      Plausible para de contar visitas assim que o domínio mudar (o
-      script vai continuar rodando, mas o `data-domain` não vai bater
-      com o host real).
+- [ ] **Plausible (domínio do site)** — atualizar o domínio cadastrado
+      para este site nas configurações do painel do Plausible pro
+      domínio final. O script no HTML (`pa-DHHLFbo44ABbubWFPznWd.js`)
+      não precisa mudar — é o mesmo ID de site pra sempre, só o domínio
+      associado a ele no painel que precisa ser atualizado.
 
 ---
 
@@ -84,13 +83,13 @@ Pages e precisam ser atualizados assim que o domínio próprio estiver ativo:
       artigos): não existe otimização de imagem pendente. *(12 ago. 2026)*
 
 - [x] **Analytics sem rastreamento pessoal (Plausible)** — script
-      adicionado na home + 3 artigos + template, com
-      `data-domain="independenciacalculada-droid.github.io"` (o endereço
-      real que o site usa hoje — precisa trocar pro domínio final na
-      migração, item já adicionado ao checklist correspondente). Sem
-      cookies, sem coleta de dado pessoal, não precisa de banner de
-      consentimento. Cadastro da conta e verificação dos primeiros dados
-      no painel do Plausible ficam por conta do usuário. *(12 ago. 2026)*
+      oficial do painel (`pa-DHHLFbo44ABbubWFPznWd.js`, método novo do
+      Plausible, sem `data-domain` no HTML) adicionado na home + 3
+      artigos + template. O domínio associado ao site fica só no painel
+      do Plausible, não no código — precisa ser atualizado lá na
+      migração de domínio (item já adicionado ao checklist
+      correspondente). Sem cookies, sem coleta de dado pessoal, não
+      precisa de banner de consentimento. *(12 ago. 2026)*
 
 - [x] **Sitemap.xml no Search Console com "não foi possível buscar" —
       investigado, não é um problema real.** Persistiu por mais de um dia
