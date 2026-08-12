@@ -41,18 +41,13 @@ Pages e precisam ser atualizados assim que o domínio próprio estiver ativo:
 - [ ] **Sitemap.xml no Search Console ainda com "não foi possível buscar"**
       — Google confirmou "dados em processamento, volte em ~1 dia". Conferir
       de novo amanhã; se persistir depois disso, investigar.
-- [ ] **Imagem de compartilhamento (og:image) — design ainda não aprovado**
-      — 2 versões geradas e rejeitadas pelo usuário (v1: fundo verde escuro
-      com gráfico decorativo; v2: fundo claro estilo página do blog, sem
-      gráfico, favicon no canto). Ambas descartadas. Precisa de uma nova
-      direção de design antes de gerar de novo. As tags `og:image` já
-      apontam pro caminho certo (`assets/og-cover-*.png`, endereço atual do
-      GitHub Pages) — só falta a imagem em si.
-- [ ] **Imagens de compartilhamento (og:image) não existem** — os 3 artigos
-      apontam pra `assets/og-cover-*.png`, mas esse arquivo não existe no
-      repositório. Hoje, ao compartilhar um link no WhatsApp/LinkedIn/X, não
-      aparece nenhuma imagem de prévia. Precisa criar as 3 imagens (1200×630)
-      e subir na pasta `assets/`.
+
+- [ ] **Confirmar prévia de compartilhamento funcionando** — usuário já
+      gerou as imagens em outra IA e subiu em `assets/`; falta só testar no
+      WhatsApp Web / LinkedIn Post Inspector se a prévia carrega certinho
+      (nomes de arquivo precisam bater exatamente com o que o HTML espera:
+      `og-cover-pwr-carteira-fire.png`, `og-cover-ipca-hiperinflacao.png`,
+      `og-cover-quanto-posso-retirar.png`).
 
 ## Analytics
 
@@ -87,6 +82,11 @@ Pages e precisam ser atualizados assim que o domínio próprio estiver ativo:
 ---
 
 ## Concluído
+
+- [x] **Imagens de compartilhamento (og:image) — design aprovado e
+      publicado** — depois de 2 tentativas minhas rejeitadas, o usuário
+      gerou as 3 imagens em outra IA e já subiu em `assets/`. Falta só o
+      teste final de prévia (ver item em aberto). *(11 ago. 2026)*
 
 - [x] **Bug encontrado e corrigido: botões de compartilhar apontavam pro
       domínio final** — WhatsApp/LinkedIn/X estavam compartilhando

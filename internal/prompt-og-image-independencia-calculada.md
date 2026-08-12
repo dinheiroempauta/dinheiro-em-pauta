@@ -19,6 +19,20 @@ Do `index.html` fornecido, extraia:
 - O tempo de leitura (`~XX min`) e outros metadados relevantes do `.meta` (nível, "inclui calculadora/simulador interativo", etc.)
 - O nome de arquivo esperado, a partir de `og:image` (ex: `og-cover-nome-do-artigo.png`) — a imagem final **precisa ter exatamente esse nome**.
 
+**Regra crítica sobre o texto do H1 da imagem: NUNCA copie o `<title>`/`og:title` literalmente.**
+
+Quando um link é compartilhado, a maioria das plataformas (WhatsApp, LinkedIn, X, etc.) mostra a imagem de capa **e**, logo abaixo dela, o `<title>` da página como texto. Se o H1 dentro da imagem for idêntico ao `<title>`, o preview do link fica com a mesma frase repetida duas vezes (uma vez dentro do PNG, outra vez como texto do card) — visualmente redundante e de aparência amadora.
+
+Por isso, o H1 dentro da imagem deve ser **uma reformulação temática do artigo, não a pergunta/título literal da página**. Pense nele como um "rótulo do assunto" — o que o artigo é, tecnicamente — em vez do gancho editorial usado no `<title>`. Exemplos já aplicados nesta série:
+
+| `<title>` / `og:title` da página (mantido como está no HTML) | H1 dentro da imagem (reformulado) |
+|---|---|
+| "Quanto posso retirar dos meus investimentos durante a aposentadoria?" | "Taxa Segura de Retirada e Taxa Perpétua de Retirada" |
+| "A confusão generalizada sobre os Títulos IPCA+" | "Rentabilidade negativa no IPCA+ em cenários de hiperinflação" |
+| "Qual é a PWR da minha carteira? Um estudo com 20 anos de dados reais" | "A Taxa Perpétua de Retirada (PWR) de uma carteira de aposentadoria" |
+
+Ao reformular, prefira nomear os **conceitos/termos técnicos centrais** do artigo (SWR, PWR, IPCA+, hiperinflação, taxa de retirada) em vez de reescrever a pergunta do título com outras palavras — isso evita duplicidade de sentido além de duplicidade literal. O `<title>`, `og:title`, `.eyebrow` e `.subtitle` do HTML do artigo **nunca são alterados** — essa reformulação vale só para o texto renderizado dentro do PNG.
+
 ### 2. Extraia os design tokens do próprio HTML
 
 Não invente cores ou fontes — leia do `:root{}` do CSS do artigo:
@@ -115,7 +129,8 @@ Confirme as dimensões finais com `identify` (precisa ser exatamente **1200x630*
 - [ ] Dimensões exatas: 1200×630
 - [ ] Nenhum ícone/emoji/foto de banco de imagem — só tipografia + o motivo gráfico SVG
 - [ ] O motivo gráfico é específico ao argumento do artigo, não reciclado de outro artigo sem adaptação
-- [ ] Título, eyebrow, categoria e subtítulo batem com o conteúdo real do HTML anexado (não inventados)
+- [ ] Eyebrow, categoria e subtítulo batem com o conteúdo real do HTML anexado (não inventados)
+- [ ] O H1 dentro da imagem **não é uma cópia literal do `<title>`/`og:title`** — é uma reformulação temática/técnica do assunto (ver regra na seção 1)
 - [ ] Fontes corretas (Fraunces no título, IBM Plex Mono nos labels/wordmark, IBM Plex Sans no subtítulo) — sem fallback visível para Arial/DejaVu
 - [ ] Salvar em `/mnt/user-data/outputs/` e usar `present_files` para entregar
 
