@@ -36,10 +36,12 @@ de escrever o HTML do zero.
 - [ ] Bloco Twitter Card: `twitter:card=summary_large_image`, `twitter:title`,
       `twitter:description`, `twitter:image`
 - [ ] `theme-color` e `<link rel="icon" href="../favicon.png">`
-- [ ] Script do Plausible logo após o favicon (bloco com
-      `pa-DHHLFbo44ABbubWFPznWd.js` — copiar inalterado do template; é
-      o mesmo ID de site pra todo artigo, o domínio rastreado fica
-      configurado no painel do Plausible, não no HTML)
+- [ ] Script do Umami logo após o favicon (`<script defer
+      src="https://cloud.umami.is/script.js"
+      data-website-id="cfa01c19-23cd-468f-8d42-db9a697cf762"></script>`
+      — copiar inalterado do template; é o mesmo `data-website-id` pra
+      todo artigo, o domínio rastreado fica configurado no painel do
+      Umami, não no HTML)
 - [ ] JSON-LD **Article** (headline, description, image, datePublished,
       dateModified, articleSection, keywords, about, author/publisher,
       mainEntityOfPage, isPartOf)
