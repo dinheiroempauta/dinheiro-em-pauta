@@ -862,6 +862,7 @@ h3{ font-family: var(--font-display); font-weight: 600; font-size: 1.15rem; marg
     display:block;
     transition: background .2s ease, transform .2s ease;
   }
+  .toc-rail a::before{ content:""; position:absolute; top:50%; left:50%; width:24px; height:24px; transform:translate(-50%,-50%); }
   .toc-rail a:hover, .toc-rail a.active{ background: var(--green); transform: scale(1.3); }
   .toc-rail a .toc-label{
     position:absolute; right: 20px; top:50%; transform: translateY(-50%);
@@ -1050,12 +1051,12 @@ h3{ font-family: var(--font-display); font-weight: 600; font-size: 1.15rem; marg
 <div class="progress-rail"><div class="progress-fill" id="progressFill"></div></div>
 
 <nav class="toc-rail" id="tocRail" aria-label="Navegação do artigo">
-  <a href="#sec-01" data-label="01"><span class="toc-label">O ponto de partida</span></a>
-  <a href="#sec-02" data-label="02"><span class="toc-label">A fórmula errada</span></a>
-  <a href="#sec-03" data-label="03"><span class="toc-label">A fórmula certa</span></a>
-  <a href="#sec-04" data-label="04"><span class="toc-label">Simulador interativo</span></a>
-  <a href="#sec-05" data-label="05"><span class="toc-label">Quando pode ficar negativa</span></a>
-  <a href="#sec-06" data-label="06"><span class="toc-label">Objeções comuns</span></a>
+  <a href="#sec-01" data-label="01" aria-label="O ponto de partida"><span class="toc-label">O ponto de partida</span></a>
+  <a href="#sec-02" data-label="02" aria-label="A fórmula errada"><span class="toc-label">A fórmula errada</span></a>
+  <a href="#sec-03" data-label="03" aria-label="A fórmula certa"><span class="toc-label">A fórmula certa</span></a>
+  <a href="#sec-04" data-label="04" aria-label="Simulador interativo"><span class="toc-label">Simulador interativo</span></a>
+  <a href="#sec-05" data-label="05" aria-label="Quando pode ficar negativa"><span class="toc-label">Quando pode ficar negativa</span></a>
+  <a href="#sec-06" data-label="06" aria-label="Objeções comuns"><span class="toc-label">Objeções comuns</span></a>
 </nav>
 
 <button type="button" class="back-to-top" id="backToTop" aria-label="Voltar ao topo">
@@ -1803,6 +1804,7 @@ h3{ font-family: var(--font-display); font-weight: 600; font-size: 1.15rem; marg
       function styleFrame(node){
         if (applied) return;
         applied = true;
+        node.setAttribute('title', 'Comentários do artigo');
         node.style.border = '0';
         node.style.width = '100%';
         node.style.colorScheme = 'light';
