@@ -299,6 +299,7 @@
   .newsletter-form input[type="email"]::placeholder{ color: #9AA396; }
   .newsletter-submit{ font-family: 'IBM Plex Mono', monospace; font-size: 13px; font-weight:600; letter-spacing:.03em; background: var(--green); color:#fff; border:none; padding: 10px 18px; border-radius: 3px; cursor:pointer; white-space:nowrap; }
   .newsletter-submit:hover{ background:#175A41; }
+  .newsletter-fields{ display:flex; align-items:center; gap: 10px; flex-wrap: wrap; }
   .newsletter-note{ font-size: 12px; color: var(--muted); width: 100%; margin: 0; }
   .newsletter-note.success{ color: var(--green); font-weight: 600; }
   .newsletter-hidden-frame{ display:none; }
@@ -459,10 +460,12 @@
 
     <form action="https://buttondown.com/api/emails/embed-subscribe/independencia_calculada" method="post" target="newsletterHiddenFrame"
       class="newsletter-form" id="newsletterForm" hidden>
-      <label for="bd-email" class="newsletter-label">E-mail</label>
-      <input type="email" name="email" id="bd-email" placeholder="seu@email.com" required>
-      <input type="hidden" value="1" name="embed">
-      <button type="submit" class="newsletter-submit">Inscrever</button>
+      <div class="newsletter-fields" id="newsletterFields">
+        <label for="bd-email" class="newsletter-label">E-mail</label>
+        <input type="email" name="email" id="bd-email" placeholder="seu@email.com" required>
+        <input type="hidden" value="1" name="embed">
+        <button type="submit" class="newsletter-submit">Inscrever</button>
+      </div>
       <p class="newsletter-note" id="newsletterNote">Um aviso por e-mail a cada artigo novo — sem spam, cancele quando quiser.</p>
     </form>
     <iframe name="newsletterHiddenFrame" class="newsletter-hidden-frame" title="" aria-hidden="true" tabindex="-1"></iframe>
@@ -748,15 +751,13 @@
 
   form.addEventListener('submit', function(){
     var note = document.getElementById('newsletterNote');
-    var emailInput = form.querySelector('input[type="email"]');
-    var submitBtn = form.querySelector('.newsletter-submit');
+    var fields = document.getElementById('newsletterFields');
     setTimeout(function(){
       if (note) {
         note.textContent = 'Inscrição enviada — confira seu e-mail para confirmar.';
         note.classList.add('success');
       }
-      if (emailInput) { emailInput.value = ''; emailInput.disabled = true; }
-      if (submitBtn) submitBtn.disabled = true;
+      if (fields) fields.style.display = 'none';
     }, 400);
   });
 })();
