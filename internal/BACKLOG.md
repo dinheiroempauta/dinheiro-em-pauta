@@ -36,6 +36,12 @@ Pages e precisam ser atualizados assim que o domínio próprio estiver ativo:
       GitHub Pages pro domínio final.
 - [ ] **CNAME** — criar o arquivo `CNAME` no repositório com o domínio
       (passo já documentado no README.md).
+- [ ] **Plausible (`data-domain`)** — trocar `data-domain` do script de
+      analytics, hoje `independenciacalculada-droid.github.io`, pro
+      domínio final, na home + 3 artigos + template. Sem isso o
+      Plausible para de contar visitas assim que o domínio mudar (o
+      script vai continuar rodando, mas o `data-domain` não vai bater
+      com o host real).
 
 ---
 
@@ -47,14 +53,6 @@ Pages e precisam ser atualizados assim que o domínio próprio estiver ativo:
       `assets/` com o nome exato esperado pelo HTML e nas dimensões corretas
       (1200×630 as três) — só falta o teste em plataforma real, que exige
       compartilhar o link de fato.
-
-## Analytics
-
-- [ ] **Ferramenta de analytics sem rastreamento pessoal** — Plausible ou
-      Umami (gratuitos até certo volume), para saber quantas pessoas visitam,
-      de onde vêm e quais artigos performam melhor, sem comprometer a
-      privacidade dos leitores. Confirmado em 12 ago: nenhum script de
-      analytics em nenhum arquivo do site.
 
 ## Design / UX
 
@@ -84,6 +82,15 @@ Pages e precisam ser atualizados assim que o domínio próprio estiver ativo:
       nunca carregam pra quem visita a página — e o favicon já é pequeno.
       Bate com o resultado do PageSpeed (Performance 99–100 nos 3
       artigos): não existe otimização de imagem pendente. *(12 ago. 2026)*
+
+- [x] **Analytics sem rastreamento pessoal (Plausible)** — script
+      adicionado na home + 3 artigos + template, com
+      `data-domain="independenciacalculada-droid.github.io"` (o endereço
+      real que o site usa hoje — precisa trocar pro domínio final na
+      migração, item já adicionado ao checklist correspondente). Sem
+      cookies, sem coleta de dado pessoal, não precisa de banner de
+      consentimento. Cadastro da conta e verificação dos primeiros dados
+      no painel do Plausible ficam por conta do usuário. *(12 ago. 2026)*
 
 - [x] **Sitemap.xml no Search Console com "não foi possível buscar" —
       investigado, não é um problema real.** Persistiu por mais de um dia
