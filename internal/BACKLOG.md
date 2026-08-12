@@ -11,8 +11,10 @@ para a seção "Concluído", no fim, com a data).
 - [ ] **Domínio próprio** — migrar do endereço temporário do GitHub Pages para
       um domínio comprado (ex: independenciacalculada.com.br). Melhora
       credibilidade e SEO. Processo já documentado, sem risco de quebrar nada.
-- [ ] **Conectar Claude direto ao GitHub** — via MCP connector, quando assinar
-      um plano pago do Claude. Elimina o passo de copiar arquivos manualmente.
+      Confirmado em 12 ago: arquivo `CNAME` ainda não existe no repositório;
+      `og:image`/`twitter:image` dos 3 artigos ainda apontam pro GitHub Pages
+      enquanto o `canonical` já aponta pro domínio final (comportamento
+      esperado, documentado no checklist de novo artigo).
 
 ## ⚠️ Checklist para quando migrar pro domínio próprio
 
@@ -24,7 +26,8 @@ Pages e precisam ser atualizados assim que o domínio próprio estiver ativo:
       GitHub Pages).
 - [ ] **Cloudflare Worker (likes-worker.js)** — o `ALLOWED_ORIGINS` já inclui
       o domínio final, então não precisa mexer no código; só confirmar que
-      segue funcionando depois da troca.
+      segue funcionando depois da troca. Confirmado em 12 ago, direto no
+      arquivo: `ALLOWED_ORIGINS` já lista os dois domínios.
 - [ ] **Cusdis** — atualizar a URL do site cadastrada no painel (hoje está
       com o endereço do GitHub Pages).
 - [ ] **Google Search Console** — verificar a propriedade de novo com o
@@ -36,52 +39,92 @@ Pages e precisam ser atualizados assim que o domínio próprio estiver ativo:
 
 ---
 
+## ⚠️ Bug ao vivo — conteúdo de placeholder publicado nos 3 artigos
+
+Encontrado em 12 ago, comparando o BACKLOG contra os arquivos reais (não
+estava mapeado até então). No bloco `.cta` no fim de cada artigo:
+
+- [ ] **Links de "Continue lendo" quebrados** — em `pwr-carteira-fire` e
+      `quanto-posso-retirar-aposentadoria`, os dois links apontam pra
+      `/artigo-x.html` e `/artigo-y.html` (páginas que não existem), com o
+      texto literal "Título do artigo relacionado 1/2" — placeholder do
+      template, nunca preenchido. Em `ipca-hiperinflacao`, um dos dois já
+      foi preenchido corretamente (aponta pra
+      `quanto-posso-retirar-aposentadoria`), mas o segundo ainda é
+      `/artigo-y.html`. Correção é mecânica (só cruzar os 3 artigos entre
+      si), sem decisão editorial envolvida.
+- [ ] **Botões "Assinar a newsletter" e "Sugira um tema" sem destino**
+      (`href="#"`) nos 3 artigos — depende do item "Newsletter" abaixo ser
+      resolvido primeiro (ainda não há serviço escolhido pra apontar).
+
 ## SEO e descoberta
 
 - [ ] **Sitemap.xml no Search Console ainda com "não foi possível buscar"**
       — Google confirmou "dados em processamento, volte em ~1 dia". Conferir
       de novo amanhã; se persistir depois disso, investigar.
 
-- [ ] **Confirmar prévia de compartilhamento funcionando** — usuário já
-      gerou as imagens em outra IA e subiu em `assets/`; falta só testar no
-      WhatsApp Web / LinkedIn Post Inspector se a prévia carrega certinho
-      (nomes de arquivo precisam bater exatamente com o que o HTML espera:
-      `og-cover-pwr-carteira-fire.png`, `og-cover-ipca-hiperinflacao.png`,
-      `og-cover-quanto-posso-retirar.png`).
+- [ ] **Confirmar prévia de compartilhamento funcionando** — falta testar no
+      WhatsApp Web / LinkedIn Post Inspector se a prévia carrega certinho.
+      Confirmado em 12 ago, direto nos arquivos: as 3 imagens existem em
+      `assets/` com o nome exato esperado pelo HTML e nas dimensões corretas
+      (1200×630 as três) — só falta o teste em plataforma real, que exige
+      compartilhar o link de fato.
 
 ## Analytics
 
 - [ ] **Ferramenta de analytics sem rastreamento pessoal** — Plausible ou
       Umami (gratuitos até certo volume), para saber quantas pessoas visitam,
       de onde vêm e quais artigos performam melhor, sem comprometer a
-      privacidade dos leitores.
+      privacidade dos leitores. Confirmado em 12 ago: nenhum script de
+      analytics em nenhum arquivo do site.
 
 ## Performance
 
 - [ ] **Otimizar imagens/gráficos** dos artigos para carregamento mais rápido
       (se aplicável).
-- [ ] **Testar velocidade de carregamento** com o PageSpeed Insights
-      (gratuito) e ajustar o que aparecer como gargalo.
 
 ## Design / UX
 
 - [ ] **Página "Sobre"** — quem escreve, credenciais, por que confiar no
       conteúdo. Ajuda bastante com credibilidade em blog de finanças.
+      Confirmado em 12 ago: não existe página dedicada, só um parágrafo
+      curto na home (seção "Sobre este espaço").
 - [ ] **Newsletter** — avisar leitores quando sai artigo novo (ex: Buttondown
-      ou Substack, gratuitos até certo volume).
-- [ ] **Botão "voltar ao topo"** em artigos longos.
-- [ ] **Índice clicável (TOC lateral)** — confirmar se os pontinhos de
-      navegação lateral dos artigos já são clicáveis/scrollam até a seção;
-      se não forem, implementar.
+      ou Substack, gratuitos até certo volume). Ver bug relacionado acima:
+      os botões "Assinar a newsletter" já estão publicados nos 3 artigos,
+      só não têm destino ainda.
 
 ## Distribuição
 
 - [ ] **Compartilhamento automático** no LinkedIn/X ao publicar um artigo novo
-      (hoje é manual).
+      (hoje é manual). Confirmado em 12 ago: não existe `.github/workflows/`
+      no repositório.
 
 ---
 
 ## Concluído
+
+- [x] **Conectar Claude direto ao GitHub** — via GitHub MCP connector, já
+      em uso: commit, push, PR e merge acontecem direto por aqui, sem copiar
+      arquivos manualmente. *(12 ago. 2026)*
+
+- [x] **Testar velocidade de carregamento com PageSpeed Insights e corrigir
+      gargalos** — testados os 3 artigos publicados. Acessibilidade foi de
+      85/93 (desktop/mobile) para **100/100** nos três (corrigido: contraste
+      de texto no gráfico de alocação, `title` no iframe de comentários,
+      nome acessível nos links do TOC lateral, área de toque dos pontos do
+      TOC). Performance: `quanto-posso-retirar-aposentadoria` foi de 83 para
+      **100** no desktop depois de eliminar um forced reflow no auto-resize
+      do iframe de comentários (Total Blocking Time de 370ms para 0ms); os
+      outros dois já estavam em 99-100. Validado direto pela API oficial do
+      PageSpeed Insights contra a URL publicada. *(12 ago. 2026)*
+
+- [x] **Botão "voltar ao topo"** — confirmado presente e funcional nos 3
+      artigos (`.back-to-top`). *(12 ago. 2026)*
+
+- [x] **Índice clicável (TOC lateral)** — confirmado no código: são links
+      `<a href="#sec-XX">` reais com `scroll-behavior: smooth`, já
+      funcionavam. *(12 ago. 2026)*
 
 - [x] **Imagens de compartilhamento (og:image) — design aprovado e
       publicado** — depois de 2 tentativas minhas rejeitadas, o usuário
