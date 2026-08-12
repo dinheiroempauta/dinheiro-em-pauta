@@ -36,9 +36,9 @@ Pages e precisam ser atualizados assim que o domínio próprio estiver ativo:
       GitHub Pages pro domínio final.
 - [ ] **CNAME** — criar o arquivo `CNAME` no repositório com o domínio
       (passo já documentado no README.md).
-- [ ] **Plausible (domínio do site)** — atualizar o domínio cadastrado
-      para este site nas configurações do painel do Plausible pro
-      domínio final. O script no HTML (`pa-DHHLFbo44ABbubWFPznWd.js`)
+- [ ] **Umami (domínio do site)** — atualizar o domínio cadastrado para
+      este site nas configurações do painel do Umami pro domínio final.
+      O script no HTML (`data-website-id="cfa01c19-23cd-468f-8d42-db9a697cf762"`)
       não precisa mudar — é o mesmo ID de site pra sempre, só o domínio
       associado a ele no painel que precisa ser atualizado.
 
@@ -82,14 +82,18 @@ Pages e precisam ser atualizados assim que o domínio próprio estiver ativo:
       Bate com o resultado do PageSpeed (Performance 99–100 nos 3
       artigos): não existe otimização de imagem pendente. *(12 ago. 2026)*
 
-- [x] **Analytics sem rastreamento pessoal (Plausible)** — script
-      oficial do painel (`pa-DHHLFbo44ABbubWFPznWd.js`, método novo do
-      Plausible, sem `data-domain` no HTML) adicionado na home + 3
-      artigos + template. O domínio associado ao site fica só no painel
-      do Plausible, não no código — precisa ser atualizado lá na
-      migração de domínio (item já adicionado ao checklist
-      correspondente). Sem cookies, sem coleta de dado pessoal, não
-      precisa de banner de consentimento. *(12 ago. 2026)*
+- [x] **Analytics sem rastreamento pessoal (Umami)** — trocado do
+      Plausible pro Umami Cloud depois de descobrir que o Plausible
+      Cloud não é mais gratuito (só 30 dias de trial, depois cobra por
+      volume); o plano Hobby do Umami é grátis pra sempre até 100 mil
+      eventos/mês, bem acima do que um blog deste porte deve gerar.
+      Script oficial do painel
+      (`data-website-id="cfa01c19-23cd-468f-8d42-db9a697cf762"`)
+      adicionado na home + 3 artigos + template. O domínio associado ao
+      site fica só no painel do Umami, não no código — precisa ser
+      atualizado lá na migração de domínio (item já adicionado ao
+      checklist correspondente). Sem cookies, sem coleta de dado
+      pessoal, não precisa de banner de consentimento. *(12 ago. 2026)*
 
 - [x] **Sitemap.xml no Search Console com "não foi possível buscar" —
       investigado, não é um problema real.** Persistiu por mais de um dia
