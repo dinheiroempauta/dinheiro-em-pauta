@@ -507,11 +507,17 @@
         node.style.width = '100%';
         node.style.colorScheme = 'light';
         node.style.minHeight = '120px';
+        var resizePending = false;
         function resize(doc){
-          try{
-            var h = Math.max(doc.documentElement.scrollHeight, doc.body ? doc.body.scrollHeight : 0);
-            if (h > 0) node.style.height = (h + 24) + 'px';
-          }catch(e){}
+          if (resizePending) return;
+          resizePending = true;
+          requestAnimationFrame(function(){
+            resizePending = false;
+            try{
+              var h = Math.max(doc.documentElement.scrollHeight, doc.body ? doc.body.scrollHeight : 0);
+              if (h > 0) node.style.height = (h + 24) + 'px';
+            }catch(e){}
+          });
         }
         function setup(){
           try{
