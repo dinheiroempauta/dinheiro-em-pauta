@@ -41,10 +41,6 @@ Pages e precisam ser atualizados assim que o domínio próprio estiver ativo:
 
 ## SEO e descoberta
 
-- [ ] **Sitemap.xml no Search Console ainda com "não foi possível buscar"**
-      — Google confirmou "dados em processamento, volte em ~1 dia". Conferir
-      de novo amanhã; se persistir depois disso, investigar.
-
 - [ ] **Confirmar prévia de compartilhamento funcionando** — falta testar no
       WhatsApp Web / LinkedIn Post Inspector se a prévia carrega certinho.
       Confirmado em 12 ago, direto nos arquivos: as 3 imagens existem em
@@ -81,6 +77,21 @@ Pages e precisam ser atualizados assim que o domínio próprio estiver ativo:
 ---
 
 ## Concluído
+
+- [x] **Sitemap.xml no Search Console com "não foi possível buscar" —
+      investigado, não é um problema real.** Persistiu por mais de um dia
+      e sobreviveu a uma remoção + reenvio manual do sitemap, então
+      investiguei a fundo em 12 ago: `curl` no arquivo publicado confirma
+      200, `content-type: application/xml` correto e XML válido; o
+      **Teste em tempo real** da própria Inspeção de URL do Search Console
+      (que usa o rastreador real do Google, não uma suposição) confirmou
+      "O URL está disponível para o Google", com o conteúdo do sitemap
+      renderizado certinho. Conclusão: o status "não foi possível buscar"
+      na aba Sitemaps reflete só a última tentativa periódica (que falhou
+      por algum motivo pontual do lado do Google), e essa aba atualiza no
+      cronograma deles, não em tempo real — não é algo que a gente force
+      nem um problema no nosso arquivo. Sem ação pendente; só aguardar o
+      próximo rastreamento periódico atualizar o status sozinho. *(12 ago. 2026)*
 
 - [x] **Botão "Sugira um tema" conectado (Web3Forms)** — abre um textarea
       (limite de 500 caracteres, contador ao vivo) que envia direto pro
