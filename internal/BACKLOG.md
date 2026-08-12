@@ -44,9 +44,10 @@ Pages e precisam ser atualizados assim que o domínio próprio estiver ativo:
 Encontrado em 12 ago, comparando o BACKLOG contra os arquivos reais (não
 estava mapeado até então). No bloco `.cta` no fim de cada artigo:
 
-- [ ] **Botões "Assinar a newsletter" e "Sugira um tema" sem destino**
-      (`href="#"`) nos 3 artigos — depende do item "Newsletter" abaixo ser
-      resolvido primeiro (ainda não há serviço escolhido pra apontar).
+- [ ] **Botão "Sugira um tema" sem destino** (`href="#"`) nos 3 artigos —
+      não depende mais da newsletter (ver Concluído); falta decidir pra
+      onde apontar (ex: formulário simples, e-mail direto, ou reaproveitar
+      o mesmo Buttondown com uma pergunta extra no formulário).
 
 ## SEO e descoberta
 
@@ -80,10 +81,6 @@ estava mapeado até então). No bloco `.cta` no fim de cada artigo:
       conteúdo. Ajuda bastante com credibilidade em blog de finanças.
       Confirmado em 12 ago: não existe página dedicada, só um parágrafo
       curto na home (seção "Sobre este espaço").
-- [ ] **Newsletter** — avisar leitores quando sai artigo novo (ex: Buttondown
-      ou Substack, gratuitos até certo volume). Ver bug relacionado acima:
-      os botões "Assinar a newsletter" já estão publicados nos 3 artigos,
-      só não têm destino ainda.
 
 ## Distribuição
 
@@ -94,6 +91,20 @@ estava mapeado até então). No bloco `.cta` no fim de cada artigo:
 ---
 
 ## Concluído
+
+- [x] **Newsletter conectada (Buttondown)** — usuário escolheu Buttondown
+      (grátis até 100 assinantes, sem venda de dados, analytics desligado
+      por padrão). Botão "Assinar a newsletter" nos 3 artigos agora abre
+      um formulário no design do site (sem sair do domínio), que envia
+      pro endpoint público do Buttondown
+      (`buttondown.com/api/emails/embed-subscribe/independenciacalculada`).
+      Adicionado também ao `internal/template-artigo.html` e ao checklist,
+      como bloco `.cta` obrigatório em todo artigo novo daqui pra frente.
+      Testado localmente (Chromium headless): toggle abre/fecha o
+      formulário, foco vai pro campo de e-mail, sem erros de JS, action
+      aponta pro endpoint correto. Fluxo de envio de e-mail pra cada
+      artigo novo continua manual, pelo painel do Buttondown.
+      *(12 ago. 2026)*
 
 - [x] **Links de "Continue lendo" quebrados nos 3 artigos** —
       `pwr-carteira-fire` e `quanto-posso-retirar-aposentadoria` tinham

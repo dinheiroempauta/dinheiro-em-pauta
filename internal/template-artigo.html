@@ -291,6 +291,14 @@
   .cta-btn{ font-family:'IBM Plex Mono', monospace; font-size: 13px; font-weight:600; letter-spacing:.03em; background: var(--green); color: var(--paper-raised); border: none; padding: 12px 20px; border-radius: 3px; cursor:pointer; white-space:nowrap; text-decoration:none; display:inline-block; }
   .cta-btn:hover{ background:#175A41; }
   .cta-buttons{ display: flex; gap: 16px; flex-wrap: wrap; align-items: center; }
+  .newsletter-form{ width: 100%; display:flex; align-items:center; gap: 10px; flex-wrap: wrap; margin-top: 14px; padding-top: 14px; border-top: 1px solid var(--line); }
+  .newsletter-label{ font-family: 'IBM Plex Mono', monospace; font-size: 11px; text-transform: uppercase; letter-spacing: .08em; color: var(--muted); }
+  .newsletter-form input[type="email"]{ font-family: 'IBM Plex Sans', sans-serif; font-size: 14px; padding: 9px 12px; border: 1px solid var(--line-strong); border-radius: 3px; background: var(--paper); color: var(--ink); flex: 1; min-width: 200px; }
+  .newsletter-form input[type="email"]:focus{ outline:none; border-color: var(--green); }
+  .newsletter-form input[type="email"]::placeholder{ color: #9AA396; }
+  .newsletter-submit{ font-family: 'IBM Plex Mono', monospace; font-size: 13px; font-weight:600; letter-spacing:.03em; background: var(--green); color:#fff; border:none; padding: 10px 18px; border-radius: 3px; cursor:pointer; white-space:nowrap; }
+  .newsletter-submit:hover{ background:#175A41; }
+  .newsletter-note{ font-size: 12px; color: var(--muted); width: 100%; margin: 0; }
   .cta-related{ width: 100%; margin-top: 4px; padding-top: 16px; border-top: 1px solid var(--line); }
   .cta-related-label{ font-family: 'IBM Plex Mono', monospace; font-size: 11px; letter-spacing: .1em; text-transform: uppercase; color: var(--green); margin-bottom: 12px; }
   .cta-related-link{ display: flex; align-items: center; justify-content: space-between; padding: 12px 0; border-bottom: 1px solid var(--line); color: var(--ink); text-decoration: none; }
@@ -426,6 +434,47 @@
     -->
     <h2 id="sec-01"><span class="num">01</span>{{SEÇÃO 1}}</h2>
     <p>{{...}}</p>
+  </div>
+
+  <!--
+    Bloco de newsletter + artigos relacionados. Presente nos 3 artigos
+    publicados — mantenha em todo artigo novo. Preencha {{CTA_SUBTITLE}}
+    e os dois links de .cta-related apontando para os outros artigos já
+    publicados (caminho relativo ../slug/, nunca placeholder tipo
+    /artigo-x.html — ver internal/CHECKLIST-NOVO-ARTIGO.md).
+  -->
+  <div class="cta">
+    <div class="cta-text">
+      <h3>O que você pode aprender na sequência?</h3>
+      <p>{{CTA_SUBTITLE}}</p>
+    </div>
+
+    <div class="cta-buttons">
+      <button type="button" class="cta-btn" id="newsletterToggle" aria-expanded="false" aria-controls="newsletterForm">Assinar a newsletter</button>
+      <a class="cta-btn" href="#">Sugira um tema</a>
+    </div>
+
+    <form action="https://buttondown.com/api/emails/embed-subscribe/independenciacalculada" method="post" target="popupwindow"
+      onsubmit="window.open('https://buttondown.com/independenciacalculada', 'popupwindow')"
+      class="newsletter-form" id="newsletterForm" hidden>
+      <label for="bd-email" class="newsletter-label">E-mail</label>
+      <input type="email" name="email" id="bd-email" placeholder="seu@email.com" required>
+      <input type="hidden" value="1" name="embed">
+      <button type="submit" class="newsletter-submit">Inscrever</button>
+      <p class="newsletter-note">Um aviso por e-mail a cada artigo novo — sem spam, cancele quando quiser.</p>
+    </form>
+
+    <div class="cta-related">
+      <div class="cta-related-label">Continue lendo</div>
+      <a class="cta-related-link" href="../{{SLUG_ARTIGO_RELACIONADO_1}}/">
+        <span class="cta-related-title">{{TÍTULO_ARTIGO_RELACIONADO_1}}</span>
+        <span class="cta-related-arrow">→</span>
+      </a>
+      <a class="cta-related-link" href="../{{SLUG_ARTIGO_RELACIONADO_2}}/">
+        <span class="cta-related-title">{{TÍTULO_ARTIGO_RELACIONADO_2}}</span>
+        <span class="cta-related-arrow">→</span>
+      </a>
+    </div>
   </div>
 
   <div class="disclaimer-spacer"></div>
@@ -676,6 +725,23 @@
       });
     });
   }
+})();
+</script>
+
+<script>
+(function(){
+  var btn = document.getElementById('newsletterToggle');
+  var form = document.getElementById('newsletterForm');
+  if (!btn || !form) return;
+  btn.addEventListener('click', function(){
+    var willShow = form.hidden;
+    form.hidden = !willShow;
+    btn.setAttribute('aria-expanded', String(willShow));
+    if (willShow) {
+      var emailInput = form.querySelector('input[type="email"]');
+      if (emailInput) emailInput.focus();
+    }
+  });
 })();
 </script>
 </body></html>
