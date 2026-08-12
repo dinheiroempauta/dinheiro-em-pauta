@@ -56,11 +56,6 @@ Pages e precisam ser atualizados assim que o domínio próprio estiver ativo:
       privacidade dos leitores. Confirmado em 12 ago: nenhum script de
       analytics em nenhum arquivo do site.
 
-## Performance
-
-- [ ] **Otimizar imagens/gráficos** dos artigos para carregamento mais rápido
-      (se aplicável).
-
 ## Design / UX
 
 - [ ] **Página "Sobre"** — quem escreve, credenciais, por que confiar no
@@ -77,6 +72,18 @@ Pages e precisam ser atualizados assim que o domínio próprio estiver ativo:
 ---
 
 ## Concluído
+
+- [x] **Otimizar imagens/gráficos — investigado, não há gargalo real.**
+      Os 3 artigos não usam nenhuma tag `<img>`: os gráficos do conteúdo
+      (linha da taxa real líquida, barras do IPCA etc.) são SVGs inline
+      gerados a partir dos dados, não imagens — abordagem já correta
+      (vetorial, sem requisição HTTP extra, comprime bem). Os únicos
+      arquivos raster do repositório são as 3 og-cover PNGs (117–139K,
+      1200×630) e o favicon (16K, 512×512); as og-covers só são buscadas
+      por crawlers de redes sociais ao gerar prévia de compartilhamento —
+      nunca carregam pra quem visita a página — e o favicon já é pequeno.
+      Bate com o resultado do PageSpeed (Performance 99–100 nos 3
+      artigos): não existe otimização de imagem pendente. *(12 ago. 2026)*
 
 - [x] **Sitemap.xml no Search Console com "não foi possível buscar" —
       investigado, não é um problema real.** Persistiu por mais de um dia
