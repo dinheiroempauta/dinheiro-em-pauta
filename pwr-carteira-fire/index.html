@@ -1115,11 +1115,17 @@ footer{ max-width: var(--maxw); margin: 0 auto; padding: 30px 24px 60px; font-fa
         node.style.colorScheme = 'light';
         node.style.minHeight = '120px';
         node.setAttribute('title', 'Comentários do artigo');
+        var resizePending = false;
         function resize(doc){
-          try{
-            var h = Math.max(doc.documentElement.scrollHeight, doc.body ? doc.body.scrollHeight : 0);
-            if (h > 0) node.style.height = (h + 24) + 'px';
-          }catch(e){}
+          if (resizePending) return;
+          resizePending = true;
+          requestAnimationFrame(function(){
+            resizePending = false;
+            try{
+              var h = Math.max(doc.documentElement.scrollHeight, doc.body ? doc.body.scrollHeight : 0);
+              if (h > 0) node.style.height = (h + 24) + 'px';
+            }catch(e){}
+          });
         }
         function setup(){
           try{
