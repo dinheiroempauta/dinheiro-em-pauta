@@ -69,8 +69,14 @@ de escrever o HTML do zero.
       reutilizáveis do design system conforme o conteúdo pedir: `.note`,
       `.stat-card`, `.chart-card`, `.formula-box`, `.glossary`,
       `.steps-list`, `table.data`/`table.summary`, `blockquote.pull`,
-      `.mitigation-grid`, `.recap`, `.cta` com `.cta-related` para
-      artigos relacionados)
+      `.mitigation-grid`, `.recap`)
+- [ ] `.cta` — **obrigatório em todo artigo** (não é mais opcional): botão
+      "Assinar a newsletter" (form do Buttondown, `action` apontando pra
+      `https://buttondown.com/api/emails/embed-subscribe/independenciacalculada`,
+      toggle via `#newsletterToggle`/`#newsletterForm` — copiar inalterado
+      do template) + `.cta-related` com links para os **outros artigos já
+      publicados**, caminho relativo (`../slug/`), nunca placeholder tipo
+      `/artigo-x.html`
 - [ ] `.disclaimer` — texto de isenção de responsabilidade **idêntico**
       ao dos outros artigos (não parafrasear)
 - [ ] `.engage` — botão "Achei útil" (curtir) + grupo de compartilhar
