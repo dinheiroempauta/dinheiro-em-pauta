@@ -661,6 +661,8 @@ h3{ font-family: var(--font-display); font-weight: 600; font-size: 1.15rem; marg
   }
   .newsletter-submit:hover{ background:#175A41; }
   .newsletter-note{ font-size: 12px; color: var(--muted); width: 100%; margin: 0; }
+  .newsletter-note.success{ color: var(--green); font-weight: 600; }
+  .newsletter-hidden-frame{ display:none; }
 
   .cta-related{
     width: 100%;
@@ -1734,15 +1736,15 @@ h3{ font-family: var(--font-display); font-weight: 600; font-size: 1.15rem; marg
     <a class="cta-btn" href="#">Sugira um tema</a>
   </div>
 
-  <form action="https://buttondown.com/api/emails/embed-subscribe/independencia_calculada" method="post" target="popupwindow"
-    onsubmit="window.open('https://buttondown.com/independencia_calculada', 'popupwindow')"
+  <form action="https://buttondown.com/api/emails/embed-subscribe/independencia_calculada" method="post" target="newsletterHiddenFrame"
     class="newsletter-form" id="newsletterForm" hidden>
     <label for="bd-email" class="newsletter-label">E-mail</label>
     <input type="email" name="email" id="bd-email" placeholder="seu@email.com" required>
     <input type="hidden" value="1" name="embed">
     <button type="submit" class="newsletter-submit">Inscrever</button>
-    <p class="newsletter-note">Um aviso por e-mail a cada artigo novo — sem spam, cancele quando quiser.</p>
+    <p class="newsletter-note" id="newsletterNote">Um aviso por e-mail a cada artigo novo — sem spam, cancele quando quiser.</p>
   </form>
+  <iframe name="newsletterHiddenFrame" class="newsletter-hidden-frame" title="" aria-hidden="true" tabindex="-1"></iframe>
 
   <div class="cta-related">
     <div class="cta-related-label">Continue lendo</div>
@@ -2588,6 +2590,20 @@ h3{ font-family: var(--font-display); font-weight: 600; font-size: 1.15rem; marg
       var emailInput = form.querySelector('input[type="email"]');
       if (emailInput) emailInput.focus();
     }
+  });
+
+  form.addEventListener('submit', function(){
+    var note = document.getElementById('newsletterNote');
+    var emailInput = form.querySelector('input[type="email"]');
+    var submitBtn = form.querySelector('.newsletter-submit');
+    setTimeout(function(){
+      if (note) {
+        note.textContent = 'Inscrição enviada — confira seu e-mail para confirmar.';
+        note.classList.add('success');
+      }
+      if (emailInput) { emailInput.value = ''; emailInput.disabled = true; }
+      if (submitBtn) submitBtn.disabled = true;
+    }, 400);
   });
 })();
 </script>
