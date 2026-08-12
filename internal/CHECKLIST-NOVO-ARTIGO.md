@@ -53,7 +53,10 @@ de escrever o HTML do zero.
 - [ ] `.progress-rail` (barra de progresso de leitura no topo)
 - [ ] `.toc-rail` (navegação lateral por seção) — só se o artigo tiver
       seções longas o bastante para justificar; IDs das seções em
-      `#sec-01`, `#sec-02`, etc., sincronizados com os links
+      `#sec-01`, `#sec-02`, etc., sincronizados com os links. Cada `<a>`
+      precisa de `aria-label` igual ao texto do `.toc-label` (o span some
+      da árvore de acessibilidade porque fica `visibility:hidden` até o
+      hover) — sem isso, o PageSpeed acusa "links sem nome compreensível"
 - [ ] `.back-to-top` (botão flutuante)
 - [ ] `.site-bar` com link `← Todos os artigos` apontando para `../`
 - [ ] `.masthead` (wordmark + tagline), idêntico ao de outros artigos
@@ -75,7 +78,12 @@ de escrever o HTML do zero.
 - [ ] `.comments-section` com Cusdis: `data-app-id` (mesmo de todo o
       blog), `data-page-id="<slug>"`, `data-page-url` e `data-page-title`
       corretos para este artigo + o script de estilização do iframe
-      (copiar inalterado)
+      (copiar inalterado, já inclui `node.setAttribute('title', ...)`
+      no `styleFrame` — sem isso o PageSpeed acusa "iframe sem título")
+- [ ] Qualquer cor de texto customizada sobre fundo colorido (ex: gráficos
+      inline com `style="background:#..."`) precisa de contraste ≥ 4.5:1
+      — conferir com a calculadora de contraste do PageSpeed/DevTools
+      antes de usar texto branco sobre tons claros/médios da paleta
 - [ ] `<footer>` padrão
 
 ## 4. Scripts no fim do arquivo

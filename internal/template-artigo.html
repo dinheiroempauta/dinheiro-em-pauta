@@ -355,6 +355,7 @@
 
   .toc-rail{ position: fixed; top: 50%; transform: translateY(-50%); right: max(14px, calc((100vw - var(--maxw)) / 2 - 46px)); display:flex; flex-direction:column; gap: 13px; z-index: 40; }
   .toc-rail a{ width: 9px; height:9px; border-radius:50%; background: var(--line-strong); position:relative; text-decoration:none; display:block; transition: background .2s ease, transform .2s ease; }
+  .toc-rail a::before{ content:""; position:absolute; top:50%; left:50%; width:24px; height:24px; transform:translate(-50%,-50%); }
   .toc-rail a:hover, .toc-rail a.active{ background: var(--green); transform: scale(1.3); }
   .toc-rail a .toc-label{
     position:absolute; right: 20px; top:50%; transform: translateY(-50%); font-family:'IBM Plex Mono', monospace; font-size: 11px; color: var(--ink);
@@ -376,9 +377,10 @@
 <div class="progress-rail"><div class="progress-fill" id="progressFill"></div></div>
 
 <!-- TOC: um <a href="#sec-XX"> por seção do artigo, na ordem. Remova o <nav> se o artigo for curto. -->
+<!-- Cada <a> precisa de aria-label igual ao texto do .toc-label — o span fica visibility:hidden até o hover, o que também some da árvore de acessibilidade sem o aria-label. -->
 <nav class="toc-rail" id="tocRail" aria-label="Navegação do artigo">
-  <a href="#sec-01" data-label="01"><span class="toc-label">{{SEÇÃO 1}}</span></a>
-  <a href="#sec-02" data-label="02"><span class="toc-label">{{SEÇÃO 2}}</span></a>
+  <a href="#sec-01" data-label="01" aria-label="{{SEÇÃO 1}}"><span class="toc-label">{{SEÇÃO 1}}</span></a>
+  <a href="#sec-02" data-label="02" aria-label="{{SEÇÃO 2}}"><span class="toc-label">{{SEÇÃO 2}}</span></a>
 </nav>
 
 <button type="button" class="back-to-top" id="backToTop" aria-label="Voltar ao topo">
@@ -500,6 +502,7 @@
       function styleFrame(node){
         if (applied) return;
         applied = true;
+        node.setAttribute('title', 'Comentários do artigo');
         node.style.border = '0';
         node.style.width = '100%';
         node.style.colorScheme = 'light';
