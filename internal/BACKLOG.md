@@ -46,12 +46,13 @@ Pages e precisam ser atualizados assim que o domínio próprio estiver ativo:
 
 ## SEO e descoberta
 
-- [ ] **Confirmar prévia de compartilhamento funcionando** — falta testar no
-      WhatsApp Web / LinkedIn Post Inspector se a prévia carrega certinho.
-      Confirmado em 12 ago, direto nos arquivos: as 3 imagens existem em
-      `assets/` com o nome exato esperado pelo HTML e nas dimensões corretas
-      (1200×630 as três) — só falta o teste em plataforma real, que exige
-      compartilhar o link de fato.
+- [ ] **Home sem imagem de compartilhamento** — o `index.html` nunca teve
+      tag `og:image`/`twitter:image`, e não existe nenhum arquivo de capa
+      pra home em `assets/` (só as 3 dos artigos). Testado em 13 ago no
+      WhatsApp e no LinkedIn Post Inspector: nenhuma imagem aparece ao
+      compartilhar o link da home, só título/descrição. Decisão do
+      usuário em 13 ago: **adiado por enquanto**, sem gerar imagem nova
+      no momento.
 
 ## Design / UX
 
@@ -81,6 +82,15 @@ Pages e precisam ser atualizados assim que o domínio próprio estiver ativo:
       nunca carregam pra quem visita a página — e o favicon já é pequeno.
       Bate com o resultado do PageSpeed (Performance 99–100 nos 3
       artigos): não existe otimização de imagem pendente. *(12 ago. 2026)*
+
+- [x] **Prévia de compartilhamento dos 3 artigos testada e corrigida** —
+      testado em 13 ago no WhatsApp Web e no LinkedIn Post Inspector.
+      WhatsApp mostrou as imagens certas nos 3 artigos. LinkedIn mostrou
+      versões antigas (o site já teve 2-3 revisões de design da mesma
+      imagem, sempre com o mesmo nome de arquivo, e o LinkedIn cacheia
+      a prévia pela URL) — corrigido adicionando `?v=2` na URL da
+      imagem (`og:image`, `twitter:image`, JSON-LD) nos 3 artigos pra
+      forçar o LinkedIn a buscar de novo. *(13 ago. 2026)*
 
 - [x] **Analytics sem rastreamento pessoal (Umami)** — trocado do
       Plausible pro Umami Cloud depois de descobrir que o Plausible
