@@ -85,12 +85,22 @@ Pages e precisam ser atualizados assim que o domínio próprio estiver ativo:
 
 - [x] **Prévia de compartilhamento dos 3 artigos testada e corrigida** —
       testado em 13 ago no WhatsApp Web e no LinkedIn Post Inspector.
-      WhatsApp mostrou as imagens certas nos 3 artigos. LinkedIn mostrou
-      versões antigas (o site já teve 2-3 revisões de design da mesma
-      imagem, sempre com o mesmo nome de arquivo, e o LinkedIn cacheia
-      a prévia pela URL) — corrigido adicionando `?v=2` na URL da
-      imagem (`og:image`, `twitter:image`, JSON-LD) nos 3 artigos pra
-      forçar o LinkedIn a buscar de novo. *(13 ago. 2026)*
+      WhatsApp mostrou as imagens certas nos 3 artigos, sem precisar de
+      nenhuma correção. LinkedIn mostrou versões antigas nos 3 (o site
+      já teve 2-3 revisões de design da mesma imagem, sempre com o
+      mesmo nome de arquivo, e o LinkedIn cacheia a prévia pela URL).
+      Primeira tentativa de correção (adicionar `?v=2` na URL) resolveu
+      o conteúdo, mas PWR e IPCA continuaram aparecendo com uma
+      miniatura de baixa qualidade — o LinkedIn parece ignorar a query
+      string ao decidir se já tem cache daquela imagem. Corrigido de
+      forma definitiva **renomeando os arquivos de verdade**
+      (`og-cover-pwr-carteira-fire-v2.png`,
+      `og-cover-ipca-hiperinflacao-v2.png` — arquivos antigos removidos
+      do repositório, nada mais referenciava eles), o que gera uma URL
+      genuinamente nova sem chance de reaproveitar cache. Lição pro
+      futuro: ao regenerar uma og-image já publicada, sempre trocar o
+      nome do arquivo, nunca só o conteúdo no mesmo nome.
+      *(13 ago. 2026)*
 
 - [x] **Analytics sem rastreamento pessoal (Umami)** — trocado do
       Plausible pro Umami Cloud depois de descobrir que o Plausible
