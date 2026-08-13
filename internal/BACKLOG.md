@@ -66,13 +66,6 @@ Pages e precisam ser atualizados assim que o domínio próprio estiver ativo:
       usuário em 13 ago: **adiado por enquanto**, sem gerar imagem nova
       no momento.
 
-## Design / UX
-
-- [ ] **Página "Sobre"** — quem escreve, credenciais, por que confiar no
-      conteúdo. Ajuda bastante com credibilidade em blog de finanças.
-      Confirmado em 12 ago: não existe página dedicada, só um parágrafo
-      curto na home (seção "Sobre este espaço").
-
 ## Distribuição
 
 - [ ] **Compartilhamento automático** no LinkedIn/X ao publicar um artigo novo
@@ -82,6 +75,16 @@ Pages e precisam ser atualizados assim que o domínio próprio estiver ativo:
 ---
 
 ## Concluído
+
+- [x] **Página "Sobre" criada** — `/sobre/`, inspirada em blogs FIRE
+      anônimos de referência (AA40, Mad Fientist): mantém anonimato,
+      mas revela atuação no mercado financeiro, certificações Anbima, e
+      que o autor está em jornada própria (ainda não concluída) rumo à
+      independência financeira. Explica o motivo do anonimato (separar
+      opinião pessoal de recomendação profissional) em vez de só citar
+      privacidade genérica. Seção "o que este espaço não é" reforça que
+      não vende curso/consultoria/parceria. Linkada a partir da home e
+      adicionada ao `sitemap.xml`. *(13 ago. 2026)*
 
 - [x] **Otimizar imagens/gráficos — investigado, não há gargalo real.**
       Os 3 artigos não usam nenhuma tag `<img>`: os gráficos do conteúdo
