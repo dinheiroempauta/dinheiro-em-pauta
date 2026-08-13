@@ -18,6 +18,14 @@ Do `index.html` fornecido, extraia:
 - O `.subtitle` do H1
 - O tempo de leitura (`~XX min`) e outros metadados relevantes do `.meta` (nível, "inclui calculadora/simulador interativo", etc.)
 - O nome de arquivo esperado, a partir de `og:image` (ex: `og-cover-nome-do-artigo.png`) — a imagem final **precisa ter exatamente esse nome**.
+  **Exceção: se este artigo já tem uma og-image publicada antes** (você está
+  regenerando/substituindo, não criando pela primeira vez), **não reuse o
+  mesmo nome de arquivo** — LinkedIn e outros crawlers cacheiam a prévia
+  pela URL da imagem e não recarregam mesmo com o conteúdo trocado
+  (confirmado na prática, ver `internal/BACKLOG.md`). Use um nome novo com
+  sufixo de versão (ex: `og-cover-nome-do-artigo-v2.png`, depois `-v3.png`
+  etc.), atualize `og:image`/`twitter:image`/JSON-LD no HTML pro nome novo,
+  e remova o arquivo antigo do repositório.
 
 **Regra crítica sobre o texto do H1 da imagem: NUNCA copie o `<title>`/`og:title` literalmente.**
 
