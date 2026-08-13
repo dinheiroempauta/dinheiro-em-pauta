@@ -46,6 +46,18 @@ Pages e precisam ser atualizados assim que o domínio próprio estiver ativo:
 
 ## SEO e descoberta
 
+- [ ] **LinkedIn ainda mostra o IPCA borrado** — depois de renomear o
+      arquivo (`og-cover-ipca-hiperinflacao-v2.png`, PR #21), o PWR já
+      veio nítido no LinkedIn Post Inspector, mas o IPCA continuou
+      aparecendo com aspecto de baixa qualidade. Conferido em 13 ago:
+      os dois arquivos (`-v2.png` do PWR e do IPCA) são tecnicamente
+      idênticos (mesma resolução, mesmo modo de cor, sem sinal de
+      corrupção) — não há diferença no arquivo que explique isso. Tudo
+      indica atraso no processamento de miniatura do próprio LinkedIn,
+      não um problema no repositório. Reinspecionar só a URL do IPCA
+      depois de alguns minutos; se persistir por vários dias, investigar
+      de novo.
+
 - [ ] **Home sem imagem de compartilhamento** — o `index.html` nunca teve
       tag `og:image`/`twitter:image`, e não existe nenhum arquivo de capa
       pra home em `assets/` (só as 3 dos artigos). Testado em 13 ago no
@@ -99,8 +111,9 @@ Pages e precisam ser atualizados assim que o domínio próprio estiver ativo:
       do repositório, nada mais referenciava eles), o que gera uma URL
       genuinamente nova sem chance de reaproveitar cache. Lição pro
       futuro: ao regenerar uma og-image já publicada, sempre trocar o
-      nome do arquivo, nunca só o conteúdo no mesmo nome.
-      *(13 ago. 2026)*
+      nome do arquivo, nunca só o conteúdo no mesmo nome. Depois da
+      renomeação: PWR já veio nítido no LinkedIn; IPCA continuou
+      borrado (acompanhamento em item separado abaixo). *(13 ago. 2026)*
 
 - [x] **Analytics sem rastreamento pessoal (Umami)** — trocado do
       Plausible pro Umami Cloud depois de descobrir que o Plausible
