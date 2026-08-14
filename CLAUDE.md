@@ -43,14 +43,21 @@ sozinho.
 
 Sempre que qualquer um destes campos mudar no artigo, o card correspondente
 na home **precisa ser atualizado no mesmo commit**, sem exceção:
-- Título (`h1.title` do artigo ↔ `.card-title` do card)
-- Categoria/eyebrow (`.eyebrow` do artigo ↔ `.card-eyebrow` do card)
-- Resumo/subtítulo (`.subtitle` do artigo ↔ `.card-summary` do card)
-- Data de publicação (`.meta` do artigo ↔ `.card-meta` do card)
-- Tempo de leitura (`.meta` do artigo ↔ `.card-meta` do card)
+- Título (`h1.title` do artigo ↔ `.card-title` do card) — tem que bater
+  exatamente
+- Categoria/eyebrow (`.eyebrow` do artigo ↔ `.card-eyebrow` do card) — tem
+  que bater exatamente
+- Data de publicação e tempo de leitura (`.meta` do artigo ↔ `.card-meta`
+  do card) — têm que bater exatamente
+- Resumo (`.subtitle` do artigo ↔ `.card-summary` do card) — não precisam
+  ser o texto literalmente idêntico (o subtítulo é um gancho curto, o
+  resumo do card é um teaser mais longo pra quem ainda não clicou), mas
+  não podem se contradizer — se um for editado de um jeito que muda o que
+  o outro diz, o outro precisa ser revisto também
 
 Antes de considerar qualquer edição de artigo "pronta", confirmar
-explicitamente que o card bate 100% com o artigo — não assumir, conferir.
+explicitamente que o card está consistente com o artigo — não assumir,
+conferir.
 
 ## Publicação de artigo novo
 
@@ -60,3 +67,10 @@ card na home, atualizar `sitemap.xml`/`feed.xml` e gerar a og:image
 (prompt em `internal/prompt-og-image-independencia-calculada.md`), o
 fluxo é: commit → push → PR → conferir diff → merge — sem pausar pra
 aprovação em cada etapa, como descrito acima.
+
+Quando o usuário fornece o conteúdo do artigo (ex: um `.md`) pra eu montar
+em HTML, **estimar o tempo de leitura faz parte do processo de construção,
+sem precisar ser pedido** — o usuário fornece o conteúdo, não o tempo de
+leitura. Calcular pelo método documentado no checklist (contagem de
+palavras do conteúdo real ÷ 200 palavras/minuto) e já entregar o artigo
+com esse campo preenchido corretamente desde a primeira versão.
