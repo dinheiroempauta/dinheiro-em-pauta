@@ -118,7 +118,9 @@ de escrever o HTML do zero.
       `internal/prompt-og-image-independencia-calculada.md` à risca —
       nome do arquivo tem que bater exatamente com o `og:image` do HTML
 - [ ] Adicionar o **card** do artigo na home (`index.html`), dentro de
-      `.article-list`, na ordem cronológica correta (mais recente primeiro)
+      `.article-grid`, na ordem cronológica correta (mais recente primeiro).
+      A home é só a grade de cards — sem hero, sem rótulo de seção, sem
+      bloco de "sobre este espaço" (isso vive só em `/sobre/`)
 - [ ] Adicionar entrada em **`sitemap.xml`** (`<loc>`, `<lastmod>`,
       `changefreq`, `priority`)
 - [ ] Adicionar `<item>` em **`feed.xml`** (title, link, guid, description,
