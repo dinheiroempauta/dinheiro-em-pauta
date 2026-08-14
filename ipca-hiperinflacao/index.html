@@ -147,6 +147,7 @@
   }
 
   a{ color: var(--green); text-decoration-thickness: 1px; text-underline-offset: 2px; }
+  a:hover{ color: var(--brick); }
   a:focus-visible, button:focus-visible{ outline: 2px solid var(--gold); outline-offset: 3px; }
 
   .mono{ font-family: 'IBM Plex Mono', monospace; }
@@ -169,6 +170,7 @@
     letter-spacing: .12em;
     text-transform: uppercase;
     color: var(--ink);
+    text-decoration: none;
   }
   .wordmark span{ color: var(--green); }
   .masthead-tag{
@@ -1110,8 +1112,8 @@ h3{ font-family: var(--font-display); font-weight: 600; font-size: 1.15rem; marg
 <div class="masthead">
   <div class="masthead-inner">
     <div class="masthead-left">
+      <a href="../" class="masthead-nav-link" aria-label="Todos os artigos">&larr;</a>
       <a href="../" class="wordmark"><span>Independência</span>Calculada</a>
-      <a href="../" class="masthead-nav-link">&larr; Todos os artigos</a>
       <a href="../sobre/" class="masthead-nav-link">Sobre</a>
     </div>
     <div class="masthead-tag">Planejamento financeiro para atingir sua liberdade</div>
