@@ -34,6 +34,24 @@ Ainda assim, pare e pergunte antes se:
   histórico publicado)
 - Envolver custo real (compra de domínio, upgrade de plano pago, etc.)
 
+## Invariante: card da home tem que espelhar o artigo
+
+O card de cada artigo em `index.html` (dentro de `.article-grid`) é texto
+**duplicado e independente** do `index.html` do próprio artigo — não há
+build, não há template dinâmico, um não lê o outro. Nada sincroniza isso
+sozinho.
+
+Sempre que qualquer um destes campos mudar no artigo, o card correspondente
+na home **precisa ser atualizado no mesmo commit**, sem exceção:
+- Título (`h1.title` do artigo ↔ `.card-title` do card)
+- Categoria/eyebrow (`.eyebrow` do artigo ↔ `.card-eyebrow` do card)
+- Resumo/subtítulo (`.subtitle` do artigo ↔ `.card-summary` do card)
+- Data de publicação (`.meta` do artigo ↔ `.card-meta` do card)
+- Tempo de leitura (`.meta` do artigo ↔ `.card-meta` do card)
+
+Antes de considerar qualquer edição de artigo "pronta", confirmar
+explicitamente que o card bate 100% com o artigo — não assumir, conferir.
+
 ## Publicação de artigo novo
 
 Siga `internal/CHECKLIST-NOVO-ARTIGO.md` à risca, partindo de

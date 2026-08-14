@@ -69,7 +69,11 @@ de escrever o HTML do zero.
 - [ ] `.eyebrow` (categoria acima do H1, com o tracinho `::before`)
 - [ ] `h1.title` + `.subtitle` (subtítulo editorial, não repetir o H1)
 - [ ] `.meta` — publicado em / tempo de leitura / nível / "inclui
-      calculadora ou simulador interativo" (o que se aplicar)
+      calculadora ou simulador interativo" (o que se aplicar). Tempo de
+      leitura: contar palavras do conteúdo real do artigo (`.prose`, `h2`,
+      tabelas, notas, formula-box etc. — **excluindo** disclaimer,
+      referências, engajamento e comentários) e dividir por 200
+      palavras/minuto; não estimar de cabeça
 - [ ] `.promise` — bloco "Neste artigo, você vai entender" com 3-5 bullets
 - [ ] Corpo do artigo (`.prose`, `h2`/`h3` com `.num`, e os componentes
       reutilizáveis do design system conforme o conteúdo pedir: `.note`,
@@ -120,7 +124,12 @@ de escrever o HTML do zero.
 - [ ] Adicionar o **card** do artigo na home (`index.html`), dentro de
       `.article-grid`, na ordem cronológica correta (mais recente primeiro).
       A home é só a grade de cards — sem hero, sem rótulo de seção, sem
-      bloco de "sobre este espaço" (isso vive só em `/sobre/`)
+      bloco de "sobre este espaço" (isso vive só em `/sobre/`). **O card é
+      texto duplicado, não lê o artigo** — título, categoria, resumo, data
+      e tempo de leitura têm que ser copiados manualmente e batendo 100%
+      com o artigo (ver invariante no `CLAUDE.md`). Toda vez que um desses
+      campos for editado no artigo depois de publicado, o card tem que ser
+      atualizado junto, no mesmo commit.
 - [ ] Adicionar entrada em **`sitemap.xml`** (`<loc>`, `<lastmod>`,
       `changefreq`, `priority`)
 - [ ] Adicionar `<item>` em **`feed.xml`** (title, link, guid, description,
