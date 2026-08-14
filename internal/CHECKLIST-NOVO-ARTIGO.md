@@ -17,9 +17,12 @@ de escrever o HTML do zero.
 
 - [ ] Definir o **slug** da URL (pasta), curto, kebab-case, sem acento
       (ex: `pwr-carteira-fire`)
-- [ ] Definir `article:section` (categoria) — reaproveitar uma categoria
-      existente quando fizer sentido (`Renda Fixa`, `Aposentadoria`, `Série
-      SWR/PWR`) para manter a taxonomia coerente
+- [ ] Definir `article:section` (categoria mais ampla) — reaproveitar uma
+      categoria existente quando fizer sentido (`Renda Fixa`,
+      `Aposentadoria`) para manter a taxonomia coerente. O eyebrow combina
+      categoria + tema específico (ex: `Aposentadoria · SWR/PWR`,
+      `Renda Fixa · Tesouro Direto`) — tema específico é só o nome do
+      assunto, sem prefixo tipo "Série"
 - [ ] Confirmar a data de publicação
 
 ## 2. `<head>` — sempre completo, nunca parcial

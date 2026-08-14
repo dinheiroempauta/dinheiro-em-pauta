@@ -13,7 +13,7 @@ Você vai criar a imagem de preview de compartilhamento (Open Graph / Twitter Ca
 Do `index.html` fornecido, extraia:
 - `<title>` e o `og:title`
 - `og:description` (versão curta, para o subtítulo da imagem)
-- `article:section` (categoria, ex: "Renda Fixa", "Aposentadoria", "Série SWR/PWR")
+- `article:section` (categoria, ex: "Renda Fixa", "Aposentadoria")
 - O texto do `.eyebrow` (kicker acima do H1)
 - O `.subtitle` do H1
 - O tempo de leitura (`~XX min`) e outros metadados relevantes do `.meta` (nível, "inclui calculadora/simulador interativo", etc.)
