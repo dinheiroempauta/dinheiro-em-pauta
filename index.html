@@ -95,6 +95,9 @@ a:focus-visible, button:focus-visible{ outline: 2px solid var(--gold); outline-o
 .wordmark{ font-family: var(--font-mono); font-weight: 600; font-size: 13px; letter-spacing: .12em; text-transform: uppercase; color: var(--ink); text-decoration:none; }
 .wordmark span{ color: var(--green); }
 .masthead-tag{ font-family: var(--font-mono); font-size: 11px; color: var(--muted); letter-spacing: .04em; }
+.masthead-left{ display:flex; align-items:center; gap: 20px; flex-wrap: wrap; }
+.masthead-nav-link{ font-family: var(--font-mono); font-size: 12px; letter-spacing: .04em; color: var(--muted); text-decoration:none; }
+.masthead-nav-link:hover{ color: var(--green); }
 
 main{ max-width: var(--maxw); margin: 0 auto; padding: 0 24px 90px; }
 
@@ -163,7 +166,10 @@ footer{ max-width: var(--maxw); margin: 0 auto; padding: 30px 24px 60px; font-fa
 
 <div class="masthead">
   <div class="masthead-inner">
-    <a href="." class="wordmark"><span>Independência</span>Calculada</a>
+    <div class="masthead-left">
+      <a href="." class="wordmark"><span>Independência</span>Calculada</a>
+      <a href="sobre/" class="masthead-nav-link">Sobre</a>
+    </div>
     <div class="masthead-tag">Planejamento financeiro para atingir sua liberdade</div>
   </div>
 </div>
