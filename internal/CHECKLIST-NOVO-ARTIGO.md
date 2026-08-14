@@ -65,7 +65,7 @@ de escrever o HTML do zero.
       hover) — sem isso, o PageSpeed acusa "links sem nome compreensível"
 - [ ] `.back-to-top` (botão flutuante)
 - [ ] `.site-bar` com link `← Todos os artigos` apontando para `../`
-- [ ] `.masthead` (wordmark + tagline), idêntico ao de outros artigos
+- [ ] `.masthead` (wordmark + link "Sobre" apontando pra `../sobre/` + tagline), idêntico ao de outros artigos
 - [ ] `.eyebrow` (categoria acima do H1, com o tracinho `::before`)
 - [ ] `h1.title` + `.subtitle` (subtítulo editorial, não repetir o H1)
 - [ ] `.meta` — publicado em / tempo de leitura / nível / "inclui
