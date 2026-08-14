@@ -72,10 +72,6 @@ a:hover{ color: var(--brick); }
 a:focus-visible, button:focus-visible{ outline: 2px solid var(--gold); outline-offset: 3px; }
 .mono{ font-family: var(--font-mono); }
 
-.site-bar{ background: var(--ink); }
-.site-bar-inner{ max-width: var(--maxw); margin: 0 auto; padding: 9px 24px; }
-.site-bar a{ font-family: var(--font-mono); font-size: 11px; letter-spacing: .05em; color: #9FD9BE; text-decoration: none; }
-.site-bar a:hover{ color: #fff; }
 
 .masthead{ border-bottom: 1px solid var(--line-strong); padding: 18px 24px; }
 .masthead-inner{ max-width: var(--maxw); margin: 0 auto; display:flex; align-items:center; justify-content: space-between; gap: 12px; flex-wrap: wrap; }
@@ -112,16 +108,11 @@ footer{ max-width: var(--maxw); margin: 0 auto; padding: 30px 24px 60px; font-fa
 </head>
 <body>
 
-<div class="site-bar">
-  <div class="site-bar-inner">
-    <a href="../">&larr; Todos os artigos</a>
-  </div>
-</div>
-
 <div class="masthead">
   <div class="masthead-inner">
     <div class="masthead-left">
       <a href="../" class="wordmark"><span>Independência</span>Calculada</a>
+      <a href="../" class="masthead-nav-link">&larr; Todos os artigos</a>
     </div>
     <div class="masthead-tag">Planejamento financeiro para atingir sua liberdade</div>
   </div>

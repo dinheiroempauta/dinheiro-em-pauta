@@ -64,8 +64,10 @@ de escrever o HTML do zero.
       da árvore de acessibilidade porque fica `visibility:hidden` até o
       hover) — sem isso, o PageSpeed acusa "links sem nome compreensível"
 - [ ] `.back-to-top` (botão flutuante)
-- [ ] `.site-bar` com link `← Todos os artigos` apontando para `../`
-- [ ] `.masthead` (wordmark + link "Sobre" apontando pra `../sobre/` + tagline), idêntico ao de outros artigos
+- [ ] `.masthead` (wordmark + link `← Todos os artigos` apontando pra
+      `../` + link "Sobre" apontando pra `../sobre/` + tagline), idêntico
+      ao de outros artigos. Não existe mais `.site-bar` (a barra preta foi
+      removida do design — tudo mora dentro do masthead agora)
 - [ ] `.eyebrow` (categoria acima do H1, com o tracinho `::before`)
 - [ ] `h1.title` + `.subtitle` (subtítulo editorial, não repetir o H1)
 - [ ] `.meta` — publicado em / tempo de leitura / nível / "inclui
