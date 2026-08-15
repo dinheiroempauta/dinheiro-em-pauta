@@ -396,3 +396,53 @@ torno de -1,7%/mês (VaR nominal), mas quando esse piso é rompido, a perda
 média nesses episódios foi de -2,9%/mês (CVaR nominal) — quase o dobro.
 É a métrica mais direta do conjunto para responder "o que devo esperar no
 mês ruim de verdade, não só num mês qualquer abaixo da média".
+
+## Skewness / Curtose — o formato da distribuição de retornos mensais
+
+**Gráfico:** `graficos/skewness-curtose-comparativo.html` (mediana +
+faixa p10–p90 das duas métricas sobrepostas, toggle nominal/real; note a
+escala: são números adimensionais, não percentuais).
+
+### Skewness fica levemente negativa e estável (~-0,4 em 18 anos)
+
+A mediana de skewness nominal cai de -0,15 (1 ano) para -0,43 (18 anos),
+oscilando perto de zero em janelas intermediárias. Um valor negativo
+confirma numericamente algo já visto em outros gráficos: a cauda de
+perdas é um pouco mais longa/extrema que a cauda de ganhos (o pior mês,
+-7,3%, é mais extremo em módulo que o melhor mês, +7,1%, e há mais
+espaço para eventos catastróficos isolados do que para "milagres"
+isolados). Ainda assim, -0,4 é uma assimetria moderada, não extrema — a
+carteira não tem uma distribuição fortemente enviesada.
+
+### Curtose sobe de perto de zero para +1,7: caudas mais "gordas" que o normal, mas só nas janelas longas
+
+Curtose nominal começa em -0,50 (1 ano — mais achatada que a normal,
+pouco espaço pra eventos extremos dentro de um único ano) e sobe para
++1,70 em 18 anos (mais "pontuda" e com caudas mais pesadas que a normal).
+O salto mais visível acontece entre 14 e 15 anos, subindo de ~0,80 para
+~1,59 — mesmo tipo de artefato de composição de amostra já documentado no
+Ulcer/Sortino (a partir de 15 anos, toda janela passa a conter o mesmo
+evento extremo de 2008, o que empurra a curtose para cima de forma
+degrau, não gradual).
+
+### Skewness e curtose contam a mesma história por ângulos diferentes
+
+Ambos captam o mesmo fenômeno de fundo — a carteira tem eventos raros e
+extremos concentrados no lado das perdas (2008, 2020, 2021-22) — mas
+skewness mede a *direção* dessa assimetria (perdas mais extremas que
+ganhos) e curtose mede a *intensidade* geral de eventos extremos
+(independente da direção). A curtose sobe de forma mais acentuada que a
+skewness desce, sugerindo que o principal efeito, ao alongar a janela, é
+"a carteira passa a mostrar mais eventos extremos no total", mais do que
+"os extremos ficam mais desbalanceados para o lado negativo".
+
+### Síntese para o artigo
+
+Esses dois indicadores são os mais técnicos do conjunto e o resultado
+prático deles é simples: a distribuição de retornos mensais da carteira
+não é uma "curva de sino" bem comportada — tem cauda de perdas um pouco
+mais pesada que a de ganhos (skewness negativa) e, em horizontes longos o
+bastante para capturar 2008, apresenta mais eventos extremos que uma
+distribuição normal preveria (curtose positiva). Isso reforça, de forma
+matemática, por que métricas como VaR/CVaR (que olham direto pra cauda)
+são mais informativas que só olhar média e desvio-padrão.

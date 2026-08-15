@@ -194,6 +194,20 @@ os artifacts foram construídos ad-hoc a partir de `janelas_detalhado.csv`.
       Playwright headless (toggle nominal e real). Mesma ressalva sobre
       componente JS interativo ao publicar no blog.
 
+- [x] **Skewness vs. Curtose — linhas de mediana sobrepostas com faixa
+      p10-p90** (mesmo formato do Sharpe vs. Sortino, Pior vs. Melhor mês
+      e VaR vs. CVaR, toggle Nominal/Real; escala em números adimensionais,
+      não percentual). Protótipo salvo em
+      `internal/estatisticas-carteira-aposentadoria/graficos/skewness-curtose-comparativo.html`.
+      Interpretação completa (skewness levemente negativa e estável ~-0,4,
+      curtose sobe de ~0 para +1,7 com o mesmo salto de composição de
+      amostra entre 14-15 anos já visto no Ulcer/Sortino, e como os dois
+      indicadores captam o mesmo fenômeno — cauda de perdas pesada — por
+      ângulos diferentes) registrada em `docs/interpretacoes.md`.
+      Validado com screenshot real via Playwright headless (toggle
+      nominal e real). Mesma ressalva sobre componente JS interativo ao
+      publicar no blog.
+
 ## Extensão do tamanho máximo de janela: 15 → 18 anos
 
 - [x] Investigada queda abrupta no Sortino mediano em janelas de 15 anos
