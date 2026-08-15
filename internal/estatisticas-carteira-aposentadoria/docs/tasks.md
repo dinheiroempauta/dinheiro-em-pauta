@@ -95,3 +95,15 @@ os artifacts foram construídos ad-hoc a partir de `janelas_detalhado.csv`.
       está salvo). Ao escrever o artigo: mesma ressalva do item acima
       sobre componente JS interativo (não estático) — checar suporte do
       design system do blog e alinhar com o usuário antes de embutir.
+
+- [x] **Funil de distribuição do Ulcer Index por tempo investido** (mesmo
+      formato do funil de CAGR: bandas p5–p95/p20–p80, mediana,
+      pior/melhor caso, toggle Nominal/Real, mas valores como índice
+      puro, não percentual). Protótipo salvo em
+      `internal/estatisticas-carteira-aposentadoria/graficos/ulcer-funil-percentis.html`.
+      Interpretação completa do gráfico (formato de sino por tamanho de
+      janela, assimetria em janelas curtas, gap real/nominal causado pelo
+      surto inflacionário de 2021-2022) registrada em
+      `internal/estatisticas-carteira-aposentadoria/docs/interpretacoes.md`
+      — material pronto para virar texto do artigo. Mesma ressalva sobre
+      componente JS interativo ao publicar.
