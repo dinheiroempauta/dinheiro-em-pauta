@@ -22,6 +22,22 @@ dono da carteira. Uso secundário, eventual: virar artigo no blog.
 - Colunas: `ret_vwra11`, `ret_divo11`, `ret_b5p211`, `ret_cdib11`, `ret_gold11`
   (retornos mensais dos 5 ativos), `ret_carteira_nominal`, `ret_ipca`,
   `ret_carteira_real`.
+- **Composição da carteira** (`ret_carteira_nominal`/`ret_carteira_real`):
+  pesos-alvo fixos, com rebalanceamento mensal para mantê-los constantes
+  (decisão herdada do projeto PWR, `internal/pwr-project/src/01_prepare_returns.py`
+  linhas 25-30 e `internal/pwr-project/docs/decisions.md`, Decisão 10):
+
+  | Ativo | Peso |
+  |---|---|
+  | VWRA11 (ações globais) | 30% |
+  | DIVO11 (dividendos BR) | 20% |
+  | B5P211 (renda fixa/IMA-B5) | 40% |
+  | CDIB11 (CDI) | 5% |
+  | GOLD11 (ouro) | 5% |
+
+  Todo indicador/gráfico calculado sobre "a carteira" nesta pasta usa esse
+  mix específico — não é uma carteira genérica. Se o mix mudar no futuro,
+  toda a análise (dados + gráficos) precisa ser regerada.
 
 ## 3. Escopo
 
