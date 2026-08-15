@@ -290,8 +290,8 @@ footer{ max-width: var(--maxw); margin: 0 auto; padding: 30px 24px 60px; font-fa
 
   <div class="mode-bar">
     <div class="toggle-group" role="group" aria-label="Base de cálculo">
-      <button class="toggle-btn" id="btn-nominal" type="button" aria-pressed="true">Nominal</button>
-      <button class="toggle-btn" id="btn-real" type="button" aria-pressed="false">Real</button>
+      <button class="toggle-btn" id="btn-nominal" type="button" aria-pressed="false">Nominal</button>
+      <button class="toggle-btn" id="btn-real" type="button" aria-pressed="true">Real</button>
     </div>
   </div>
 
@@ -359,12 +359,20 @@ footer{ max-width: var(--maxw); margin: 0 auto; padding: 30px 24px 60px; font-fa
           <label><input type="checkbox" id="opt-en-sortino"> Sortino ≥</label>
           <div class="opt-input-wrap"><input type="number" id="opt-val-sortino" step="0.01" placeholder="ex: 1,0"><span></span></div>
         </div>
+        <div class="opt-constraint" data-key="recovery">
+          <label><input type="checkbox" id="opt-en-recovery"> Tempo de recuperação (pior episódio) ≤</label>
+          <div class="opt-input-wrap"><input type="number" id="opt-val-recovery" step="1" placeholder="ex: 18"><span>meses</span></div>
+        </div>
+        <div class="opt-constraint" data-key="volatilidade">
+          <label><input type="checkbox" id="opt-en-volatilidade"> Volatilidade ≤</label>
+          <div class="opt-input-wrap"><input type="number" id="opt-val-volatilidade" step="0.1" placeholder="ex: 12"><span>% a.a.</span></div>
+        </div>
       </div>
 
       <div class="opt-settings">
         <div class="opt-setting">
           <label for="opt-basis">Base de cálculo</label>
-          <select id="opt-basis"><option value="nominal">Nominal</option><option value="real">Real</option></select>
+          <select id="opt-basis"><option value="nominal">Nominal</option><option value="real" selected>Real</option></select>
         </div>
         <div class="opt-setting">
           <label for="opt-scope">Considerar</label>
@@ -415,7 +423,7 @@ footer{ max-width: var(--maxw); margin: 0 auto; padding: 30px 24px 60px; font-fa
 
   <section class="indicator-section">
     <h2 class="indicator-title">Drawdown</h2>
-    <p class="indicator-desc">Trajetória "underwater" completa — % abaixo do pico anterior, mês a mês, ao longo de todo o histórico (jan/2006–jun/2026). Não varia por tamanho de janela.</p>
+    <p class="indicator-desc">Trajetória "underwater" completa — % abaixo do pico anterior, mês a mês, ao longo de todo o histórico (jan/2006–jun/2026). Não varia por tamanho de janela. Episódios de queda ≥5% do pico anterior são marcados: círculo vazado no pico, círculo cheio no fundo (e um círculo translúcido na linha de base quando já recuperou), com a profundidade e o tempo de recuperação anotados — e o evento histórico, quando identificável.</p>
     <div class="chart-pair">
       <div class="chart-card" data-side="c1"><p class="chart-card-title">Carteira 1</p><div style="position:relative"><svg class="chart-svg" id="chart-dd-c1" viewBox="0 0 560 300"></svg><div class="tooltip" id="tt-dd-c1"></div></div></div>
       <div class="chart-card" data-side="c2"><p class="chart-card-title">Carteira 2</p><div style="position:relative"><svg class="chart-svg" id="chart-dd-c2" viewBox="0 0 560 300"></svg><div class="tooltip" id="tt-dd-c2"></div></div></div>
@@ -423,8 +431,26 @@ footer{ max-width: var(--maxw); margin: 0 auto; padding: 30px 24px 60px; font-fa
     <details class="explainer">
       <summary>O que é, como se calcula e como ler este gráfico</summary>
       <p><b>O que é:</b> quanto o capital chegou a cair, em %, em relação ao maior valor que ele já tinha atingido até aquele momento — a "dor" de ver o patrimônio encolher antes de se recuperar.</p>
-      <p><b>Como se calcula:</b> a cada mês, compara o capital acumulado com o pico mais alto já visto até ali; o gráfico é essa diferença percentual, mês a mês, ao longo de toda a história.</p>
-      <p><b>Como ler:</b> o eixo X aqui é o tempo real (2006–2026), não tamanho de janela. Quando a linha toca 0%, a carteira está no seu pico histórico; quanto mais fundo (mais negativo), maior a perda em relação ao pico anterior. Os vales visíveis correspondem às crises de 2008, 2015-16, 2020 e 2022.</p>
+      <p><b>Como se calcula:</b> a cada mês, compara o capital acumulado com o pico mais alto já visto até ali; o gráfico é essa diferença percentual, mês a mês, ao longo de toda a história. Um "episódio" começa quando a linha sai de 0%, atinge um fundo, e (se recuperar) volta a tocar 0% — só entram episódios em que o fundo chega a pelo menos 5% abaixo do pico, pra não poluir o gráfico com ruído de curto prazo.</p>
+      <p><b>Como ler:</b> o eixo X aqui é o tempo real (2006–2026), não tamanho de janela. Quando a linha toca 0%, a carteira está no seu pico histórico; quanto mais fundo (mais negativo), maior a perda em relação ao pico anterior. Os vales visíveis correspondem às crises de 2008, 2015-16, 2020 e 2022. Os rótulos mostram a profundidade e quantos meses levou pra recuperar (ou "m+" quando o episódio ainda não recuperou até o fim dos dados).</p>
+    </details>
+  </section>
+
+  <section class="indicator-section">
+    <h2 class="indicator-title">Perfil dos episódios de queda</h2>
+    <p class="indicator-desc">Profundidade × duração de cada episódio de drawdown (mesmo critério do gráfico acima: queda ≥5% do pico anterior), Carteira 1 e Carteira 2 no mesmo gráfico pra comparar diretamente. Só episódios já recuperados aparecem no gráfico de pontos (duração desconhecida enquanto não recupera); a tabela abaixo lista todos, inclusive os ainda em curso.</p>
+    <div class="legend-mini" id="legend-scatter"></div>
+    <div class="chart-card" style="max-width:760px">
+      <div style="position:relative"><svg class="chart-svg" id="chart-scatter" viewBox="0 0 700 400"></svg><div class="tooltip" id="tt-scatter"></div></div>
+    </div>
+    <div style="overflow-x:auto; margin-top:16px;">
+      <table class="opt-check-table" id="episodes-table"></table>
+    </div>
+    <details class="explainer">
+      <summary>O que é, como se calcula e como ler este gráfico</summary>
+      <p><b>O que é:</b> um resumo de cada crise histórica da carteira — o quanto ela caiu e o quanto tempo levou pra voltar ao pico anterior — pra comparar o "perfil de dor" das duas composições.</p>
+      <p><b>Como se calcula:</b> os mesmos episódios identificados no gráfico de drawdown acima (pico → fundo → recuperação), um ponto por episódio de cada carteira.</p>
+      <p><b>Como ler:</b> eixo X é a profundidade da queda (quanto mais à direita, mais funda); eixo Y é quantos meses levou até recuperar (quanto mais alto, mais demorado). Profundidade e duração não andam sempre juntas — uma queda rasa pode demorar mais pra recuperar do que uma queda funda, dependendo do que veio depois.</p>
     </details>
   </section>
 
@@ -455,6 +481,27 @@ footer{ max-width: var(--maxw); margin: 0 auto; padding: 30px 24px 60px; font-fa
       <p><b>O que é:</b> quanto retorno a carteira entregou acima do CDI (a taxa livre de risco), para cada unidade de risco assumido. Quanto maior, melhor a relação entre o que se ganhou e o risco corrido pra ganhar.</p>
       <p><b>Como se calcula:</b> (CAGR da carteira − CAGR do CDI) dividido pela volatilidade anualizada. O Sharpe usa o desvio-padrão de todos os meses; o Sortino usa só o desvio-padrão dos meses <i>negativos</i> — por isso costuma ficar mais alto, já que não penaliza a variação para cima.</p>
       <p><b>Como ler:</b> mesmo eixo X de tamanho de janela dos outros gráficos. As duas linhas (Sharpe e Sortino) e suas faixas de percentil aparecem juntas pra comparar as duas métricas diretamente — a distância entre elas mostra o quanto da "volatilidade" da carteira é oscilação pra cima, não risco de perda.</p>
+    </details>
+  </section>
+
+  <section class="indicator-section">
+    <h2 class="indicator-title">CAGR por janela móvel de tamanho fixo</h2>
+    <p class="indicator-desc">Diferente do gráfico de CAGR lá em cima (que resume todas as janelas de cada tamanho em percentis), aqui cada ponto é uma janela específica de tamanho fixo, deslizando mês a mês pelo histórico — dá pra ver quando o CAGR daquele tamanho de janela foi melhor ou pior ao longo do tempo, não só a distribuição geral.</p>
+    <div style="display:flex; align-items:center; gap:12px; margin-bottom:14px; flex-wrap:wrap;">
+      <label for="cagr-window-slider" style="font-family:var(--font-mono); font-size:12px; color:var(--muted);">Tamanho da janela</label>
+      <input type="range" id="cagr-window-slider" min="1" max="18" step="1" value="10" style="flex:1; min-width:160px; accent-color:var(--green);">
+      <span style="font-family:var(--font-mono); font-size:13px; font-weight:700;"><span id="cagr-window-value">10</span> ano(s)</span>
+    </div>
+    <div class="legend-mini" id="legend-cagr-window"></div>
+    <div class="chart-card" style="max-width:960px">
+      <div style="position:relative"><svg class="chart-svg" id="chart-cagr-window" viewBox="0 0 900 320"></svg><div class="tooltip" id="tt-cagr-window"></div></div>
+    </div>
+    <div class="legend-mini" id="stats-cagr-window" style="margin-top:12px;"></div>
+    <details class="explainer">
+      <summary>O que é, como se calcula e como ler este gráfico</summary>
+      <p><b>O que é:</b> a série completa de CAGRs de janelas de um tamanho fixo (o que você escolhe no slider), uma por posição no tempo — não uma distribuição resumida, e sim a trajetória real.</p>
+      <p><b>Como se calcula:</b> pra cada mês de início possível, calcula o CAGR da janela daquele tamanho começando ali; a linha conecta esses valores, posicionados no mês em que cada janela termina.</p>
+      <p><b>Como ler:</b> ajuste o slider pra ver janelas mais curtas (mais ruidosas, mais sensíveis ao ponto de entrada) ou mais longas (mais suaves). Os pontos no fim da linha mostram o CAGR da janela mais recente; a linha de estatísticas abaixo do gráfico resume o pior, a mediana e o melhor CAGR observado entre todas as janelas desse tamanho.</p>
     </details>
   </section>
 
@@ -507,6 +554,62 @@ footer{ max-width: var(--maxw); margin: 0 auto; padding: 30px 24px 60px; font-fa
     const dd = Math.sqrt(v)*Math.sqrt(12);
     return (cagrCalc(ret) - cagrCalc(rf)) / dd;
   }
+  const EPISODE_THRESHOLD = 0.05; // queda mínima do pico pra contar como "episódio" (mesmo critério dos protótipos de referência)
+  const HIST_EVENTS = [
+    { from:'2008-01', to:'2009-03', tag:'2008', label:'Crise financeira global (colapso do Lehman Brothers)' },
+    { from:'2015-01', to:'2016-06', tag:'2015–16', label:'Recessão + Lava Jato + crise política (impeachment)' },
+    { from:'2020-02', to:'2020-05', tag:'2020', label:'Crash da Covid-19' },
+    { from:'2022-01', to:'2022-12', tag:'2022', label:'Alta de juros global + guerra na Ucrânia + inflação recorde' },
+  ];
+  function histEventFor(dateStr){ return HIST_EVENTS.find(h => dateStr >= h.from && dateStr <= h.to); }
+  function contextFor(dateStr){ const h = histEventFor(dateStr); return h ? h.label : ''; }
+
+  // detecta episódios de drawdown a partir da série de underwater (drawdownSerie):
+  // pico = mês em que a série volta a 0 (topo local); fundo = mínimo do episódio;
+  // recuperação = primeiro mês em que a série volta a 0 depois do fundo.
+  // Só entram episódios em que o fundo passa do EPISODE_THRESHOLD.
+  function detectDrawdownEpisodes(series, threshold){
+    threshold = threshold == null ? EPISODE_THRESHOLD : threshold;
+    const episodes = [];
+    const n = series.length;
+    let peakIdx = 0, inEpisode = false, troughIdx = null, troughVal = 0;
+    for (let i=0;i<n;i++){
+      if (series[i] === 0){
+        if (inEpisode){
+          if (Math.abs(troughVal) >= threshold){
+            episodes.push({ peakIdx, troughIdx, troughVal, recoveryIdx: i, recovered: true, months: i-troughIdx });
+          }
+          inEpisode = false;
+        }
+        peakIdx = i; troughVal = 0; troughIdx = null;
+      } else {
+        if (!inEpisode){ inEpisode = true; troughIdx = i; troughVal = series[i]; }
+        else if (series[i] < troughVal){ troughVal = series[i]; troughIdx = i; }
+      }
+    }
+    if (inEpisode && Math.abs(troughVal) >= threshold){
+      episodes.push({ peakIdx, troughIdx, troughVal, recoveryIdx: null, recovered: false, months: null });
+    }
+    return episodes;
+  }
+  // pior (maior) tempo de recuperação entre os episódios de drawdown de uma série
+  // de retornos; episódios ainda não recuperados até o fim da série contam com o
+  // tempo decorrido até ali (limite inferior do verdadeiro tempo de recuperação).
+  function worstRecoveryMonths(ret){
+    const dd = drawdownSerie(curvaCapital(ret));
+    const episodes = detectDrawdownEpisodes(dd);
+    if (episodes.length === 0) return 0;
+    const n = ret.length;
+    return Math.max(...episodes.map(e => e.recovered ? e.months : (n-1-e.troughIdx)));
+  }
+  // série CRUA (não agregada) de uma métrica calculada em janelas móveis de
+  // tamanho fixo — diferente de rollingFunil, que agrega os valores em percentis.
+  function rollingSeries(ret, windowMonths, fn){
+    const n = ret.length;
+    const out = [];
+    for (let i=0; i+windowMonths<=n; i++) out.push({ idx:i, endIdx:i+windowMonths-1, value: fn(ret.slice(i,i+windowMonths)) });
+    return out;
+  }
   function percentile(sorted, q){
     const idx = (q/100)*(sorted.length-1);
     const lo = Math.floor(idx), hi = Math.ceil(idx);
@@ -546,37 +649,45 @@ footer{ max-width: var(--maxw); margin: 0 auto; padding: 30px 24px 60px; font-fa
   }
   function computePortfolio(weightsPct){
     const { nominal, real } = combine(weightsPct);
+    const underwaterNominal = drawdownSerie(curvaCapital(nominal));
+    const underwaterReal = drawdownSerie(curvaCapital(real));
     return {
       weights: Object.assign({}, weightsPct),
       cagrFunil: { nominal: rollingFunil(nominal, cagrCalc), real: rollingFunil(real, cagrCalc) },
       ddFunil: { nominal: rollingFunil(nominal, drawdownMax), real: rollingFunil(real, drawdownMax) },
       ulcerFunil: { nominal: rollingFunil(nominal, ulcerCalc), real: rollingFunil(real, ulcerCalc) },
       combo: { nominal: rollingCombo(nominal, DATA.cdi_nominal), real: rollingCombo(real, DATA.cdi_real) },
-      underwater: { nominal: drawdownSerie(curvaCapital(nominal)), real: drawdownSerie(curvaCapital(real)) },
+      underwater: { nominal: underwaterNominal, real: underwaterReal },
+      episodes: { nominal: detectDrawdownEpisodes(underwaterNominal), real: detectDrawdownEpisodes(underwaterReal) },
     };
   }
 
   /* ---------- otimizador: busca por restrições ---------- */
-  function evaluateWeights(weightsPct, mode, scope){
+  function evaluateWeights(weightsPct, mode, scope, needRecovery){
     const { nominal, real } = combine(weightsPct);
     const ret = mode === 'nominal' ? nominal : real;
     const rf = mode === 'nominal' ? DATA.cdi_nominal : DATA.cdi_real;
     if (scope === 'full'){
-      return {
+      const metrics = {
         cagr: cagrCalc(ret), drawdown: drawdownMax(ret), ulcer: ulcerCalc(ret),
-        sharpe: sharpeCalc(ret, rf), sortino: sortinoCalc(ret, rf),
+        sharpe: sharpeCalc(ret, rf), sortino: sortinoCalc(ret, rf), volatilidade: volAnual(ret),
       };
+      if (needRecovery) metrics.recovery = worstRecoveryMonths(ret);
+      return metrics;
     }
     const w = scope; // meses
     const n = ret.length;
-    const cagrs=[], dds=[], ulcers=[], sharpes=[], sortinos=[];
+    const cagrs=[], dds=[], ulcers=[], sharpes=[], sortinos=[], vols=[], recs=[];
     for (let i=0; i+w<=n; i++){
       const rw = ret.slice(i,i+w), rfw = rf.slice(i,i+w);
       cagrs.push(cagrCalc(rw)); dds.push(drawdownMax(rw)); ulcers.push(ulcerCalc(rw));
-      sharpes.push(sharpeCalc(rw,rfw)); sortinos.push(sortinoCalc(rw,rfw));
+      sharpes.push(sharpeCalc(rw,rfw)); sortinos.push(sortinoCalc(rw,rfw)); vols.push(volAnual(rw));
+      if (needRecovery) recs.push(worstRecoveryMonths(rw));
     }
     const med = arr => { const s = arr.slice().sort((a,b)=>a-b); return percentile(s,50); };
-    return { cagr: med(cagrs), drawdown: med(dds), ulcer: med(ulcers), sharpe: med(sharpes), sortino: med(sortinos) };
+    const metrics = { cagr: med(cagrs), drawdown: med(dds), ulcer: med(ulcers), sharpe: med(sharpes), sortino: med(sortinos), volatilidade: med(vols) };
+    if (needRecovery) metrics.recovery = med(recs);
+    return metrics;
   }
 
   function checkConstraints(metrics, constraints){
@@ -659,12 +770,16 @@ footer{ max-width: var(--maxw); margin: 0 auto; padding: 30px 24px 60px; font-fa
   }
 
   function runOptimizer(constraints, mode, scope, bounds, objective){
+    // calcular episódios de drawdown (recuperação) é caro pra rodar em toda
+    // a grade — só liga isso quando a restrição de tempo de recuperação
+    // está de fato habilitada.
+    const needRecovery = constraints.some(c => c.key === 'recovery');
     const grid = enumerateGrid(bounds, 5);
     let best = null, bestMetrics = null, bestCheck = null, bestObj = -Infinity;
 
     grid.forEach(arr => {
       const w = toWeightsObj(arr);
-      const metrics = evaluateWeights(w, mode, scope);
+      const metrics = evaluateWeights(w, mode, scope, needRecovery);
       const check = checkConstraints(metrics, constraints);
       const obj = objectiveValue(metrics, objective);
       if (best === null || check.violated < bestCheck.violated || (check.violated === bestCheck.violated && obj > bestObj)){
@@ -684,7 +799,7 @@ footer{ max-width: var(--maxw); margin: 0 auto; padding: 30px 24px 60px; font-fa
     const fineGrid = enumerateGrid(refinedBounds, 1);
     fineGrid.forEach(arr => {
       const w = toWeightsObj(arr);
-      const metrics = evaluateWeights(w, mode, scope);
+      const metrics = evaluateWeights(w, mode, scope, needRecovery);
       const check = checkConstraints(metrics, constraints);
       const obj = objectiveValue(metrics, objective);
       if (check.violated < bestCheck.violated || (check.violated === bestCheck.violated && obj > bestObj)){
@@ -697,7 +812,7 @@ footer{ max-width: var(--maxw); margin: 0 auto; padding: 30px 24px 60px; font-fa
 
   /* ---------- estado ---------- */
   const state = {
-    mode: 'nominal',
+    mode: 'real',
     weights: { c1: Object.assign({}, DEFAULTS.c1), c2: Object.assign({}, DEFAULTS.c2) },
     data: { c1: computePortfolio(DEFAULTS.c1), c2: computePortfolio(DEFAULTS.c2) },
   };
@@ -817,7 +932,7 @@ footer{ max-width: var(--maxw); margin: 0 auto; padding: 30px 24px 60px; font-fa
     hit.addEventListener('pointerleave', () => notifyHide(svgId));
   }
 
-  function drawUnderwater(svgId, ttId, series, hue, yMin, yMax){
+  function drawUnderwater(svgId, ttId, series, hue, yMin, yMax, episodes){
     const svg = document.getElementById(svgId);
     svg.innerHTML = '';
     const tooltip = document.getElementById(ttId);
@@ -848,6 +963,27 @@ footer{ max-width: var(--maxw); margin: 0 auto; padding: 30px 24px 60px; font-fa
     const path = series.map((v,i)=>`${i===0?'M':'L'} ${x(i)} ${y(v)}`).join(' ');
     svg.appendChild(svgEl('path',{d:path,fill:'none',stroke:hue,'stroke-width':1.6}));
 
+    // anota episódios de drawdown: pico (círculo vazado na linha de base),
+    // fundo (círculo cheio) e, se recuperado, um círculo translúcido no fim
+    // da recuperação, com a profundidade/duração e o evento histórico (quando
+    // identificável) escritos acima do fundo.
+    (episodes||[]).forEach((ep, idx) => {
+      const pkX = x(ep.peakIdx), baseY = y(0);
+      svg.appendChild(svgEl('circle',{cx:pkX,cy:baseY,r:2.5,fill:'var(--paper-raised)',stroke:hue,'stroke-width':1.3,opacity:.85}));
+      const trX = x(ep.troughIdx), trY = y(series[ep.troughIdx]);
+      svg.appendChild(svgEl('circle',{cx:trX,cy:trY,r:3.5,fill:hue,stroke:'var(--paper-raised)','stroke-width':1.3}));
+      if (ep.recovered){
+        const recX = x(ep.recoveryIdx);
+        svg.appendChild(svgEl('circle',{cx:recX,cy:baseY,r:2.5,fill:hue,opacity:.4}));
+      }
+      const durTxt = ep.recovered ? `${ep.months}m` : `${series.length-1-ep.troughIdx}m+`;
+      const evt = histEventFor(DATA.dates[ep.troughIdx]);
+      const lineOffset = (idx%2===0) ? 0 : 12;
+      const lbl1 = svgEl('text',{x:trX,y:trY-8-lineOffset,class:'axis-label','text-anchor':'middle',fill:hue,'font-weight':'700'});
+      lbl1.textContent = `${evt?evt.tag+' · ':''}${fmtPct1(ep.troughVal)} · ${durTxt}`;
+      svg.appendChild(lbl1);
+    });
+
     const crosshair = svgEl('line',{x1:0,x2:0,y1:M.top,y2:M.top+plotH,class:'crosshair'});
     const hoverDot = svgEl('circle',{class:'hover-dot',fill:hue});
     svg.appendChild(crosshair); svg.appendChild(hoverDot);
@@ -859,7 +995,8 @@ footer{ max-width: var(--maxw); margin: 0 auto; padding: 30px 24px 60px; font-fa
       const scale = rect.width/W;
       crosshair.setAttribute('x1',xx); crosshair.setAttribute('x2',xx); crosshair.style.opacity=1;
       hoverDot.setAttribute('cx',xx); hoverDot.setAttribute('cy',y(series[i])); hoverDot.style.opacity=1;
-      tooltip.innerHTML = `<div>${DATA.dates[i]}</div><div><b>${fmtPct1(series[i])}</b></div>`;
+      const evt = histEventFor(DATA.dates[i]);
+      tooltip.innerHTML = `<div>${DATA.dates[i]}</div><div><b>${fmtPct1(series[i])}</b></div>${evt?`<div>${evt.label}</div>`:''}`;
       let left = xx*scale + 10;
       if (left + 120 > rect.width) left = xx*scale - 130;
       tooltip.style.left = left+'px';
@@ -996,6 +1133,214 @@ footer{ max-width: var(--maxw); margin: 0 auto; padding: 30px 24px 60px; font-fa
       <div class="legend-mini-item"><span class="sw-line" style="background:${hueSortino}"></span>Sortino</div>
     `;
   }
+  function renderLegendCarteiras(id, hueC1, hueC2){
+    const el = document.getElementById(id);
+    if (!el) return;
+    el.innerHTML = `
+      <div class="legend-mini-item"><span class="sw-line" style="background:${hueC1}"></span>Carteira 1</div>
+      <div class="legend-mini-item"><span class="sw-line" style="background:${hueC2}"></span>Carteira 2</div>
+    `;
+  }
+
+  /* ---------- scatter: profundidade x duração dos episódios de drawdown ---------- */
+  function buildEpisodePoints(episodes, side){
+    return episodes.filter(e => e.recovered).map(e => ({
+      side, troughVal: e.troughVal, months: e.months,
+      peakIdx: e.peakIdx, troughIdx: e.troughIdx, recoveryIdx: e.recoveryIdx,
+    }));
+  }
+  function drawScatter(svgId, ttId, pontos, hueC1, hueC2){
+    const svg = document.getElementById(svgId);
+    svg.innerHTML = '';
+    const tooltip = document.getElementById(ttId);
+    const W=700,H=400,M={top:16,right:20,bottom:44,left:52};
+    const plotW=W-M.left-M.right, plotH=H-M.top-M.bottom;
+    if (pontos.length === 0){ return; }
+    const xMax = 0;
+    const xMin = Math.floor(Math.min(...pontos.map(p=>p.troughVal))*20-1)/20;
+    const yMax = Math.max(5, Math.ceil(Math.max(...pontos.map(p=>p.months))/5+1)*5);
+    const yMin = 0;
+    const x = v => M.left + ((v-xMin)/(xMax-xMin))*plotW;
+    const y = v => M.top + plotH - ((v-yMin)/(yMax-yMin))*plotH;
+
+    for (let v=0; v>=xMin-1e-9; v-=0.05){
+      const xx=x(v);
+      svg.appendChild(svgEl('line',{x1:xx,x2:xx,y1:M.top,y2:M.top+plotH,class:'gridline'}));
+      const lbl=svgEl('text',{x:xx,y:M.top+plotH+16,class:'axis-label','text-anchor':'middle'});
+      lbl.textContent=(v*100).toFixed(0)+'%'; svg.appendChild(lbl);
+    }
+    for (let v=0; v<=yMax+1e-9; v+=5){
+      const yy=y(v);
+      svg.appendChild(svgEl('line',{x1:M.left,x2:W-M.right,y1:yy,y2:yy,class:'gridline'}));
+      const lbl=svgEl('text',{x:M.left-8,y:yy+4,class:'axis-label','text-anchor':'end'});
+      lbl.textContent=v; svg.appendChild(lbl);
+    }
+    svg.appendChild(svgEl('line',{x1:M.left,x2:M.left,y1:M.top,y2:M.top+plotH,class:'baseline'}));
+    svg.appendChild(svgEl('line',{x1:M.left,x2:W-M.right,y1:M.top+plotH,y2:M.top+plotH,class:'baseline'}));
+    const xTitle = svgEl('text',{x:M.left+plotW/2,y:H-8,class:'axis-label','text-anchor':'middle'});
+    xTitle.textContent = 'Profundidade da queda (% do pico)';
+    svg.appendChild(xTitle);
+    const yTitle = svgEl('text',{x:-(M.top+plotH/2),y:14,class:'axis-label','text-anchor':'middle',transform:'rotate(-90)'});
+    yTitle.textContent = 'Meses até recuperar';
+    svg.appendChild(yTitle);
+
+    pontos.forEach((p,i) => {
+      const hue = p.side === 'c1' ? hueC1 : hueC2;
+      const px = x(p.troughVal), py = y(p.months);
+      const g = svgEl('g',{style:'cursor:pointer'});
+      g.appendChild(svgEl('circle',{cx:px,cy:py,r:9,fill:hue,opacity:.85,stroke:'var(--paper-raised)','stroke-width':1.5}));
+      const num = svgEl('text',{x:px,y:py+3,'text-anchor':'middle',fill:'var(--paper-raised)','font-size':'9px','font-weight':'700',style:'pointer-events:none'});
+      num.textContent = i+1;
+      g.appendChild(num);
+      svg.appendChild(g);
+      function showPoint(){
+        const evt = histEventFor(DATA.dates[p.troughIdx]);
+        tooltip.innerHTML = `<div><b>${p.side==='c1'?'Carteira 1':'Carteira 2'}</b></div><div>Queda: <b>${fmtPct1(p.troughVal)}</b></div><div>Recuperação: <b>${p.months} meses</b> (até ${DATA.dates[p.recoveryIdx]})</div>${evt?`<div>${evt.label}</div>`:''}`;
+        const rect = svg.getBoundingClientRect();
+        const scale = rect.width/W;
+        let left = px*scale+12;
+        if (left+190>rect.width) left = px*scale-200;
+        tooltip.style.left = left+'px';
+        tooltip.style.top = (py*scale-10)+'px';
+        tooltip.style.opacity = 1;
+      }
+      function hidePoint(){ tooltip.style.opacity = 0; }
+      g.addEventListener('pointerenter', showPoint);
+      g.addEventListener('pointerleave', hidePoint);
+    });
+  }
+  function renderEpisodesTable(episodesC1, episodesC2){
+    const table = document.getElementById('episodes-table');
+    if (!table) return;
+    const rows = [
+      ...episodesC1.map(e => Object.assign({}, e, { side: 'Carteira 1' })),
+      ...episodesC2.map(e => Object.assign({}, e, { side: 'Carteira 2' })),
+    ].sort((a,b) => a.troughIdx - b.troughIdx);
+    const thead = '<thead><tr><td><b>Carteira</b></td><td><b>Pico</b></td><td><b>Fundo</b></td><td><b>Queda</b></td><td><b>Recuperação</b></td><td><b>Contexto</b></td></tr></thead>';
+    const body = rows.map(e => {
+      const evt = histEventFor(DATA.dates[e.troughIdx]);
+      const recTxt = e.recovered ? `${DATA.dates[e.recoveryIdx]} (${e.months} meses)` : 'Ainda não recuperou até o fim dos dados';
+      return `<tr><td>${e.side}</td><td>${DATA.dates[e.peakIdx]}</td><td>${DATA.dates[e.troughIdx]}</td><td>${fmtPct1(e.troughVal)}</td><td>${recTxt}</td><td>${evt?evt.label:'—'}</td></tr>`;
+    }).join('');
+    table.innerHTML = thead + '<tbody>' + body + '</tbody>';
+  }
+
+  /* ---------- linha: CAGR por janela móvel de tamanho fixo (slider) ---------- */
+  function drawWindowLine(svgId, ttId, sC1, sC2, hueC1, hueC2){
+    const svg = document.getElementById(svgId);
+    svg.innerHTML = '';
+    const tooltip = document.getElementById(ttId);
+    const W=900,H=320,M={top:14,right:70,bottom:30,left:50};
+    const plotW=W-M.left-M.right, plotH=H-M.top-M.bottom;
+    const n = sC1.length;
+    const vals = sC1.map(d=>d.value).concat(sC2.map(d=>d.value));
+    const yMax = Math.ceil(Math.max(...vals,0)*100+1)/100;
+    const yMin = Math.floor(Math.min(...vals,0)*100-1)/100;
+    const x = i => M.left + (i/(n-1))*plotW;
+    const y = v => M.top + plotH - ((v-yMin)/(yMax-yMin))*plotH;
+
+    const yRange = yMax-yMin;
+    const yStep = Math.ceil(yRange/6*100)/100;
+    for (let v=Math.ceil(yMin/yStep)*yStep; v<=yMax+1e-9; v+=yStep){
+      const yy=y(v);
+      svg.appendChild(svgEl('line',{x1:M.left,x2:W-M.right,y1:yy,y2:yy,class:'gridline'}));
+      const lbl=svgEl('text',{x:M.left-6,y:yy+3,class:'axis-label','text-anchor':'end'});
+      lbl.textContent = fmtPct1(v); svg.appendChild(lbl);
+    }
+    if (yMin<0) svg.appendChild(svgEl('line',{x1:M.left,x2:W-M.right,y1:y(0),y2:y(0),class:'baseline'}));
+    for (let i=0;i<n;i++){
+      const [yy,mm] = DATA.dates[sC1[i].endIdx].split('-');
+      if (mm==='01' && (+yy)%2===0){
+        const xx=x(i);
+        const lbl=svgEl('text',{x:xx,y:H-M.bottom+15,class:'axis-label','text-anchor':'middle'});
+        lbl.textContent=yy; svg.appendChild(lbl);
+      }
+    }
+
+    const pathC1 = sC1.map((d,i)=>`${i===0?'M':'L'} ${x(i)} ${y(d.value)}`).join(' ');
+    const pathC2 = sC2.map((d,i)=>`${i===0?'M':'L'} ${x(i)} ${y(d.value)}`).join(' ');
+    svg.appendChild(svgEl('path',{d:pathC1,class:'median-line',stroke:hueC1}));
+    svg.appendChild(svgEl('path',{d:pathC2,class:'median-line',stroke:hueC2}));
+
+    const lastC1=sC1[n-1], lastC2=sC2[n-1];
+    const lastX=x(n-1);
+    svg.appendChild(svgEl('circle',{cx:lastX,cy:y(lastC1.value),r:3.5,fill:hueC1,stroke:'var(--paper-raised)','stroke-width':2}));
+    svg.appendChild(svgEl('circle',{cx:lastX,cy:y(lastC2.value),r:3.5,fill:hueC2,stroke:'var(--paper-raised)','stroke-width':2}));
+    const MIN_GAP = 13;
+    const endLabels = [
+      { trueY: y(lastC1.value), text: 'C1 '+fmtPct1(lastC1.value), hue: hueC1 },
+      { trueY: y(lastC2.value), text: 'C2 '+fmtPct1(lastC2.value), hue: hueC2 },
+    ].sort((a,b) => a.trueY - b.trueY);
+    for (let i=1;i<endLabels.length;i++){
+      if (endLabels[i].trueY - endLabels[i-1].trueY < MIN_GAP) endLabels[i].trueY = endLabels[i-1].trueY + MIN_GAP;
+    }
+    endLabels.forEach(item => {
+      const lbl = svgEl('text',{x:lastX+6,y:item.trueY+4,class:'end-label',fill:item.hue});
+      lbl.textContent = item.text;
+      svg.appendChild(lbl);
+    });
+
+    const crosshair = svgEl('line',{x1:0,x2:0,y1:M.top,y2:M.top+plotH,class:'crosshair'});
+    const hoverDot1 = svgEl('circle',{class:'hover-dot',fill:hueC1});
+    const hoverDot2 = svgEl('circle',{class:'hover-dot',fill:hueC2});
+    svg.appendChild(crosshair); svg.appendChild(hoverDot1); svg.appendChild(hoverDot2);
+    const hit = svgEl('rect',{x:M.left,y:M.top,width:plotW,height:plotH,class:'hit-layer'});
+    svg.appendChild(hit);
+    function show(i){
+      const d1=sC1[i], d2=sC2[i];
+      const xx=x(i);
+      const rect = svg.getBoundingClientRect();
+      const scale = rect.width/W;
+      crosshair.setAttribute('x1',xx); crosshair.setAttribute('x2',xx); crosshair.style.opacity=1;
+      hoverDot1.setAttribute('cx',xx); hoverDot1.setAttribute('cy',y(d1.value)); hoverDot1.style.opacity=1;
+      hoverDot2.setAttribute('cx',xx); hoverDot2.setAttribute('cy',y(d2.value)); hoverDot2.style.opacity=1;
+      tooltip.innerHTML = `<div>até ${DATA.dates[d1.endIdx]}</div><div style="color:${hueC1}"><b>C1 ${fmtPct1(d1.value)}</b></div><div style="color:${hueC2}"><b>C2 ${fmtPct1(d2.value)}</b></div>`;
+      let left = xx*scale + 10;
+      if (left + 150 > rect.width) left = xx*scale - 160;
+      tooltip.style.left = left+'px';
+      tooltip.style.top = (Math.min(y(d1.value),y(d2.value))*scale - 30) + 'px';
+      tooltip.style.opacity = 1;
+    }
+    function hide(){ crosshair.style.opacity=0; hoverDot1.style.opacity=0; hoverDot2.style.opacity=0; tooltip.style.opacity=0; }
+    CHART_HANDLES[svgId] = { show, hide };
+    hit.addEventListener('pointermove', e => {
+      const rect = svg.getBoundingClientRect();
+      const scale = rect.width/W;
+      const px = (e.clientX-rect.left)/scale;
+      const frac = (px-M.left)/plotW;
+      const i = Math.max(0, Math.min(n-1, Math.round(frac*(n-1))));
+      notifyShow(svgId, i);
+    });
+    hit.addEventListener('pointerleave', () => notifyHide(svgId));
+  }
+  function statsOfSeries(vals){
+    const s = vals.slice().sort((a,b)=>a-b);
+    return { worst:s[0], median:percentile(s,50), best:s[s.length-1] };
+  }
+  function renderCagrWindow(){
+    const slider = document.getElementById('cagr-window-slider');
+    if (!slider) return;
+    const mode = state.mode;
+    const wMonths = parseInt(slider.value,10)*12;
+    const { nominal:n1, real:r1 } = combine(state.weights.c1);
+    const { nominal:n2, real:r2 } = combine(state.weights.c2);
+    const ret1 = mode==='nominal' ? n1 : r1;
+    const ret2 = mode==='nominal' ? n2 : r2;
+    const sC1 = rollingSeries(ret1, wMonths, cagrCalc);
+    const sC2 = rollingSeries(ret2, wMonths, cagrCalc);
+    const hueC1 = getComputedStyle(document.documentElement).getPropertyValue('--hue-c1').trim();
+    const hueC2 = getComputedStyle(document.documentElement).getPropertyValue('--hue-c2').trim();
+    drawWindowLine('chart-cagr-window','tt-cagr-window', sC1, sC2, hueC1, hueC2);
+    renderLegendCarteiras('legend-cagr-window', hueC1, hueC2);
+    const st1 = statsOfSeries(sC1.map(d=>d.value)), st2 = statsOfSeries(sC2.map(d=>d.value));
+    const statsEl = document.getElementById('stats-cagr-window');
+    if (statsEl){
+      statsEl.innerHTML = `
+        <div class="legend-mini-item" style="color:${hueC1}">C1 — pior <b>${fmtPct1(st1.worst)}</b> · mediana <b>${fmtPct1(st1.median)}</b> · melhor <b>${fmtPct1(st1.best)}</b></div>
+        <div class="legend-mini-item" style="color:${hueC2}">C2 — pior <b>${fmtPct1(st2.worst)}</b> · mediana <b>${fmtPct1(st2.median)}</b> · melhor <b>${fmtPct1(st2.best)}</b></div>
+      `;
+    }
+  }
 
   /* ---------- escalas compartilhadas + render geral ---------- */
   function yRangeFunil(a, b){
@@ -1030,11 +1375,20 @@ footer{ max-width: var(--maxw); margin: 0 auto; padding: 30px 24px 60px; font-fa
       drawFunil('chart-cagr-c2','tt-cagr-c2', c2.cagrFunil[mode], hueC2, yMin, yMax, fmtPct1);
       renderLegendFunil('legend-cagr-c1', hueC1); renderLegendFunil('legend-cagr-c2', hueC2);
     }
-    // Drawdown (underwater)
+    // Drawdown (underwater), com episódios anotados
     {
       const { yMin, yMax } = yRangeUnderwater(c1.underwater[mode], c2.underwater[mode]);
-      drawUnderwater('chart-dd-c1','tt-dd-c1', c1.underwater[mode], hueC1, yMin, yMax);
-      drawUnderwater('chart-dd-c2','tt-dd-c2', c2.underwater[mode], hueC2, yMin, yMax);
+      drawUnderwater('chart-dd-c1','tt-dd-c1', c1.underwater[mode], hueC1, yMin, yMax, c1.episodes[mode]);
+      drawUnderwater('chart-dd-c2','tt-dd-c2', c2.underwater[mode], hueC2, yMin, yMax, c2.episodes[mode]);
+    }
+    // Perfil dos episódios de queda (scatter combinado C1 vs C2)
+    {
+      const pontos = buildEpisodePoints(c1.episodes[mode], 'c1')
+        .concat(buildEpisodePoints(c2.episodes[mode], 'c2'))
+        .sort((a,b) => a.troughIdx - b.troughIdx);
+      drawScatter('chart-scatter','tt-scatter', pontos, hueC1, hueC2);
+      renderLegendCarteiras('legend-scatter', hueC1, hueC2);
+      renderEpisodesTable(c1.episodes[mode], c2.episodes[mode]);
     }
     // Ulcer
     {
@@ -1051,6 +1405,8 @@ footer{ max-width: var(--maxw); margin: 0 auto; padding: 30px 24px 60px; font-fa
       renderLegendCombo('legend-combo-c1', hues1.hueSharpe, hues1.hueSortino);
       renderLegendCombo('legend-combo-c2', hues2.hueSharpe, hues2.hueSortino);
     }
+    // CAGR por janela móvel de tamanho fixo (slider)
+    renderCagrWindow();
   }
 
   /* ---------- UI: pesos ---------- */
@@ -1129,6 +1485,14 @@ footer{ max-width: var(--maxw); margin: 0 auto; padding: 30px 24px 60px; font-fa
     renderAll();
   });
 
+  const cagrWindowSlider = document.getElementById('cagr-window-slider');
+  if (cagrWindowSlider){
+    cagrWindowSlider.addEventListener('input', function(){
+      document.getElementById('cagr-window-value').textContent = this.value;
+      renderCagrWindow();
+    });
+  }
+
   renderAll();
 
   /* ---------- UI do otimizador ---------- */
@@ -1138,6 +1502,8 @@ footer{ max-width: var(--maxw); margin: 0 auto; padding: 30px 24px 60px; font-fa
     { key:'ulcer', comparator:'<=', toInternal: v => v, label:'Ulcer Index', fmt: v => v.toFixed(2).replace('.',',') },
     { key:'sharpe', comparator:'>=', toInternal: v => v, label:'Sharpe', fmt: v => v.toFixed(2).replace('.',',') },
     { key:'sortino', comparator:'>=', toInternal: v => v, label:'Sortino', fmt: v => v.toFixed(2).replace('.',',') },
+    { key:'recovery', comparator:'<=', toInternal: v => v, label:'Tempo de recuperação (pior)', fmt: v => v.toFixed(0)+' meses' },
+    { key:'volatilidade', comparator:'<=', toInternal: v => v/100, label:'Volatilidade', fmt: v => (v*100).toFixed(2).replace('.',',')+'% a.a.' },
   ];
 
   const scopeYearsSelect = document.getElementById('opt-scope-years');
@@ -1230,7 +1596,9 @@ footer{ max-width: var(--maxw); margin: 0 auto; padding: 30px 24px 60px; font-fa
 
     const metricsHtml = CONSTRAINT_DEFS.map(def => {
       const isConstrained = constrainedKeys.has(def.key);
-      return `<span class="${isConstrained ? 'constrained' : ''}">${def.label}: <b>${def.fmt(metrics[def.key])}</b></span>`;
+      const val = metrics[def.key];
+      const display = val === undefined ? '—' : def.fmt(val);
+      return `<span class="${isConstrained ? 'constrained' : ''}">${def.label}: <b>${display}</b></span>`;
     }).join('');
 
     el.innerHTML = `
