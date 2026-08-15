@@ -129,6 +129,23 @@ os artifacts foram construídos ad-hoc a partir de `janelas_detalhado.csv`.
       `internal/estatisticas-carteira-aposentadoria/docs/interpretacoes.md`.
       Mesma ressalva sobre componente JS interativo ao publicar no blog.
 
+- [x] **Sharpe vs. Sortino — linhas de mediana sobrepostas com faixa
+      p10-p90** (formato diferente do funil de percentis, por escolha
+      deliberada — o insight principal é a *comparação entre os dois
+      indicadores*, não a distribuição de cada um isoladamente, então um
+      gráfico com as duas medianas no mesmo eixo comunica melhor o gap
+      estrutural Sortino > Sharpe do que dois funis separados). Protótipo
+      salvo em
+      `internal/estatisticas-carteira-aposentadoria/graficos/sharpe-sortino-comparativo.html`,
+      toggle Nominal/Real, cores fixas por indicador (não por nominal/real).
+      Interpretação completa (gap estrutural por causa do desvio-padrão
+      downside-only, convergência das duas métricas em janelas longas,
+      formato de sino espelhado do Ulcer, gap nominal/real pequeno e
+      estável ao contrário do drawdown/Ulcer) registrada em
+      `docs/interpretacoes.md`. Validado com screenshot real via Playwright
+      headless (toggle nominal e real). Mesma ressalva sobre componente JS
+      interativo ao publicar no blog.
+
 ## Extensão do tamanho máximo de janela: 15 → 18 anos
 
 - [x] Investigada queda abrupta no Sortino mediano em janelas de 15 anos

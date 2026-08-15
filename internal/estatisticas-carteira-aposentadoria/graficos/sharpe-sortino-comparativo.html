@@ -1,0 +1,402 @@
+<title>Sharpe vs. Sortino por tempo investido</title>
+<style>
+  .viz-root {
+    color-scheme: light;
+    --surface-1:      #fcfcfb;
+    --page:           #f9f9f7;
+    --text-primary:   #0b0b0b;
+    --text-secondary: #52514e;
+    --text-muted:     #898781;
+    --gridline:       #e1e0d9;
+    --baseline:       #c3c2b7;
+    --border:         rgba(11,11,11,0.10);
+    --hue-sharpe:     #2a78d6;
+    --hue-sortino:    #eb6834;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:where(:not([data-theme="light"])) .viz-root {
+      color-scheme: dark;
+      --surface-1:      #1a1a19;
+      --page:           #0d0d0d;
+      --text-primary:   #ffffff;
+      --text-secondary: #c3c2b7;
+      --text-muted:     #898781;
+      --gridline:       #2c2c2a;
+      --baseline:       #383835;
+      --border:         rgba(255,255,255,0.10);
+      --hue-sharpe:     #3987e5;
+      --hue-sortino:    #d95926;
+    }
+  }
+  :root[data-theme="dark"] .viz-root {
+    color-scheme: dark;
+    --surface-1:      #1a1a19;
+    --page:           #0d0d0d;
+    --text-primary:   #ffffff;
+    --text-secondary: #c3c2b7;
+    --text-muted:     #898781;
+    --gridline:       #2c2c2a;
+    --baseline:       #383835;
+    --border:         rgba(255,255,255,0.10);
+    --hue-sharpe:     #3987e5;
+    --hue-sortino:    #d95926;
+  }
+
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    background: var(--page);
+    font-family: system-ui, -apple-system, "Segoe UI", sans-serif;
+    color: var(--text-primary);
+  }
+  .viz-root {
+    max-width: 920px;
+    margin: 32px auto;
+    padding: 28px 28px 20px;
+    background: var(--surface-1);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+  }
+  h1 {
+    font-size: 18px;
+    font-weight: 600;
+    margin: 0 0 2px;
+  }
+  .subtitle {
+    font-size: 13px;
+    color: var(--text-secondary);
+    margin: 0 0 18px;
+  }
+
+  .toggle-group {
+    display: inline-flex;
+    padding: 3px;
+    background: var(--page);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    margin-bottom: 18px;
+  }
+  .toggle-btn {
+    appearance: none;
+    border: none;
+    background: transparent;
+    padding: 7px 16px;
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--text-secondary);
+    border-radius: 6px;
+    cursor: pointer;
+    font-family: inherit;
+  }
+  .toggle-btn:hover { color: var(--text-primary); }
+  .toggle-btn[aria-pressed="true"] {
+    background: var(--surface-1);
+    color: var(--text-primary);
+    box-shadow: 0 1px 3px rgba(0,0,0,0.08);
+  }
+
+  .legend {
+    display: flex;
+    gap: 20px;
+    flex-wrap: wrap;
+    margin-bottom: 4px;
+    font-size: 12.5px;
+    color: var(--text-secondary);
+  }
+  .legend-item { display: flex; align-items: center; gap: 7px; }
+  .legend-swatch-line { width: 16px; height: 2px; border-radius: 1px; }
+  .legend-swatch-band { width: 16px; height: 10px; border-radius: 2px; }
+  .chart-wrap { position: relative; }
+  svg { width: 100%; height: auto; display: block; overflow: visible; }
+  .gridline { stroke: var(--gridline); stroke-width: 1; }
+  .baseline { stroke: var(--baseline); stroke-width: 1; }
+  .axis-label { fill: var(--text-muted); font-size: 11px; }
+  .median-line { fill: none; stroke-width: 2; stroke-linejoin: round; stroke-linecap: round; }
+  .end-dot { r: 4; stroke-width: 2; stroke: var(--surface-1); }
+  .end-label { font-size: 12px; font-weight: 600; }
+  .crosshair { stroke: var(--text-muted); stroke-width: 1; opacity: 0; pointer-events: none; }
+  .hover-dot { r: 4; stroke-width: 2; stroke: var(--surface-1); opacity: 0; pointer-events: none; }
+  .hit-layer { fill: transparent; cursor: crosshair; }
+
+  .tooltip {
+    position: absolute;
+    pointer-events: none;
+    background: var(--surface-1);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 8px 12px;
+    font-size: 12px;
+    box-shadow: 0 4px 16px rgba(0,0,0,0.12);
+    opacity: 0;
+    transition: opacity 0.08s;
+    white-space: nowrap;
+    z-index: 10;
+  }
+  .tooltip-date {
+    color: var(--text-secondary);
+    margin-bottom: 4px;
+  }
+  .tooltip-row { display: flex; align-items: center; justify-content: space-between; gap: 14px; margin-top: 2px; }
+  .tooltip-key { display: flex; align-items: center; gap: 6px; color: var(--text-secondary); }
+  .tooltip-swatch-line { width: 10px; height: 2px; border-radius: 1px; flex-shrink: 0; }
+  .tooltip-value { font-weight: 600; color: var(--text-primary); font-variant-numeric: tabular-nums; }
+
+  .footnote {
+    font-size: 12px;
+    color: var(--text-muted);
+    margin-top: 14px;
+    line-height: 1.5;
+  }
+</style>
+
+<div class="viz-root">
+  <h1 id="title"></h1>
+  <p class="subtitle" id="subtitle"></p>
+
+  <div class="toggle-group" role="group" aria-label="Escolher base de cálculo">
+    <button class="toggle-btn" id="btn-nominal" type="button" aria-pressed="false">Nominal</button>
+    <button class="toggle-btn" id="btn-real" type="button" aria-pressed="false">Real</button>
+  </div>
+
+  <div class="legend" id="legend"></div>
+
+  <div class="chart-wrap">
+    <svg id="chart" viewBox="0 0 880 380" preserveAspectRatio="xMidYMid meet"></svg>
+    <div class="tooltip" id="tooltip"></div>
+  </div>
+
+  <p class="footnote" id="footnote"></p>
+</div>
+
+<script>
+(function () {
+  const DATA = {"sharpe_nominal": [{"anos": 1, "n": 235, "p10": -1.2607, "mediana": 0.5914, "p90": 2.1416, "min": -2.5506, "max": 4.3205}, {"anos": 2, "n": 223, "p10": -0.9213, "mediana": 0.6086, "p90": 1.7145, "min": -1.6666, "max": 2.322}, {"anos": 3, "n": 211, "p10": -0.4875, "mediana": 0.4913, "p90": 1.7051, "min": -0.8897, "max": 2.2949}, {"anos": 4, "n": 199, "p10": -0.307, "mediana": 0.4386, "p90": 1.5657, "min": -0.6066, "max": 1.9149}, {"anos": 5, "n": 187, "p10": -0.1684, "mediana": 0.539, "p90": 1.251, "min": -0.2984, "max": 1.7176}, {"anos": 6, "n": 175, "p10": 0.0262, "mediana": 0.5984, "p90": 1.1406, "min": -0.1827, "max": 1.4453}, {"anos": 7, "n": 163, "p10": 0.0688, "mediana": 0.6865, "p90": 0.9841, "min": -0.0558, "max": 1.1673}, {"anos": 8, "n": 151, "p10": 0.0611, "mediana": 0.7082, "p90": 0.9617, "min": -0.0544, "max": 1.0238}, {"anos": 9, "n": 139, "p10": 0.0433, "mediana": 0.6691, "p90": 0.9605, "min": -0.109, "max": 1.0688}, {"anos": 10, "n": 127, "p10": 0.0527, "mediana": 0.6734, "p90": 0.9852, "min": -0.0076, "max": 1.0925}, {"anos": 11, "n": 115, "p10": 0.1313, "mediana": 0.6576, "p90": 0.911, "min": 0.0554, "max": 1.0198}, {"anos": 12, "n": 103, "p10": 0.2223, "mediana": 0.6573, "p90": 0.9074, "min": 0.1736, "max": 1.0083}, {"anos": 13, "n": 91, "p10": 0.3436, "mediana": 0.6461, "p90": 0.7839, "min": 0.2269, "max": 0.9636}, {"anos": 14, "n": 79, "p10": 0.486, "mediana": 0.6191, "p90": 0.7369, "min": 0.3014, "max": 0.7709}, {"anos": 15, "n": 67, "p10": 0.4004, "mediana": 0.5867, "p90": 0.7077, "min": 0.3506, "max": 0.7203}, {"anos": 16, "n": 55, "p10": 0.3447, "mediana": 0.4904, "p90": 0.6977, "min": 0.3042, "max": 0.7461}, {"anos": 17, "n": 43, "p10": 0.3671, "mediana": 0.4127, "p90": 0.6949, "min": 0.3505, "max": 0.761}, {"anos": 18, "n": 31, "p10": 0.3779, "mediana": 0.4099, "p90": 0.4741, "min": 0.3725, "max": 0.4884}], "sortino_nominal": [{"anos": 1, "n": 235, "p10": -2.6564, "mediana": 1.447, "p90": 7.0892, "min": -9.1299, "max": 32.4923}, {"anos": 2, "n": 223, "p10": -1.2271, "mediana": 1.4954, "p90": 4.5392, "min": -3.9426, "max": 8.7923}, {"anos": 3, "n": 211, "p10": -0.7113, "mediana": 1.225, "p90": 2.6904, "min": -1.5867, "max": 7.7201}, {"anos": 4, "n": 199, "p10": -0.4681, "mediana": 1.1108, "p90": 2.5953, "min": -0.8092, "max": 4.9908}, {"anos": 5, "n": 187, "p10": -0.259, "mediana": 1.2227, "p90": 2.387, "min": -0.4246, "max": 3.2768}, {"anos": 6, "n": 175, "p10": 0.0329, "mediana": 1.3881, "p90": 2.0927, "min": -0.2271, "max": 2.6094}, {"anos": 7, "n": 163, "p10": 0.0859, "mediana": 1.4733, "p90": 1.9964, "min": -0.0713, "max": 2.3019}, {"anos": 8, "n": 151, "p10": 0.0813, "mediana": 1.4761, "p90": 1.8623, "min": -0.0726, "max": 2.5259}, {"anos": 9, "n": 139, "p10": 0.0638, "mediana": 1.5073, "p90": 1.9152, "min": -0.1678, "max": 2.3733}, {"anos": 10, "n": 127, "p10": 0.08, "mediana": 1.3647, "p90": 2.0211, "min": -0.0116, "max": 2.2392}, {"anos": 11, "n": 115, "p10": 0.1956, "mediana": 1.3407, "p90": 1.8428, "min": 0.0836, "max": 2.6036}, {"anos": 12, "n": 103, "p10": 0.337, "mediana": 1.3324, "p90": 1.8731, "min": 0.2608, "max": 2.0725}, {"anos": 13, "n": 91, "p10": 0.5262, "mediana": 1.2939, "p90": 1.6099, "min": 0.3484, "max": 2.0359}, {"anos": 14, "n": 79, "p10": 0.7215, "mediana": 1.2995, "p90": 1.5016, "min": 0.4383, "max": 1.6032}, {"anos": 15, "n": 67, "p10": 0.6321, "mediana": 0.8837, "p90": 1.4934, "min": 0.5526, "max": 1.5648}, {"anos": 16, "n": 55, "p10": 0.5535, "mediana": 0.7473, "p90": 1.4912, "min": 0.4881, "max": 1.6436}, {"anos": 17, "n": 43, "p10": 0.5848, "mediana": 0.6579, "p90": 1.5012, "min": 0.5587, "max": 1.6136}, {"anos": 18, "n": 31, "p10": 0.5992, "mediana": 0.6497, "p90": 0.7382, "min": 0.5965, "max": 0.7967}], "sharpe_real": [{"anos": 1, "n": 235, "p10": -1.1515, "mediana": 0.569, "p90": 1.9885, "min": -2.269, "max": 4.1569}, {"anos": 2, "n": 223, "p10": -0.8436, "mediana": 0.5444, "p90": 1.584, "min": -1.4537, "max": 2.1787}, {"anos": 3, "n": 211, "p10": -0.4545, "mediana": 0.4467, "p90": 1.5699, "min": -0.8395, "max": 2.1071}, {"anos": 4, "n": 199, "p10": -0.2894, "mediana": 0.4015, "p90": 1.4651, "min": -0.568, "max": 1.7727}, {"anos": 5, "n": 187, "p10": -0.154, "mediana": 0.5047, "p90": 1.127, "min": -0.2797, "max": 1.5921}, {"anos": 6, "n": 175, "p10": 0.0245, "mediana": 0.5507, "p90": 1.0186, "min": -0.1726, "max": 1.3215}, {"anos": 7, "n": 163, "p10": 0.0648, "mediana": 0.6323, "p90": 0.8885, "min": -0.0521, "max": 1.0758}, {"anos": 8, "n": 151, "p10": 0.0569, "mediana": 0.6427, "p90": 0.8778, "min": -0.0502, "max": 0.9408}, {"anos": 9, "n": 139, "p10": 0.0405, "mediana": 0.6071, "p90": 0.879, "min": -0.1017, "max": 0.9792}, {"anos": 10, "n": 127, "p10": 0.0492, "mediana": 0.6094, "p90": 0.9011, "min": -0.0071, "max": 1.0011}, {"anos": 11, "n": 115, "p10": 0.1223, "mediana": 0.5946, "p90": 0.8393, "min": 0.0518, "max": 0.9399}, {"anos": 12, "n": 103, "p10": 0.2059, "mediana": 0.5978, "p90": 0.8345, "min": 0.1609, "max": 0.9304}, {"anos": 13, "n": 91, "p10": 0.3187, "mediana": 0.587, "p90": 0.7125, "min": 0.2114, "max": 0.8838}, {"anos": 14, "n": 79, "p10": 0.4471, "mediana": 0.5656, "p90": 0.6721, "min": 0.2822, "max": 0.7016}, {"anos": 15, "n": 67, "p10": 0.3678, "mediana": 0.5428, "p90": 0.6451, "min": 0.3222, "max": 0.6586}, {"anos": 16, "n": 55, "p10": 0.3166, "mediana": 0.4528, "p90": 0.6348, "min": 0.2795, "max": 0.6815}, {"anos": 17, "n": 43, "p10": 0.3377, "mediana": 0.379, "p90": 0.6334, "min": 0.3224, "max": 0.6934}, {"anos": 18, "n": 31, "p10": 0.3466, "mediana": 0.3756, "p90": 0.4353, "min": 0.3419, "max": 0.4473}], "sortino_real": [{"anos": 1, "n": 235, "p10": -1.888, "mediana": 1.2015, "p90": 6.9644, "min": -4.2749, "max": 92.3033}, {"anos": 2, "n": 223, "p10": -1.1173, "mediana": 1.1519, "p90": 4.2705, "min": -2.7085, "max": 9.6509}, {"anos": 3, "n": 211, "p10": -0.6088, "mediana": 0.924, "p90": 2.8441, "min": -1.0718, "max": 8.1251}, {"anos": 4, "n": 199, "p10": -0.3914, "mediana": 0.899, "p90": 2.6045, "min": -0.7635, "max": 5.0929}, {"anos": 5, "n": 187, "p10": -0.2322, "mediana": 1.0095, "p90": 2.2117, "min": -0.3658, "max": 2.7039}, {"anos": 6, "n": 175, "p10": 0.0314, "mediana": 1.146, "p90": 1.9417, "min": -0.2156, "max": 2.3997}, {"anos": 7, "n": 163, "p10": 0.0825, "mediana": 1.2998, "p90": 1.6839, "min": -0.0679, "max": 2.0478}, {"anos": 8, "n": 151, "p10": 0.0774, "mediana": 1.2756, "p90": 1.6981, "min": -0.0678, "max": 1.9656}, {"anos": 9, "n": 139, "p10": 0.0582, "mediana": 1.2646, "p90": 1.7013, "min": -0.1532, "max": 1.881}, {"anos": 10, "n": 127, "p10": 0.0732, "mediana": 1.2414, "p90": 1.719, "min": -0.0106, "max": 1.8892}, {"anos": 11, "n": 115, "p10": 0.1794, "mediana": 1.165, "p90": 1.6971, "min": 0.0763, "max": 1.9678}, {"anos": 12, "n": 103, "p10": 0.3114, "mediana": 1.1672, "p90": 1.6906, "min": 0.2389, "max": 1.9147}, {"anos": 13, "n": 91, "p10": 0.4851, "mediana": 1.1282, "p90": 1.3995, "min": 0.3215, "max": 1.8186}, {"anos": 14, "n": 79, "p10": 0.6811, "mediana": 1.1209, "p90": 1.3156, "min": 0.414, "max": 1.3988}, {"anos": 15, "n": 67, "p10": 0.5897, "mediana": 0.8334, "p90": 1.2866, "min": 0.5169, "max": 1.3446}, {"anos": 16, "n": 55, "p10": 0.5137, "mediana": 0.7006, "p90": 1.2996, "min": 0.4529, "max": 1.4085}, {"anos": 17, "n": 43, "p10": 0.543, "mediana": 0.6107, "p90": 1.298, "min": 0.5178, "max": 1.4073}, {"anos": 18, "n": 31, "p10": 0.5588, "mediana": 0.6071, "p90": 0.693, "min": 0.5526, "max": 0.7461}]};
+
+  const MODES = {
+    nominal: { title: 'Sharpe vs. Sortino nominal por tempo investido', sharpeKey: 'sharpe_nominal', sortinoKey: 'sortino_nominal' },
+    real: { title: 'Sharpe vs. Sortino real por tempo investido', sharpeKey: 'sharpe_real', sortinoKey: 'sortino_real' },
+  };
+
+  const root = document.querySelector('.viz-root');
+  const W = 880, H = 380;
+  const M = { top: 16, right: 84, bottom: 34, left: 46 };
+  const plotW = W - M.left - M.right;
+  const plotH = H - M.top - M.bottom;
+  const ns = 'http://www.w3.org/2000/svg';
+  const el = (tag, attrs) => {
+    const e = document.createElementNS(ns, tag);
+    for (const k in attrs) e.setAttribute(k, attrs[k]);
+    return e;
+  };
+
+  const fmtNum = v => v.toFixed(2).replace('.', ',');
+
+  const svg = document.getElementById('chart');
+  svg.setAttribute('viewBox', `0 0 ${W} ${H}`);
+  const tooltip = document.getElementById('tooltip');
+  const legendEl = document.getElementById('legend');
+
+  function render(mode) {
+    const meta = MODES[mode];
+    const sharpeData = DATA[meta.sharpeKey];
+    const sortinoData = DATA[meta.sortinoKey];
+    const hueSharpe = getComputedStyle(root).getPropertyValue('--hue-sharpe').trim();
+    const hueSortino = getComputedStyle(root).getPropertyValue('--hue-sortino').trim();
+
+    document.getElementById('btn-nominal').setAttribute('aria-pressed', mode === 'nominal');
+    document.getElementById('btn-real').setAttribute('aria-pressed', mode === 'real');
+
+    document.getElementById('title').textContent = meta.title;
+    document.getElementById('subtitle').textContent =
+      `Mediana e faixa central (p10–p90) das janelas móveis em cada tamanho, jan/2006–jun/2026`;
+    document.getElementById('footnote').textContent =
+      'Eixo X: tamanho da janela em anos. Sharpe e Sortino usam o CDI oficial como taxa livre de risco (nominal ou real, via Fisher, conforme o toggle). Sortino usa só o desvio-padrão dos meses negativos no denominador — por isso tende a ficar acima do Sharpe. A faixa sombreada mostra onde caíram os 80% centrais dos resultados históricos em cada tamanho de janela; não é projeção futura. Fonte: internal/estatisticas-carteira-aposentadoria/output/janelas_detalhado.csv';
+
+    legendEl.innerHTML = '';
+    [
+      ['sharpe-line', 'Sharpe — mediana'],
+      ['sharpe-band', 'Sharpe — 80% central (p10–p90)'],
+      ['sortino-line', 'Sortino — mediana'],
+      ['sortino-band', 'Sortino — 80% central (p10–p90)'],
+    ].forEach(([kind, label]) => {
+      const item = document.createElement('div');
+      item.className = 'legend-item';
+      const swatch = document.createElement('span');
+      const isBand = kind.endsWith('band');
+      const hue = kind.startsWith('sharpe') ? hueSharpe : hueSortino;
+      swatch.className = isBand ? 'legend-swatch-band' : 'legend-swatch-line';
+      swatch.style.background = hue;
+      if (isBand) swatch.style.opacity = '0.28';
+      const text = document.createElement('span');
+      text.textContent = label;
+      item.appendChild(swatch);
+      item.appendChild(text);
+      legendEl.appendChild(item);
+    });
+
+    svg.innerHTML = '';
+    tooltip.style.opacity = 0;
+
+    const anosList = sharpeData.map(d => d.anos);
+    const xMin = anosList[0], xMax = anosList[anosList.length - 1];
+
+    const allVals = sharpeData.concat(sortinoData).flatMap(d => [d.p10, d.p90]);
+    const yMax = Math.ceil(Math.max(...allVals) * 10) / 10;
+    const yMin = Math.floor(Math.min(...allVals, 0) * 10) / 10;
+
+    const x = a => M.left + ((a - xMin) / (xMax - xMin)) * plotW;
+    const y = v => M.top + plotH - ((v - yMin) / (yMax - yMin)) * plotH;
+
+    const yStep = (yMax - yMin) > 4 ? 1 : 0.5;
+    for (let v = Math.ceil(yMin / yStep) * yStep; v <= yMax + 1e-9; v += yStep) {
+      const yy = y(v);
+      svg.appendChild(el('line', { x1: M.left, x2: W - M.right, y1: yy, y2: yy, class: 'gridline' }));
+      const label = el('text', { x: M.left - 8, y: yy + 4, class: 'axis-label', 'text-anchor': 'end' });
+      label.textContent = fmtNum(v);
+      svg.appendChild(label);
+    }
+    const baselineY = y(0);
+    svg.appendChild(el('line', { x1: M.left, x2: W - M.right, y1: baselineY, y2: baselineY, class: 'baseline' }));
+
+    anosList.forEach(a => {
+      const xx = x(a);
+      const label = el('text', { x: xx, y: H - M.bottom + 18, class: 'axis-label', 'text-anchor': 'middle' });
+      label.textContent = a;
+      svg.appendChild(label);
+    });
+    const xAxisTitle = el('text', { x: M.left + plotW / 2, y: H - 2, class: 'axis-label', 'text-anchor': 'middle' });
+    xAxisTitle.textContent = 'Tamanho da janela (anos)';
+    svg.appendChild(xAxisTitle);
+
+    function bandPath(data, topKey, bottomKey) {
+      const top = data.map((d, i) => `${i === 0 ? 'M' : 'L'} ${x(d.anos)} ${y(d[topKey])}`).join(' ');
+      const bottom = data.slice().reverse().map(d => `L ${x(d.anos)} ${y(d[bottomKey])}`).join(' ');
+      return `${top} ${bottom} Z`;
+    }
+    function linePath(data, key) {
+      return data.map((d, i) => `${i === 0 ? 'M' : 'L'} ${x(d.anos)} ${y(d[key])}`).join(' ');
+    }
+
+    svg.appendChild(el('path', { d: bandPath(sharpeData, 'p90', 'p10'), fill: hueSharpe, opacity: '0.20', stroke: 'none' }));
+    svg.appendChild(el('path', { d: bandPath(sortinoData, 'p90', 'p10'), fill: hueSortino, opacity: '0.20', stroke: 'none' }));
+
+    svg.appendChild(el('path', { d: linePath(sharpeData, 'mediana'), class: 'median-line', stroke: hueSharpe }));
+    svg.appendChild(el('path', { d: linePath(sortinoData, 'mediana'), class: 'median-line', stroke: hueSortino }));
+
+    const lastSharpe = sharpeData[sharpeData.length - 1];
+    const lastSortino = sortinoData[sortinoData.length - 1];
+    const lastX = x(lastSharpe.anos);
+
+    svg.appendChild(el('circle', { cx: lastX, cy: y(lastSharpe.mediana), class: 'end-dot', fill: hueSharpe }));
+    svg.appendChild(el('circle', { cx: lastX, cy: y(lastSortino.mediana), class: 'end-dot', fill: hueSortino }));
+
+    const MIN_GAP = 14;
+    const endLabels = [
+      { trueY: y(lastSharpe.mediana), text: 'Sharpe ' + fmtNum(lastSharpe.mediana), hue: hueSharpe },
+      { trueY: y(lastSortino.mediana), text: 'Sortino ' + fmtNum(lastSortino.mediana), hue: hueSortino },
+    ].sort((a, b) => a.trueY - b.trueY);
+    for (let i = 1; i < endLabels.length; i++) {
+      if (endLabels[i].trueY - endLabels[i - 1].trueY < MIN_GAP) {
+        endLabels[i].trueY = endLabels[i - 1].trueY + MIN_GAP;
+      }
+    }
+    endLabels.forEach(item => {
+      const label = el('text', { x: lastX + 8, y: item.trueY + 4, class: 'end-label', fill: item.hue });
+      label.textContent = item.text;
+      svg.appendChild(label);
+    });
+
+    const crosshair = el('line', { x1: 0, x2: 0, y1: M.top, y2: M.top + plotH, class: 'crosshair' });
+    const hoverDots = [hueSharpe, hueSortino].map(hue => el('circle', { class: 'hover-dot', fill: hue }));
+    svg.appendChild(crosshair);
+    hoverDots.forEach(d => svg.appendChild(d));
+
+    const hit = el('rect', { x: M.left, y: M.top, width: plotW, height: plotH, class: 'hit-layer' });
+    svg.appendChild(hit);
+
+    function nearestIndex(px) {
+      const a = xMin + ((px - M.left) / plotW) * (xMax - xMin);
+      let best = 0, bestDist = Infinity;
+      anosList.forEach((v, i) => {
+        const dist = Math.abs(v - a);
+        if (dist < bestDist) { bestDist = dist; best = i; }
+      });
+      return best;
+    }
+
+    function showAt(clientX, rectLeft, scale) {
+      const px = (clientX - rectLeft) / scale;
+      const i = nearestIndex(px);
+      const ds = sharpeData[i], dt = sortinoData[i];
+      const xx = x(ds.anos);
+
+      crosshair.setAttribute('x1', xx);
+      crosshair.setAttribute('x2', xx);
+      crosshair.style.opacity = 1;
+
+      hoverDots[0].setAttribute('cx', xx);
+      hoverDots[0].setAttribute('cy', y(ds.mediana));
+      hoverDots[0].style.opacity = 1;
+      hoverDots[1].setAttribute('cx', xx);
+      hoverDots[1].setAttribute('cy', y(dt.mediana));
+      hoverDots[1].style.opacity = 1;
+
+      tooltip.innerHTML = '';
+      const titleEl = document.createElement('div');
+      titleEl.className = 'tooltip-date';
+      titleEl.textContent = `${ds.anos} ano${ds.anos > 1 ? 's' : ''} investido${ds.anos > 1 ? 's' : ''} (${ds.n} janelas)`;
+      tooltip.appendChild(titleEl);
+
+      [
+        ['Sharpe — mediana', ds.mediana, hueSharpe],
+        ['Sharpe — p10 / p90', `${fmtNum(ds.p10)} / ${fmtNum(ds.p90)}`, hueSharpe],
+        ['Sortino — mediana', dt.mediana, hueSortino],
+        ['Sortino — p10 / p90', `${fmtNum(dt.p10)} / ${fmtNum(dt.p90)}`, hueSortino],
+      ].forEach(([label, val, hue]) => {
+        const row = document.createElement('div');
+        row.className = 'tooltip-row';
+        const key = document.createElement('span');
+        key.className = 'tooltip-key';
+        const swatch = document.createElement('span');
+        swatch.className = 'tooltip-swatch-line';
+        swatch.style.background = hue;
+        const nameEl = document.createElement('span');
+        nameEl.textContent = label;
+        key.appendChild(swatch);
+        key.appendChild(nameEl);
+        const value = document.createElement('span');
+        value.className = 'tooltip-value';
+        value.textContent = typeof val === 'number' ? fmtNum(val) : val;
+        row.appendChild(key);
+        row.appendChild(value);
+        tooltip.appendChild(row);
+      });
+
+      const svgRect = svg.getBoundingClientRect();
+      const scaleX = svgRect.width / W;
+      let left = xx * scaleX + 14;
+      if (left + 190 > svgRect.width) left = xx * scaleX - 204;
+      tooltip.style.left = left + 'px';
+      tooltip.style.top = (y(Math.max(ds.p90, dt.p90)) * (svgRect.height / H) - 10) + 'px';
+      tooltip.style.opacity = 1;
+    }
+
+    function hide() {
+      crosshair.style.opacity = 0;
+      hoverDots.forEach(d => d.style.opacity = 0);
+      tooltip.style.opacity = 0;
+    }
+
+    hit.addEventListener('pointermove', e => {
+      const rect = svg.getBoundingClientRect();
+      showAt(e.clientX, rect.left, rect.width / W);
+    });
+    hit.addEventListener('pointerleave', hide);
+  }
+
+  document.getElementById('btn-nominal').addEventListener('click', () => render('nominal'));
+  document.getElementById('btn-real').addEventListener('click', () => render('real'));
+
+  render('nominal');
+})();
+</script>

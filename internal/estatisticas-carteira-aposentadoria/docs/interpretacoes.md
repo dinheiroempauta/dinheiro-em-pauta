@@ -163,3 +163,61 @@ define o pior cenário de mercado da carteira em qualquer horizonte, e a
 inflação de 2021-2022 é o que torna a recuperação ainda mais lenta
 quando medida em termos reais — mesmo sem ser, isoladamente, a queda
 mais profunda.
+
+## Sharpe vs. Sortino — retorno ajustado ao risco, por tamanho de janela
+
+**Gráfico:** `graficos/sharpe-sortino-comparativo.html` (mediana + faixa
+p10–p90 das duas métricas sobrepostas no mesmo eixo, toggle nominal/real).
+
+### Sortino consistentemente acima de Sharpe, em todos os tamanhos de janela
+
+| | Mediana 1 ano | Mediana 8 anos (pico) | Mediana 18 anos |
+|---|---|---|---|
+| Sharpe nominal | 0,59 | 0,71 | 0,41 |
+| Sortino nominal | 1,45 | 1,48 | 0,65 |
+
+O gap é estrutural, não um artefato de amostra: Sortino só penaliza a
+volatilidade dos meses *negativos* no denominador, enquanto Sharpe penaliza
+o desvio-padrão completo (positivo e negativo). Como a carteira tem mais
+meses positivos que negativos e os meses positivos tendem a ser mais
+dispersos entre si do que os negativos, o denominador do Sortino fica menor
+— o índice sobe mesmo com o numerador (retorno em excesso ao CDI)
+idêntico. Isso não é "a carteira ficando melhor", é a métrica descontando
+menos volatilidade "boa".
+
+### As duas convergem quando a janela cresce
+
+Em janelas de 1 ano o gap Sortino−Sharpe é de ~0,86; em 18 anos cai para
+~0,24. Faz sentido: com mais meses na janela, a proporção de meses
+positivos/negativos se estabiliza perto da média de longo prazo da
+carteira, então a diferença entre "penalizar tudo" e "penalizar só a
+queda" fica menos extrema — os dois desvios-padrão (completo e downside)
+convergem relativamente.
+
+### O mesmo formato de "sino" do Ulcer aparece aqui, espelhado
+
+Sharpe e Sortino sobem de 1 para ~7-8 anos, platôs, depois caem
+gradualmente até 18 anos — o inverso do formato do Ulcer (que sobe até um
+pico e desce). Faz sentido: quando o Ulcer (dor acumulada) está baixo, o
+retorno ajustado ao risco tende a estar alto, e vice-versa — são a mesma
+característica da carteira vista por ângulos opostos.
+
+### Nominal vs. real: gap pequeno e estável
+
+Diferente do Ulcer (onde o gap nominal/real dispara a partir de
+dez/2021), aqui a diferença entre Sharpe nominal e real é pequena e
+consistente (~0,03-0,05 na mediana, em quase todos os tamanhos de
+janela) — porque tanto o numerador (retorno em excesso) quanto o
+denominador (volatilidade) já embutem o efeito da inflação nos dois
+lados da conta (carteira e CDI), então o Fisher praticamente se cancela
+no índice, ao contrário do drawdown/Ulcer, onde só o numerador (o
+"buraco" de capital) é afetado pela inflação, não o denominador.
+
+### Síntese para o artigo
+
+Sortino não é "melhor" que Sharpe, é uma lente diferente: mede
+especificamente o retorno conquistado por unidade de risco de *perda*, não
+de oscilação em geral. A carteira historicamente entrega Sortino
+2-3x o Sharpe em janelas curtas, convergindo para ~1,5x em janelas de 18
+anos — um jeito concreto de mostrar que boa parte da "volatilidade" da
+carteira é oscilação para cima, não risco de perda.
