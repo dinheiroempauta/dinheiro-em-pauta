@@ -33,7 +33,7 @@ da taxa livre de risco, ou buscar série oficial de CDI/Selic do Bacen?
 **Dados recebidos:** `Data` em `MM/AAAA`, `CDI` mensal já em formato de
 retorno percentual (string com vírgula decimal, ex: `"1,22%"`). Cobertura
 01/2006 a 07/2026 (247 meses), sem lacunas nem duplicatas — superset da
-janela da carteira (01/2006 a 06/2026, 241 meses); o mês extra (07/2026)
+janela da carteira (01/2006 a 06/2026, 246 meses); o mês extra (07/2026)
 não é usado.
 
 **Validação feita:** comparado mês a mês contra `ret_cdib11` (o ETF de CDI
@@ -79,3 +79,17 @@ truncar artificialmente no fim da janela).
 **Decisão:** 5%. VaR histórico = retorno no percentil 5 dos meses da
 janela; CVaR histórico = média dos retornos abaixo desse percentil.
 Calculado nominal e real.
+
+## 2026-08-15 — Base para % meses positivos/negativos
+
+**Contexto:** a spec (seção 4) já registrava que este indicador é
+"conceito único" (não se calcula nominal e real separadamente), mas não
+tinha fixado qual das duas séries usar como base — pendência descoberta
+só na hora de implementar (`03_rolling_windows.py`).
+
+**Decisão:** usar a série **nominal**. Racional: "mês positivo/negativo"
+é uma leitura simples e comparável de recorrência de perdas/ganhos
+mês a mês — atrelar isso à inflação do mesmo mês (que teria efeito na
+série real) mistura dois fenômenos diferentes (retorno de mercado vs.
+poder de compra), o que os outros indicadores (CAGR, Sharpe etc.) já
+cobrem separadamente em suas versões real e nominal.

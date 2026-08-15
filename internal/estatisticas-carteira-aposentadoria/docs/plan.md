@@ -6,7 +6,7 @@
 ## 1. Dados e preparação
 
 Entrada:
-- `retornos_mensais_carteira.csv` — 241 meses (01/2006–06/2026), colunas
+- `retornos_mensais_carteira.csv` — 246 meses (01/2006–06/2026), colunas
   `Data`, `ret_vwra11`, `ret_divo11`, `ret_b5p211`, `ret_cdib11`,
   `ret_gold11`, `ret_carteira_nominal`, `ret_ipca`, `ret_carteira_real`.
 - `cdi_mensal.csv` — 247 meses (01/2006–07/2026), colunas `Data` (MM/AAAA),
@@ -16,7 +16,7 @@ Passos de preparação (`src/01_prepare_data.py`):
 1. Ler `retornos_mensais_carteira.csv`, parsear `Data` como data.
 2. Ler `cdi_mensal.csv`, converter `Data` de `MM/AAAA` para o mesmo formato,
    converter `CDI` de string (`"1,22%"`) para float decimal (`0.0122`).
-3. Merge por data (inner join) — resultado deve ter exatamente 241 linhas,
+3. Merge por data (inner join) — resultado deve ter exatamente 246 linhas,
    uma por mês da carteira. Validar isso com um assert explícito (falhar
    ruidosamente se não bater, não seguir silenciosamente).
 4. Calcular `cdi_real` via Fisher: `(1 + CDI) / (1 + ret_ipca) - 1`.
@@ -58,14 +58,14 @@ conforme o indicador pede as duas) referente a uma janela de N meses.
 - **Skewness / curtose:** `scipy.stats.skew` / `scipy.stats.kurtosis`
   (curtose em excesso, i.e. normal = 0) dos retornos mensais da janela.
 - **Correlação entre os 5 ativos:** matriz de correlação de Pearson dos
-  retornos mensais dos 5 ativos, período completo (241 meses), fora do
+  retornos mensais dos 5 ativos, período completo (246 meses), fora do
   loop de janelas.
 
 ## 3. Geração das janelas móveis
 
 Para cada tamanho de janela `w` em `{12, 24, 36, ..., 180}` (meses):
-- Gerar todas as janelas contíguas de tamanho `w` dentro da série de 241
-  meses: `n_janelas = 241 - w + 1`.
+- Gerar todas as janelas contíguas de tamanho `w` dentro da série de 246
+  meses: `n_janelas = 246 - w + 1`.
 - Para `w = 180` (15 anos): `n_janelas = 62`.
 - Para `w = 12` (1 ano): `n_janelas = 230`.
 - Para cada janela, calcular todos os indicadores da seção 2 (nominal e

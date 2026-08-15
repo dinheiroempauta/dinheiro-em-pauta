@@ -18,7 +18,7 @@ dono da carteira. Uso secundário, eventual: virar artigo no blog.
 - Fonte: `internal/estatisticas-carteira-aposentadoria/retornos_mensais_carteira.csv`
   (cópia independente de `internal/pwr-project/output/portfolio_monthly_returns.csv`;
   esta pasta nunca escreve de volta no projeto PWR).
-- 241 observações mensais, `2006-01-01` a `2026-06-01`.
+- 246 observações mensais, `2006-01-01` a `2026-06-01`.
 - Colunas: `ret_vwra11`, `ret_divo11`, `ret_b5p211`, `ret_cdib11`, `ret_gold11`
   (retornos mensais dos 5 ativos), `ret_carteira_nominal`, `ret_ipca`,
   `ret_carteira_real`.
@@ -35,7 +35,7 @@ dono da carteira. Uso secundário, eventual: virar artigo no blog.
   (15 tamanhos de janela: 12, 24, 36, ..., 180 meses), cada uma deslizando
   mês a mês por toda a série disponível.
 - Para cada tamanho de janela, todos os indicadores da seção 4 calculados em
-  **cada** janela possível daquele tamanho (ex: janela de 5 anos = 241-60+1
+  **cada** janela possível daquele tamanho (ex: janela de 5 anos = 246-60+1
   = 182 janelas de 60 meses cada) — o resultado é uma distribuição por
   tamanho de janela (mediana, mínimo, máximo, percentis), não um número
   único por tamanho.
