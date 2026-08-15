@@ -434,23 +434,8 @@ footer{ max-width: var(--maxw); margin: 0 auto; padding: 30px 24px 60px; font-fa
   </section>
 
   <section class="indicator-section">
-    <h2 class="indicator-title">CAGR</h2>
-    <p class="indicator-desc">Retorno anualizado composto, por tamanho de janela (1–18 anos). Mediana + faixas de percentil (60% e 90% centrais) + pior/melhor caso observado.</p>
-    <div class="chart-pair">
-      <div class="chart-card" data-side="c1"><p class="chart-card-title">Carteira 1</p><div class="legend-mini" id="legend-cagr-c1"></div><div style="position:relative"><svg class="chart-svg" id="chart-cagr-c1" viewBox="0 0 560 300"></svg><div class="tooltip" id="tt-cagr-c1"></div></div></div>
-      <div class="chart-card" data-side="c2"><p class="chart-card-title">Carteira 2</p><div class="legend-mini" id="legend-cagr-c2"></div><div style="position:relative"><svg class="chart-svg" id="chart-cagr-c2" viewBox="0 0 560 300"></svg><div class="tooltip" id="tt-cagr-c2"></div></div></div>
-    </div>
-    <details class="explainer">
-      <summary>O que é, como se calcula e como ler este gráfico</summary>
-      <p><b>O que é:</b> a taxa de retorno anual que, se repetida igual todo ano, teria transformado o capital inicial no capital final observado — é a forma padrão de resumir "quanto a carteira rendeu por ano", suavizando a variação mês a mês.</p>
-      <p><b>Como se calcula:</b> pega o produto de (1 + retorno) de cada mês da janela, eleva a 12/n (n = número de meses) e subtrai 1.</p>
-      <p><b>Como ler:</b> o eixo X é o tamanho do período investido, de 1 a 18 anos. A linha é a mediana do CAGR entre todas as janelas históricas daquele tamanho; as faixas mostram onde caíram 60% e 90% dos casos; as linhas pontilhadas marcam o pior e o melhor caso já observado — nenhum é projeção futura.</p>
-    </details>
-  </section>
-
-  <section class="indicator-section">
     <h2 class="indicator-title">CAGR por janela móvel de tamanho fixo</h2>
-    <p class="indicator-desc">Diferente do gráfico de CAGR acima (que resume todas as janelas de cada tamanho em percentis), aqui cada ponto é uma janela específica de tamanho fixo, deslizando mês a mês pelo histórico — dá pra ver quando o CAGR daquele tamanho de janela foi melhor ou pior ao longo do tempo, não só a distribuição geral.</p>
+    <p class="indicator-desc">Cada ponto é uma janela específica de tamanho fixo, deslizando mês a mês pelo histórico — dá pra ver quando o CAGR daquele tamanho de janela foi melhor ou pior ao longo do tempo, não só a distribuição geral (essa distribuição resumida em percentis é o gráfico de CAGR logo abaixo).</p>
     <div style="display:flex; align-items:center; gap:12px; margin-bottom:14px; flex-wrap:wrap;">
       <label for="cagr-window-slider" style="font-family:var(--font-mono); font-size:12px; color:var(--muted);">Tamanho da janela</label>
       <input type="range" id="cagr-window-slider" min="1" max="18" step="1" value="10" style="flex:1; min-width:160px; accent-color:var(--green);">
@@ -476,6 +461,21 @@ footer{ max-width: var(--maxw); margin: 0 auto; padding: 30px 24px 60px; font-fa
   </section>
 
   <section class="indicator-section">
+    <h2 class="indicator-title">CAGR</h2>
+    <p class="indicator-desc">Retorno anualizado composto, por tamanho de janela (1–18 anos). Mediana + faixas de percentil (60% e 90% centrais) + pior/melhor caso observado.</p>
+    <div class="chart-pair">
+      <div class="chart-card" data-side="c1"><p class="chart-card-title">Carteira 1</p><div class="legend-mini" id="legend-cagr-c1"></div><div style="position:relative"><svg class="chart-svg" id="chart-cagr-c1" viewBox="0 0 560 300"></svg><div class="tooltip" id="tt-cagr-c1"></div></div></div>
+      <div class="chart-card" data-side="c2"><p class="chart-card-title">Carteira 2</p><div class="legend-mini" id="legend-cagr-c2"></div><div style="position:relative"><svg class="chart-svg" id="chart-cagr-c2" viewBox="0 0 560 300"></svg><div class="tooltip" id="tt-cagr-c2"></div></div></div>
+    </div>
+    <details class="explainer">
+      <summary>O que é, como se calcula e como ler este gráfico</summary>
+      <p><b>O que é:</b> a taxa de retorno anual que, se repetida igual todo ano, teria transformado o capital inicial no capital final observado — é a forma padrão de resumir "quanto a carteira rendeu por ano", suavizando a variação mês a mês.</p>
+      <p><b>Como se calcula:</b> pega o produto de (1 + retorno) de cada mês da janela, eleva a 12/n (n = número de meses) e subtrai 1.</p>
+      <p><b>Como ler:</b> o eixo X é o tamanho do período investido, de 1 a 18 anos. A linha é a mediana do CAGR entre todas as janelas históricas daquele tamanho; as faixas mostram onde caíram 60% e 90% dos casos; as linhas pontilhadas marcam o pior e o melhor caso já observado — nenhum é projeção futura.</p>
+    </details>
+  </section>
+
+  <section class="indicator-section">
     <h2 class="indicator-title">Drawdown</h2>
     <p class="indicator-desc">Trajetória "underwater" completa — % abaixo do pico anterior, mês a mês, ao longo de todo o histórico (jan/2006–jun/2026). Não varia por tamanho de janela. Cada episódio de queda ≥5% do pico anterior vira um badge numerado no fundo da curva; os detalhes de cada um (pico, fundo, queda, recuperação e o evento histórico, quando identificável) ficam na tabela logo abaixo de cada gráfico.</p>
     <div class="chart-pair">
@@ -492,19 +492,20 @@ footer{ max-width: var(--maxw); margin: 0 auto; padding: 30px 24px 60px; font-fa
 
   <section class="indicator-section">
     <h2 class="indicator-title">Perfil dos episódios de queda</h2>
-    <p class="indicator-desc">Profundidade × duração de cada episódio de drawdown (mesmo critério do gráfico acima: queda ≥5% do pico anterior), Carteira 1 e Carteira 2 no mesmo gráfico pra comparar diretamente. Só episódios já recuperados aparecem no gráfico de pontos (duração desconhecida enquanto não recupera); a tabela abaixo lista todos, inclusive os ainda em curso.</p>
+    <p class="indicator-desc">Profundidade × duração de cada episódio de drawdown (mesmo critério do gráfico acima: queda ≥5% do pico anterior, mesma numeração), Carteira 1 e Carteira 2 no mesmo gráfico pra comparar diretamente. Só episódios já recuperados aparecem no gráfico de pontos (duração desconhecida enquanto não recupera); as tabelas abaixo listam todos, inclusive os ainda em curso.</p>
     <div class="legend-mini" id="legend-scatter"></div>
-    <div class="chart-card" style="max-width:760px">
-      <div style="position:relative"><svg class="chart-svg" id="chart-scatter" viewBox="0 0 700 400"></svg><div class="tooltip" id="tt-scatter"></div></div>
+    <div class="chart-card">
+      <div style="position:relative"><svg class="chart-svg" id="chart-scatter" viewBox="0 0 1000 380"></svg><div class="tooltip" id="tt-scatter"></div></div>
     </div>
-    <div style="overflow-x:auto; margin-top:16px;">
-      <table class="opt-check-table" id="episodes-table"></table>
+    <div class="chart-pair" style="margin-top:16px;">
+      <div class="chart-card" data-side="c1"><p class="chart-card-title">Carteira 1</p><div style="overflow-x:auto"><table class="dd-table" id="scatter-table-c1"></table></div></div>
+      <div class="chart-card" data-side="c2"><p class="chart-card-title">Carteira 2</p><div style="overflow-x:auto"><table class="dd-table" id="scatter-table-c2"></table></div></div>
     </div>
     <details class="explainer">
       <summary>O que é, como se calcula e como ler este gráfico</summary>
       <p><b>O que é:</b> um resumo de cada crise histórica da carteira — o quanto ela caiu e o quanto tempo levou pra voltar ao pico anterior — pra comparar o "perfil de dor" das duas composições.</p>
-      <p><b>Como se calcula:</b> os mesmos episódios identificados no gráfico de drawdown acima (pico → fundo → recuperação), um ponto por episódio de cada carteira.</p>
-      <p><b>Como ler:</b> eixo X é a profundidade da queda (quanto mais à direita, mais funda); eixo Y é quantos meses levou até recuperar (quanto mais alto, mais demorado). Profundidade e duração não andam sempre juntas — uma queda rasa pode demorar mais pra recuperar do que uma queda funda, dependendo do que veio depois.</p>
+      <p><b>Como se calcula:</b> os mesmos episódios identificados no gráfico de drawdown acima (pico → fundo → recuperação), um ponto por episódio já recuperado de cada carteira; a numeração de cada ponto é a mesma numeração do badge correspondente no gráfico de Drawdown.</p>
+      <p><b>Como ler:</b> eixo X é a profundidade da queda (quanto mais à direita, mais funda); eixo Y é quantos meses levou até recuperar (quanto mais alto, mais demorado). Profundidade e duração não andam sempre juntas — uma queda rasa pode demorar mais pra recuperar do que uma queda funda, dependendo do que veio depois. As tabelas abaixo do gráfico trazem todos os episódios de cada carteira, cronologicamente, incluindo os que ainda não recuperaram (por isso não aparecem como ponto no gráfico).</p>
     </details>
   </section>
 
@@ -950,7 +951,7 @@ footer{ max-width: var(--maxw); margin: 0 auto; padding: 30px 24px 60px; font-fa
       const scale = rect.width/W;
       crosshair.setAttribute('x1',xx); crosshair.setAttribute('x2',xx); crosshair.style.opacity=1;
       hoverDot.setAttribute('cx',xx); hoverDot.setAttribute('cy',y(d.p50)); hoverDot.style.opacity=1;
-      tooltip.innerHTML = `<div>${d.anos} ano${d.anos>1?'s':''} (${d.n} janelas)</div><div><b>${fmt(d.p50)}</b> mediana</div><div>p5–p95: ${fmt(d.p5)} a ${fmt(d.p95)}</div>`;
+      tooltip.innerHTML = `<div>${d.anos} ano${d.anos>1?'s':''} (${d.n} janelas)</div><div><b>${fmt(d.p50)}</b> mediana</div><div>p20–p80: ${fmt(d.p20)} a ${fmt(d.p80)}</div><div>p5–p95: ${fmt(d.p5)} a ${fmt(d.p95)}</div><div>Pior: ${fmt(d.min)} · Melhor: ${fmt(d.max)}</div>`;
       let left = xx*scale + 10;
       if (left + 150 > rect.width) left = xx*scale - 160;
       tooltip.style.left = left+'px';
@@ -1178,6 +1179,7 @@ footer{ max-width: var(--maxw); margin: 0 auto; padding: 30px 24px 60px; font-fa
     el.innerHTML = `
       <div class="legend-mini-item"><span class="sw-line" style="background:${hue}"></span>Mediana (p50)</div>
       <div class="legend-mini-item"><span class="sw-band" style="background:${hue};opacity:.5"></span>Faixa p20–p80</div>
+      <div class="legend-mini-item"><span class="sw-band" style="background:${hue};opacity:.16"></span>Faixa p5–p95</div>
       <div class="legend-mini-item"><span class="sw-dash" style="color:${hue}"></span>Pior/melhor caso observado</div>
       <div class="axis-note">Eixo X: tamanho da janela, em anos · Eixo Y: ${yAxisLabel}</div>
     `;
@@ -1203,17 +1205,23 @@ footer{ max-width: var(--maxw); margin: 0 auto; padding: 30px 24px 60px; font-fa
   }
 
   /* ---------- scatter: profundidade x duração dos episódios de drawdown ---------- */
+  // numero = posição do episódio na lista completa episodes[mode] daquela
+  // carteira (a mesma lista/numeração usada nos badges do gráfico de
+  // Drawdown e na tabela dd-table) — não um índice recalculado localmente,
+  // pra garantir que o número de cada ponto bata com o badge correspondente.
   function buildEpisodePoints(episodes, side){
-    return episodes.filter(e => e.recovered).map(e => ({
-      side, troughVal: e.troughVal, months: e.months,
-      peakIdx: e.peakIdx, troughIdx: e.troughIdx, recoveryIdx: e.recoveryIdx,
-    }));
+    return episodes
+      .map((e,i) => ({
+        side, numero: i+1, troughVal: e.troughVal, months: e.months,
+        peakIdx: e.peakIdx, troughIdx: e.troughIdx, recoveryIdx: e.recoveryIdx, recovered: e.recovered,
+      }))
+      .filter(p => p.recovered);
   }
   function drawScatter(svgId, ttId, pontos, hueC1, hueC2){
     const svg = document.getElementById(svgId);
     svg.innerHTML = '';
     const tooltip = document.getElementById(ttId);
-    const W=700,H=400,M={top:16,right:20,bottom:44,left:52};
+    const W=1000,H=380,M={top:16,right:20,bottom:44,left:52};
     const plotW=W-M.left-M.right, plotH=H-M.top-M.bottom;
     if (pontos.length === 0){ return; }
     const xMax = 0;
@@ -1244,18 +1252,18 @@ footer{ max-width: var(--maxw); margin: 0 auto; padding: 30px 24px 60px; font-fa
     yTitle.textContent = 'Meses até recuperar';
     svg.appendChild(yTitle);
 
-    pontos.forEach((p,i) => {
+    pontos.forEach((p) => {
       const hue = p.side === 'c1' ? hueC1 : hueC2;
       const px = x(p.troughVal), py = y(p.months);
       const g = svgEl('g',{style:'cursor:pointer'});
       g.appendChild(svgEl('circle',{cx:px,cy:py,r:9,fill:hue,opacity:.85,stroke:'var(--paper-raised)','stroke-width':1.5}));
       const num = svgEl('text',{x:px,y:py+3,'text-anchor':'middle',fill:'var(--paper-raised)','font-size':'9px','font-weight':'700',style:'pointer-events:none'});
-      num.textContent = i+1;
+      num.textContent = p.numero;
       g.appendChild(num);
       svg.appendChild(g);
       function showPoint(){
         const evt = histEventFor(DATA.dates[p.troughIdx]);
-        tooltip.innerHTML = `<div><b>${p.side==='c1'?'Carteira 1':'Carteira 2'}</b></div><div>Queda: <b>${fmtPct1(p.troughVal)}</b></div><div>Recuperação: <b>${p.months} meses</b> (até ${DATA.dates[p.recoveryIdx]})</div>${evt?`<div>${evt.label}</div>`:''}`;
+        tooltip.innerHTML = `<div><b>${p.side==='c1'?'Carteira 1':'Carteira 2'} — Nº ${p.numero}</b></div><div>Queda: <b>${fmtPct1(p.troughVal)}</b></div><div>Recuperação: <b>${p.months} meses</b> (até ${DATA.dates[p.recoveryIdx]})</div>${evt?`<div>${evt.label}</div>`:''}`;
         const rect = svg.getBoundingClientRect();
         const scale = rect.width/W;
         let left = px*scale+12;
@@ -1269,38 +1277,6 @@ footer{ max-width: var(--maxw); margin: 0 auto; padding: 30px 24px 60px; font-fa
       g.addEventListener('pointerleave', hidePoint);
     });
   }
-  // acha, dentro de uma lista de episódios, o mais fundo cujo fundo caiu
-  // dentro da janela de datas do evento histórico (pode não haver nenhum).
-  function episodeForEvent(episodes, evt){
-    const inEvt = episodes.filter(e => DATA.dates[e.troughIdx] >= evt.from && DATA.dates[e.troughIdx] <= evt.to);
-    if (inEvt.length === 0) return null;
-    return inEvt.reduce((worst,e) => e.troughVal < worst.troughVal ? e : worst, inEvt[0]);
-  }
-  function episodeCellHtml(ep){
-    if (!ep) return '<td colspan="2" style="color:var(--muted)">sem episódio relevante</td>';
-    const recTxt = ep.recovered ? `${ep.months} meses` : `ainda recuperando (${DATA.dates.length-1-ep.troughIdx}m+)`;
-    return `<td>${fmtPct1(ep.troughVal)}</td><td>${recTxt}</td>`;
-  }
-  // reagrupa por evento histórico (em vez de lista cronológica misturando
-  // C1/C2) pra dar comparação direta lado a lado por crise, em vez de forçar
-  // o leitor a caçar bolinhas de cores diferentes espalhadas no tempo.
-  function renderEpisodesTable(episodesC1, episodesC2){
-    const table = document.getElementById('episodes-table');
-    if (!table) return;
-    const thead = `<thead><tr>
-      <th rowspan="2">Evento</th>
-      <th colspan="2">Carteira 1</th>
-      <th colspan="2">Carteira 2</th>
-    </tr><tr>
-      <th>Profundidade</th><th>Recuperação</th><th>Profundidade</th><th>Recuperação</th>
-    </tr></thead>`;
-    const body = HIST_EVENTS.map(evt => {
-      const e1 = episodeForEvent(episodesC1, evt), e2 = episodeForEvent(episodesC2, evt);
-      return `<tr><td><b>${evt.tag}</b><br><span style="color:var(--muted);font-size:11.5px">${evt.label}</span></td>${episodeCellHtml(e1)}${episodeCellHtml(e2)}</tr>`;
-    }).join('');
-    table.innerHTML = thead + '<tbody>' + body + '</tbody>';
-  }
-
   /* ---------- linha: CAGR por janela móvel de tamanho fixo (slider) ---------- */
   function drawWindowLine(svgId, ttId, sC1, sC2, hueC1, hueC2){
     const svg = document.getElementById(svgId);
@@ -1488,7 +1464,8 @@ footer{ max-width: var(--maxw); margin: 0 auto; padding: 30px 24px 60px; font-fa
         .sort((a,b) => a.troughIdx - b.troughIdx);
       drawScatter('chart-scatter','tt-scatter', pontos, hueC1, hueC2);
       renderLegendCarteiras('legend-scatter', hueC1, hueC2);
-      renderEpisodesTable(c1.episodes[mode], c2.episodes[mode]);
+      renderDrawdownTable('scatter-table-c1', c1.episodes[mode], hueC1);
+      renderDrawdownTable('scatter-table-c2', c2.episodes[mode], hueC2);
     }
     // Ulcer
     {
