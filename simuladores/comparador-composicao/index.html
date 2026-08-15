@@ -201,23 +201,38 @@ svg.chart-svg{ width: 100%; height: auto; display:block; overflow: visible; }
   border-radius: 5px; background: var(--paper); color: var(--ink);
 }
 
-.opt-result{ margin-top: 22px; }
-.opt-result-card{ border: 1px solid var(--line-strong); border-radius: 8px; background: var(--paper); padding: 18px 20px; }
-.opt-result-title{ font-family: var(--font-display); font-size: 1.05rem; margin: 0 0 4px; }
-.opt-result-badge{ display:inline-block; font-family: var(--font-mono); font-size: 11px; padding: 3px 9px; border-radius: 12px; margin-bottom: 12px; }
-.opt-result-badge.full{ background: var(--gold-soft); color: var(--gold); }
+.opt-result{ margin-top: 28px; }
+.opt-result-card{ border: 1px solid var(--line-strong); border-radius: 8px; background: var(--paper); padding: 20px 22px; }
+.opt-result-title{ font-family: var(--font-display); font-size: 1.05rem; margin: 0 0 10px; }
+.opt-result-badge{ display:inline-block; font-family: var(--font-mono); font-size: 11px; font-weight: 600; padding: 4px 10px; border-radius: 12px; margin-bottom: 16px; }
+.opt-result-badge.full{ background: rgba(30,107,79,.14); color: var(--green-deep); }
 .opt-result-badge.partial{ background: var(--brick-soft); color: var(--brick); }
-.opt-weights-list{ display:flex; gap: 10px; flex-wrap: wrap; margin-bottom: 16px; }
+
+.opt-weights-list{ display:flex; gap: 10px; flex-wrap: wrap; margin-bottom: 10px; }
 .opt-weight-chip{ font-family: var(--font-mono); font-size: 13px; background: var(--paper-raised); border: 1px solid var(--line-strong); border-radius: 6px; padding: 6px 10px; }
 .opt-weight-chip b{ color: var(--ink); }
-.opt-check-table{ width: 100%; border-collapse: collapse; margin-bottom: 16px; font-size: 13px; }
-.opt-check-table td{ padding: 6px 4px; border-bottom: 1px solid var(--line); }
+.opt-weight-bar{ display:flex; width:100%; height: 10px; border-radius: 5px; overflow:hidden; margin-bottom: 20px; border: 1px solid var(--line-strong); }
+.opt-weight-bar span{ height:100%; }
+
+.opt-check-table{ width: 100%; border-collapse: collapse; margin-bottom: 18px; font-size: 13px; }
+.opt-check-table.few td{ padding: 4px 4px; }
+.opt-check-table td{ padding: 7px 4px; border-bottom: 1px solid var(--line); }
 .opt-check-table td:last-child{ text-align: right; font-family: var(--font-mono); }
 .opt-check-ok{ color: var(--green); font-weight: 700; }
 .opt-check-bad{ color: var(--danger); font-weight: 700; }
-.opt-metrics-list{ display:flex; gap: 16px; flex-wrap: wrap; margin-bottom: 18px; font-family: var(--font-mono); font-size: 12.5px; color: var(--muted); }
+
+.opt-metrics-list{ display:flex; gap: 18px; flex-wrap: wrap; margin-bottom: 20px; font-family: var(--font-mono); font-size: 12.5px; }
+.opt-metrics-list span{ color: var(--line-strong); }
+.opt-metrics-list span.constrained{ color: var(--ink); }
+.opt-metrics-list span.constrained b{ color: var(--green-deep); }
+.opt-metrics-list span:not(.constrained){ color: var(--muted); }
 .opt-metrics-list b{ color: var(--ink); }
-.opt-result-actions{ display:flex; gap: 10px; flex-wrap: wrap; }
+
+.opt-result-actions{ display:flex; gap: 10px; flex-wrap: wrap; padding-top: 16px; border-top: 1px solid var(--line); margin-top: 4px; }
+.btn-c1{ background: var(--hue-c1); color: var(--paper-raised); }
+.btn-c1:hover{ filter: brightness(0.9); }
+.btn-c2{ background: var(--hue-c2); color: var(--paper-raised); }
+.btn-c2:hover{ filter: brightness(0.9); }
 .opt-empty{ font-size: 13.5px; color: var(--muted); }
 
 .explainer{ margin-top: 16px; border: 1px solid var(--line-strong); border-radius: 6px; background: var(--paper-raised); padding: 4px 18px; }
@@ -1097,6 +1112,8 @@ footer{ max-width: var(--maxw); margin: 0 auto; padding: 30px 24px 60px; font-fa
     cb.addEventListener('change', () => { input.disabled = !cb.checked; });
   });
 
+  const ASSET_COLORS = { vwra11:'#2a78d6', divo11:'#eb6834', b5p211:'#1E6B4F', cdib11:'#7A5820', gold11:'#A8402A' };
+
   function renderOptimizerResult(result, constraints){
     const el = document.getElementById('opt-result');
     if (!result){
@@ -1106,30 +1123,37 @@ footer{ max-width: var(--maxw); margin: 0 auto; padding: 30px 24px 60px; font-fa
     const { weights, metrics, check } = result;
     const badgeClass = check.violated === 0 ? 'full' : 'partial';
     const badgeText = check.violated === 0
-      ? 'Atende todas as restrições'
+      ? '✓ Atende todas as restrições'
       : `Não há composição na grade que atenda tudo — mais próxima encontrada, viola ${check.violated} restrição${check.violated>1?'ões':''}`;
 
-    const weightsHtml = ASSET_KEYS.map(k => `<span class="opt-weight-chip">${ASSET_LABELS[k]} <b>${weights[k]}%</b></span>`).join('');
+    const weightsHtml = ASSET_KEYS.map(k => `<span class="opt-weight-chip"><span style="display:inline-block;width:8px;height:8px;border-radius:2px;background:${ASSET_COLORS[k]};margin-right:5px;"></span>${ASSET_LABELS[k]} <b>${weights[k]}%</b></span>`).join('');
+    const barHtml = ASSET_KEYS.filter(k => weights[k] > 0).map(k => `<span style="width:${weights[k]}%;background:${ASSET_COLORS[k]}" title="${ASSET_LABELS[k]}: ${weights[k]}%"></span>`).join('');
 
+    const constrainedKeys = new Set(check.details.map(d => d.key));
     const checksHtml = check.details.length === 0
       ? '<tr><td colspan="2" style="color:var(--muted)">Nenhuma restrição habilitada — resultado otimiza só o critério de prioridade.</td></tr>'
       : check.details.map(d => {
           const def = CONSTRAINT_DEFS.find(c => c.key === d.key);
           return `<tr><td>${def.label} ${def.comparator} ${def.fmt(d.internalValue)}</td><td class="${d.ok?'opt-check-ok':'opt-check-bad'}">${d.ok?'✓':'✗'} obteve ${def.fmt(d.actual)}</td></tr>`;
         }).join('');
+    const tableClass = check.details.length <= 2 ? 'opt-check-table few' : 'opt-check-table';
 
-    const metricsHtml = CONSTRAINT_DEFS.map(def => `<span>${def.label}: <b>${def.fmt(metrics[def.key])}</b></span>`).join('');
+    const metricsHtml = CONSTRAINT_DEFS.map(def => {
+      const isConstrained = constrainedKeys.has(def.key);
+      return `<span class="${isConstrained ? 'constrained' : ''}">${def.label}: <b>${def.fmt(metrics[def.key])}</b></span>`;
+    }).join('');
 
     el.innerHTML = `
       <div class="opt-result-card">
         <p class="opt-result-title">Composição encontrada</p>
         <span class="opt-result-badge ${badgeClass}">${badgeText}</span>
         <div class="opt-weights-list">${weightsHtml}</div>
-        <table class="opt-check-table"><tbody>${checksHtml}</tbody></table>
+        <div class="opt-weight-bar">${barHtml}</div>
+        <table class="${tableClass}"><tbody>${checksHtml}</tbody></table>
         <div class="opt-metrics-list">${metricsHtml}</div>
         <div class="opt-result-actions">
-          <button class="btn btn-primary" id="opt-apply-c1" type="button">Aplicar na Carteira 1</button>
-          <button class="btn btn-primary" id="opt-apply-c2" type="button">Aplicar na Carteira 2</button>
+          <button class="btn btn-c1" id="opt-apply-c1" type="button">Aplicar na Carteira 1</button>
+          <button class="btn btn-c2" id="opt-apply-c2" type="button">Aplicar na Carteira 2</button>
           <button class="btn btn-secondary" id="opt-discard" type="button">Descartar</button>
         </div>
       </div>
