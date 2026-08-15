@@ -89,9 +89,14 @@ Para cada tamanho de janela `w` em `{12, 24, 36, ..., 180}` (meses):
 ## 5. Estrutura do output
 
 - `output/base_consolidada.csv` — carteira + CDI mesclados, auditoria.
-- `output/estatisticas_por_janela.csv` — colunas: `tamanho_janela_meses`,
-  `indicador`, `base` (nominal/real/único), `mediana`, `min`, `max`, `p10`,
-  `p25`, `p75`, `p90`, `n_janelas`.
+- `output/janelas_detalhado.csv` — uma linha por janela individual (2.265
+  linhas): `tamanho_janela_meses`, `data_inicio`, `data_fim`, e todos os
+  indicadores calculados naquela janela específica. Permite rastrear
+  *quando* ocorreu a pior/melhor janela de cada tamanho.
+- `output/estatisticas_por_janela.csv` — resumo agregado de
+  `janelas_detalhado.csv` por tamanho de janela: `tamanho_janela_meses`,
+  `indicador`, `mediana`, `min`, `max`, `p10`, `p25`, `p75`, `p90`,
+  `n_janelas`.
 - `output/matriz_correlacao_ativos.csv` — 5×5, período completo.
 
 ## 6. Ordem de implementação (vira `tasks.md`)

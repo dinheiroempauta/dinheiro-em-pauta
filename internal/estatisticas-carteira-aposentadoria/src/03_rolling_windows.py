@@ -132,6 +132,9 @@ def main():
     janelas_df = gerar_janelas(base_df)
     print(f"Total de janelas calculadas: {len(janelas_df)}")
 
+    janelas_df.to_csv(f"{BASE_DIR}/output/janelas_detalhado.csv", index=False)
+    print(f"OK: {len(janelas_df)} linhas em janelas_detalhado.csv (uma por janela individual)")
+
     agregado_df = agregar_por_tamanho(janelas_df)
     agregado_df.to_csv(f"{BASE_DIR}/output/estatisticas_por_janela.csv", index=False)
     print(f"OK: {len(agregado_df)} linhas em estatisticas_por_janela.csv")
