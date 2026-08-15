@@ -277,6 +277,15 @@ svg.chart-svg{ width: 100%; height: auto; display:block; overflow: visible; }
 .opt-bound-field input::placeholder{ color: var(--line-strong); }
 .opt-bounds-error{ font-size: 13px; color: var(--danger); background: var(--brick-soft); border-radius: 6px; padding: 10px 14px; margin-bottom: 18px; }
 
+.btn-primary{ display: inline-flex; align-items: center; gap: 9px; }
+.btn-spinner{
+  display:none; width: 14px; height:14px; border-radius:50%;
+  border: 2px solid rgba(255,255,255,.4); border-top-color: #fff;
+  animation: btn-spin .7s linear infinite; flex: none;
+}
+.btn-primary.loading .btn-spinner{ display:inline-block; }
+@keyframes btn-spin{ to{ transform: rotate(360deg); } }
+@media (prefers-reduced-motion: reduce){ .btn-spinner{ animation-duration: 1.4s; } }
 .opt-result{ margin-top: 28px; }
 .opt-result-card{ border: 1px solid var(--line-strong); border-radius: 8px; background: var(--paper); padding: 20px 22px; }
 .opt-result-title{ font-family: var(--font-display); font-size: 1.05rem; margin: 0 0 10px; }
@@ -484,7 +493,7 @@ footer{ max-width: var(--maxw); margin: 0 auto; padding: 30px 24px 60px; font-fa
       <p class="opt-bounds-title">Limites por ativo <span>— deixe em branco pra não restringir aquele lado</span></p>
       <div class="opt-bounds" id="opt-bounds"></div>
 
-      <button class="btn btn-primary" id="opt-run" type="button">Buscar composição</button>
+      <button class="btn btn-primary" id="opt-run" type="button"><span class="btn-spinner" aria-hidden="true"></span><span class="btn-label">Buscar composição</span></button>
 
       <div id="opt-result"></div>
     </div>
@@ -1798,16 +1807,21 @@ footer{ max-width: var(--maxw); margin: 0 auto; padding: 30px 24px 60px; font-fa
     }
 
     const runBtn = document.getElementById('opt-run');
+    const runBtnLabel = runBtn.querySelector('.btn-label');
     runBtn.disabled = true;
-    const originalText = runBtn.textContent;
-    runBtn.textContent = 'Calculando…';
+    runBtn.classList.add('loading');
+    runBtn.setAttribute('aria-busy', 'true');
+    const originalText = runBtnLabel.textContent;
+    runBtnLabel.textContent = 'Calculando…';
     resultEl.innerHTML = '';
 
     setTimeout(() => {
       const result = runOptimizer(constraints, mode, scope, bounds, objective, pct);
       renderOptimizerResult(result, constraints);
       runBtn.disabled = false;
-      runBtn.textContent = originalText;
+      runBtn.classList.remove('loading');
+      runBtn.removeAttribute('aria-busy');
+      runBtnLabel.textContent = originalText;
     }, 30);
   });
 
