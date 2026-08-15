@@ -350,3 +350,49 @@ Esse é o indicador mais simples e mais visceral do conjunto: praticamente
 dolorosos) — lembra que a experiência mês a mês de quem segura a carteira
 é predominantemente positiva, mesmo em uma carteira que passou por 2008,
 2015-16, 2020 e 2021-22.
+
+## VaR / CVaR (5%) — quantificando a cauda de perda
+
+**Gráfico:** `graficos/var-cvar-comparativo.html` (mediana + faixa
+p10–p90 das duas métricas sobrepostas, toggle nominal/real).
+
+### CVaR sempre mais negativo que VaR, por definição — e o gap entre eles é o "tamanho do desastre"
+
+VaR nominal converge para -1,7% (18 anos) e CVaR para -2,9% no mesmo
+horizonte — um gap de 1,2pp. Isso não é coincidência: VaR marca o limiar
+("1 em cada 20 meses foi pior que isso"), CVaR é a média de tudo que
+ficou *além* desse limiar. Quando o gap é pequeno, a cauda é "bem
+comportada" (perdas na cauda são parecidas com o próprio limiar). Quando o
+gap é grande — como em janelas de 1-5 anos, onde CVaR real chega a -6% —
+a cauda é "pesada": os piores 5% dos meses incluem eventos muito piores
+que o limiar de 5%, não só levemente piores.
+
+### O gap encolhe conforme a janela cresce, mas não desaparece
+
+Em janelas de 1 ano, VaR nominal mediano é -1,1% e CVaR é -1,7% (gap de
+0,6pp) — mas isso é enganoso, porque com poucos meses na janela a
+"cauda de 5%" às vezes é literalmente um único mês, então VaR e CVaR
+colapsam no mesmo valor por construção. À medida que a janela cresce e
+há mais meses para formar a cauda, o gap se estabiliza em torno de 1,2pp
+(nominal) / 1,2pp (real) a partir de ~10 anos — esse é o gap "estrutural"
+de longo prazo, não um artefato de amostra pequena.
+
+### Nominal vs. real: gap parecido ao do CAGR/pior-mês, não ao do Ulcer
+
+VaR real (-2,3% aos 18 anos) é mais negativo que o nominal (-1,7%) por
+~0,6pp, e o mesmo vale para CVaR (-3,5% real vs -2,9% nominal) — um gap
+consistente de magnitude parecida com o observado no CAGR e no pior/melhor
+mês (a inflação desloca o *nível* de cada retorno mensal individual, que é
+exatamente o que VaR/CVaR medem), diferente do Ulcer/drawdown, onde o gap
+nominal/real dispara por causa do efeito acumulado no capital.
+
+### Síntese para o artigo
+
+VaR responde "qual é o pior cenário típico" (o limiar dos 5% piores
+meses); CVaR responde "se eu cair nesse pior cenário, quão ruim
+costuma ser, em média". Juntos contam uma história mais completa que
+qualquer um sozinho: a carteira historicamente teve um piso de cauda em
+torno de -1,7%/mês (VaR nominal), mas quando esse piso é rompido, a perda
+média nesses episódios foi de -2,9%/mês (CVaR nominal) — quase o dobro.
+É a métrica mais direta do conjunto para responder "o que devo esperar no
+mês ruim de verdade, não só num mês qualquer abaixo da média".

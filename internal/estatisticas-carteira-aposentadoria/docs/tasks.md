@@ -183,6 +183,17 @@ os artifacts foram construídos ad-hoc a partir de `janelas_detalhado.csv`.
       sobre componente JS interativo ao publicar no blog (ambos os
       gráficos desta seção).
 
+- [x] **VaR vs. CVaR (5%) — linhas de mediana sobrepostas com faixa
+      p10-p90** (mesmo formato do Sharpe vs. Sortino e Pior vs. Melhor
+      mês, toggle Nominal/Real). Protótipo salvo em
+      `internal/estatisticas-carteira-aposentadoria/graficos/var-cvar-comparativo.html`.
+      Interpretação completa (gap CVaR-VaR mede "peso da cauda", gap
+      estrutural de ~1,2pp a partir de 10 anos, gap nominal/real
+      parecido com CAGR/pior-mês e não com Ulcer/drawdown) registrada em
+      `docs/interpretacoes.md`. Validado com screenshot real via
+      Playwright headless (toggle nominal e real). Mesma ressalva sobre
+      componente JS interativo ao publicar no blog.
+
 ## Extensão do tamanho máximo de janela: 15 → 18 anos
 
 - [x] Investigada queda abrupta no Sortino mediano em janelas de 15 anos
