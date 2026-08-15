@@ -48,3 +48,34 @@ num artigo do que um proxy via ETF com taxa de administração embutida.
 **Parsing necessário no código:** trocar vírgula por ponto, remover `%`,
 dividir por 100 → retorno mensal decimal, mesma unidade das colunas
 `ret_*` da base de retornos.
+
+**Conversão nominal → real:** confirmado por reprodução numérica que
+`ret_carteira_real` da base original usa a fórmula de Fisher exata,
+`(1+nominal)/(1+ipca) - 1`, não subtração simples (`nominal - ipca`).
+A mesma fórmula será usada para deflacionar o CDI (gerar `cdi_real`) e
+qualquer outra série nominal→real neste projeto, por consistência.
+
+## 2026-08-15 — Base real vs. nominal para indicadores de risco
+
+**Pergunta:** Sharpe, Sortino, drawdown e Ulcer Index — calcular só sobre
+a série real, só sobre a nominal, ou as duas?
+
+**Decisão:** as duas. Sharpe e Sortino nominais usam CDI nominal como
+taxa livre de risco; as versões reais usam CDI real (via Fisher, decisão
+acima) e a série de retorno real da carteira. Drawdown e Ulcer Index
+calculados nas duas séries (real e nominal) sem depender de taxa livre
+de risco.
+
+## 2026-08-15 — Tempo de recuperação de drawdown que não recupera dentro da janela
+
+**Decisão:** estender a busca do fim da recuperação além do recorte da
+janela, usando a série completa disponível. Se o drawdown daquela janela
+não recuperou nem até o fim da série completa (jun/2026), marcar
+explicitamente como "não recuperado" (não usar `NaN` silencioso nem
+truncar artificialmente no fim da janela).
+
+## 2026-08-15 — Corte de cauda para VaR e CVaR históricos
+
+**Decisão:** 5%. VaR histórico = retorno no percentil 5 dos meses da
+janela; CVaR histórico = média dos retornos abaixo desse percentil.
+Calculado nominal e real.

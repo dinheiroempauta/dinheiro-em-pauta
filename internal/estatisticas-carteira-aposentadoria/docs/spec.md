@@ -62,43 +62,38 @@ Nominal e real onde aplicável (marcado abaixo):
 |---|---|---|---|
 | CAGR (retorno anualizado) | sim | sim | |
 | Volatilidade anualizada (desvio-padrão) | sim | sim | |
-| Drawdown máximo | a decidir | a decidir | ver decisions.md |
-| Tempo de recuperação do drawdown máximo | a decidir | a decidir | em meses; janelas sem recuperação dentro do próprio período: tratamento a definir |
-| Ulcer Index | a decidir | a decidir | |
-| Sharpe | a decidir | a decidir | precisa de taxa livre de risco — fonte a definir |
-| Sortino | a decidir | a decidir | idem Sharpe |
-| Calmar (CAGR / \|drawdown máx\|) | a decidir | a decidir | proposto — mede retorno por unidade de pior perda |
+| Drawdown máximo | sim | sim | |
+| Tempo de recuperação do drawdown máximo | sim | sim | em meses; se não recupera dentro da janela, busca estendida na série completa (ver decisions.md) |
+| Ulcer Index | sim | sim | |
+| Sharpe | sim | sim | taxa livre de risco = CDI oficial (`cdi_mensal.csv`), nominal e real via Fisher |
+| Sortino | sim | sim | idem Sharpe |
+| Calmar (CAGR / \|drawdown máx\|) | sim | sim | |
 | Pior mês / melhor mês (dentro da janela) | sim | sim | |
 | % meses positivos / % meses negativos | sim | não aplicável* | *tratado como conceito único, não nominal/real |
-| VaR e CVaR históricos (mensal, ex: 5%) | sim | sim | proposto — cauda de perda mais realista que só "pior mês" |
-| Skewness e curtose dos retornos mensais | sim | sim | proposto — assimetria e "gordura de cauda" |
+| VaR e CVaR históricos (corte 5%) | sim | sim | |
+| Skewness e curtose dos retornos mensais | sim | sim | |
 | Correlação entre os 5 ativos | — | — | matriz única, período completo, fora do loop de janelas |
 
-Itens marcados "a decidir" viram entradas em `decisions.md` antes de
-implementar (taxa livre de risco para Sharpe/Sortino, convenção de
-anualização, tratamento de drawdown que não recupera dentro da janela,
-etc.) — nenhuma dessas decisões deve ser tomada silenciosamente no código.
+Todas as decisões metodológicas desta tabela estão fechadas e registradas
+em `decisions.md`.
 
-## 5. Decisões metodológicas pendentes (a resolver antes do código, na ordem)
+## 5. Decisões metodológicas
 
-Cada uma vira entrada em `decisions.md` com fonte/racional quando resolvida.
+Todas fechadas e registradas em `decisions.md`, com fonte/racional:
 
-1. Taxa livre de risco para Sharpe/Sortino: qual série usar (CDI já está na
-   base como `ret_cdib11`? ou taxa livre de risco "real" via IPCA+ curto?) e
-   se varia por mês ou é constante.
-2. Convenção de anualização de volatilidade e CAGR (√12, geométrica vs.
-   aritmética) — manter consistência com o que já foi decidido no projeto
-   PWR (`internal/pwr-project/docs/decisions.md`), se aplicável.
-3. Drawdown/tempo de recuperação: como tratar janela em que o drawdown
-   máximo não recupera antes do fim da própria janela (marcar como "não
-   recuperado" vs. estender a busca além da janela usando a série completa).
-4. Sharpe/Sortino/drawdown/Ulcer: calcular só sobre a série real, só sobre a
-   nominal, ou ambas (a série nominal mistura retorno com inflação, o que
-   pode distorcer risco ajustado — avaliar qual é mais informativa aqui).
-5. Definição de sucesso/corte para VaR e CVaR (ex: 5%, 10%?).
-6. Confirmar se a lista de indicadores "propostos" (Calmar, VaR/CVaR,
-   skew/curtose) deve entrar nesta primeira rodada ou fica pra uma segunda
-   passada.
+1. Taxa livre de risco: CDI oficial (`cdi_mensal.csv`), não o proxy via ETF.
+2. Conversão nominal → real: fórmula de Fisher exata, `(1+nominal)/(1+ipca)-1`
+   (confirmado por reprodução numérica da própria base original).
+3. Drawdown/tempo de recuperação: busca estendida na série completa quando
+   a janela em si não recupera; "não recuperado" só se nem a série inteira
+   recupera.
+4. Sharpe/Sortino/drawdown/Ulcer: calculados nominal e real.
+5. Corte de cauda para VaR/CVaR: 5%.
+6. Indicadores "propostos" (Calmar, VaR/CVaR, skew/curtose): entram todos
+   já nesta primeira rodada.
+
+Convenção de anualização (√12 para volatilidade, geométrica para CAGR) a
+detalhar no `plan.md`, junto da fórmula exata de cada indicador.
 
 ## 6. Critérios de aceite
 
