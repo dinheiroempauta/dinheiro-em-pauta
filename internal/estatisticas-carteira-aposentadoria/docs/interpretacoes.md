@@ -221,3 +221,57 @@ de oscilação em geral. A carteira historicamente entrega Sortino
 2-3x o Sharpe em janelas curtas, convergindo para ~1,5x em janelas de 18
 anos — um jeito concreto de mostrar que boa parte da "volatilidade" da
 carteira é oscilação para cima, não risco de perda.
+
+## Volatilidade anualizada — convergência rápida, quase sem gap nominal/real
+
+**Gráfico:** `graficos/volatilidade-funil-percentis.html` (mesmo formato
+de funil do CAGR/Ulcer: bandas p5–p95/p20–p80, mediana, pior/melhor caso,
+toggle Nominal/Real).
+
+### Converge muito mais rápido que CAGR e Ulcer
+
+| | Mediana 1 ano | Mediana 6-7 anos | Mediana 18 anos |
+|---|---|---|---|
+| Nominal | 5,4% | 6,4% | 6,5% |
+| Real | 5,5% | 6,7% | 6,6% |
+
+Enquanto CAGR e Ulcer continuam se movendo até 8-10 anos de janela, a
+volatilidade anualizada já está essencialmente estabilizada em 6-7 anos.
+Faz sentido: volatilidade é uma média de desvios *mês a mês* — regride à
+média assim que a janela captura um número razoável de ciclos de
+mercado, sem precisar "esperar" a janela absorver um evento raro completo
+(como um drawdown ou uma recuperação lenta).
+
+### O funil fecha por regressão à média mecânica, não por a carteira "ficar mais segura"
+
+O pior caso observado (linha tracejada de baixo) começa em ~12% no ano 1
+(um ano isolado que capturou um período turbulento inteiro) e cai
+continuamente até convergir com a mediana perto de 6,5% em 18 anos. Isso
+não significa que a carteira "amadureceu" ou ficou menos arriscada — é
+o mesmo efeito estatístico documentado no CAGR e no Ulcer: quanto maior a
+janela, menos espaço há para um único ano ruim dominar a média da janela
+inteira. O nível de risco *estrutural* da carteira (a mediana) já estava
+definido desde cedo; o que muda é só a variabilidade *entre* janelas.
+
+### Nominal e real praticamente coincidem — ao contrário do Ulcer/drawdown
+
+Diferente do Ulcer (gap grande entre nominal e real, especialmente após
+2021-2022), aqui as duas curvas ficam quase sobrepostas (diferença
+mediana de 0,1-0,3pp em todos os tamanhos de janela). A explicação é
+metodológica: volatilidade mede dispersão de retornos mês a mês, e a
+inflação mensal no Brasil, mesmo em picos, é muito menos volátil do que
+os retornos de renda variável da carteira — subtrair/dividir por ela via
+Fisher desloca o *nível* de cada retorno mensal, mas quase não muda o
+quanto os retornos se dispersam entre si. Já o drawdown e o Ulcer são
+sensíveis ao *nível acumulado* de capital, onde a inflação combinada mês
+após mês tem efeito cumulativo grande.
+
+### Síntese para o artigo
+
+Volatilidade é o indicador mais "bem comportado" do conjunto até agora:
+converge rápido, é praticamente insensível a nominal vs. real, e não tem
+os saltos de composição de amostra vistos no Ulcer/Sortino em janelas
+longas. Bom contraponto didático a esses outros gráficos — mostra que nem
+todo indicador de risco "sofre" da mesma forma com o efeito inflacionário
+de 2021-2022; a inflação distorce o *acumulado* de capital, não a
+*dispersão* dos retornos mensais.

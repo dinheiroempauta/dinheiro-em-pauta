@@ -146,6 +146,21 @@ os artifacts foram construídos ad-hoc a partir de `janelas_detalhado.csv`.
       headless (toggle nominal e real). Mesma ressalva sobre componente JS
       interativo ao publicar no blog.
 
+- [x] **Funil de distribuição da Volatilidade anualizada por tempo
+      investido** (mesmo formato do funil de CAGR/Ulcer: bandas
+      p5–p95/p20–p80, mediana, pior/melhor caso, toggle Nominal/Real,
+      eixo Y começando em 0% já que volatilidade nunca é negativa).
+      Protótipo salvo em
+      `internal/estatisticas-carteira-aposentadoria/graficos/volatilidade-funil-percentis.html`.
+      Interpretação completa (convergência muito mais rápida que
+      CAGR/Ulcer — estabiliza em 6-7 anos —, funil fechando por
+      regressão à média mecânica, e gap nominal/real quase nulo ao
+      contrário do drawdown/Ulcer, porque volatilidade mede dispersão
+      mês a mês e não é sensível ao efeito acumulado da inflação)
+      registrada em `docs/interpretacoes.md`. Validado com screenshot
+      real via Playwright headless (toggle nominal e real). Mesma
+      ressalva sobre componente JS interativo ao publicar no blog.
+
 ## Extensão do tamanho máximo de janela: 15 → 18 anos
 
 - [x] Investigada queda abrupta no Sortino mediano em janelas de 15 anos
