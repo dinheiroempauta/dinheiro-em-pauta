@@ -1,0 +1,344 @@
+<title>% de meses positivos vs. negativos por tempo investido</title>
+<style>
+  .viz-root {
+    color-scheme: light;
+    --surface-1:      #fcfcfb;
+    --page:           #f9f9f7;
+    --text-primary:   #0b0b0b;
+    --text-secondary: #52514e;
+    --text-muted:     #898781;
+    --gridline:       #e1e0d9;
+    --baseline:       #c3c2b7;
+    --border:         rgba(11,11,11,0.10);
+    --hue-pos:        #2a9d5c;
+    --hue-neg:        #c74343;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:where(:not([data-theme="light"])) .viz-root {
+      color-scheme: dark;
+      --surface-1:      #1a1a19;
+      --page:           #0d0d0d;
+      --text-primary:   #ffffff;
+      --text-secondary: #c3c2b7;
+      --text-muted:     #898781;
+      --gridline:       #2c2c2a;
+      --baseline:       #383835;
+      --border:         rgba(255,255,255,0.10);
+      --hue-pos:        #39b876;
+      --hue-neg:        #e05a5a;
+    }
+  }
+  :root[data-theme="dark"] .viz-root {
+    color-scheme: dark;
+    --surface-1:      #1a1a19;
+    --page:           #0d0d0d;
+    --text-primary:   #ffffff;
+    --text-secondary: #c3c2b7;
+    --text-muted:     #898781;
+    --gridline:       #2c2c2a;
+    --baseline:       #383835;
+    --border:         rgba(255,255,255,0.10);
+    --hue-pos:        #39b876;
+    --hue-neg:        #e05a5a;
+  }
+
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    background: var(--page);
+    font-family: system-ui, -apple-system, "Segoe UI", sans-serif;
+    color: var(--text-primary);
+  }
+  .viz-root {
+    max-width: 920px;
+    margin: 32px auto;
+    padding: 28px 28px 20px;
+    background: var(--surface-1);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+  }
+  h1 {
+    font-size: 18px;
+    font-weight: 600;
+    margin: 0 0 2px;
+  }
+  .subtitle {
+    font-size: 13px;
+    color: var(--text-secondary);
+    margin: 0 0 18px;
+  }
+
+  .legend {
+    display: flex;
+    gap: 20px;
+    flex-wrap: wrap;
+    margin-bottom: 14px;
+    font-size: 12.5px;
+    color: var(--text-secondary);
+  }
+  .legend-item { display: flex; align-items: center; gap: 7px; }
+  .legend-swatch-line { width: 16px; height: 2px; border-radius: 1px; }
+  .legend-swatch-band { width: 16px; height: 10px; border-radius: 2px; }
+  .chart-wrap { position: relative; }
+  svg { width: 100%; height: auto; display: block; overflow: visible; }
+  .gridline { stroke: var(--gridline); stroke-width: 1; }
+  .baseline { stroke: var(--baseline); stroke-width: 1; }
+  .axis-label { fill: var(--text-muted); font-size: 11px; }
+  .median-line { fill: none; stroke-width: 2; stroke-linejoin: round; stroke-linecap: round; }
+  .end-dot { r: 4; stroke-width: 2; stroke: var(--surface-1); }
+  .end-label { font-size: 12px; font-weight: 600; }
+  .crosshair { stroke: var(--text-muted); stroke-width: 1; opacity: 0; pointer-events: none; }
+  .hover-dot { r: 4; stroke-width: 2; stroke: var(--surface-1); opacity: 0; pointer-events: none; }
+  .hit-layer { fill: transparent; cursor: crosshair; }
+
+  .tooltip {
+    position: absolute;
+    pointer-events: none;
+    background: var(--surface-1);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 8px 12px;
+    font-size: 12px;
+    box-shadow: 0 4px 16px rgba(0,0,0,0.12);
+    opacity: 0;
+    transition: opacity 0.08s;
+    white-space: nowrap;
+    z-index: 10;
+  }
+  .tooltip-date {
+    color: var(--text-secondary);
+    margin-bottom: 4px;
+  }
+  .tooltip-row { display: flex; align-items: center; justify-content: space-between; gap: 14px; margin-top: 2px; }
+  .tooltip-key { display: flex; align-items: center; gap: 6px; color: var(--text-secondary); }
+  .tooltip-swatch-line { width: 10px; height: 2px; border-radius: 1px; flex-shrink: 0; }
+  .tooltip-value { font-weight: 600; color: var(--text-primary); font-variant-numeric: tabular-nums; }
+
+  .footnote {
+    font-size: 12px;
+    color: var(--text-muted);
+    margin-top: 14px;
+    line-height: 1.5;
+  }
+</style>
+
+<div class="viz-root">
+  <h1 id="title">% de meses positivos vs. negativos por tempo investido</h1>
+  <p class="subtitle" id="subtitle"></p>
+
+  <div class="legend" id="legend"></div>
+
+  <div class="chart-wrap">
+    <svg id="chart" viewBox="0 0 880 380" preserveAspectRatio="xMidYMid meet"></svg>
+    <div class="tooltip" id="tooltip"></div>
+  </div>
+
+  <p class="footnote" id="footnote">Eixo X: tamanho da janela em anos. % de meses positivos/negativos é único (não há versão nominal/real separada, pois o sinal do retorno mensal nominal e real quase sempre coincide). A faixa sombreada mostra onde caíram os 80% centrais dos resultados históricos em cada tamanho de janela; não é projeção futura. Fonte: internal/estatisticas-carteira-aposentadoria/output/janelas_detalhado.csv</p>
+</div>
+
+<script>
+(function () {
+  const DATA = {"pos":[{"anos":1,"n":235,"p10":0.5,"mediana":0.75,"p90":0.9167,"min":0.3333,"max":1.0},{"anos":2,"n":223,"p10":0.5833,"mediana":0.75,"p90":0.8333,"min":0.5,"max":0.875},{"anos":3,"n":211,"p10":0.6389,"mediana":0.7222,"p90":0.8056,"min":0.5278,"max":0.8611},{"anos":4,"n":199,"p10":0.6458,"mediana":0.7083,"p90":0.7708,"min":0.5833,"max":0.8333},{"anos":5,"n":187,"p10":0.6667,"mediana":0.7333,"p90":0.7667,"min":0.6333,"max":0.7833},{"anos":6,"n":175,"p10":0.6861,"mediana":0.7222,"p90":0.75,"min":0.6528,"max":0.7639},{"anos":7,"n":163,"p10":0.7024,"mediana":0.7262,"p90":0.75,"min":0.6786,"max":0.7619},{"anos":8,"n":151,"p10":0.6875,"mediana":0.7292,"p90":0.75,"min":0.6771,"max":0.7604},{"anos":9,"n":139,"p10":0.6944,"mediana":0.7222,"p90":0.75,"min":0.6667,"max":0.7593},{"anos":10,"n":127,"p10":0.6967,"mediana":0.7167,"p90":0.75,"min":0.6833,"max":0.7583},{"anos":11,"n":115,"p10":0.697,"mediana":0.7197,"p90":0.7424,"min":0.6818,"max":0.7652},{"anos":12,"n":103,"p10":0.6958,"mediana":0.7292,"p90":0.7361,"min":0.6875,"max":0.7431},{"anos":13,"n":91,"p10":0.7051,"mediana":0.7244,"p90":0.7372,"min":0.6987,"max":0.7436},{"anos":14,"n":79,"p10":0.7083,"mediana":0.7202,"p90":0.744,"min":0.7024,"max":0.744},{"anos":15,"n":67,"p10":0.6944,"mediana":0.7222,"p90":0.7444,"min":0.6889,"max":0.75},{"anos":16,"n":55,"p10":0.6927,"mediana":0.7188,"p90":0.7344,"min":0.6875,"max":0.75},{"anos":17,"n":43,"p10":0.701,"mediana":0.7059,"p90":0.7353,"min":0.701,"max":0.7402},{"anos":18,"n":31,"p10":0.7037,"mediana":0.713,"p90":0.7176,"min":0.7037,"max":0.7222}],"neg":[{"anos":1,"n":235,"p10":0.0833,"mediana":0.25,"p90":0.5,"min":0.0,"max":0.6667},{"anos":2,"n":223,"p10":0.1667,"mediana":0.25,"p90":0.4167,"min":0.125,"max":0.5},{"anos":3,"n":211,"p10":0.1944,"mediana":0.2778,"p90":0.3611,"min":0.1389,"max":0.4722},{"anos":4,"n":199,"p10":0.2292,"mediana":0.2917,"p90":0.3542,"min":0.1667,"max":0.4167},{"anos":5,"n":187,"p10":0.2333,"mediana":0.2667,"p90":0.3333,"min":0.2167,"max":0.3667},{"anos":6,"n":175,"p10":0.25,"mediana":0.2778,"p90":0.3139,"min":0.2361,"max":0.3472},{"anos":7,"n":163,"p10":0.25,"mediana":0.2738,"p90":0.2976,"min":0.2381,"max":0.3214},{"anos":8,"n":151,"p10":0.25,"mediana":0.2708,"p90":0.3125,"min":0.2396,"max":0.3229},{"anos":9,"n":139,"p10":0.25,"mediana":0.2778,"p90":0.3056,"min":0.2407,"max":0.3333},{"anos":10,"n":127,"p10":0.25,"mediana":0.2833,"p90":0.3033,"min":0.2417,"max":0.3167},{"anos":11,"n":115,"p10":0.2576,"mediana":0.2803,"p90":0.303,"min":0.2348,"max":0.3182},{"anos":12,"n":103,"p10":0.2639,"mediana":0.2708,"p90":0.3042,"min":0.2569,"max":0.3125},{"anos":13,"n":91,"p10":0.2628,"mediana":0.2756,"p90":0.2949,"min":0.2564,"max":0.3013},{"anos":14,"n":79,"p10":0.256,"mediana":0.2798,"p90":0.2917,"min":0.256,"max":0.2976},{"anos":15,"n":67,"p10":0.2556,"mediana":0.2778,"p90":0.3056,"min":0.25,"max":0.3111},{"anos":16,"n":55,"p10":0.2656,"mediana":0.2812,"p90":0.3073,"min":0.25,"max":0.3125},{"anos":17,"n":43,"p10":0.2647,"mediana":0.2941,"p90":0.299,"min":0.2598,"max":0.299},{"anos":18,"n":31,"p10":0.2824,"mediana":0.287,"p90":0.2963,"min":0.2778,"max":0.2963}]};
+
+  const root = document.querySelector('.viz-root');
+  const W = 880, H = 380;
+  const M = { top: 16, right: 84, bottom: 34, left: 46 };
+  const plotW = W - M.left - M.right;
+  const plotH = H - M.top - M.bottom;
+  const ns = 'http://www.w3.org/2000/svg';
+  const el = (tag, attrs) => {
+    const e = document.createElementNS(ns, tag);
+    for (const k in attrs) e.setAttribute(k, attrs[k]);
+    return e;
+  };
+
+  const fmtPct = v => (v * 100).toFixed(1).replace('.', ',') + '%';
+
+  const svg = document.getElementById('chart');
+  svg.setAttribute('viewBox', `0 0 ${W} ${H}`);
+  const tooltip = document.getElementById('tooltip');
+  const legendEl = document.getElementById('legend');
+
+  const posData = DATA.pos, negData = DATA.neg;
+  const huePos = getComputedStyle(root).getPropertyValue('--hue-pos').trim();
+  const hueNeg = getComputedStyle(root).getPropertyValue('--hue-neg').trim();
+
+  document.getElementById('subtitle').textContent =
+    `Mediana e faixa central (p10–p90) das janelas móveis em cada tamanho, jan/2006–jun/2026`;
+
+  legendEl.innerHTML = '';
+  [
+    ['pos-line', '% meses positivos — mediana', huePos],
+    ['pos-band', '% meses positivos — 80% central (p10–p90)', huePos],
+    ['neg-line', '% meses negativos — mediana', hueNeg],
+    ['neg-band', '% meses negativos — 80% central (p10–p90)', hueNeg],
+  ].forEach(([kind, label, hue]) => {
+    const item = document.createElement('div');
+    item.className = 'legend-item';
+    const swatch = document.createElement('span');
+    const isBand = kind.endsWith('band');
+    swatch.className = isBand ? 'legend-swatch-band' : 'legend-swatch-line';
+    swatch.style.background = hue;
+    if (isBand) swatch.style.opacity = '0.28';
+    const text = document.createElement('span');
+    text.textContent = label;
+    item.appendChild(swatch);
+    item.appendChild(text);
+    legendEl.appendChild(item);
+  });
+
+  const anosList = posData.map(d => d.anos);
+  const xMin = anosList[0], xMax = anosList[anosList.length - 1];
+
+  const yMax = 1.0, yMin = 0.0;
+
+  const x = a => M.left + ((a - xMin) / (xMax - xMin)) * plotW;
+  const y = v => M.top + plotH - ((v - yMin) / (yMax - yMin)) * plotH;
+
+  const yStep = 0.1;
+  for (let v = 0; v <= yMax + 1e-9; v += yStep) {
+    const yy = y(v);
+    svg.appendChild(el('line', { x1: M.left, x2: W - M.right, y1: yy, y2: yy, class: 'gridline' }));
+    const label = el('text', { x: M.left - 8, y: yy + 4, class: 'axis-label', 'text-anchor': 'end' });
+    label.textContent = fmtPct(v);
+    svg.appendChild(label);
+  }
+  const baselineY = y(0);
+  svg.appendChild(el('line', { x1: M.left, x2: W - M.right, y1: baselineY, y2: baselineY, class: 'baseline' }));
+
+  anosList.forEach(a => {
+    const xx = x(a);
+    const label = el('text', { x: xx, y: H - M.bottom + 18, class: 'axis-label', 'text-anchor': 'middle' });
+    label.textContent = a;
+    svg.appendChild(label);
+  });
+  const xAxisTitle = el('text', { x: M.left + plotW / 2, y: H - 2, class: 'axis-label', 'text-anchor': 'middle' });
+  xAxisTitle.textContent = 'Tamanho da janela (anos)';
+  svg.appendChild(xAxisTitle);
+
+  function bandPath(data, topKey, bottomKey) {
+    const top = data.map((d, i) => `${i === 0 ? 'M' : 'L'} ${x(d.anos)} ${y(d[topKey])}`).join(' ');
+    const bottom = data.slice().reverse().map(d => `L ${x(d.anos)} ${y(d[bottomKey])}`).join(' ');
+    return `${top} ${bottom} Z`;
+  }
+  function linePath(data, key) {
+    return data.map((d, i) => `${i === 0 ? 'M' : 'L'} ${x(d.anos)} ${y(d[key])}`).join(' ');
+  }
+
+  svg.appendChild(el('path', { d: bandPath(posData, 'p90', 'p10'), fill: huePos, opacity: '0.20', stroke: 'none' }));
+  svg.appendChild(el('path', { d: bandPath(negData, 'p90', 'p10'), fill: hueNeg, opacity: '0.20', stroke: 'none' }));
+
+  svg.appendChild(el('path', { d: linePath(posData, 'mediana'), class: 'median-line', stroke: huePos }));
+  svg.appendChild(el('path', { d: linePath(negData, 'mediana'), class: 'median-line', stroke: hueNeg }));
+
+  const lastPos = posData[posData.length - 1];
+  const lastNeg = negData[negData.length - 1];
+  const lastX = x(lastPos.anos);
+
+  svg.appendChild(el('circle', { cx: lastX, cy: y(lastPos.mediana), class: 'end-dot', fill: huePos }));
+  svg.appendChild(el('circle', { cx: lastX, cy: y(lastNeg.mediana), class: 'end-dot', fill: hueNeg }));
+
+  const MIN_GAP = 14;
+  const endLabels = [
+    { trueY: y(lastPos.mediana), text: 'Positivos ' + fmtPct(lastPos.mediana), hue: huePos },
+    { trueY: y(lastNeg.mediana), text: 'Negativos ' + fmtPct(lastNeg.mediana), hue: hueNeg },
+  ].sort((a, b) => a.trueY - b.trueY);
+  for (let i = 1; i < endLabels.length; i++) {
+    if (endLabels[i].trueY - endLabels[i - 1].trueY < MIN_GAP) {
+      endLabels[i].trueY = endLabels[i - 1].trueY + MIN_GAP;
+    }
+  }
+  endLabels.forEach(item => {
+    const label = el('text', { x: lastX + 8, y: item.trueY + 4, class: 'end-label', fill: item.hue });
+    label.textContent = item.text;
+    svg.appendChild(label);
+  });
+
+  const crosshair = el('line', { x1: 0, x2: 0, y1: M.top, y2: M.top + plotH, class: 'crosshair' });
+  const hoverDots = [huePos, hueNeg].map(hue => el('circle', { class: 'hover-dot', fill: hue }));
+  svg.appendChild(crosshair);
+  hoverDots.forEach(d => svg.appendChild(d));
+
+  const hit = el('rect', { x: M.left, y: M.top, width: plotW, height: plotH, class: 'hit-layer' });
+  svg.appendChild(hit);
+
+  function nearestIndex(px) {
+    const a = xMin + ((px - M.left) / plotW) * (xMax - xMin);
+    let best = 0, bestDist = Infinity;
+    anosList.forEach((v, i) => {
+      const dist = Math.abs(v - a);
+      if (dist < bestDist) { bestDist = dist; best = i; }
+    });
+    return best;
+  }
+
+  function showAt(clientX, rectLeft, scale) {
+    const px = (clientX - rectLeft) / scale;
+    const i = nearestIndex(px);
+    const ds = posData[i], dt = negData[i];
+    const xx = x(ds.anos);
+
+    crosshair.setAttribute('x1', xx);
+    crosshair.setAttribute('x2', xx);
+    crosshair.style.opacity = 1;
+
+    hoverDots[0].setAttribute('cx', xx);
+    hoverDots[0].setAttribute('cy', y(ds.mediana));
+    hoverDots[0].style.opacity = 1;
+    hoverDots[1].setAttribute('cx', xx);
+    hoverDots[1].setAttribute('cy', y(dt.mediana));
+    hoverDots[1].style.opacity = 1;
+
+    tooltip.innerHTML = '';
+    const titleEl = document.createElement('div');
+    titleEl.className = 'tooltip-date';
+    titleEl.textContent = `${ds.anos} ano${ds.anos > 1 ? 's' : ''} investido${ds.anos > 1 ? 's' : ''} (${ds.n} janelas)`;
+    tooltip.appendChild(titleEl);
+
+    [
+      ['% positivos — mediana', ds.mediana, huePos],
+      ['% positivos — p10 / p90', `${fmtPct(ds.p10)} / ${fmtPct(ds.p90)}`, huePos],
+      ['% negativos — mediana', dt.mediana, hueNeg],
+      ['% negativos — p10 / p90', `${fmtPct(dt.p10)} / ${fmtPct(dt.p90)}`, hueNeg],
+    ].forEach(([label, val, hue]) => {
+      const row = document.createElement('div');
+      row.className = 'tooltip-row';
+      const key = document.createElement('span');
+      key.className = 'tooltip-key';
+      const swatch = document.createElement('span');
+      swatch.className = 'tooltip-swatch-line';
+      swatch.style.background = hue;
+      const nameEl = document.createElement('span');
+      nameEl.textContent = label;
+      key.appendChild(swatch);
+      key.appendChild(nameEl);
+      const value = document.createElement('span');
+      value.className = 'tooltip-value';
+      value.textContent = typeof val === 'number' ? fmtPct(val) : val;
+      row.appendChild(key);
+      row.appendChild(value);
+      tooltip.appendChild(row);
+    });
+
+    const svgRect = svg.getBoundingClientRect();
+    const scaleX = svgRect.width / W;
+    let left = xx * scaleX + 14;
+    if (left + 190 > svgRect.width) left = xx * scaleX - 204;
+    tooltip.style.left = left + 'px';
+    tooltip.style.top = (y(Math.max(ds.p90, dt.p90)) * (svgRect.height / H) - 10) + 'px';
+    tooltip.style.opacity = 1;
+  }
+
+  function hide() {
+    crosshair.style.opacity = 0;
+    hoverDots.forEach(d => d.style.opacity = 0);
+    tooltip.style.opacity = 0;
+  }
+
+  hit.addEventListener('pointermove', e => {
+    const rect = svg.getBoundingClientRect();
+    showAt(e.clientX, rect.left, rect.width / W);
+  });
+  hit.addEventListener('pointerleave', hide);
+})();
+</script>

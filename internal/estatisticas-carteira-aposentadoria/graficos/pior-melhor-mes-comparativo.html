@@ -1,0 +1,402 @@
+<title>Pior mês vs. Melhor mês por tempo investido</title>
+<style>
+  .viz-root {
+    color-scheme: light;
+    --surface-1:      #fcfcfb;
+    --page:           #f9f9f7;
+    --text-primary:   #0b0b0b;
+    --text-secondary: #52514e;
+    --text-muted:     #898781;
+    --gridline:       #e1e0d9;
+    --baseline:       #c3c2b7;
+    --border:         rgba(11,11,11,0.10);
+    --hue-pior:     #2a78d6;
+    --hue-melhor:    #eb6834;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:where(:not([data-theme="light"])) .viz-root {
+      color-scheme: dark;
+      --surface-1:      #1a1a19;
+      --page:           #0d0d0d;
+      --text-primary:   #ffffff;
+      --text-secondary: #c3c2b7;
+      --text-muted:     #898781;
+      --gridline:       #2c2c2a;
+      --baseline:       #383835;
+      --border:         rgba(255,255,255,0.10);
+      --hue-pior:     #3987e5;
+      --hue-melhor:    #d95926;
+    }
+  }
+  :root[data-theme="dark"] .viz-root {
+    color-scheme: dark;
+    --surface-1:      #1a1a19;
+    --page:           #0d0d0d;
+    --text-primary:   #ffffff;
+    --text-secondary: #c3c2b7;
+    --text-muted:     #898781;
+    --gridline:       #2c2c2a;
+    --baseline:       #383835;
+    --border:         rgba(255,255,255,0.10);
+    --hue-pior:     #3987e5;
+    --hue-melhor:    #d95926;
+  }
+
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    background: var(--page);
+    font-family: system-ui, -apple-system, "Segoe UI", sans-serif;
+    color: var(--text-primary);
+  }
+  .viz-root {
+    max-width: 920px;
+    margin: 32px auto;
+    padding: 28px 28px 20px;
+    background: var(--surface-1);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+  }
+  h1 {
+    font-size: 18px;
+    font-weight: 600;
+    margin: 0 0 2px;
+  }
+  .subtitle {
+    font-size: 13px;
+    color: var(--text-secondary);
+    margin: 0 0 18px;
+  }
+
+  .toggle-group {
+    display: inline-flex;
+    padding: 3px;
+    background: var(--page);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    margin-bottom: 18px;
+  }
+  .toggle-btn {
+    appearance: none;
+    border: none;
+    background: transparent;
+    padding: 7px 16px;
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--text-secondary);
+    border-radius: 6px;
+    cursor: pointer;
+    font-family: inherit;
+  }
+  .toggle-btn:hover { color: var(--text-primary); }
+  .toggle-btn[aria-pressed="true"] {
+    background: var(--surface-1);
+    color: var(--text-primary);
+    box-shadow: 0 1px 3px rgba(0,0,0,0.08);
+  }
+
+  .legend {
+    display: flex;
+    gap: 20px;
+    flex-wrap: wrap;
+    margin-bottom: 4px;
+    font-size: 12.5px;
+    color: var(--text-secondary);
+  }
+  .legend-item { display: flex; align-items: center; gap: 7px; }
+  .legend-swatch-line { width: 16px; height: 2px; border-radius: 1px; }
+  .legend-swatch-band { width: 16px; height: 10px; border-radius: 2px; }
+  .chart-wrap { position: relative; }
+  svg { width: 100%; height: auto; display: block; overflow: visible; }
+  .gridline { stroke: var(--gridline); stroke-width: 1; }
+  .baseline { stroke: var(--baseline); stroke-width: 1; }
+  .axis-label { fill: var(--text-muted); font-size: 11px; }
+  .median-line { fill: none; stroke-width: 2; stroke-linejoin: round; stroke-linecap: round; }
+  .end-dot { r: 4; stroke-width: 2; stroke: var(--surface-1); }
+  .end-label { font-size: 12px; font-weight: 600; }
+  .crosshair { stroke: var(--text-muted); stroke-width: 1; opacity: 0; pointer-events: none; }
+  .hover-dot { r: 4; stroke-width: 2; stroke: var(--surface-1); opacity: 0; pointer-events: none; }
+  .hit-layer { fill: transparent; cursor: crosshair; }
+
+  .tooltip {
+    position: absolute;
+    pointer-events: none;
+    background: var(--surface-1);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 8px 12px;
+    font-size: 12px;
+    box-shadow: 0 4px 16px rgba(0,0,0,0.12);
+    opacity: 0;
+    transition: opacity 0.08s;
+    white-space: nowrap;
+    z-index: 10;
+  }
+  .tooltip-date {
+    color: var(--text-secondary);
+    margin-bottom: 4px;
+  }
+  .tooltip-row { display: flex; align-items: center; justify-content: space-between; gap: 14px; margin-top: 2px; }
+  .tooltip-key { display: flex; align-items: center; gap: 6px; color: var(--text-secondary); }
+  .tooltip-swatch-line { width: 10px; height: 2px; border-radius: 1px; flex-shrink: 0; }
+  .tooltip-value { font-weight: 600; color: var(--text-primary); font-variant-numeric: tabular-nums; }
+
+  .footnote {
+    font-size: 12px;
+    color: var(--text-muted);
+    margin-top: 14px;
+    line-height: 1.5;
+  }
+</style>
+
+<div class="viz-root">
+  <h1 id="title"></h1>
+  <p class="subtitle" id="subtitle"></p>
+
+  <div class="toggle-group" role="group" aria-label="Escolher base de cálculo">
+    <button class="toggle-btn" id="btn-nominal" type="button" aria-pressed="false">Nominal</button>
+    <button class="toggle-btn" id="btn-real" type="button" aria-pressed="false">Real</button>
+  </div>
+
+  <div class="legend" id="legend"></div>
+
+  <div class="chart-wrap">
+    <svg id="chart" viewBox="0 0 880 380" preserveAspectRatio="xMidYMid meet"></svg>
+    <div class="tooltip" id="tooltip"></div>
+  </div>
+
+  <p class="footnote" id="footnote"></p>
+</div>
+
+<script>
+(function () {
+  const DATA = {"pior_mes_nominal":[{"anos":1,"n":235,"p10":-0.0486,"mediana":-0.0165,"p90":-0.0079,"min":-0.0732,"max":0.0055},{"anos":2,"n":223,"p10":-0.0732,"mediana":-0.0194,"p90":-0.0122,"min":-0.0732,"max":-0.0087},{"anos":3,"n":211,"p10":-0.0732,"mediana":-0.02,"p90":-0.0168,"min":-0.0732,"max":-0.0122},{"anos":4,"n":199,"p10":-0.0732,"mediana":-0.0208,"p90":-0.0194,"min":-0.0732,"max":-0.0188},{"anos":5,"n":187,"p10":-0.0732,"mediana":-0.0508,"p90":-0.0194,"min":-0.0732,"max":-0.0194},{"anos":6,"n":175,"p10":-0.0732,"mediana":-0.0508,"p90":-0.02,"min":-0.0732,"max":-0.0194},{"anos":7,"n":163,"p10":-0.0732,"mediana":-0.0508,"p90":-0.02,"min":-0.0732,"max":-0.02},{"anos":8,"n":151,"p10":-0.0732,"mediana":-0.0508,"p90":-0.02,"min":-0.0732,"max":-0.02},{"anos":9,"n":139,"p10":-0.0732,"mediana":-0.0508,"p90":-0.02,"min":-0.0732,"max":-0.02},{"anos":10,"n":127,"p10":-0.0732,"mediana":-0.0508,"p90":-0.02,"min":-0.0732,"max":-0.02},{"anos":11,"n":115,"p10":-0.0732,"mediana":-0.0508,"p90":-0.0508,"min":-0.0732,"max":-0.02},{"anos":12,"n":103,"p10":-0.0732,"mediana":-0.0508,"p90":-0.0508,"min":-0.0732,"max":-0.0508},{"anos":13,"n":91,"p10":-0.0732,"mediana":-0.0508,"p90":-0.0508,"min":-0.0732,"max":-0.0508},{"anos":14,"n":79,"p10":-0.0732,"mediana":-0.0508,"p90":-0.0508,"min":-0.0732,"max":-0.0508},{"anos":15,"n":67,"p10":-0.0732,"mediana":-0.0732,"p90":-0.0508,"min":-0.0732,"max":-0.0508},{"anos":16,"n":55,"p10":-0.0732,"mediana":-0.0732,"p90":-0.0508,"min":-0.0732,"max":-0.0508},{"anos":17,"n":43,"p10":-0.0732,"mediana":-0.0732,"p90":-0.0508,"min":-0.0732,"max":-0.0508},{"anos":18,"n":31,"p10":-0.0732,"mediana":-0.0732,"p90":-0.0732,"min":-0.0732,"max":-0.0732}],"melhor_mes_nominal":[{"anos":1,"n":235,"p10":0.027,"mediana":0.0345,"p90":0.0563,"min":0.0154,"max":0.0706},{"anos":2,"n":223,"p10":0.0328,"mediana":0.0373,"p90":0.0706,"min":0.0283,"max":0.0706},{"anos":3,"n":211,"p10":0.035,"mediana":0.0489,"p90":0.0706,"min":0.0328,"max":0.0706},{"anos":4,"n":199,"p10":0.0353,"mediana":0.0492,"p90":0.0706,"min":0.0328,"max":0.0706},{"anos":5,"n":187,"p10":0.0356,"mediana":0.061,"p90":0.0706,"min":0.0353,"max":0.0706},{"anos":6,"n":175,"p10":0.0373,"mediana":0.061,"p90":0.0706,"min":0.0356,"max":0.0706},{"anos":7,"n":163,"p10":0.0373,"mediana":0.0706,"p90":0.0706,"min":0.0373,"max":0.0706},{"anos":8,"n":151,"p10":0.061,"mediana":0.0706,"p90":0.0706,"min":0.0373,"max":0.0706},{"anos":9,"n":139,"p10":0.061,"mediana":0.0706,"p90":0.0706,"min":0.0373,"max":0.0706},{"anos":10,"n":127,"p10":0.061,"mediana":0.0706,"p90":0.0706,"min":0.061,"max":0.0706},{"anos":11,"n":115,"p10":0.0706,"mediana":0.0706,"p90":0.0706,"min":0.061,"max":0.0706},{"anos":12,"n":103,"p10":0.0706,"mediana":0.0706,"p90":0.0706,"min":0.0706,"max":0.0706},{"anos":13,"n":91,"p10":0.0706,"mediana":0.0706,"p90":0.0706,"min":0.0706,"max":0.0706},{"anos":14,"n":79,"p10":0.0706,"mediana":0.0706,"p90":0.0706,"min":0.0706,"max":0.0706},{"anos":15,"n":67,"p10":0.0706,"mediana":0.0706,"p90":0.0706,"min":0.0706,"max":0.0706},{"anos":16,"n":55,"p10":0.0706,"mediana":0.0706,"p90":0.0706,"min":0.0706,"max":0.0706},{"anos":17,"n":43,"p10":0.0706,"mediana":0.0706,"p90":0.0706,"min":0.0706,"max":0.0706},{"anos":18,"n":31,"p10":0.0706,"mediana":0.0706,"p90":0.0706,"min":0.0706,"max":0.0706}],"pior_mes_real":[{"anos":1,"n":235,"p10":-0.0515,"mediana":-0.021,"p90":-0.0114,"min":-0.0773,"max":0.0018},{"anos":2,"n":223,"p10":-0.0773,"mediana":-0.0248,"p90":-0.015,"min":-0.0773,"max":-0.0114},{"anos":3,"n":211,"p10":-0.0773,"mediana":-0.0289,"p90":-0.021,"min":-0.0773,"max":-0.0144},{"anos":4,"n":199,"p10":-0.0773,"mediana":-0.0306,"p90":-0.0229,"min":-0.0773,"max":-0.0224},{"anos":5,"n":187,"p10":-0.0773,"mediana":-0.0515,"p90":-0.0276,"min":-0.0773,"max":-0.0229},{"anos":6,"n":175,"p10":-0.0773,"mediana":-0.0515,"p90":-0.0289,"min":-0.0773,"max":-0.0229},{"anos":7,"n":163,"p10":-0.0773,"mediana":-0.0515,"p90":-0.0289,"min":-0.0773,"max":-0.0276},{"anos":8,"n":151,"p10":-0.0773,"mediana":-0.0515,"p90":-0.0289,"min":-0.0773,"max":-0.0289},{"anos":9,"n":139,"p10":-0.0773,"mediana":-0.0515,"p90":-0.0289,"min":-0.0773,"max":-0.0289},{"anos":10,"n":127,"p10":-0.0773,"mediana":-0.0515,"p90":-0.0289,"min":-0.0773,"max":-0.0289},{"anos":11,"n":115,"p10":-0.0773,"mediana":-0.0515,"p90":-0.0515,"min":-0.0773,"max":-0.0289},{"anos":12,"n":103,"p10":-0.0773,"mediana":-0.0515,"p90":-0.0515,"min":-0.0773,"max":-0.0515},{"anos":13,"n":91,"p10":-0.0773,"mediana":-0.0515,"p90":-0.0515,"min":-0.0773,"max":-0.0515},{"anos":14,"n":79,"p10":-0.0773,"mediana":-0.0515,"p90":-0.0515,"min":-0.0773,"max":-0.0515},{"anos":15,"n":67,"p10":-0.0773,"mediana":-0.0773,"p90":-0.0515,"min":-0.0773,"max":-0.0515},{"anos":16,"n":55,"p10":-0.0773,"mediana":-0.0773,"p90":-0.0515,"min":-0.0773,"max":-0.0515},{"anos":17,"n":43,"p10":-0.0773,"mediana":-0.0773,"p90":-0.0515,"min":-0.0773,"max":-0.0515},{"anos":18,"n":31,"p10":-0.0773,"mediana":-0.0773,"p90":-0.0773,"min":-0.0773,"max":-0.0773}],"melhor_mes_real":[{"anos":1,"n":235,"p10":0.0238,"mediana":0.0316,"p90":0.053,"min":0.008,"max":0.0643},{"anos":2,"n":223,"p10":0.0296,"mediana":0.0352,"p90":0.0643,"min":0.0249,"max":0.0643},{"anos":3,"n":211,"p10":0.0321,"mediana":0.0438,"p90":0.0643,"min":0.0314,"max":0.0643},{"anos":4,"n":199,"p10":0.0352,"mediana":0.046,"p90":0.0643,"min":0.0321,"max":0.0643},{"anos":5,"n":187,"p10":0.0352,"mediana":0.0577,"p90":0.0643,"min":0.0352,"max":0.0643},{"anos":6,"n":175,"p10":0.0352,"mediana":0.0577,"p90":0.0643,"min":0.0352,"max":0.0643},{"anos":7,"n":163,"p10":0.0352,"mediana":0.0577,"p90":0.0643,"min":0.0352,"max":0.0643},{"anos":8,"n":151,"p10":0.0577,"mediana":0.0577,"p90":0.0643,"min":0.0352,"max":0.0643},{"anos":9,"n":139,"p10":0.0577,"mediana":0.0643,"p90":0.0643,"min":0.0352,"max":0.0643},{"anos":10,"n":127,"p10":0.0577,"mediana":0.0643,"p90":0.0643,"min":0.0577,"max":0.0643},{"anos":11,"n":115,"p10":0.0577,"mediana":0.0643,"p90":0.0643,"min":0.0577,"max":0.0643},{"anos":12,"n":103,"p10":0.0577,"mediana":0.0643,"p90":0.0643,"min":0.0577,"max":0.0643},{"anos":13,"n":91,"p10":0.0577,"mediana":0.0643,"p90":0.0643,"min":0.0577,"max":0.0643},{"anos":14,"n":79,"p10":0.0643,"mediana":0.0643,"p90":0.0643,"min":0.0577,"max":0.0643},{"anos":15,"n":67,"p10":0.0643,"mediana":0.0643,"p90":0.0643,"min":0.0643,"max":0.0643},{"anos":16,"n":55,"p10":0.0643,"mediana":0.0643,"p90":0.0643,"min":0.0643,"max":0.0643},{"anos":17,"n":43,"p10":0.0643,"mediana":0.0643,"p90":0.0643,"min":0.0643,"max":0.0643},{"anos":18,"n":31,"p10":0.0643,"mediana":0.0643,"p90":0.0643,"min":0.0643,"max":0.0643}]};
+
+  const MODES = {
+    nominal: { title: 'Pior mês vs. Melhor mês nominal por tempo investido', piorKey: 'pior_mes_nominal', melhorKey: 'melhor_mes_nominal' },
+    real: { title: 'Pior mês vs. Melhor mês real por tempo investido', piorKey: 'pior_mes_real', melhorKey: 'melhor_mes_real' },
+  };
+
+  const root = document.querySelector('.viz-root');
+  const W = 880, H = 380;
+  const M = { top: 16, right: 84, bottom: 34, left: 46 };
+  const plotW = W - M.left - M.right;
+  const plotH = H - M.top - M.bottom;
+  const ns = 'http://www.w3.org/2000/svg';
+  const el = (tag, attrs) => {
+    const e = document.createElementNS(ns, tag);
+    for (const k in attrs) e.setAttribute(k, attrs[k]);
+    return e;
+  };
+
+  const fmtNum = v => (v * 100).toFixed(1).replace('.', ',') + '%';
+
+  const svg = document.getElementById('chart');
+  svg.setAttribute('viewBox', `0 0 ${W} ${H}`);
+  const tooltip = document.getElementById('tooltip');
+  const legendEl = document.getElementById('legend');
+
+  function render(mode) {
+    const meta = MODES[mode];
+    const piorData = DATA[meta.piorKey];
+    const melhorData = DATA[meta.melhorKey];
+    const huePior = getComputedStyle(root).getPropertyValue('--hue-pior').trim();
+    const hueMelhor = getComputedStyle(root).getPropertyValue('--hue-melhor').trim();
+
+    document.getElementById('btn-nominal').setAttribute('aria-pressed', mode === 'nominal');
+    document.getElementById('btn-real').setAttribute('aria-pressed', mode === 'real');
+
+    document.getElementById('title').textContent = meta.title;
+    document.getElementById('subtitle').textContent =
+      `Mediana e faixa central (p10–p90) das janelas móveis em cada tamanho, jan/2006–jun/2026`;
+    document.getElementById('footnote').textContent =
+      'Eixo X: tamanho da janela em anos. "Pior mês" e "Melhor mês" são o retorno mensal mais extremo observado dentro de cada janela — não uma média, o mês individual mais baixo/alto que aconteceu naquele período. A faixa sombreada mostra onde caíram os 80% centrais dos resultados históricos em cada tamanho de janela; não é projeção futura. Fonte: internal/estatisticas-carteira-aposentadoria/output/janelas_detalhado.csv';
+
+    legendEl.innerHTML = '';
+    [
+      ['pior-line', 'Pior mês — mediana'],
+      ['pior-band', 'Pior mês — 80% central (p10–p90)'],
+      ['melhor-line', 'Melhor mês — mediana'],
+      ['melhor-band', 'Melhor mês — 80% central (p10–p90)'],
+    ].forEach(([kind, label]) => {
+      const item = document.createElement('div');
+      item.className = 'legend-item';
+      const swatch = document.createElement('span');
+      const isBand = kind.endsWith('band');
+      const hue = kind.startsWith('pior') ? huePior : hueMelhor;
+      swatch.className = isBand ? 'legend-swatch-band' : 'legend-swatch-line';
+      swatch.style.background = hue;
+      if (isBand) swatch.style.opacity = '0.28';
+      const text = document.createElement('span');
+      text.textContent = label;
+      item.appendChild(swatch);
+      item.appendChild(text);
+      legendEl.appendChild(item);
+    });
+
+    svg.innerHTML = '';
+    tooltip.style.opacity = 0;
+
+    const anosList = piorData.map(d => d.anos);
+    const xMin = anosList[0], xMax = anosList[anosList.length - 1];
+
+    const allVals = piorData.concat(melhorData).flatMap(d => [d.p10, d.p90]);
+    const yMax = Math.ceil(Math.max(...allVals) * 100) / 100;
+    const yMin = Math.floor(Math.min(...allVals, 0) * 100) / 100;
+
+    const x = a => M.left + ((a - xMin) / (xMax - xMin)) * plotW;
+    const y = v => M.top + plotH - ((v - yMin) / (yMax - yMin)) * plotH;
+
+    const yStep = 0.02;
+    for (let v = Math.ceil(yMin / yStep) * yStep; v <= yMax + 1e-9; v += yStep) {
+      const yy = y(v);
+      svg.appendChild(el('line', { x1: M.left, x2: W - M.right, y1: yy, y2: yy, class: 'gridline' }));
+      const label = el('text', { x: M.left - 8, y: yy + 4, class: 'axis-label', 'text-anchor': 'end' });
+      label.textContent = fmtNum(v);
+      svg.appendChild(label);
+    }
+    const baselineY = y(0);
+    svg.appendChild(el('line', { x1: M.left, x2: W - M.right, y1: baselineY, y2: baselineY, class: 'baseline' }));
+
+    anosList.forEach(a => {
+      const xx = x(a);
+      const label = el('text', { x: xx, y: H - M.bottom + 18, class: 'axis-label', 'text-anchor': 'middle' });
+      label.textContent = a;
+      svg.appendChild(label);
+    });
+    const xAxisTitle = el('text', { x: M.left + plotW / 2, y: H - 2, class: 'axis-label', 'text-anchor': 'middle' });
+    xAxisTitle.textContent = 'Tamanho da janela (anos)';
+    svg.appendChild(xAxisTitle);
+
+    function bandPath(data, topKey, bottomKey) {
+      const top = data.map((d, i) => `${i === 0 ? 'M' : 'L'} ${x(d.anos)} ${y(d[topKey])}`).join(' ');
+      const bottom = data.slice().reverse().map(d => `L ${x(d.anos)} ${y(d[bottomKey])}`).join(' ');
+      return `${top} ${bottom} Z`;
+    }
+    function linePath(data, key) {
+      return data.map((d, i) => `${i === 0 ? 'M' : 'L'} ${x(d.anos)} ${y(d[key])}`).join(' ');
+    }
+
+    svg.appendChild(el('path', { d: bandPath(piorData, 'p90', 'p10'), fill: huePior, opacity: '0.20', stroke: 'none' }));
+    svg.appendChild(el('path', { d: bandPath(melhorData, 'p90', 'p10'), fill: hueMelhor, opacity: '0.20', stroke: 'none' }));
+
+    svg.appendChild(el('path', { d: linePath(piorData, 'mediana'), class: 'median-line', stroke: huePior }));
+    svg.appendChild(el('path', { d: linePath(melhorData, 'mediana'), class: 'median-line', stroke: hueMelhor }));
+
+    const lastPior = piorData[piorData.length - 1];
+    const lastMelhor = melhorData[melhorData.length - 1];
+    const lastX = x(lastPior.anos);
+
+    svg.appendChild(el('circle', { cx: lastX, cy: y(lastPior.mediana), class: 'end-dot', fill: huePior }));
+    svg.appendChild(el('circle', { cx: lastX, cy: y(lastMelhor.mediana), class: 'end-dot', fill: hueMelhor }));
+
+    const MIN_GAP = 14;
+    const endLabels = [
+      { trueY: y(lastPior.mediana), text: 'Pior ' + fmtNum(lastPior.mediana), hue: huePior },
+      { trueY: y(lastMelhor.mediana), text: 'Melhor ' + fmtNum(lastMelhor.mediana), hue: hueMelhor },
+    ].sort((a, b) => a.trueY - b.trueY);
+    for (let i = 1; i < endLabels.length; i++) {
+      if (endLabels[i].trueY - endLabels[i - 1].trueY < MIN_GAP) {
+        endLabels[i].trueY = endLabels[i - 1].trueY + MIN_GAP;
+      }
+    }
+    endLabels.forEach(item => {
+      const label = el('text', { x: lastX + 8, y: item.trueY + 4, class: 'end-label', fill: item.hue });
+      label.textContent = item.text;
+      svg.appendChild(label);
+    });
+
+    const crosshair = el('line', { x1: 0, x2: 0, y1: M.top, y2: M.top + plotH, class: 'crosshair' });
+    const hoverDots = [huePior, hueMelhor].map(hue => el('circle', { class: 'hover-dot', fill: hue }));
+    svg.appendChild(crosshair);
+    hoverDots.forEach(d => svg.appendChild(d));
+
+    const hit = el('rect', { x: M.left, y: M.top, width: plotW, height: plotH, class: 'hit-layer' });
+    svg.appendChild(hit);
+
+    function nearestIndex(px) {
+      const a = xMin + ((px - M.left) / plotW) * (xMax - xMin);
+      let best = 0, bestDist = Infinity;
+      anosList.forEach((v, i) => {
+        const dist = Math.abs(v - a);
+        if (dist < bestDist) { bestDist = dist; best = i; }
+      });
+      return best;
+    }
+
+    function showAt(clientX, rectLeft, scale) {
+      const px = (clientX - rectLeft) / scale;
+      const i = nearestIndex(px);
+      const ds = piorData[i], dt = melhorData[i];
+      const xx = x(ds.anos);
+
+      crosshair.setAttribute('x1', xx);
+      crosshair.setAttribute('x2', xx);
+      crosshair.style.opacity = 1;
+
+      hoverDots[0].setAttribute('cx', xx);
+      hoverDots[0].setAttribute('cy', y(ds.mediana));
+      hoverDots[0].style.opacity = 1;
+      hoverDots[1].setAttribute('cx', xx);
+      hoverDots[1].setAttribute('cy', y(dt.mediana));
+      hoverDots[1].style.opacity = 1;
+
+      tooltip.innerHTML = '';
+      const titleEl = document.createElement('div');
+      titleEl.className = 'tooltip-date';
+      titleEl.textContent = `${ds.anos} ano${ds.anos > 1 ? 's' : ''} investido${ds.anos > 1 ? 's' : ''} (${ds.n} janelas)`;
+      tooltip.appendChild(titleEl);
+
+      [
+        ['Pior mês — mediana', ds.mediana, huePior],
+        ['Pior mês — p10 / p90', `${fmtNum(ds.p10)} / ${fmtNum(ds.p90)}`, huePior],
+        ['Melhor mês — mediana', dt.mediana, hueMelhor],
+        ['Melhor mês — p10 / p90', `${fmtNum(dt.p10)} / ${fmtNum(dt.p90)}`, hueMelhor],
+      ].forEach(([label, val, hue]) => {
+        const row = document.createElement('div');
+        row.className = 'tooltip-row';
+        const key = document.createElement('span');
+        key.className = 'tooltip-key';
+        const swatch = document.createElement('span');
+        swatch.className = 'tooltip-swatch-line';
+        swatch.style.background = hue;
+        const nameEl = document.createElement('span');
+        nameEl.textContent = label;
+        key.appendChild(swatch);
+        key.appendChild(nameEl);
+        const value = document.createElement('span');
+        value.className = 'tooltip-value';
+        value.textContent = typeof val === 'number' ? fmtNum(val) : val;
+        row.appendChild(key);
+        row.appendChild(value);
+        tooltip.appendChild(row);
+      });
+
+      const svgRect = svg.getBoundingClientRect();
+      const scaleX = svgRect.width / W;
+      let left = xx * scaleX + 14;
+      if (left + 190 > svgRect.width) left = xx * scaleX - 204;
+      tooltip.style.left = left + 'px';
+      tooltip.style.top = (y(Math.max(ds.p90, dt.p90)) * (svgRect.height / H) - 10) + 'px';
+      tooltip.style.opacity = 1;
+    }
+
+    function hide() {
+      crosshair.style.opacity = 0;
+      hoverDots.forEach(d => d.style.opacity = 0);
+      tooltip.style.opacity = 0;
+    }
+
+    hit.addEventListener('pointermove', e => {
+      const rect = svg.getBoundingClientRect();
+      showAt(e.clientX, rect.left, rect.width / W);
+    });
+    hit.addEventListener('pointerleave', hide);
+  }
+
+  document.getElementById('btn-nominal').addEventListener('click', () => render('nominal'));
+  document.getElementById('btn-real').addEventListener('click', () => render('real'));
+
+  render('nominal');
+})();
+</script>

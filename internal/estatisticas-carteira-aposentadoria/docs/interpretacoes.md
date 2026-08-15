@@ -275,3 +275,78 @@ longas. Bom contraponto didático a esses outros gráficos — mostra que nem
 todo indicador de risco "sofre" da mesma forma com o efeito inflacionário
 de 2021-2022; a inflação distorce o *acumulado* de capital, não a
 *dispersão* dos retornos mensais.
+
+## Pior mês / Melhor mês — extremos individuais, não médias
+
+**Gráfico:** `graficos/pior-melhor-mes-comparativo.html` (mediana + faixa
+p10–p90 das duas métricas sobrepostas, toggle nominal/real).
+
+### Formato de "escada", não de curva suave
+
+Diferente de todos os indicadores anteriores, as linhas de mediana aqui
+sobem/descem em degraus, não em curva contínua. Faz sentido: "pior mês"
+é o valor de um único mês específico dentro da janela — quando a janela
+cresce o suficiente para *sempre* incluir o mesmo mês recorde (ex:
+out/2008), a mediana trava naquele valor até a janela crescer o
+suficiente para incluir um evento ainda pior (ou até nenhuma janela ficar
+de fora dele). Isso é o oposto de CAGR/volatilidade, que são médias e
+por isso suavizam.
+
+### Da janela de 15 anos em diante, toda janela contém o mesmo pior mês
+
+Em janelas de 15 a 18 anos, pior mês nominal = -7,32% (real: -7,73%) em
+**todas** as janelas daquele tamanho (min = max = mediana) — ou seja, a
+partir de 15 anos de horizonte, qualquer período de 15+ anos na história
+da carteira necessariamente atravessou o mês mais catastrófico já
+registrado (out/2008). Isso é uma forma concreta de mostrar que
+horizontes longos não "escapam" do pior evento histórico, só diluem seu
+peso relativo no retorno total.
+
+### Assimetria: o melhor mês converge mais cedo que o pior
+
+O melhor mês nominal já trava em 7,06% (o teto histórico) a partir de
+~11 anos de janela, enquanto o pior mês só trava definitivamente em 15
+anos. Isso acontece porque o evento de pior mês (out/2008) é anterior ao
+evento de melhor mês na série — janelas precisam ser maiores para
+"alcançar" 2008 a partir do início dos dados (jan/2006) do que para
+alcançar o melhor mês, que ocorreu depois.
+
+### Síntese para o artigo
+
+Bom gráfico para desmistificar a ideia de que "ficar mais tempo investido
+elimina o risco de eventos extremos" — não elimina, só garante que você
+vai *ver* o extremo passar pela sua carteira em algum momento se o
+horizonte for longo o bastante. O que muda com o tempo não é a
+possibilidade do extremo acontecer, é o quanto ele pesa no resultado
+final (assunto já coberto por CAGR/drawdown/Ulcer).
+
+## % de meses positivos vs. negativos — a assimetria estrutural da carteira
+
+**Gráfico:** `graficos/pct-positivos-negativos.html` (mediana + faixa
+p10–p90, sem toggle nominal/real — o sinal do retorno mensal quase nunca
+muda entre nominal e real).
+
+### Converge rápido para ~71% positivos / 29% negativos
+
+Em janelas de 1 ano a mediana já está em 75%/25%, e por volta de 6-7 anos
+estabiliza perto de 72%/28%, terminando em 71,3%/28,7% aos 18 anos. Ou
+seja: historicamente, a carteira teve um mês negativo a cada ~3,5 meses
+positivos — quase 3 em cada 4 meses fecharam no azul.
+
+### A faixa de incerteza é enorme em janelas curtas
+
+Em janelas de 1 ano, o pior caso observado teve 0% de meses positivos e o
+melhor teve 100% — ou seja, já existiu um ano inteiro só de meses
+negativos e um ano inteiro só de meses positivos na história da carteira.
+A faixa central (p10–p90) também é larga: de 50% a 92% de meses positivos
+num único ano. Essa variabilidade desaparece quase toda até 5-6 anos de
+janela.
+
+### Síntese para o artigo
+
+Esse é o indicador mais simples e mais visceral do conjunto: praticamente
+3 em cada 4 meses da carteira historicamente "deram certo". É um contraponto
+útil ao lado do Ulcer/drawdown (que enfatizam os eventos raros e
+dolorosos) — lembra que a experiência mês a mês de quem segura a carteira
+é predominantemente positiva, mesmo em uma carteira que passou por 2008,
+2015-16, 2020 e 2021-22.

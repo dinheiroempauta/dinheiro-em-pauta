@@ -161,6 +161,28 @@ os artifacts foram construídos ad-hoc a partir de `janelas_detalhado.csv`.
       real via Playwright headless (toggle nominal e real). Mesma
       ressalva sobre componente JS interativo ao publicar no blog.
 
+- [x] **Pior mês vs. Melhor mês — linhas de mediana sobrepostas com faixa
+      p10-p90** (mesmo formato do gráfico Sharpe vs. Sortino, toggle
+      Nominal/Real). Protótipo salvo em
+      `internal/estatisticas-carteira-aposentadoria/graficos/pior-melhor-mes-comparativo.html`.
+      Interpretação completa (formato de "escada" por serem extremos
+      individuais, não médias; da janela de 15 anos em diante toda janela
+      contém o mesmo pior mês histórico — out/2008; assimetria de
+      convergência entre pior e melhor mês) registrada em
+      `docs/interpretacoes.md`. Validado com screenshot real via
+      Playwright headless.
+- [x] **% de meses positivos vs. negativos — linhas de mediana sobrepostas
+      com faixa p10-p90, sem toggle nominal/real** (indicador único, não
+      nominal/real — decisão já registrada em spec.md §4). Protótipo salvo
+      em
+      `internal/estatisticas-carteira-aposentadoria/graficos/pct-positivos-negativos.html`.
+      Interpretação completa (convergência para ~71%/29% já em 6-7 anos,
+      faixa de incerteza enorme em janelas de 1 ano — já existiu ano 100%
+      positivo e ano 100% negativo) registrada em `docs/interpretacoes.md`.
+      Validado com screenshot real via Playwright headless. Mesma ressalva
+      sobre componente JS interativo ao publicar no blog (ambos os
+      gráficos desta seção).
+
 ## Extensão do tamanho máximo de janela: 15 → 18 anos
 
 - [x] Investigada queda abrupta no Sortino mediano em janelas de 15 anos
