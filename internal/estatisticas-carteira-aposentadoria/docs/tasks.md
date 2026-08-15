@@ -78,3 +78,17 @@ os artifacts foram construídos ad-hoc a partir de `janelas_detalhado.csv`.
       seção "Modo de operação"); (3) reconstruir o componente a partir de
       `janelas_detalhado.csv` (script de geração ainda não existe em
       `src/`, o protótipo foi feito ad-hoc como artifact).
+
+- [x] **Funil de distribuição do CAGR por tempo investido** (bandas de
+      percentil p5–p95 e p20–p80, mediana, pior/melhor caso observado,
+      toggle Nominal/Real) — confirmado pelo usuário como gráfico
+      **importante** para o artigo. Protótipo final salvo em
+      `internal/estatisticas-carteira-aposentadoria/graficos/funil-cagr-percentis.html`
+      (HTML/SVG/JS autocontido, sem dependências externas, dados dos 15
+      tamanhos de janela embutidos inline). Dados-fonte: percentis 5/20/50/80/95
+      + mín/máx de `cagr_nominal` e `cagr_real` por tamanho de janela,
+      calculados a partir de `janelas_detalhado.csv` (script de geração
+      desses percentis ainda não existe em `src/` — só o resultado final
+      está salvo). Ao escrever o artigo: mesma ressalva do item acima
+      sobre componente JS interativo (não estático) — checar suporte do
+      design system do blog e alinhar com o usuário antes de embutir.
