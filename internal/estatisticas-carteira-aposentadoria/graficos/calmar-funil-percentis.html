@@ -1,0 +1,399 @@
+<title>Funil de Calmar por Percentil</title>
+<style>
+  .viz-root {
+    color-scheme: light;
+    --surface-1:      #fcfcfb;
+    --page:           #f9f9f7;
+    --text-primary:   #0b0b0b;
+    --text-secondary: #52514e;
+    --text-muted:     #898781;
+    --gridline:       #e1e0d9;
+    --baseline:       #c3c2b7;
+    --border:         rgba(11,11,11,0.10);
+    --hue-nominal:    #eb6834;
+    --hue-real:       #2a78d6;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:where(:not([data-theme="light"])) .viz-root {
+      color-scheme: dark;
+      --surface-1:      #1a1a19;
+      --page:           #0d0d0d;
+      --text-primary:   #ffffff;
+      --text-secondary: #c3c2b7;
+      --text-muted:     #898781;
+      --gridline:       #2c2c2a;
+      --baseline:       #383835;
+      --border:         rgba(255,255,255,0.10);
+      --hue-nominal:    #d95926;
+      --hue-real:       #3987e5;
+    }
+  }
+  :root[data-theme="dark"] .viz-root {
+    color-scheme: dark;
+    --surface-1:      #1a1a19;
+    --page:           #0d0d0d;
+    --text-primary:   #ffffff;
+    --text-secondary: #c3c2b7;
+    --text-muted:     #898781;
+    --gridline:       #2c2c2a;
+    --baseline:       #383835;
+    --border:         rgba(255,255,255,0.10);
+    --hue-nominal:    #d95926;
+    --hue-real:       #3987e5;
+  }
+
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    background: var(--page);
+    font-family: system-ui, -apple-system, "Segoe UI", sans-serif;
+    color: var(--text-primary);
+  }
+  .viz-root {
+    max-width: 920px;
+    margin: 32px auto;
+    padding: 28px 28px 20px;
+    background: var(--surface-1);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+  }
+  h1 {
+    font-size: 18px;
+    font-weight: 600;
+    margin: 0 0 2px;
+  }
+  .subtitle {
+    font-size: 13px;
+    color: var(--text-secondary);
+    margin: 0 0 18px;
+  }
+
+  .toggle-group {
+    display: inline-flex;
+    padding: 3px;
+    background: var(--page);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    margin-bottom: 18px;
+  }
+  .toggle-btn {
+    appearance: none;
+    border: none;
+    background: transparent;
+    padding: 7px 16px;
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--text-secondary);
+    border-radius: 6px;
+    cursor: pointer;
+    font-family: inherit;
+  }
+  .toggle-btn:hover { color: var(--text-primary); }
+  .toggle-btn[aria-pressed="true"] {
+    background: var(--surface-1);
+    color: var(--text-primary);
+    box-shadow: 0 1px 3px rgba(0,0,0,0.08);
+  }
+
+  .legend {
+    display: flex;
+    gap: 20px;
+    flex-wrap: wrap;
+    margin-bottom: 4px;
+    font-size: 12.5px;
+    color: var(--text-secondary);
+  }
+  .legend-item { display: flex; align-items: center; gap: 7px; }
+  .legend-swatch-line { width: 16px; height: 2px; border-radius: 1px; }
+  .legend-swatch-band { width: 16px; height: 10px; border-radius: 2px; }
+  .legend-swatch-dashed {
+    width: 16px; height: 0;
+    border-top: 2px dashed;
+    opacity: 0.7;
+  }
+  .chart-wrap { position: relative; }
+  svg { width: 100%; height: auto; display: block; overflow: visible; }
+  .gridline { stroke: var(--gridline); stroke-width: 1; }
+  .baseline { stroke: var(--baseline); stroke-width: 1; }
+  .axis-label { fill: var(--text-muted); font-size: 11px; }
+  .median-line { fill: none; stroke-width: 2; stroke-linejoin: round; stroke-linecap: round; }
+  .extreme-line { fill: none; stroke-width: 1.5; stroke-linejoin: round; stroke-linecap: round; stroke-dasharray: 4 3; opacity: 0.7; }
+  .extreme-label { font-size: 11px; font-weight: 500; opacity: 0.85; }
+  .end-dot { r: 4; stroke-width: 2; stroke: var(--surface-1); }
+  .end-label { font-size: 12px; font-weight: 600; }
+  .crosshair { stroke: var(--text-muted); stroke-width: 1; opacity: 0; pointer-events: none; }
+  .hover-dot { r: 4; stroke-width: 2; stroke: var(--surface-1); opacity: 0; pointer-events: none; }
+  .hit-layer { fill: transparent; cursor: crosshair; }
+
+  .tooltip {
+    position: absolute;
+    pointer-events: none;
+    background: var(--surface-1);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 8px 12px;
+    font-size: 12px;
+    box-shadow: 0 4px 16px rgba(0,0,0,0.12);
+    opacity: 0;
+    transition: opacity 0.08s;
+    white-space: nowrap;
+    z-index: 10;
+  }
+  .tooltip-date {
+    color: var(--text-secondary);
+    margin-bottom: 4px;
+  }
+  .tooltip-row { display: flex; align-items: center; justify-content: space-between; gap: 14px; margin-top: 2px; }
+  .tooltip-key { display: flex; align-items: center; gap: 6px; color: var(--text-secondary); }
+  .tooltip-swatch-line { width: 10px; height: 2px; border-radius: 1px; flex-shrink: 0; }
+  .tooltip-value { font-weight: 600; color: var(--text-primary); font-variant-numeric: tabular-nums; }
+
+  .footnote {
+    font-size: 12px;
+    color: var(--text-muted);
+    margin-top: 14px;
+    line-height: 1.5;
+  }
+</style>
+
+<div class="viz-root">
+  <h1 id="title"></h1>
+  <p class="subtitle" id="subtitle"></p>
+
+  <div class="toggle-group" role="group" aria-label="Escolher base de cálculo">
+    <button class="toggle-btn" id="btn-nominal" type="button" aria-pressed="false">Nominal</button>
+    <button class="toggle-btn" id="btn-real" type="button" aria-pressed="false">Real</button>
+  </div>
+
+  <div class="legend" id="legend"></div>
+
+  <div class="chart-wrap">
+    <svg id="chart" viewBox="0 0 880 380" preserveAspectRatio="xMidYMid meet"></svg>
+    <div class="tooltip" id="tooltip"></div>
+  </div>
+
+  <p class="footnote" id="footnote"></p>
+</div>
+
+<script>
+(function () {
+  const DATA = {"nominal":[{"anos":1,"n_janelas":235,"p5":0.7934,"p20":3.4084,"p50":7.6181,"p80":13.3286,"p95":21.5001,"min":-0.7823,"max":72.6679},{"anos":2,"n_janelas":223,"p5":0.711,"p20":2.6863,"p50":4.4171,"p80":8.2626,"p95":10.5405,"min":0.0483,"max":20.155},{"anos":3,"n_janelas":211,"p5":0.5364,"p20":1.878,"p50":3.9563,"p80":5.5874,"p95":8.1856,"min":0.2863,"max":11.2629},{"anos":4,"n_janelas":199,"p5":0.6304,"p20":1.9511,"p50":2.7818,"p80":4.5323,"p95":5.2152,"min":0.4228,"max":7.6285},{"anos":5,"n_janelas":187,"p5":0.6653,"p20":1.891,"p50":2.5162,"p80":4.2453,"p95":4.6257,"min":0.6001,"max":5.5797},{"anos":6,"n_janelas":175,"p5":0.7277,"p20":1.9392,"p50":2.3943,"p80":4.2006,"p95":4.4963,"min":0.623,"max":5.0166},{"anos":7,"n_janelas":163,"p5":0.7481,"p20":2.0008,"p50":2.1474,"p80":3.8606,"p95":4.5252,"min":0.6601,"max":4.8135},{"anos":8,"n_janelas":151,"p5":0.7409,"p20":1.9761,"p50":2.1367,"p80":3.8539,"p95":4.5017,"min":0.6741,"max":4.888},{"anos":9,"n_janelas":139,"p5":0.7443,"p20":1.9562,"p50":2.1282,"p80":2.3414,"p95":4.1647,"min":0.6758,"max":4.7964},{"anos":10,"n_janelas":127,"p5":0.7666,"p20":1.667,"p50":2.0634,"p80":2.2797,"p95":4.0553,"min":0.7373,"max":4.1631},{"anos":11,"n_janelas":115,"p5":0.7943,"p20":0.9799,"p50":2.069,"p80":2.167,"p95":2.2517,"min":0.7651,"max":4.3033},{"anos":12,"n_janelas":103,"p5":0.8168,"p20":0.852,"p50":2.0323,"p80":2.0948,"p95":2.2065,"min":0.7868,"max":2.3242},{"anos":13,"n_janelas":91,"p5":0.8432,"p20":0.8745,"p50":2.0192,"p80":2.0682,"p95":2.1387,"min":0.8057,"max":2.2616},{"anos":14,"n_janelas":79,"p5":0.8626,"p20":0.8849,"p50":1.9991,"p80":2.0803,"p95":2.1163,"min":0.8264,"max":2.139},{"anos":15,"n_janelas":67,"p5":0.8101,"p20":0.8699,"p50":1.9503,"p80":2.0792,"p95":2.1041,"min":0.7845,"max":2.1373},{"anos":16,"n_janelas":55,"p5":0.7966,"p20":0.8234,"p50":0.8767,"p80":2.0732,"p95":2.1098,"min":0.7796,"max":2.1348},{"anos":17,"n_janelas":43,"p5":0.8161,"p20":0.8209,"p50":0.8369,"p80":1.6803,"p95":2.1136,"min":0.8066,"max":2.1704},{"anos":18,"n_janelas":31,"p5":0.8263,"p20":0.8334,"p50":0.8402,"p80":0.8597,"p95":0.874,"min":0.8209,"max":1.4247}],"real":[{"anos":1,"n_janelas":235,"p5":-0.4615,"p20":0.8282,"p50":2.3871,"p80":5.9232,"p95":12.1011,"min":-1.2232,"max":25.5785},{"anos":2,"n_janelas":223,"p5":-0.1453,"p20":0.5027,"p50":1.7561,"p80":3.6904,"p95":4.5925,"min":-0.3972,"max":11.0183},{"anos":3,"n_janelas":211,"p5":0.0827,"p20":0.3138,"p50":1.2871,"p80":2.2276,"p95":3.4136,"min":-0.0558,"max":5.5461},{"anos":4,"n_janelas":199,"p5":0.237,"p20":0.3555,"p50":0.9568,"p80":1.6617,"p95":2.1261,"min":0.0385,"max":3.88},{"anos":5,"n_janelas":187,"p5":0.2515,"p20":0.4665,"p50":0.9203,"p80":1.3284,"p95":1.682,"min":0.1864,"max":2.0428},{"anos":6,"n_janelas":175,"p5":0.3016,"p20":0.5389,"p50":0.8889,"p80":1.2248,"p95":1.4748,"min":0.196,"max":1.7741},{"anos":7,"n_janelas":163,"p5":0.3,"p20":0.5979,"p50":0.6933,"p80":1.1941,"p95":1.3382,"min":0.2196,"max":1.4699},{"anos":8,"n_janelas":151,"p5":0.2716,"p20":0.5559,"p50":0.6957,"p80":1.1815,"p95":1.32,"min":0.2222,"max":1.4309},{"anos":9,"n_janelas":139,"p5":0.2802,"p20":0.5311,"p50":0.6843,"p80":1.1837,"p95":1.3101,"min":0.1934,"max":1.4414},{"anos":10,"n_janelas":127,"p5":0.2862,"p20":0.503,"p50":0.6158,"p80":1.2347,"p95":1.3027,"min":0.263,"max":1.35},{"anos":11,"n_janelas":115,"p5":0.3258,"p20":0.4304,"p50":0.5935,"p80":1.0597,"p95":1.2544,"min":0.2954,"max":1.4056},{"anos":12,"n_janelas":103,"p5":0.3533,"p20":0.3947,"p50":0.5707,"p80":0.6393,"p95":1.2017,"min":0.3266,"max":1.3307},{"anos":13,"n_janelas":91,"p5":0.3823,"p20":0.4135,"p50":0.5623,"p80":0.6101,"p95":0.7487,"min":0.352,"max":1.2371},{"anos":14,"n_janelas":79,"p5":0.3868,"p20":0.4215,"p50":0.549,"p80":0.5948,"p95":0.6215,"min":0.354,"max":0.6392},{"anos":15,"n_janelas":67,"p5":0.3366,"p20":0.3888,"p50":0.5335,"p80":0.598,"p95":0.6154,"min":0.3156,"max":0.6368},{"anos":16,"n_janelas":55,"p5":0.3263,"p20":0.3541,"p50":0.4041,"p80":0.5982,"p95":0.6211,"min":0.3177,"max":0.6332},{"anos":17,"n_janelas":43,"p5":0.3487,"p20":0.3542,"p50":0.3711,"p80":0.565,"p95":0.6277,"min":0.3399,"max":0.657},{"anos":18,"n_janelas":31,"p5":0.3587,"p20":0.3677,"p50":0.3773,"p80":0.3929,"p95":0.4103,"min":0.3524,"max":0.5632}]};
+
+  const MODES = {
+    nominal: { title: 'Funil de Calmar nominal por tempo investido', hueVar: '--hue-nominal' },
+    real: { title: 'Funil de Calmar real por tempo investido', hueVar: '--hue-real' },
+  };
+
+  const root = document.querySelector('.viz-root');
+  const W = 880, H = 380;
+  const M = { top: 16, right: 76, bottom: 34, left: 46 };
+  const plotW = W - M.left - M.right;
+  const plotH = H - M.top - M.bottom;
+  const ns = 'http://www.w3.org/2000/svg';
+  const el = (tag, attrs) => {
+    const e = document.createElementNS(ns, tag);
+    for (const k in attrs) e.setAttribute(k, attrs[k]);
+    return e;
+  };
+
+  const fmtNum = v => v.toFixed(2).replace('.', ',');
+
+  const svg = document.getElementById('chart');
+  svg.setAttribute('viewBox', `0 0 ${W} ${H}`);
+  const tooltip = document.getElementById('tooltip');
+  const legendEl = document.getElementById('legend');
+
+  function render(mode) {
+    const data = DATA[mode];
+    const meta = MODES[mode];
+    const hue = getComputedStyle(root).getPropertyValue(meta.hueVar).trim();
+
+    document.getElementById('btn-nominal').setAttribute('aria-pressed', mode === 'nominal');
+    document.getElementById('btn-real').setAttribute('aria-pressed', mode === 'real');
+
+    document.getElementById('title').textContent = meta.title;
+    document.getElementById('subtitle').textContent =
+      `Distribuição das ${data[0].n_janelas} a ${data[data.length - 1].n_janelas} janelas móveis possíveis em cada tamanho, jan/2006–jun/2026`;
+    document.getElementById('footnote').textContent =
+      'Eixo X: tamanho da janela em anos. Calmar = CAGR ÷ |drawdown máximo| da janela. Em janelas curtas o drawdown pode ficar muito perto de zero, fazendo o índice disparar — por isso o gráfico mostra só as faixas de percentil (sem pior/melhor caso observado, que seriam outliers extremos de janelas com drawdown quase nulo e distorceriam a escala). Fonte: internal/estatisticas-carteira-aposentadoria/output/janelas_detalhado.csv';
+
+    legendEl.innerHTML = '';
+    [
+      ['line', 'Mediana (p50)'],
+      ['band-32', '60% central (p20–p80)'],
+      ['band-14', '90% central (p5–p95)'],
+    ].forEach(([kind, label]) => {
+      const item = document.createElement('div');
+      item.className = 'legend-item';
+      const swatch = document.createElement('span');
+      if (kind === 'line') {
+        swatch.className = 'legend-swatch-line';
+        swatch.style.background = hue;
+      } else {
+        swatch.className = 'legend-swatch-band';
+        swatch.style.background = hue;
+        swatch.style.opacity = kind === 'band-32' ? '0.32' : '0.14';
+      }
+      const text = document.createElement('span');
+      text.textContent = label;
+      item.appendChild(swatch);
+      item.appendChild(text);
+      legendEl.appendChild(item);
+    });
+
+    svg.innerHTML = '';
+    tooltip.style.opacity = 0;
+
+    const anosList = data.map(d => d.anos);
+    const xMin = anosList[0], xMax = anosList[anosList.length - 1];
+
+    const allVals = data.flatMap(d => [d.p5, d.p95]);
+    const yMax = Math.ceil(Math.max(...allVals) * 10 + 1) / 10;
+    const yMin = 0;
+
+    const x = a => M.left + ((a - xMin) / (xMax - xMin)) * plotW;
+    const y = v => M.top + plotH - ((v - yMin) / (yMax - yMin)) * plotH;
+
+    // gridlines
+    const yStep = yMax > 6 ? 2 : 1;
+    for (let v = 0; v <= yMax + 1e-9; v += yStep) {
+      const yy = y(v);
+      svg.appendChild(el('line', { x1: M.left, x2: W - M.right, y1: yy, y2: yy, class: 'gridline' }));
+      const label = el('text', { x: M.left - 8, y: yy + 4, class: 'axis-label', 'text-anchor': 'end' });
+      label.textContent = fmtNum(v);
+      svg.appendChild(label);
+    }
+    const baselineY = y(0);
+    svg.appendChild(el('line', { x1: M.left, x2: W - M.right, y1: baselineY, y2: baselineY, class: 'baseline' }));
+
+    // x-axis ticks (every year)
+    anosList.forEach(a => {
+      const xx = x(a);
+      const label = el('text', { x: xx, y: H - M.bottom + 18, class: 'axis-label', 'text-anchor': 'middle' });
+      label.textContent = a;
+      svg.appendChild(label);
+    });
+    const xAxisTitle = el('text', { x: M.left + plotW / 2, y: H - 2, class: 'axis-label', 'text-anchor': 'middle' });
+    xAxisTitle.textContent = 'Tamanho da janela (anos)';
+    svg.appendChild(xAxisTitle);
+
+    function bandPath(topKey, bottomKey) {
+      const top = data.map((d, i) => `${i === 0 ? 'M' : 'L'} ${x(d.anos)} ${y(d[topKey])}`).join(' ');
+      const bottom = data.slice().reverse().map(d => `L ${x(d.anos)} ${y(d[bottomKey])}`).join(' ');
+      return `${top} ${bottom} Z`;
+    }
+
+    // outer band p5-p95, inner band p20-p80, median line
+    svg.appendChild(el('path', { d: bandPath('p95', 'p5'), fill: hue, opacity: '0.14', stroke: 'none' }));
+    svg.appendChild(el('path', { d: bandPath('p80', 'p20'), fill: hue, opacity: '0.32', stroke: 'none' }));
+
+    const medianPath = data.map((d, i) => `${i === 0 ? 'M' : 'L'} ${x(d.anos)} ${y(d.p50)}`).join(' ');
+    svg.appendChild(el('path', { d: medianPath, class: 'median-line', stroke: hue }));
+
+    // end dot na mediana
+    const last = data[data.length - 1];
+    const lastX = x(last.anos);
+    svg.appendChild(el('circle', { cx: lastX, cy: y(last.p50), class: 'end-dot', fill: hue }));
+
+    const medianLabel = el('text', { x: lastX + 8, y: y(last.p50) + 4, class: 'end-label', fill: hue });
+    medianLabel.textContent = fmtNum(last.p50);
+    svg.appendChild(medianLabel);
+
+    // crosshair + hover
+    const crosshair = el('line', { x1: 0, x2: 0, y1: M.top, y2: M.top + plotH, class: 'crosshair' });
+    const hoverDots = ['p5', 'p20', 'p50', 'p80', 'p95'].map(() =>
+      el('circle', { class: 'hover-dot', fill: hue })
+    );
+    svg.appendChild(crosshair);
+    hoverDots.forEach(d => svg.appendChild(d));
+
+    const hit = el('rect', { x: M.left, y: M.top, width: plotW, height: plotH, class: 'hit-layer' });
+    svg.appendChild(hit);
+
+    function nearestIndex(px) {
+      const a = xMin + ((px - M.left) / plotW) * (xMax - xMin);
+      let best = 0, bestDist = Infinity;
+      anosList.forEach((v, i) => {
+        const dist = Math.abs(v - a);
+        if (dist < bestDist) { bestDist = dist; best = i; }
+      });
+      return best;
+    }
+
+    function showAt(clientX, rectLeft, scale) {
+      const px = (clientX - rectLeft) / scale;
+      const i = nearestIndex(px);
+      const d = data[i];
+      const xx = x(d.anos);
+
+      crosshair.setAttribute('x1', xx);
+      crosshair.setAttribute('x2', xx);
+      crosshair.style.opacity = 1;
+
+      const keys = ['p95', 'p80', 'p50', 'p20', 'p5'];
+      keys.forEach((k, idx) => {
+        hoverDots[idx].setAttribute('cx', xx);
+        hoverDots[idx].setAttribute('cy', y(d[k]));
+        hoverDots[idx].style.opacity = 1;
+      });
+
+      tooltip.innerHTML = '';
+      const titleEl = document.createElement('div');
+      titleEl.className = 'tooltip-date';
+      titleEl.textContent = `${d.anos} ano${d.anos > 1 ? 's' : ''} investido${d.anos > 1 ? 's' : ''} (${d.n_janelas} janelas)`;
+      tooltip.appendChild(titleEl);
+
+      [
+        ['95º percentil', d.p95],
+        ['80º percentil', d.p80],
+        ['Mediana (50º)', d.p50],
+        ['20º percentil', d.p20],
+        ['5º percentil', d.p5],
+      ].forEach(([label, val]) => {
+        const row = document.createElement('div');
+        row.className = 'tooltip-row';
+        const key = document.createElement('span');
+        key.className = 'tooltip-key';
+        const swatch = document.createElement('span');
+        swatch.className = 'tooltip-swatch-line';
+        swatch.style.background = hue;
+        const nameEl = document.createElement('span');
+        nameEl.textContent = label;
+        key.appendChild(swatch);
+        key.appendChild(nameEl);
+        const value = document.createElement('span');
+        value.className = 'tooltip-value';
+        value.textContent = fmtNum(val);
+        row.appendChild(key);
+        row.appendChild(value);
+        tooltip.appendChild(row);
+      });
+
+      const svgRect = svg.getBoundingClientRect();
+      const scaleX = svgRect.width / W;
+      let left = xx * scaleX + 14;
+      if (left + 170 > svgRect.width) left = xx * scaleX - 184;
+      tooltip.style.left = left + 'px';
+      tooltip.style.top = (y(d.p95) * (svgRect.height / H) - 10) + 'px';
+      tooltip.style.opacity = 1;
+    }
+
+    function hide() {
+      crosshair.style.opacity = 0;
+      hoverDots.forEach(d => d.style.opacity = 0);
+      tooltip.style.opacity = 0;
+    }
+
+    hit.addEventListener('pointermove', e => {
+      const rect = svg.getBoundingClientRect();
+      showAt(e.clientX, rect.left, rect.width / W);
+    });
+    hit.addEventListener('pointerleave', hide);
+  }
+
+  document.getElementById('btn-nominal').addEventListener('click', () => render('nominal'));
+  document.getElementById('btn-real').addEventListener('click', () => render('real'));
+
+  render('nominal');
+})();
+</script>

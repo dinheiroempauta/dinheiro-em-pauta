@@ -549,3 +549,48 @@ momentos em que ativos considerados "descorrelacionados" se moveram
 juntos por um tempo. Bom contraponto ao heatmap estático: mostra que a
 diversificação é uma aposta estatística de longo prazo, não uma garantia
 mês a mês.
+
+## Calmar — retorno por unidade de "pior tombo", com um cuidado metodológico
+
+**Gráfico:** `graficos/calmar-funil-percentis.html` (funil de percentis
+p5–p95/p20–p80 + mediana, toggle nominal/real — **sem** linhas de
+pior/melhor caso, decisão explicada abaixo).
+
+### Por que este gráfico não mostra pior/melhor caso, diferente de CAGR/Ulcer
+
+Calmar = CAGR ÷ |drawdown máximo| da janela. Em janelas curtas (1-2 anos),
+algumas janelas específicas tiveram um drawdown quase nulo (mercado só
+subiu, sem recuo relevante) — dividir um CAGR normal por um denominador
+perto de zero produz valores absurdamente altos (Calmar nominal chegou a
+72,7 numa única janela de 1 ano). Incluir essas linhas de extremo
+distorceria a escala do gráfico inteiro, então a decisão foi mostrar só
+as faixas de percentil, que já capturam a dispersão real sem serem
+dominadas por esse artefato de divisão.
+
+### Cai de forma acentuada e monotônica — o oposto do formato de sino do Ulcer/Sharpe
+
+Mediana nominal despenca de 7,62 (1 ano) para 0,84 (18 anos), sem o
+pico intermediário visto em Ulcer/Sharpe/Sortino. Isso é esperado: CAGR
+já converge relativamente rápido (visto no gráfico de CAGR), mas o
+drawdown máximo *dentro da janela* só tende a crescer conforme a janela
+fica maior (mais chance de conter um evento ruim) — então o denominador
+cresce mais que o numerador se ajusta, empurrando o índice pra baixo de
+forma consistente.
+
+### O mesmo salto de composição de amostra entre 15 e 16 anos aparece aqui também
+
+Mediana nominal cai de 1,95 (15 anos) para 0,88 (16 anos) — o mesmo tipo
+de degrau já visto no Ulcer, Sortino e Curtose, causado pela perda das
+janelas de início mais recente que não conseguem ser estendidas além de
+15 anos (censura à direita, documentada em `decisions.md`).
+
+### Síntese para o artigo
+
+Calmar reforça visualmente uma lição que já apareceu em outros
+indicadores: quanto mais tempo investido, menor o "múltiplo" de retorno
+sobre o pior tombo, porque o denominador (drawdown máximo observado)
+cresce com o tempo mais rápido do que o numerador consegue compensar.
+Isso não é uma crítica a manter o dinheiro investido por mais tempo — é
+um lembrete de que olhar só métricas de "retorno por unidade de
+sofrimento" em janelas curtas pode ser enganosamente otimista, já que
+ainda não deu tempo da carteira "encontrar" seu pior cenário histórico.

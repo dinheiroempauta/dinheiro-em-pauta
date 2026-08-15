@@ -249,6 +249,29 @@ os artifacts foram construídos ad-hoc a partir de `janelas_detalhado.csv`.
       partir de `output/base_consolidada.csv`. Mesma ressalva sobre
       componente JS interativo ao publicar no blog.
 
+- [x] **Funil de distribuição do Calmar por tempo investido** (mesmo
+      formato do funil de CAGR/Ulcer, toggle Nominal/Real, mas **sem**
+      linhas de pior/melhor caso observado — removidas deliberadamente
+      porque janelas curtas com drawdown quase nulo geram outliers
+      extremos, ex: 72,7 numa única janela de 1 ano, que distorceriam a
+      escala; as bandas de percentil já capturam a dispersão real sem
+      esse artefato). Protótipo salvo em
+      `internal/estatisticas-carteira-aposentadoria/graficos/calmar-funil-percentis.html`.
+      Interpretação completa (queda monotônica sem o pico intermediário
+      visto em Ulcer/Sharpe, porque o drawdown-denominador cresce mais
+      rápido que o CAGR-numerador se ajusta; mesmo salto de composição de
+      amostra entre 15-16 anos já visto em outros indicadores) registrada
+      em `docs/interpretacoes.md`. Validado com screenshot real via
+      Playwright headless (toggle nominal e real). Mesma ressalva sobre
+      componente JS interativo ao publicar no blog.
+- [x] **Todos os 17 indicadores/análises da spec.md §4 agora têm gráfico +
+      interpretação registrada.** Lista completa fechada: CAGR,
+      Volatilidade, Drawdown máximo, Tempo de recuperação, Ulcer Index,
+      Sharpe, Sortino, Calmar, Pior/melhor mês, % positivos/negativos,
+      VaR/CVaR, Skewness/Curtose, Correlação entre ativos (estática +
+      rolante 24/36 meses, extensão feita por iniciativa do usuário além
+      do escopo original da spec).
+
 ## Extensão do tamanho máximo de janela: 15 → 18 anos
 
 - [x] Investigada queda abrupta no Sortino mediano em janelas de 15 anos
