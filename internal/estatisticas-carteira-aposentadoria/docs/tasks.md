@@ -107,3 +107,24 @@ os artifacts foram construídos ad-hoc a partir de `janelas_detalhado.csv`.
       `internal/estatisticas-carteira-aposentadoria/docs/interpretacoes.md`
       — material pronto para virar texto do artigo. Mesma ressalva sobre
       componente JS interativo ao publicar.
+
+- [x] **Drawdown e tempo de recuperação — gráfico underwater +
+      dispersão profundidade x duração** (formato diferente do funil de
+      percentis, por escolha deliberada — esses dois indicadores são
+      propriedades da trajetória histórica única, não de uma distribuição
+      por tamanho de janela, então um gráfico de séries temporais/
+      dispersão comunica melhor do que um funil). Protótipos salvos em
+      `internal/estatisticas-carteira-aposentadoria/graficos/drawdown-underwater.html`
+      e `.../graficos/drawdown-profundidade-x-duracao.html`. Os dois
+      compartilham a mesma numeração cronológica de episódios (badges +
+      tabela de detalhes, sem rótulo de texto solto no gráfico — testado
+      com screenshot real via Playwright headless após rótulos de texto
+      colidirem com a própria linha do underwater). Tabelas incluem
+      coluna de **contexto histórico** de cada crise (2008 = crise
+      financeira global, 2015 = Lava Jato/tarifaço, 2016 = impeachment,
+      2020 = Covid-19, 2022 = guerra na Ucrânia + inflação), identificado
+      cruzando a data do fundo com o desempenho dos ativos individuais em
+      `base_consolidada.csv`. Interpretação completa (incluindo a tabela
+      de episódios com contexto) registrada em
+      `internal/estatisticas-carteira-aposentadoria/docs/interpretacoes.md`.
+      Mesma ressalva sobre componente JS interativo ao publicar no blog.

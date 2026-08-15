@@ -82,3 +82,84 @@ O Ulcer Index mostra dois efeitos simultâneos e complementares:
    na série real, quase invisível na nominal — o gap entre as duas é a
    evidência visual mais direta de por que "olhar só para o nominal" é
    enganoso para quem vive de renda.
+
+## Drawdown máximo e tempo de recuperação — a trajetória real completa
+
+**Gráficos:** `graficos/drawdown-underwater.html` (underwater — distância
+ao pico anterior, mês a mês, série completa 2006-2026, nominal e real
+juntos) e `graficos/drawdown-profundidade-x-duracao.html` (dispersão
+profundidade x meses até recuperar, um ponto por crise). Os dois usam a
+mesma numeração cronológica de episódios (queda ≥ 5% do pico), permitindo
+cruzar as duas visualizações pelo número do badge.
+
+### O piso da carteira inteira é sempre o mesmo evento: 2008
+
+Drawdown mediano por tamanho de janela para de piorar a partir de ~8
+anos e estaciona em **-15% nominal / -17% real** — não porque não haja
+dados de janelas maiores, mas porque **nenhuma outra crise da história
+da carteira chega perto da profundidade de 2008**. Qualquer janela de 8+
+anos já tem chance de capturar a crise inteira, então o "pior caso"
+satura nesse valor.
+
+### Tempo de recuperação real dispara em relação ao nominal
+
+| | Mediana (1 ano) | Mediana (janela longa) |
+|---|---|---|
+| Nominal | 1 mês | 2 meses (estável) |
+| Real | 2 meses | 17-20 meses |
+
+A recuperação nominal é rápida e quase não muda com o tamanho da janela.
+A real dispara pra 17-20 meses assim que a janela é grande o bastante
+pra capturar uma crise "de verdade" — o mesmo fenômeno do Ulcer Index
+(seção anterior), só que medido em unidade mais concreta (meses, não um
+índice abstrato).
+
+### Os 7 episódios identificados (queda ≥ 5% do pico), com contexto histórico
+
+Numeração cronológica usada nos dois gráficos:
+
+| Nº | Data (fundo) | Série | Queda | Recuperação | Contexto histórico |
+|---|---|---|---|---|---|
+| 1 | out/2008 | Nominal | -14,8% | 10 meses | Crise financeira global (colapso do Lehman Brothers) |
+| 2 | out/2008 | Real | -17,1% | 17 meses | Crise financeira global (colapso do Lehman Brothers) |
+| 3 | jan/2015 | Real | -5,7% | 2 meses | Recessão + Lava Jato + "tarifaço" (reajuste de tarifas públicas) |
+| 4 | jan/2016 | Real | -6,2% | 7 meses | Crise política (processo de impeachment) + recessão + rating rebaixado |
+| 5 | mar/2020 | Nominal | -6,6% | 2 meses | Crash da Covid-19 |
+| 6 | mar/2020 | Real | -6,9% | 2 meses | Crash da Covid-19 |
+| 7 | jun/2022 | Real | -12,3% | 20 meses | Alta de juros global + guerra na Ucrânia + inflação recorde no Brasil |
+
+**Como o contexto foi identificado:** cruzando a data do fundo de cada
+episódio com o desempenho dos 5 ativos individuais em
+`base_consolidada.csv` naquele mês específico. Confirmações encontradas:
+- **Out/2008:** `ret_vwra11` (ações globais) -11,6% e `ret_divo11`
+  (dividendos BR) -20,2% no mês — colapso generalizado, assinatura
+  clássica de crise financeira sistêmica.
+- **Jan/2015:** `ret_divo11` -11,2% e IPCA do mês em 1,24% (bem acima da
+  média histórica de ~0,5-0,6%) — queda de mercado E inflação alta ao
+  mesmo tempo, coerente com o "tarifaço" (reajuste de tarifas públicas
+  no início do 2º mandato Dilma) somado à deterioração fiscal/Lava Jato.
+- **Jan/2016:** `ret_divo11` -9,6% — mercado brasileiro no fundo do
+  pessimismo do processo de impeachment e da recessão.
+- **Mar/2020:** `ret_divo11` -25,6% no mês — o pior mês individual de
+  qualquer ativo em toda a série, assinatura do crash da Covid-19.
+- **Jun/2022 (fundo da crise que começou em mai/2021):** `ret_vwra11`
+  negativo em 5 dos 6 meses de jan-jun/2022 (guerra na Ucrânia começou
+  fev/2022) e IPCA elevado ao longo de todo o período — combinação de
+  aperto monetário global (alta de juros) e inflação doméstica recorde.
+
+### Profundidade não prediz duração (insight do gráfico de dispersão)
+
+A crise de 2022 real (nº 7) não é a mais profunda (-12,3%, contra -17,1%
+de 2008), mas é disparada a mais demorada de recuperar (20 meses, contra
+17 de 2008). Reforça, com outro indicador, a mesma conclusão do Ulcer:
+inflação alta prolonga sofrimento de um jeito que profundidade de queda
+de mercado sozinha não captura.
+
+### Síntese para o artigo
+
+Drawdown e tempo de recuperação contam a mesma história do Ulcer Index de
+um jeito mais concreto e "contável": a crise de 2008 é o evento que
+define o pior cenário de mercado da carteira em qualquer horizonte, e a
+inflação de 2021-2022 é o que torna a recuperação ainda mais lenta
+quando medida em termos reais — mesmo sem ser, isoladamente, a queda
+mais profunda.
