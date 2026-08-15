@@ -58,3 +58,18 @@ validação.
 - [x] Commit + push
 - [ ] Decidir com o usuário: essa é a base final, ou abre uma segunda
       iteração (gráficos, outro corte de indicadores, virar artigo)?
+
+## Candidatos a gráfico para o futuro artigo
+
+Gráficos exploratórios já validados nesta sessão (fora do repositório,
+gerados como artifact) que o usuário confirmou querer no artigo quando
+ele for escrito. Ainda não há código de geração de gráfico em `src/` —
+os artifacts foram construídos ad-hoc a partir de `janelas_detalhado.csv`.
+
+- [ ] CAGR (real e nominal) em janelas móveis, com seletor de tamanho de
+      janela (1 a 15 anos) — confirmado pelo usuário como gráfico
+      desejado. Ao escrever o artigo, decidir: (a) versão interativa
+      (slider) embutida na página do artigo, ou (b) versão estática
+      (1-2 tamanhos de janela fixos, ex: 10 e 15 anos) se o site não
+      suportar componentes interativos — ver `internal/CHECKLIST-NOVO-ARTIGO.md`
+      e `internal/template-artigo.html` para o padrão do blog.
