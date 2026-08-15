@@ -68,8 +68,13 @@ os artifacts foram construídos ad-hoc a partir de `janelas_detalhado.csv`.
 
 - [ ] CAGR (real e nominal) em janelas móveis, com seletor de tamanho de
       janela (1 a 15 anos) — confirmado pelo usuário como gráfico
-      desejado. Ao escrever o artigo, decidir: (a) versão interativa
-      (slider) embutida na página do artigo, ou (b) versão estática
-      (1-2 tamanhos de janela fixos, ex: 10 e 15 anos) se o site não
-      suportar componentes interativos — ver `internal/CHECKLIST-NOVO-ARTIGO.md`
-      e `internal/template-artigo.html` para o padrão do blog.
+      desejado, **versão interativa com slider** (decisão fechada, não
+      estática). Ao escrever o artigo: (1) checar em
+      `internal/CHECKLIST-NOVO-ARTIGO.md` e `internal/template-artigo.html`
+      se o design system do blog já suporta um componente JS interativo
+      embutido no artigo, ou se isso é uma extensão nova do padrão; (2)
+      se for extensão nova, é decisão arquiteturalmente significativa —
+      não implementar sem alinhar com o usuário antes (ver CLAUDE.md,
+      seção "Modo de operação"); (3) reconstruir o componente a partir de
+      `janelas_detalhado.csv` (script de geração ainda não existe em
+      `src/`, o protótipo foi feito ad-hoc como artifact).
