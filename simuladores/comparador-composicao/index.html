@@ -201,6 +201,26 @@ svg.chart-svg{ width: 100%; height: auto; display:block; overflow: visible; }
   border-radius: 5px; background: var(--paper); color: var(--ink);
 }
 
+.opt-bounds-title{ font-family: var(--font-mono); font-size: 11px; color: var(--muted); text-transform: uppercase; letter-spacing: .04em; margin: 0 0 10px; }
+.opt-bounds-title span{ text-transform: none; letter-spacing: normal; }
+.opt-bounds{ display:flex; flex-direction: column; gap: 8px; margin-bottom: 22px; }
+.opt-bound-row{
+  display:grid; grid-template-columns: 96px 1fr 1fr; align-items:center; gap: 16px;
+  background: var(--paper); border: 1px solid var(--line-strong); border-radius: 8px; padding: 10px 14px;
+}
+@media (max-width: 560px){ .opt-bound-row{ grid-template-columns: 1fr; gap: 8px; } }
+.opt-bound-label{ display:flex; align-items:center; gap: 8px; font-family: var(--font-mono); font-size: 13px; font-weight: 600; color: var(--ink); }
+.opt-bound-dot{ width:8px; height:8px; border-radius:2px; display:inline-block; flex:none; }
+.opt-bound-field{ display:flex; align-items:center; gap: 8px; }
+.opt-bound-field label{ font-family: var(--font-mono); font-size: 10.5px; color: var(--muted); text-transform: uppercase; letter-spacing: .03em; min-width: 34px; }
+.opt-bound-field .opt-input-wrap{ flex:1; max-width: 110px; }
+.opt-bound-field input{
+  width: 100%; font-family: var(--font-mono); font-size: 13px; padding: 6px 8px;
+  border: 1px solid var(--line-strong); border-radius: 5px; background: var(--paper-raised); color: var(--ink);
+}
+.opt-bound-field input::placeholder{ color: var(--line-strong); }
+.opt-bounds-error{ font-size: 13px; color: var(--danger); background: var(--brick-soft); border-radius: 6px; padding: 10px 14px; margin-bottom: 18px; }
+
 .opt-result{ margin-top: 28px; }
 .opt-result-card{ border: 1px solid var(--line-strong); border-radius: 8px; background: var(--paper); padding: 20px 22px; }
 .opt-result-title{ font-family: var(--font-display); font-size: 1.05rem; margin: 0 0 10px; }
@@ -358,10 +378,6 @@ footer{ max-width: var(--maxw); margin: 0 auto; padding: 30px 24px 60px; font-fa
           <select id="opt-scope-years"></select>
         </div>
         <div class="opt-setting">
-          <label for="opt-min-weight">Peso mínimo por ativo</label>
-          <div class="opt-input-wrap"><input type="number" id="opt-min-weight" value="5" min="0" max="20" step="1"><span>%</span></div>
-        </div>
-        <div class="opt-setting">
           <label for="opt-objective">Priorizar</label>
           <select id="opt-objective">
             <option value="cagr_max">Maximizar CAGR</option>
@@ -372,6 +388,9 @@ footer{ max-width: var(--maxw); margin: 0 auto; padding: 30px 24px 60px; font-fa
           </select>
         </div>
       </div>
+
+      <p class="opt-bounds-title">Limites por ativo <span>— deixe em branco pra não restringir aquele lado</span></p>
+      <div class="opt-bounds" id="opt-bounds"></div>
 
       <button class="btn btn-primary" id="opt-run" type="button">Buscar composição</button>
 
@@ -582,27 +601,65 @@ footer{ max-width: var(--maxw); margin: 0 auto; padding: 30px 24px 60px; font-fa
     }
   }
 
-  function enumerateWeightGrid(){
-    const STEP = 5;
-    const out = [];
-    for (let w1=0; w1<=100; w1+=STEP)
-      for (let w2=0; w2<=100-w1; w2+=STEP)
-        for (let w3=0; w3<=100-w1-w2; w3+=STEP)
-          for (let w4=0; w4<=100-w1-w2-w3; w4+=STEP){
-            const w5 = 100-w1-w2-w3-w4;
-            out.push([w1,w2,w3,w4,w5]);
-          }
-    return out;
-  }
-
   function toWeightsObj(arr){
     const w = {};
     ASSET_KEYS.forEach((k,i) => { w[k] = arr[i]; });
     return w;
   }
 
-  function runOptimizer(constraints, mode, scope, minWeight, objective){
-    const grid = enumerateWeightGrid().filter(arr => arr.every(w => w >= minWeight));
+  function buildAxis(lo, hi, step){
+    const axis = [];
+    for (let v = lo; v <= hi + 1e-9; v += step) axis.push(Math.round(v*100)/100);
+    if (axis.length === 0 || Math.abs(axis[axis.length-1]-hi) > 1e-6) axis.push(Math.round(hi*100)/100);
+    return axis;
+  }
+
+  // Gera as composições possíveis (5 pesos somando 100) respeitando o
+  // min/max de cada ativo. Em vez de varrer a grade fixa 0/5/10/.../100
+  // e filtrar depois (o que "pula" faixas estreitas que não caem num
+  // múltiplo do passo), cada ativo tem sua própria grade ancorada no
+  // próprio min. O ativo com a faixa mais larga vira "o resto" (não
+  // precisa ter sua própria grade — só é validado no final), o que
+  // também mantém a busca rápida quando algum ativo está bem travado.
+  function enumerateGrid(bounds, step){
+    let remainderIdx = 0, maxRange = -1;
+    bounds.forEach((b,i) => { const r = b.hi-b.lo; if (r > maxRange){ maxRange = r; remainderIdx = i; } });
+    const otherIdx = [0,1,2,3,4].filter(i => i !== remainderIdx);
+    const axes = otherIdx.map(i => buildAxis(bounds[i].lo, bounds[i].hi, step));
+
+    const n = otherIdx.length;
+    const suffixLo = new Array(n+1), suffixHi = new Array(n+1);
+    suffixLo[n] = bounds[remainderIdx].lo; suffixHi[n] = bounds[remainderIdx].hi;
+    for (let k=n-1; k>=0; k--){
+      suffixLo[k] = suffixLo[k+1] + axes[k][0];
+      suffixHi[k] = suffixHi[k+1] + axes[k][axes[k].length-1];
+    }
+
+    const out = [];
+    const chosen = new Array(n);
+    (function rec(pos, sum){
+      if (pos === n){
+        const rem = 100 - sum;
+        if (rem < bounds[remainderIdx].lo - 1e-6 || rem > bounds[remainderIdx].hi + 1e-6) return;
+        const arr = new Array(5);
+        otherIdx.forEach((idx,j) => { arr[idx] = chosen[j]; });
+        arr[remainderIdx] = Math.round(rem*100)/100;
+        out.push(arr);
+        return;
+      }
+      for (const v of axes[pos]){
+        const newSum = sum+v;
+        if (newSum + suffixLo[pos+1] > 100 + 1e-6) continue;
+        if (newSum + suffixHi[pos+1] < 100 - 1e-6) continue;
+        chosen[pos] = v;
+        rec(pos+1, newSum);
+      }
+    })(0, 0);
+    return out;
+  }
+
+  function runOptimizer(constraints, mode, scope, bounds, objective){
+    const grid = enumerateGrid(bounds, 5);
     let best = null, bestMetrics = null, bestCheck = null, bestObj = -Infinity;
 
     grid.forEach(arr => {
@@ -617,25 +674,23 @@ footer{ max-width: var(--maxw); margin: 0 auto; padding: 30px 24px 60px; font-fa
 
     if (!best) return null;
 
-    // refinamento: segunda passada em passo de 1% ao redor do melhor achado da grade de 5%
+    // refinamento: segunda passada em passo de 1% ao redor do melhor achado,
+    // sem nunca extrapolar os limites min/max originais de cada ativo
     const RANGE = 4;
-    const ranges = best.map(w => ({ lo: Math.max(0, w-RANGE), hi: Math.min(100, w+RANGE) }));
-    for (let w1=ranges[0].lo; w1<=ranges[0].hi; w1++)
-      for (let w2=ranges[1].lo; w2<=ranges[1].hi; w2++)
-        for (let w3=ranges[2].lo; w3<=ranges[2].hi; w3++)
-          for (let w4=ranges[3].lo; w4<=ranges[3].hi; w4++){
-            const w5 = 100-w1-w2-w3-w4;
-            if (w5 < ranges[4].lo || w5 > ranges[4].hi) continue;
-            const arr=[w1,w2,w3,w4,w5];
-            if (!arr.every(w => w >= minWeight)) continue;
-            const w = toWeightsObj(arr);
-            const metrics = evaluateWeights(w, mode, scope);
-            const check = checkConstraints(metrics, constraints);
-            const obj = objectiveValue(metrics, objective);
-            if (check.violated < bestCheck.violated || (check.violated === bestCheck.violated && obj > bestObj)){
-              best = arr; bestMetrics = metrics; bestCheck = check; bestObj = obj;
-            }
-          }
+    const refinedBounds = bounds.map((b,i) => ({
+      lo: Math.max(b.lo, best[i]-RANGE),
+      hi: Math.min(b.hi, best[i]+RANGE),
+    }));
+    const fineGrid = enumerateGrid(refinedBounds, 1);
+    fineGrid.forEach(arr => {
+      const w = toWeightsObj(arr);
+      const metrics = evaluateWeights(w, mode, scope);
+      const check = checkConstraints(metrics, constraints);
+      const obj = objectiveValue(metrics, objective);
+      if (check.violated < bestCheck.violated || (check.violated === bestCheck.violated && obj > bestObj)){
+        best = arr; bestMetrics = metrics; bestCheck = check; bestObj = obj;
+      }
+    });
 
     return { weights: toWeightsObj(best), metrics: bestMetrics, check: bestCheck };
   }
@@ -1114,6 +1169,41 @@ footer{ max-width: var(--maxw); margin: 0 auto; padding: 30px 24px 60px; font-fa
 
   const ASSET_COLORS = { vwra11:'#2a78d6', divo11:'#eb6834', b5p211:'#1E6B4F', cdib11:'#7A5820', gold11:'#A8402A' };
 
+  /* ---------- limites por ativo (min/max) do otimizador ---------- */
+  const BOUND_DEFAULTS = {
+    vwra11: { min: 5, max: '' }, divo11: { min: 5, max: '' }, b5p211: { min: 5, max: '' },
+    cdib11: { min: 5, max: '' }, gold11: { min: 5, max: 5 },
+  };
+  (function buildBoundsInputs(){
+    const container = document.getElementById('opt-bounds');
+    ASSET_KEYS.forEach(k => {
+      const row = document.createElement('div');
+      row.className = 'opt-bound-row';
+      row.innerHTML = `
+        <div class="opt-bound-label"><span class="opt-bound-dot" style="background:${ASSET_COLORS[k]}"></span>${ASSET_LABELS[k]}</div>
+        <div class="opt-bound-field">
+          <label for="opt-bound-min-${k}">Mín.</label>
+          <div class="opt-input-wrap"><input type="number" id="opt-bound-min-${k}" min="0" max="100" step="1" placeholder="0" value="${BOUND_DEFAULTS[k].min}"><span>%</span></div>
+        </div>
+        <div class="opt-bound-field">
+          <label for="opt-bound-max-${k}">Máx.</label>
+          <div class="opt-input-wrap"><input type="number" id="opt-bound-max-${k}" min="0" max="100" step="1" placeholder="100" value="${BOUND_DEFAULTS[k].max}"><span>%</span></div>
+        </div>
+      `;
+      container.appendChild(row);
+    });
+  })();
+
+  function readBounds(){
+    return ASSET_KEYS.map(k => {
+      const minRaw = document.getElementById('opt-bound-min-'+k).value;
+      const maxRaw = document.getElementById('opt-bound-max-'+k).value;
+      const lo = minRaw === '' ? 0 : Math.max(0, Math.min(100, parseFloat(minRaw)));
+      const hi = maxRaw === '' ? 100 : Math.max(0, Math.min(100, parseFloat(maxRaw)));
+      return { lo: Math.min(lo,hi), hi: Math.max(lo,hi), key: k };
+    });
+  }
+
   function renderOptimizerResult(result, constraints){
     const el = document.getElementById('opt-result');
     if (!result){
@@ -1184,18 +1274,29 @@ footer{ max-width: var(--maxw); margin: 0 auto; padding: 30px 24px 60px; font-fa
     const mode = document.getElementById('opt-basis').value;
     const scopeSel = document.getElementById('opt-scope').value;
     const scope = scopeSel === 'full' ? 'full' : parseInt(scopeYearsSelect.value, 10);
-    const minWeight = parseFloat(document.getElementById('opt-min-weight').value) || 0;
     const objective = document.getElementById('opt-objective').value;
+    const bounds = readBounds();
+
+    const resultEl = document.getElementById('opt-result');
+    const sumLo = bounds.reduce((a,b) => a+b.lo, 0);
+    const sumHi = bounds.reduce((a,b) => a+b.hi, 0);
+    if (sumLo > 100 + 1e-6){
+      resultEl.innerHTML = `<p class="opt-bounds-error">A soma dos mínimos definidos (${sumLo.toFixed(0)}%) já passa de 100% — não existe composição possível com esses limites. Reduza algum mínimo.</p>`;
+      return;
+    }
+    if (sumHi < 100 - 1e-6){
+      resultEl.innerHTML = `<p class="opt-bounds-error">A soma dos máximos definidos (${sumHi.toFixed(0)}%) não chega a 100% — não existe composição possível com esses limites. Aumente algum máximo.</p>`;
+      return;
+    }
 
     const runBtn = document.getElementById('opt-run');
-    const resultEl = document.getElementById('opt-result');
     runBtn.disabled = true;
     const originalText = runBtn.textContent;
     runBtn.textContent = 'Calculando…';
     resultEl.innerHTML = '';
 
     setTimeout(() => {
-      const result = runOptimizer(constraints, mode, scope, minWeight, objective);
+      const result = runOptimizer(constraints, mode, scope, bounds, objective);
       renderOptimizerResult(result, constraints);
       runBtn.disabled = false;
       runBtn.textContent = originalText;
