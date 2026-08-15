@@ -91,20 +91,51 @@ a:focus-visible, button:focus-visible{ outline: 2px solid var(--gold); outline-o
 .masthead-nav-link{ font-family: var(--font-mono); font-size: 12px; letter-spacing: .04em; color: var(--muted); text-decoration:none; }
 .masthead-nav-link:hover{ color: var(--green); }
 
-main{ max-width: var(--maxw); margin: 0 auto; padding: 40px 24px 90px; }
+main{ max-width: var(--maxw); margin: 0 auto; padding: 48px 24px 90px; }
 
-/* ---------- Article grid ---------- */
-.article-grid{ display:grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 20px; }
+/* ---------- Hero ---------- */
+.hero{ margin-bottom: 56px; max-width: 62ch; }
+.hero h1{
+  font-family: var(--font-display); font-weight: 600; font-size: 2.3rem; line-height: 1.18;
+  letter-spacing: -0.01em; margin: 0 0 14px;
+}
+.hero p{ color: var(--muted); font-size: 16.5px; margin: 0; }
 
-.article-card{
+/* ---------- Vitrine (faixa horizontal) ---------- */
+.vitrine-section{ margin-bottom: 52px; }
+.vitrine-header{
+  display:flex; align-items: baseline; justify-content: space-between; gap: 16px;
+  margin-bottom: 18px; flex-wrap: wrap;
+}
+.vitrine-title{
+  font-family: var(--font-display); font-weight: 600; font-size: 1.5rem;
+  letter-spacing: -0.01em; margin: 0;
+}
+.vitrine-see-all{
+  font-family: var(--font-mono); font-size: 12.5px; letter-spacing: .03em;
+  text-decoration: none; color: var(--green); white-space: nowrap;
+}
+.vitrine-see-all:hover{ color: var(--brick); }
+
+.vitrine-wrap{ position: relative; }
+.vitrine-track{
+  display:flex; gap: 16px; overflow-x: auto; scroll-snap-type: x proximity;
+  padding: 2px 2px 10px; margin: 0 -2px;
+  scrollbar-width: thin; scrollbar-color: var(--line-strong) transparent;
+}
+.vitrine-track::-webkit-scrollbar{ height: 6px; }
+.vitrine-track::-webkit-scrollbar-thumb{ background: var(--line-strong); border-radius: 3px; }
+
+.vitrine-card{
+  flex: 0 0 280px; scroll-snap-align: start;
   display:flex; flex-direction: column; height: 100%;
   text-decoration:none; color: inherit;
-  padding: 24px 24px 22px; border: 1px solid var(--line-strong); border-radius: 4px; background: var(--paper-raised);
+  padding: 22px 22px 20px; border: 1px solid var(--line-strong); border-radius: 4px; background: var(--paper-raised);
   transition: border-color .18s ease, transform .18s ease, box-shadow .18s ease;
 }
-.article-card:hover{ border-color: var(--green); transform: translateY(-3px); box-shadow: 0 6px 18px rgba(23,26,24,.08); }
-.article-card:hover .card-title{ color: var(--green); }
-.article-card:hover .card-arrow{ transform: translateX(4px); opacity:1; }
+.vitrine-card:hover{ border-color: var(--green); transform: translateY(-3px); box-shadow: 0 6px 18px rgba(23,26,24,.08); }
+.vitrine-card:hover .card-title{ color: var(--green); }
+.vitrine-card:hover .card-arrow{ transform: translateX(4px); opacity:1; }
 
 .card-eyebrow{
   font-family: var(--font-mono); font-size: 11px; letter-spacing: .08em; text-transform: uppercase;
@@ -112,18 +143,42 @@ main{ max-width: var(--maxw); margin: 0 auto; padding: 40px 24px 90px; }
 }
 .card-top{ display:flex; align-items: flex-start; justify-content: space-between; gap: 12px; }
 .card-title{
-  font-family: var(--font-display); font-weight: 600; font-size: 1.2rem;
+  font-family: var(--font-display); font-weight: 600; font-size: 1.1rem;
   line-height: 1.25; letter-spacing: -0.01em; color: var(--ink); margin: 0 0 10px; transition: color .15s ease;
 }
 .card-arrow{
   font-family: var(--font-mono); color: var(--gold); font-size: 16px; flex: none; margin-top: 4px;
   opacity: .55; transition: transform .18s ease, opacity .18s ease;
 }
-.card-summary{ color: var(--muted); font-size: 14px; margin: 0 0 14px; flex: 1; }
+.card-summary{ color: var(--muted); font-size: 13.5px; margin: 0 0 14px; flex: 1; }
 .card-meta{
   font-family: var(--font-mono); font-size: 11px; color: var(--muted); display:flex; gap: 14px; flex-wrap: wrap; margin-top: auto;
 }
 .card-meta b{ color: var(--ink); }
+
+.vitrine-empty{
+  flex: 0 0 min(420px, 100%); scroll-snap-align: start;
+  border: 1px dashed var(--line-strong); border-radius: 4px; background: var(--paper-raised);
+  padding: 28px 24px; text-align: center; color: var(--muted);
+}
+.vitrine-empty-title{ font-family: var(--font-display); font-size: 1.05rem; color: var(--ink); margin: 0 0 6px; }
+.vitrine-empty p{ margin: 0; font-size: 13.5px; }
+
+.vitrine-arrow{
+  position:absolute; top: 50%; transform: translateY(-50%);
+  width: 34px; height: 34px; border-radius: 50%;
+  border: 1px solid var(--line-strong); background: var(--paper);
+  color: var(--ink); font-family: var(--font-mono); font-size: 16px; line-height: 1;
+  cursor: pointer; display:flex; align-items:center; justify-content:center;
+  box-shadow: 0 2px 8px rgba(23,26,24,.10);
+  transition: border-color .15s ease, color .15s ease, background .15s ease;
+}
+.vitrine-arrow:hover{ border-color: var(--green); color: var(--green); }
+.vitrine-arrow-left{ left: -12px; }
+.vitrine-arrow-right{ right: -12px; }
+@media (max-width: 640px){
+  .vitrine-arrow{ display:none; }
+}
 
 footer{ max-width: var(--maxw); margin: 0 auto; padding: 30px 24px 60px; font-family: var(--font-mono); font-size: 12px; color: var(--muted); text-align:center; line-height: 1.8; }
 </style>
@@ -135,66 +190,98 @@ footer{ max-width: var(--maxw); margin: 0 auto; padding: 30px 24px 60px; font-fa
     <div class="masthead-left">
       <a href="." class="wordmark"><span>Independência</span>Calculada</a>
       <a href="sobre/" class="masthead-nav-link">Sobre</a>
+      <a href="artigos/" class="masthead-nav-link">Artigos</a>
+      <a href="simuladores/" class="masthead-nav-link">Simuladores</a>
     </div>
     <div class="masthead-tag">Planejamento financeiro para atingir sua liberdade</div>
   </div>
 </div>
 
 <main>
-  <h1 class="visually-hidden">Independência Calculada — Artigos</h1>
+  <section class="hero">
+    <h1>Estudos quantitativos sobre FIRE, taxa de retirada e alocação de carteira</h1>
+    <p>Metodologia aberta, dados reais e calculadoras interativas — sem achismo, sem fórmula mágica.</p>
+  </section>
 
-  <section class="article-grid">
-    <a href="montar-carteira-estudo-de-caso/" class="article-card">
-      <div class="card-eyebrow">Planejamento · Estudo de caso</div>
-      <div class="card-top">
-        <h2 class="card-title">Passo a passo para montar uma carteira de investimentos: um estudo de caso</h2>
-        <span class="card-arrow">→</span>
-      </div>
-      <p class="card-summary">Do objetivo de vida até a escolha do ativo — um caso hipotético completo, com projeção de patrimônio-alvo, teste de rentabilidade e comparação entre IPCA e IGP-M, terminando no Tesouro Educa+.</p>
-      <div class="card-meta">
-        <span><b>Publicado em</b> 14 ago. 2026</span>
-        <span>~15 min de leitura</span>
-      </div>
-    </a>
+  <section class="vitrine-section" aria-labelledby="artigos-heading">
+    <div class="vitrine-header">
+      <h2 class="vitrine-title" id="artigos-heading">Artigos</h2>
+      <a href="artigos/" class="vitrine-see-all">Ver todos →</a>
+    </div>
+    <div class="vitrine-wrap">
+      <button class="vitrine-arrow vitrine-arrow-left" data-target="artigos-track" aria-label="Artigos anteriores">‹</button>
+      <div class="vitrine-track" id="artigos-track">
+        <a href="montar-carteira-estudo-de-caso/" class="vitrine-card">
+          <div class="card-eyebrow">Planejamento · Estudo de caso</div>
+          <div class="card-top">
+            <h3 class="card-title">Passo a passo para montar uma carteira de investimentos: um estudo de caso</h3>
+            <span class="card-arrow">→</span>
+          </div>
+          <p class="card-summary">Do objetivo de vida até a escolha do ativo — um caso hipotético completo, terminando no Tesouro Educa+.</p>
+          <div class="card-meta">
+            <span><b>14 ago. 2026</b></span>
+            <span>~15 min</span>
+          </div>
+        </a>
 
-    <a href="pwr-carteira-fire/" class="article-card">
-      <div class="card-eyebrow">Aposentadoria · SWR/PWR</div>
-      <div class="card-top">
-        <h2 class="card-title">Qual é a PWR da minha carteira? Um estudo com 20 anos de dados reais</h2>
-        <span class="card-arrow">→</span>
-      </div>
-      <p class="card-summary">PWR de uma carteira de aposentadoria, via bootstrap estacionário sobre 20 anos de dados — contém calculadora interativa.</p>
-      <div class="card-meta">
-        <span><b>Publicado em</b> 9 ago. 2026</span>
-        <span>~12 min de leitura</span>
-      </div>
-    </a>
+        <a href="pwr-carteira-fire/" class="vitrine-card">
+          <div class="card-eyebrow">Aposentadoria · SWR/PWR</div>
+          <div class="card-top">
+            <h3 class="card-title">Qual é a PWR da minha carteira? Um estudo com 20 anos de dados reais</h3>
+            <span class="card-arrow">→</span>
+          </div>
+          <p class="card-summary">PWR de uma carteira de aposentadoria via bootstrap estacionário — contém calculadora interativa.</p>
+          <div class="card-meta">
+            <span><b>9 ago. 2026</b></span>
+            <span>~12 min</span>
+          </div>
+        </a>
 
-    <a href="quanto-posso-retirar-aposentadoria/" class="article-card">
-      <div class="card-eyebrow">Aposentadoria · SWR/PWR</div>
-      <div class="card-top">
-        <h2 class="card-title">Quanto posso retirar dos meus investimentos durante a aposentadoria?</h2>
-        <span class="card-arrow">→</span>
-      </div>
-      <p class="card-summary">As taxas de retirada e o risco da sequência de retornos negativos — explicado com rigor técnico e simulações.</p>
-      <div class="card-meta">
-        <span><b>Publicado em</b> 6 ago. 2026</span>
-        <span>~20 min de leitura</span>
-      </div>
-    </a>
+        <a href="quanto-posso-retirar-aposentadoria/" class="vitrine-card">
+          <div class="card-eyebrow">Aposentadoria · SWR/PWR</div>
+          <div class="card-top">
+            <h3 class="card-title">Quanto posso retirar dos meus investimentos durante a aposentadoria?</h3>
+            <span class="card-arrow">→</span>
+          </div>
+          <p class="card-summary">As taxas de retirada e o risco da sequência de retornos negativos, explicado com rigor técnico.</p>
+          <div class="card-meta">
+            <span><b>6 ago. 2026</b></span>
+            <span>~20 min</span>
+          </div>
+        </a>
 
-    <a href="ipca-hiperinflacao/" class="article-card">
-      <div class="card-eyebrow">Renda fixa · Tesouro Direto</div>
-      <div class="card-top">
-        <h2 class="card-title">A confusão generalizada sobre os Títulos IPCA+</h2>
-        <span class="card-arrow">→</span>
+        <a href="ipca-hiperinflacao/" class="vitrine-card">
+          <div class="card-eyebrow">Renda fixa · Tesouro Direto</div>
+          <div class="card-top">
+            <h3 class="card-title">A confusão generalizada sobre os Títulos IPCA+</h3>
+            <span class="card-arrow">→</span>
+          </div>
+          <p class="card-summary">O alarme sobre "inflação alta destrói a rentabilidade" usa uma fórmula matematicamente errada.</p>
+          <div class="card-meta">
+            <span><b>6 ago. 2026</b></span>
+            <span>~13 min</span>
+          </div>
+        </a>
       </div>
-      <p class="card-summary">O alarme sobre "inflação alta destrói a rentabilidade" usa uma fórmula matematicamente errada — e a certa conta uma história bem diferente.</p>
-      <div class="card-meta">
-        <span><b>Publicado em</b> 6 ago. 2026</span>
-        <span>~13 min de leitura</span>
+      <button class="vitrine-arrow vitrine-arrow-right" data-target="artigos-track" aria-label="Próximos artigos">›</button>
+    </div>
+  </section>
+
+  <section class="vitrine-section" aria-labelledby="simuladores-heading">
+    <div class="vitrine-header">
+      <h2 class="vitrine-title" id="simuladores-heading">Simuladores</h2>
+      <a href="simuladores/" class="vitrine-see-all">Ver todos →</a>
+    </div>
+    <div class="vitrine-wrap">
+      <button class="vitrine-arrow vitrine-arrow-left" data-target="simuladores-track" aria-label="Simuladores anteriores">‹</button>
+      <div class="vitrine-track" id="simuladores-track">
+        <div class="vitrine-empty">
+          <p class="vitrine-empty-title">O primeiro simulador está em construção</p>
+          <p>Em breve: um comparador de composição de carteira.</p>
+        </div>
       </div>
-    </a>
+      <button class="vitrine-arrow vitrine-arrow-right" data-target="simuladores-track" aria-label="Próximos simuladores">›</button>
+    </div>
   </section>
 </main>
 
@@ -202,6 +289,19 @@ footer{ max-width: var(--maxw); margin: 0 auto; padding: 30px 24px 60px; font-fa
   Independência Calculada — Planejamento financeiro para atingir sua liberdade.<br>
   Conteúdo educacional, não é recomendação de investimento.
 </footer>
+
+<script>
+document.querySelectorAll('.vitrine-arrow').forEach(function(btn){
+  btn.addEventListener('click', function(){
+    var track = document.getElementById(btn.dataset.target);
+    if (!track) return;
+    var card = track.querySelector('.vitrine-card, .vitrine-empty');
+    var step = card ? card.getBoundingClientRect().width + 16 : 300;
+    var dir = btn.classList.contains('vitrine-arrow-left') ? -1 : 1;
+    track.scrollBy({ left: dir * step, behavior: 'smooth' });
+  });
+});
+</script>
 
 </body>
 </html>
