@@ -69,6 +69,46 @@ a{ color: var(--green); text-decoration-thickness: 1px; text-underline-offset: 2
 a:hover{ color: var(--brick); }
 a:focus-visible, button:focus-visible, input:focus-visible{ outline: 2px solid var(--gold); outline-offset: 2px; }
 
+/* ---------- Navegação lateral / progresso / voltar ao topo ---------- */
+.progress-rail{ position: fixed; top:0; left:0; right:0; height: 3px; background: transparent; z-index: 60; }
+.progress-fill{ height: 100%; width:0%; background: linear-gradient(90deg, var(--gold), var(--green)); transition: width .08s linear; }
+
+.back-to-top{
+  position: fixed; right: 22px; bottom: 22px; width: 42px; height:42px; border-radius: 50%;
+  background: var(--ink); color: var(--paper); border: none;
+  display:flex; align-items:center; justify-content:center; cursor:pointer;
+  opacity:0; visibility:hidden; transform: translateY(8px);
+  transition: opacity .25s ease, transform .25s ease, background .15s ease;
+  z-index: 55; box-shadow: 0 4px 14px rgba(0,0,0,.18);
+}
+.back-to-top.show{ opacity:1; visibility:visible; transform:translateY(0); }
+.back-to-top:hover{ background: var(--green); }
+.back-to-top svg{ width:16px; height:16px; }
+
+.toc-rail{
+  position: fixed; top: 50%; transform: translateY(-50%);
+  right: max(14px, calc((100vw - var(--maxw)) / 2 - 46px));
+  display:flex; flex-direction:column; gap: 9px; z-index: 40;
+}
+.toc-rail a{
+  width: 24px; height:24px; display:flex; align-items:center; justify-content:center;
+  position:relative; text-decoration:none;
+}
+.toc-rail a::after{
+  content:""; width:9px; height:9px; border-radius:50%; background: var(--line-strong);
+  transition: background .2s ease, transform .2s ease;
+}
+.toc-rail a:hover::after, .toc-rail a.active::after{ background: var(--green); transform: scale(1.3); }
+.toc-rail a .toc-label{
+  position:absolute; right: 20px; top:50%; transform: translateY(-50%);
+  font-family: var(--font-mono); font-size: 11px; color: var(--ink);
+  background: var(--paper-raised); border: 1px solid var(--line-strong);
+  padding: 4px 9px; border-radius: 3px; white-space: nowrap;
+  opacity:0; visibility:hidden; transition: opacity .15s ease; pointer-events:none;
+}
+.toc-rail a:hover .toc-label{ opacity:1; visibility:visible; }
+@media (max-width: 1240px){ .toc-rail{ display:none; } }
+
 /* ---------- Masthead ---------- */
 .masthead{ border-bottom: 1px solid var(--line-strong); padding: 18px 24px; }
 .masthead-inner{ max-width: var(--maxw); margin: 0 auto; display:flex; align-items:center; justify-content: space-between; gap: 12px; flex-wrap: wrap; }
@@ -113,11 +153,12 @@ main{ max-width: var(--maxw); margin: 0 auto; padding: 40px 24px 100px; }
   background: var(--paper); border: 1px solid var(--line-strong); border-radius: 8px;
   padding: 8px 10px; min-width: 70px;
 }
+.weight-item:focus-within{ border-color: var(--green); }
 .weight-item label{ font-size: 10px; font-family: var(--font-mono); color: var(--muted); letter-spacing: .04em; text-transform: uppercase; }
 .weight-item .input-wrap{ display:flex; align-items: baseline; gap: 3px; }
 .weight-item input{
-  width: 40px; font-family: var(--font-mono); font-size: 16px; font-weight: 600; text-align: left;
-  padding: 0; border: none; background: transparent; color: var(--ink);
+  width: 48px; font-family: var(--font-mono); font-size: 16px; font-weight: 600; text-align: left;
+  padding: 4px 0; border: none; background: transparent; color: var(--ink);
 }
 .weight-item .pct-sign{ font-size: 12px; color: var(--muted); }
 
@@ -289,6 +330,22 @@ footer{ max-width: var(--maxw); margin: 0 auto; padding: 30px 24px 60px; font-fa
 </head>
 <body>
 
+<div class="progress-rail"><div class="progress-fill" id="progressFill"></div></div>
+
+<nav class="toc-rail" id="tocRail" aria-label="Navegação do comparador">
+  <a href="#otimizador" aria-label="Otimizador"><span class="toc-label">Otimizador</span></a>
+  <a href="#cagr-janela-movel" aria-label="CAGR por janela móvel"><span class="toc-label">CAGR por janela móvel</span></a>
+  <a href="#cagr-funil" aria-label="Funil de CAGR"><span class="toc-label">Funil de CAGR</span></a>
+  <a href="#drawdown" aria-label="Drawdown"><span class="toc-label">Drawdown</span></a>
+  <a href="#perfil-episodios" aria-label="Perfil dos episódios"><span class="toc-label">Perfil dos episódios</span></a>
+  <a href="#ulcer-index" aria-label="Ulcer Index"><span class="toc-label">Ulcer Index</span></a>
+  <a href="#sharpe-sortino" aria-label="Sharpe & Sortino"><span class="toc-label">Sharpe &amp; Sortino</span></a>
+</nav>
+
+<button type="button" class="back-to-top" id="backToTop" aria-label="Voltar ao topo">
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M12 19V5M5 12l7-7 7 7"/></svg>
+</button>
+
 <div class="masthead">
   <div class="masthead-inner">
     <div class="masthead-left">
@@ -321,7 +378,7 @@ footer{ max-width: var(--maxw); margin: 0 auto; padding: 30px 24px 60px; font-fa
         <div class="controls-footer">
           <div class="weight-sum">
             <span>Soma</span>
-            <span class="weight-sum-value" id="sum-c1">100%</span>
+            <span class="weight-sum-value" id="sum-c1" aria-live="polite">100%</span>
           </div>
           <div class="panel-actions">
             <button class="btn btn-primary" id="apply-c1" disabled>Aplicar</button>
@@ -338,7 +395,7 @@ footer{ max-width: var(--maxw); margin: 0 auto; padding: 30px 24px 60px; font-fa
         <div class="controls-footer">
           <div class="weight-sum">
             <span>Soma</span>
-            <span class="weight-sum-value" id="sum-c2">100%</span>
+            <span class="weight-sum-value" id="sum-c2" aria-live="polite">100%</span>
           </div>
           <div class="panel-actions">
             <button class="btn btn-primary" id="apply-c2" disabled>Aplicar</button>
@@ -349,7 +406,7 @@ footer{ max-width: var(--maxw); margin: 0 auto; padding: 30px 24px 60px; font-fa
     </div>
   </div>
 
-  <section class="optimizer-section">
+  <section class="optimizer-section" id="otimizador">
     <button class="btn btn-secondary" id="opt-toggle" type="button" aria-expanded="false">Otimizar composição por restrições</button>
 
     <div class="optimizer-panel" id="opt-panel" hidden>
@@ -433,7 +490,7 @@ footer{ max-width: var(--maxw); margin: 0 auto; padding: 30px 24px 60px; font-fa
     </div>
   </section>
 
-  <section class="indicator-section">
+  <section class="indicator-section" id="cagr-janela-movel">
     <h2 class="indicator-title">CAGR por janela móvel de tamanho fixo</h2>
     <p class="indicator-desc">Cada ponto é uma janela específica de tamanho fixo, deslizando mês a mês pelo histórico — dá pra ver quando o CAGR daquele tamanho de janela foi melhor ou pior ao longo do tempo, não só a distribuição geral (essa distribuição resumida em percentis é o gráfico de CAGR logo abaixo).</p>
     <div style="display:flex; align-items:center; gap:12px; margin-bottom:14px; flex-wrap:wrap;">
@@ -460,7 +517,7 @@ footer{ max-width: var(--maxw); margin: 0 auto; padding: 30px 24px 60px; font-fa
     </details>
   </section>
 
-  <section class="indicator-section">
+  <section class="indicator-section" id="cagr-funil">
     <h2 class="indicator-title">CAGR</h2>
     <p class="indicator-desc">Retorno anualizado composto, por tamanho de janela (1–18 anos). Mediana + faixas de percentil (60% e 90% centrais) + pior/melhor caso observado.</p>
     <div class="chart-pair">
@@ -475,7 +532,7 @@ footer{ max-width: var(--maxw); margin: 0 auto; padding: 30px 24px 60px; font-fa
     </details>
   </section>
 
-  <section class="indicator-section">
+  <section class="indicator-section" id="drawdown">
     <h2 class="indicator-title">Drawdown</h2>
     <p class="indicator-desc">Trajetória "underwater" completa — % abaixo do pico anterior, mês a mês, ao longo de todo o histórico (jan/2006–jun/2026). Não varia por tamanho de janela. Cada episódio de queda ≥5% do pico anterior vira um badge numerado no fundo da curva; os detalhes de cada um (pico, fundo, queda, recuperação e o evento histórico, quando identificável) ficam na tabela logo abaixo de cada gráfico.</p>
     <div class="chart-pair">
@@ -490,7 +547,7 @@ footer{ max-width: var(--maxw); margin: 0 auto; padding: 30px 24px 60px; font-fa
     </details>
   </section>
 
-  <section class="indicator-section">
+  <section class="indicator-section" id="perfil-episodios">
     <h2 class="indicator-title">Perfil dos episódios de queda</h2>
     <p class="indicator-desc">Profundidade × duração de cada episódio de drawdown (mesmo critério do gráfico acima: queda ≥5% do pico anterior, mesma numeração), Carteira 1 e Carteira 2 no mesmo gráfico pra comparar diretamente. Só episódios já recuperados aparecem no gráfico de pontos (duração desconhecida enquanto não recupera); as tabelas abaixo listam todos, inclusive os ainda em curso.</p>
     <div class="legend-mini" id="legend-scatter"></div>
@@ -509,9 +566,9 @@ footer{ max-width: var(--maxw); margin: 0 auto; padding: 30px 24px 60px; font-fa
     </details>
   </section>
 
-  <section class="indicator-section">
+  <section class="indicator-section" id="ulcer-index">
     <h2 class="indicator-title">Ulcer Index</h2>
-    <p class="indicator-desc">Profundidade × duração das quedas, por tamanho de janela. Não é percentual — quanto maior, mais tempo o capital passou "sofrendo" abaixo do pico.</p>
+    <p class="indicator-desc">Um único número que combina profundidade e duração das quedas, por tamanho de janela (1–18 anos). Mediana + faixas de percentil (60% e 90% centrais) + pior/melhor caso observado. Não é percentual — quanto maior, mais tempo o capital passou "sofrendo" abaixo do pico.</p>
     <div class="chart-pair">
       <div class="chart-card" data-side="c1"><p class="chart-card-title">Carteira 1</p><div class="legend-mini" id="legend-ulcer-c1"></div><div style="position:relative"><svg class="chart-svg" id="chart-ulcer-c1" viewBox="0 0 560 300"></svg><div class="tooltip" id="tt-ulcer-c1"></div></div></div>
       <div class="chart-card" data-side="c2"><p class="chart-card-title">Carteira 2</p><div class="legend-mini" id="legend-ulcer-c2"></div><div style="position:relative"><svg class="chart-svg" id="chart-ulcer-c2" viewBox="0 0 560 300"></svg><div class="tooltip" id="tt-ulcer-c2"></div></div></div>
@@ -524,7 +581,7 @@ footer{ max-width: var(--maxw); margin: 0 auto; padding: 30px 24px 60px; font-fa
     </details>
   </section>
 
-  <section class="indicator-section">
+  <section class="indicator-section" id="sharpe-sortino">
     <h2 class="indicator-title">Sharpe vs. Sortino</h2>
     <p class="indicator-desc">Retorno em excesso ao CDI por unidade de risco, por tamanho de janela. Sortino considera só a volatilidade dos meses negativos, por isso tende a ficar acima do Sharpe.</p>
     <div class="chart-pair">
@@ -1526,6 +1583,7 @@ footer{ max-width: var(--maxw); margin: 0 auto; padding: 30px 24px 60px; font-fa
     const ok = Math.abs(sum-100) < 0.01;
     sumEl.className = 'weight-sum-value ' + (ok ? 'ok' : 'bad');
     applyBtn.disabled = !ok;
+    applyBtn.title = ok ? '' : 'A soma dos pesos precisa ser 100% para aplicar';
   }
   function applyWeights(side){
     const w = readWeights(side);
@@ -1752,6 +1810,65 @@ footer{ max-width: var(--maxw); margin: 0 auto; padding: 30px 24px 60px; font-fa
       runBtn.textContent = originalText;
     }, 30);
   });
+
+  /* ---------- barra de progresso de leitura ---------- */
+  var progressFill = document.getElementById('progressFill');
+  function updateProgress(){
+    var h = document.documentElement;
+    var scrollTop = h.scrollTop || document.body.scrollTop;
+    var scrollHeight = (h.scrollHeight || document.body.scrollHeight) - h.clientHeight;
+    var pct = scrollHeight > 0 ? (scrollTop / scrollHeight) * 100 : 0;
+    progressFill.style.width = pct.toFixed(2) + '%';
+  }
+
+  /* ---------- botão voltar ao topo ---------- */
+  var backToTop = document.getElementById('backToTop');
+  function updateBackToTop(){
+    if(window.scrollY > 600){ backToTop.classList.add('show'); }
+    else{ backToTop.classList.remove('show'); }
+  }
+  backToTop.addEventListener('click', function(){
+    window.scrollTo({ top:0, behavior: 'smooth' });
+  });
+
+  window.addEventListener('scroll', function(){
+    updateProgress();
+    updateBackToTop();
+  }, { passive:true });
+  updateProgress();
+  updateBackToTop();
+
+  /* ---------- navegação lateral (TOC) ---------- */
+  var tocLinks = Array.prototype.slice.call(document.querySelectorAll('#tocRail a'));
+  var sections = tocLinks.map(function(a){
+    return document.getElementById(a.getAttribute('href').slice(1));
+  }).filter(Boolean);
+
+  // Este simulador tem seções bem mais altas que um artigo comum (gráficos SVG,
+  // tabelas, otimizador) — uma faixa de detecção estreita perto do topo evita que
+  // a bolinha fique "presa" numa seção grande por muito tempo de rolagem.
+  if('IntersectionObserver' in window && sections.length){
+    var intersecting = {};
+    function refreshActive(){
+      // Entre todas as seções atualmente dentro da faixa de detecção, a "ativa"
+      // é a última na ordem da página (a mais recente que o usuário cruzou) —
+      // evita que seções muito curtas (ex: otimizador fechado) sejam ofuscadas
+      // por uma seção vizinha maior que também esteja na faixa no mesmo instante.
+      var activeId = null;
+      sections.forEach(function(s){ if(intersecting[s.id]) activeId = s.id; });
+      if(activeId == null) return;
+      tocLinks.forEach(function(l){ l.classList.remove('active'); });
+      var link = document.querySelector('#tocRail a[href="#' + activeId + '"]');
+      if(link) link.classList.add('active');
+    }
+    var tocObserver = new IntersectionObserver(function(entries){
+      entries.forEach(function(entry){
+        intersecting[entry.target.id] = entry.isIntersecting;
+      });
+      refreshActive();
+    }, { rootMargin: '0px 0px -60% 0px', threshold: 0 });
+    sections.forEach(function(s){ tocObserver.observe(s); });
+  }
 })();
 </script>
 
