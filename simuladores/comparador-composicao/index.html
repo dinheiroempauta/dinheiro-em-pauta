@@ -20,6 +20,20 @@
 <meta name="twitter:description" content="Compare duas composições de carteira lado a lado, com dados reais.">
 <meta name="theme-color" content="#1E6B4F">
 <link rel="icon" type="image/png" href="../../favicon.png">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebApplication",
+  "name": "Comparador de Composição de Carteira",
+  "url": "https://independenciacalculada.com.br/simuladores/comparador-composicao/",
+  "description": "Compare duas composições de carteira lado a lado e veja o efeito em CAGR, Drawdown, Ulcer Index e Sharpe/Sortino, com dados reais de jan/2006 a jun/2026.",
+  "applicationCategory": "FinanceApplication",
+  "operatingSystem": "Any (navegador web)",
+  "isAccessibleForFree": true,
+  "inLanguage": "pt-BR",
+  "isPartOf": {"@type": "WebSite", "name": "Independência Calculada", "url": "https://independenciacalculada.com.br"}
+}
+</script>
 <!-- Privacy-friendly analytics by Umami -->
 <script defer src="https://cloud.umami.is/script.js" data-website-id="cfa01c19-23cd-468f-8d42-db9a697cf762"></script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -206,6 +220,19 @@ main{ max-width: var(--maxw); margin: 0 auto; padding: 40px 24px 100px; }
 .chart-card[data-side="c1"] .chart-card-title{ color: var(--hue-c1); }
 .chart-card[data-side="c2"] .chart-card-title{ color: var(--hue-c2); }
 svg.chart-svg{ width: 100%; height: auto; display:block; overflow: visible; }
+
+/* ---------- Skeleton de carregamento dos gráficos ---------- */
+.chart-wrap{ position: relative; }
+.chart-wrap svg.chart-svg{ opacity: 0; transition: opacity .25s ease; }
+.chart-wrap.loaded svg.chart-svg{ opacity: 1; }
+.chart-skeleton{
+  position: absolute; inset: 0; border-radius: 6px;
+  background: linear-gradient(90deg, var(--line) 25%, var(--line-strong) 42%, var(--line) 63%);
+  background-size: 400% 100%; animation: chart-skeleton-pulse 1.5s ease-in-out infinite;
+}
+.chart-wrap.loaded .chart-skeleton{ display: none; }
+@keyframes chart-skeleton-pulse{ 0%{ background-position: 100% 0; } 100%{ background-position: 0 0; } }
+@media (prefers-reduced-motion: reduce){ .chart-skeleton{ animation-duration: 3s; } }
 .gridline{ stroke: var(--line); stroke-width: 1; }
 .baseline{ stroke: var(--line-strong); stroke-width: 1; }
 .axis-label{ fill: var(--muted); font-family: var(--font-mono); font-size: 10px; }
@@ -229,6 +256,25 @@ svg.chart-svg{ width: 100%; height: auto; display:block; overflow: visible; }
 
 /* ---------- Otimizador ---------- */
 .optimizer-section{ margin-bottom: 40px; }
+.optimizer-highlight{
+  border: 1.5px solid var(--gold); border-radius: 10px; background: var(--paper-raised);
+  padding: 22px 24px; box-shadow: 0 3px 16px rgba(122,88,32,.10);
+}
+.optimizer-header{ display:flex; align-items:flex-start; gap: 14px; margin-bottom: 16px; }
+.optimizer-header-icon{
+  flex: none; width: 40px; height: 40px; border-radius: 50%; background: var(--gold-soft); color: var(--gold);
+  display:flex; align-items:center; justify-content:center;
+}
+.optimizer-header-icon svg{ width: 20px; height: 20px; }
+.optimizer-header-title-row{ display:flex; align-items:center; gap: 10px; flex-wrap: wrap; }
+.optimizer-header-title{ font-family: var(--font-display); font-weight: 600; font-size: 1.25rem; margin: 0; }
+.optimizer-badge{
+  font-family: var(--font-mono); font-size: 10.5px; font-weight: 700; letter-spacing: .04em; text-transform: uppercase;
+  color: var(--gold); background: var(--gold-soft); border-radius: 20px; padding: 3px 10px;
+}
+.optimizer-header-sub{ font-size: 13.5px; color: var(--muted); margin: 6px 0 0; max-width: 620px; line-height: 1.55; }
+.opt-toggle-btn{ display:inline-flex; align-items:center; gap: 8px; }
+.opt-toggle-btn svg{ flex: none; }
 .optimizer-panel{
   margin-top: 14px; border: 1px solid var(--line-strong); border-radius: 8px; background: var(--paper-raised);
   padding: 22px 24px;
@@ -415,8 +461,23 @@ footer{ max-width: var(--maxw); margin: 0 auto; padding: 30px 24px 60px; font-fa
     </div>
   </div>
 
-  <section class="optimizer-section" id="otimizador">
-    <button class="btn btn-secondary" id="opt-toggle" type="button" aria-expanded="false">Otimizar composição por restrições</button>
+  <section class="optimizer-section optimizer-highlight" id="otimizador">
+    <div class="optimizer-header">
+      <div class="optimizer-header-icon" aria-hidden="true">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/></svg>
+      </div>
+      <div class="optimizer-header-text">
+        <div class="optimizer-header-title-row">
+          <h2 class="optimizer-header-title">Otimizador de composição</h2>
+          <span class="optimizer-badge">Experimente</span>
+        </div>
+        <p class="optimizer-header-sub">Em vez de ajustar pesos manualmente, diga o que você quer (CAGR mínimo, perda máxima tolerável, Sharpe...) e deixe o comparador procurar a composição que atende.</p>
+      </div>
+    </div>
+    <button class="btn btn-primary opt-toggle-btn" id="opt-toggle" type="button" aria-expanded="false">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" width="15" height="15" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/></svg>
+      Buscar composição por restrições
+    </button>
 
     <div class="optimizer-panel" id="opt-panel" hidden>
       <p class="optimizer-intro">Defina restrições opcionais (deixe em branco pra ignorar) e o que priorizar entre as composições que atendem tudo. A busca testa composições em múltiplos de 5% (depois refina em 1% ao redor da melhor encontrada) — não é um ótimo matemático exato, é a melhor composição testada na grade. "Período completo" é quase instantâneo; "janela específica" pode levar alguns segundos, mais em janelas menores (mais sub-períodos pra testar por composição).</p>
@@ -510,7 +571,7 @@ footer{ max-width: var(--maxw); margin: 0 auto; padding: 30px 24px 60px; font-fa
     <div class="legend-mini" id="legend-cagr-window"></div>
     <div class="cagr-window-layout">
       <div class="chart-card">
-        <div style="position:relative"><svg class="chart-svg" id="chart-cagr-window" viewBox="0 0 900 320"></svg><div class="tooltip" id="tt-cagr-window"></div></div>
+        <div class="chart-wrap" style="aspect-ratio:900/320"><div class="chart-skeleton" aria-hidden="true"></div><svg class="chart-svg" id="chart-cagr-window" viewBox="0 0 900 320"></svg><div class="tooltip" id="tt-cagr-window"></div></div>
       </div>
       <div class="chart-card">
         <p class="wins-table-title">Quantas vezes cada carteira venceu</p>
@@ -530,8 +591,8 @@ footer{ max-width: var(--maxw); margin: 0 auto; padding: 30px 24px 60px; font-fa
     <h2 class="indicator-title">CAGR</h2>
     <p class="indicator-desc">Retorno anualizado composto, por tamanho de janela (1–18 anos). Mediana + faixas de percentil (60% e 90% centrais) + pior/melhor caso observado.</p>
     <div class="chart-pair">
-      <div class="chart-card" data-side="c1"><p class="chart-card-title">Carteira 1</p><div class="legend-mini" id="legend-cagr-c1"></div><div style="position:relative"><svg class="chart-svg" id="chart-cagr-c1" viewBox="0 0 560 300"></svg><div class="tooltip" id="tt-cagr-c1"></div></div></div>
-      <div class="chart-card" data-side="c2"><p class="chart-card-title">Carteira 2</p><div class="legend-mini" id="legend-cagr-c2"></div><div style="position:relative"><svg class="chart-svg" id="chart-cagr-c2" viewBox="0 0 560 300"></svg><div class="tooltip" id="tt-cagr-c2"></div></div></div>
+      <div class="chart-card" data-side="c1"><p class="chart-card-title">Carteira 1</p><div class="legend-mini" id="legend-cagr-c1"></div><div class="chart-wrap" style="aspect-ratio:560/300"><div class="chart-skeleton" aria-hidden="true"></div><svg class="chart-svg" id="chart-cagr-c1" viewBox="0 0 560 300"></svg><div class="tooltip" id="tt-cagr-c1"></div></div></div>
+      <div class="chart-card" data-side="c2"><p class="chart-card-title">Carteira 2</p><div class="legend-mini" id="legend-cagr-c2"></div><div class="chart-wrap" style="aspect-ratio:560/300"><div class="chart-skeleton" aria-hidden="true"></div><svg class="chart-svg" id="chart-cagr-c2" viewBox="0 0 560 300"></svg><div class="tooltip" id="tt-cagr-c2"></div></div></div>
     </div>
     <details class="explainer">
       <summary>O que é, como se calcula e como ler este gráfico</summary>
@@ -545,8 +606,8 @@ footer{ max-width: var(--maxw); margin: 0 auto; padding: 30px 24px 60px; font-fa
     <h2 class="indicator-title">Drawdown</h2>
     <p class="indicator-desc">Trajetória "underwater" completa — % abaixo do pico anterior, mês a mês, ao longo de todo o histórico (jan/2006–jun/2026). Não varia por tamanho de janela. Cada episódio de queda ≥5% do pico anterior vira um badge numerado no fundo da curva; os detalhes de cada um (pico, fundo, queda, recuperação e o evento histórico, quando identificável) ficam na tabela logo abaixo de cada gráfico.</p>
     <div class="chart-pair">
-      <div class="chart-card" data-side="c1"><p class="chart-card-title">Carteira 1</p><div style="position:relative"><svg class="chart-svg" id="chart-dd-c1" viewBox="0 0 560 300"></svg><div class="tooltip" id="tt-dd-c1"></div></div><div style="overflow-x:auto"><table class="dd-table" id="dd-table-c1"></table></div></div>
-      <div class="chart-card" data-side="c2"><p class="chart-card-title">Carteira 2</p><div style="position:relative"><svg class="chart-svg" id="chart-dd-c2" viewBox="0 0 560 300"></svg><div class="tooltip" id="tt-dd-c2"></div></div><div style="overflow-x:auto"><table class="dd-table" id="dd-table-c2"></table></div></div>
+      <div class="chart-card" data-side="c1"><p class="chart-card-title">Carteira 1</p><div class="chart-wrap" style="aspect-ratio:560/300"><div class="chart-skeleton" aria-hidden="true"></div><svg class="chart-svg" id="chart-dd-c1" viewBox="0 0 560 300"></svg><div class="tooltip" id="tt-dd-c1"></div></div><div style="overflow-x:auto"><table class="dd-table" id="dd-table-c1"></table></div></div>
+      <div class="chart-card" data-side="c2"><p class="chart-card-title">Carteira 2</p><div class="chart-wrap" style="aspect-ratio:560/300"><div class="chart-skeleton" aria-hidden="true"></div><svg class="chart-svg" id="chart-dd-c2" viewBox="0 0 560 300"></svg><div class="tooltip" id="tt-dd-c2"></div></div><div style="overflow-x:auto"><table class="dd-table" id="dd-table-c2"></table></div></div>
     </div>
     <details class="explainer">
       <summary>O que é, como se calcula e como ler este gráfico</summary>
@@ -561,7 +622,7 @@ footer{ max-width: var(--maxw); margin: 0 auto; padding: 30px 24px 60px; font-fa
     <p class="indicator-desc">Profundidade × duração de cada episódio de drawdown (mesmo critério do gráfico acima: queda ≥5% do pico anterior, mesma numeração), Carteira 1 e Carteira 2 no mesmo gráfico pra comparar diretamente. Só episódios já recuperados aparecem no gráfico de pontos (duração desconhecida enquanto não recupera); as tabelas abaixo listam todos, inclusive os ainda em curso.</p>
     <div class="legend-mini" id="legend-scatter"></div>
     <div class="chart-card">
-      <div style="position:relative"><svg class="chart-svg" id="chart-scatter" viewBox="0 0 1000 380"></svg><div class="tooltip" id="tt-scatter"></div></div>
+      <div class="chart-wrap" style="aspect-ratio:1000/380"><div class="chart-skeleton" aria-hidden="true"></div><svg class="chart-svg" id="chart-scatter" viewBox="0 0 1000 380"></svg><div class="tooltip" id="tt-scatter"></div></div>
     </div>
     <div class="chart-pair" style="margin-top:16px;">
       <div class="chart-card" data-side="c1"><p class="chart-card-title">Carteira 1</p><div style="overflow-x:auto"><table class="dd-table" id="scatter-table-c1"></table></div></div>
@@ -579,8 +640,8 @@ footer{ max-width: var(--maxw); margin: 0 auto; padding: 30px 24px 60px; font-fa
     <h2 class="indicator-title">Ulcer Index</h2>
     <p class="indicator-desc">Um único número que combina profundidade e duração das quedas, por tamanho de janela (1–18 anos). Mediana + faixas de percentil (60% e 90% centrais) + pior/melhor caso observado. Não é percentual — quanto maior, mais tempo o capital passou "sofrendo" abaixo do pico.</p>
     <div class="chart-pair">
-      <div class="chart-card" data-side="c1"><p class="chart-card-title">Carteira 1</p><div class="legend-mini" id="legend-ulcer-c1"></div><div style="position:relative"><svg class="chart-svg" id="chart-ulcer-c1" viewBox="0 0 560 300"></svg><div class="tooltip" id="tt-ulcer-c1"></div></div></div>
-      <div class="chart-card" data-side="c2"><p class="chart-card-title">Carteira 2</p><div class="legend-mini" id="legend-ulcer-c2"></div><div style="position:relative"><svg class="chart-svg" id="chart-ulcer-c2" viewBox="0 0 560 300"></svg><div class="tooltip" id="tt-ulcer-c2"></div></div></div>
+      <div class="chart-card" data-side="c1"><p class="chart-card-title">Carteira 1</p><div class="legend-mini" id="legend-ulcer-c1"></div><div class="chart-wrap" style="aspect-ratio:560/300"><div class="chart-skeleton" aria-hidden="true"></div><svg class="chart-svg" id="chart-ulcer-c1" viewBox="0 0 560 300"></svg><div class="tooltip" id="tt-ulcer-c1"></div></div></div>
+      <div class="chart-card" data-side="c2"><p class="chart-card-title">Carteira 2</p><div class="legend-mini" id="legend-ulcer-c2"></div><div class="chart-wrap" style="aspect-ratio:560/300"><div class="chart-skeleton" aria-hidden="true"></div><svg class="chart-svg" id="chart-ulcer-c2" viewBox="0 0 560 300"></svg><div class="tooltip" id="tt-ulcer-c2"></div></div></div>
     </div>
     <details class="explainer">
       <summary>O que é, como se calcula e como ler este gráfico</summary>
@@ -594,8 +655,8 @@ footer{ max-width: var(--maxw); margin: 0 auto; padding: 30px 24px 60px; font-fa
     <h2 class="indicator-title">Sharpe vs. Sortino</h2>
     <p class="indicator-desc">Retorno em excesso ao CDI por unidade de risco, por tamanho de janela. Sortino considera só a volatilidade dos meses negativos, por isso tende a ficar acima do Sharpe.</p>
     <div class="chart-pair">
-      <div class="chart-card" data-side="c1"><p class="chart-card-title">Carteira 1</p><div class="legend-mini" id="legend-combo-c1"></div><div style="position:relative"><svg class="chart-svg" id="chart-combo-c1" viewBox="0 0 560 300"></svg><div class="tooltip" id="tt-combo-c1"></div></div></div>
-      <div class="chart-card" data-side="c2"><p class="chart-card-title">Carteira 2</p><div class="legend-mini" id="legend-combo-c2"></div><div style="position:relative"><svg class="chart-svg" id="chart-combo-c2" viewBox="0 0 560 300"></svg><div class="tooltip" id="tt-combo-c2"></div></div></div>
+      <div class="chart-card" data-side="c1"><p class="chart-card-title">Carteira 1</p><div class="legend-mini" id="legend-combo-c1"></div><div class="chart-wrap" style="aspect-ratio:560/300"><div class="chart-skeleton" aria-hidden="true"></div><svg class="chart-svg" id="chart-combo-c1" viewBox="0 0 560 300"></svg><div class="tooltip" id="tt-combo-c1"></div></div></div>
+      <div class="chart-card" data-side="c2"><p class="chart-card-title">Carteira 2</p><div class="legend-mini" id="legend-combo-c2"></div><div class="chart-wrap" style="aspect-ratio:560/300"><div class="chart-skeleton" aria-hidden="true"></div><svg class="chart-svg" id="chart-combo-c2" viewBox="0 0 560 300"></svg><div class="tooltip" id="tt-combo-c2"></div></div></div>
     </div>
     <details class="explainer">
       <summary>O que é, como se calcula e como ler este gráfico</summary>
@@ -926,6 +987,25 @@ footer{ max-width: var(--maxw); margin: 0 auto; padding: 30px 24px 60px; font-fa
   const fmtPct1 = v => (v*100).toFixed(1).replace('.', ',') + '%';
   const fmtNum2 = v => v.toFixed(2).replace('.', ',');
 
+  /* ---------- acessibilidade dos gráficos: <title>/role/aria-label dinâmicos ---------- */
+  // injeta um <title> como primeiro filho do <svg> (obrigatório pra leitor de
+  // tela) + role="img" e aria-label com a mesma descrição — chamado no início
+  // de cada função de desenho, antes dos outros appendChild, pra garantir que
+  // o <title> fique na posição correta mesmo após svg.innerHTML=''.
+  function setChartA11y(svg, text){
+    const title = svgEl('title', {});
+    title.textContent = text;
+    svg.appendChild(title);
+    svg.setAttribute('role', 'img');
+    svg.setAttribute('aria-label', text);
+  }
+  // marca um chart-card como "carregado", escondendo o skeleton pulsante e
+  // revelando o <svg> — chamado ao fim de cada função de desenho.
+  function revealChart(svg){
+    const wrap = svg.closest('.chart-wrap');
+    if (wrap) wrap.classList.add('loaded');
+  }
+
   /* ---------- hover sincronizado entre pares de gráficos ---------- */
   const CHART_HANDLES = {};
   const PAIRS = [
@@ -945,9 +1025,10 @@ footer{ max-width: var(--maxw); margin: 0 auto; padding: 30px 24px 60px; font-fa
     const partner = CHART_HANDLES[PAIR_OF[svgId]]; if (partner) partner.hide();
   }
 
-  function drawFunil(svgId, ttId, data, hue, yMin, yMax, fmt){
+  function drawFunil(svgId, ttId, data, hue, yMin, yMax, fmt, a11yText){
     const svg = document.getElementById(svgId);
     svg.innerHTML = '';
+    if (a11yText) setChartA11y(svg, a11yText);
     const tooltip = document.getElementById(ttId);
     const W=560,H=300,M={top:12,right:56,bottom:28,left:44};
     const plotW=W-M.left-M.right, plotH=H-M.top-M.bottom;
@@ -1033,11 +1114,13 @@ footer{ max-width: var(--maxw); margin: 0 auto; padding: 30px 24px 60px; font-fa
       notifyShow(svgId, nearestIndex(px));
     });
     hit.addEventListener('pointerleave', () => notifyHide(svgId));
+    revealChart(svg);
   }
 
-  function drawUnderwater(svgId, ttId, series, hue, yMin, yMax, episodes){
+  function drawUnderwater(svgId, ttId, series, hue, yMin, yMax, episodes, a11yText){
     const svg = document.getElementById(svgId);
     svg.innerHTML = '';
+    if (a11yText) setChartA11y(svg, a11yText);
     const tooltip = document.getElementById(ttId);
     const W=560,H=300,M={top:12,right:12,bottom:28,left:44};
     const plotW=W-M.left-M.right, plotH=H-M.top-M.bottom;
@@ -1124,6 +1207,7 @@ footer{ max-width: var(--maxw); margin: 0 auto; padding: 30px 24px 60px; font-fa
       notifyShow(svgId, i);
     });
     hit.addEventListener('pointerleave', () => notifyHide(svgId));
+    revealChart(svg);
   }
 
   function renderDrawdownTable(tableId, episodes, hue){
@@ -1138,9 +1222,10 @@ footer{ max-width: var(--maxw); margin: 0 auto; padding: 30px 24px 60px; font-fa
     table.innerHTML = thead + '<tbody>' + body + '</tbody>';
   }
 
-  function drawCombo(svgId, ttId, sharpeArr, sortinoArr, yMin, yMax){
+  function drawCombo(svgId, ttId, sharpeArr, sortinoArr, yMin, yMax, a11yText){
     const svg = document.getElementById(svgId);
     svg.innerHTML = '';
+    if (a11yText) setChartA11y(svg, a11yText);
     const tooltip = document.getElementById(ttId);
     const hueSharpe = getComputedStyle(document.documentElement).getPropertyValue('--hue-sharpe').trim();
     const hueSortino = getComputedStyle(document.documentElement).getPropertyValue('--hue-sortino').trim();
@@ -1235,6 +1320,7 @@ footer{ max-width: var(--maxw); margin: 0 auto; padding: 30px 24px 60px; font-fa
       notifyShow(svgId, nearestIndex(px));
     });
     hit.addEventListener('pointerleave', () => notifyHide(svgId));
+    revealChart(svg);
 
     return { hueSharpe, hueSortino };
   }
@@ -1283,13 +1369,14 @@ footer{ max-width: var(--maxw); margin: 0 auto; padding: 30px 24px 60px; font-fa
       }))
       .filter(p => p.recovered);
   }
-  function drawScatter(svgId, ttId, pontos, hueC1, hueC2){
+  function drawScatter(svgId, ttId, pontos, hueC1, hueC2, a11yText){
     const svg = document.getElementById(svgId);
     svg.innerHTML = '';
+    if (a11yText) setChartA11y(svg, a11yText);
     const tooltip = document.getElementById(ttId);
     const W=1000,H=380,M={top:16,right:20,bottom:44,left:52};
     const plotW=W-M.left-M.right, plotH=H-M.top-M.bottom;
-    if (pontos.length === 0){ return; }
+    if (pontos.length === 0){ revealChart(svg); return; }
     const xMax = 0;
     const xMin = Math.floor(Math.min(...pontos.map(p=>p.troughVal))*20-1)/20;
     const yMax = Math.max(5, Math.ceil(Math.max(...pontos.map(p=>p.months))/5+1)*5);
@@ -1342,11 +1429,13 @@ footer{ max-width: var(--maxw); margin: 0 auto; padding: 30px 24px 60px; font-fa
       g.addEventListener('pointerenter', showPoint);
       g.addEventListener('pointerleave', hidePoint);
     });
+    revealChart(svg);
   }
   /* ---------- linha: CAGR por janela móvel de tamanho fixo (slider) ---------- */
-  function drawWindowLine(svgId, ttId, sC1, sC2, hueC1, hueC2){
+  function drawWindowLine(svgId, ttId, sC1, sC2, hueC1, hueC2, a11yText){
     const svg = document.getElementById(svgId);
     svg.innerHTML = '';
+    if (a11yText) setChartA11y(svg, a11yText);
     const tooltip = document.getElementById(ttId);
     const W=900,H=320,M={top:14,right:70,bottom:30,left:50};
     const plotW=W-M.left-M.right, plotH=H-M.top-M.bottom;
@@ -1430,6 +1519,7 @@ footer{ max-width: var(--maxw); margin: 0 auto; padding: 30px 24px 60px; font-fa
       notifyShow(svgId, i);
     });
     hit.addEventListener('pointerleave', () => notifyHide(svgId));
+    revealChart(svg);
   }
   function statsOfSeries(vals){
     const s = vals.slice().sort((a,b)=>a-b);
@@ -1448,7 +1538,9 @@ footer{ max-width: var(--maxw); margin: 0 auto; padding: 30px 24px 60px; font-fa
     const sC2 = rollingSeries(ret2, wMonths, cagrCalc);
     const hueC1 = getComputedStyle(document.documentElement).getPropertyValue('--hue-c1').trim();
     const hueC2 = getComputedStyle(document.documentElement).getPropertyValue('--hue-c2').trim();
-    drawWindowLine('chart-cagr-window','tt-cagr-window', sC1, sC2, hueC1, hueC2);
+    const anosJanela = wMonths/12;
+    const a11yWindow = `Gráfico de linha: CAGR anualizado em janelas móveis de ${anosJanela} ano${anosJanela>1?'s':''} — Carteira 1 encerra em ${fmtPct1(sC1[sC1.length-1].value)}, Carteira 2 encerra em ${fmtPct1(sC2[sC2.length-1].value)}, ao longo de ${sC1.length} janelas de ${DATA.dates[0]} a ${DATA.dates[DATA.dates.length-1]}.`;
+    drawWindowLine('chart-cagr-window','tt-cagr-window', sC1, sC2, hueC1, hueC2, a11yWindow);
     renderLegendCarteiras('legend-cagr-window', hueC1, hueC2);
     const st1 = statsOfSeries(sC1.map(d=>d.value)), st2 = statsOfSeries(sC2.map(d=>d.value));
     const statsEl = document.getElementById('stats-cagr-window');
@@ -1511,15 +1603,21 @@ footer{ max-width: var(--maxw); margin: 0 auto; padding: 30px 24px 60px; font-fa
     // CAGR
     {
       const { yMin, yMax } = yRangeFunil(c1.cagrFunil[mode], c2.cagrFunil[mode]);
-      drawFunil('chart-cagr-c1','tt-cagr-c1', c1.cagrFunil[mode], hueC1, yMin, yMax, fmtPct1);
-      drawFunil('chart-cagr-c2','tt-cagr-c2', c2.cagrFunil[mode], hueC2, yMin, yMax, fmtPct1);
+      const last1 = c1.cagrFunil[mode][c1.cagrFunil[mode].length-1], last2 = c2.cagrFunil[mode][c2.cagrFunil[mode].length-1];
+      drawFunil('chart-cagr-c1','tt-cagr-c1', c1.cagrFunil[mode], hueC1, yMin, yMax, fmtPct1,
+        `Funil de CAGR por tamanho de janela — Carteira 1: mediana de ${fmtPct1(last1.p50)} na maior janela (${last1.anos} anos), faixa de ${fmtPct1(last1.min)} a ${fmtPct1(last1.max)} entre pior e melhor caso observado.`);
+      drawFunil('chart-cagr-c2','tt-cagr-c2', c2.cagrFunil[mode], hueC2, yMin, yMax, fmtPct1,
+        `Funil de CAGR por tamanho de janela — Carteira 2: mediana de ${fmtPct1(last2.p50)} na maior janela (${last2.anos} anos), faixa de ${fmtPct1(last2.min)} a ${fmtPct1(last2.max)} entre pior e melhor caso observado.`);
       renderLegendFunil('legend-cagr-c1', hueC1, 'CAGR anualizado'); renderLegendFunil('legend-cagr-c2', hueC2, 'CAGR anualizado');
     }
     // Drawdown (underwater), com episódios anotados
     {
       const { yMin, yMax } = yRangeUnderwater(c1.underwater[mode], c2.underwater[mode]);
-      drawUnderwater('chart-dd-c1','tt-dd-c1', c1.underwater[mode], hueC1, yMin, yMax, c1.episodes[mode]);
-      drawUnderwater('chart-dd-c2','tt-dd-c2', c2.underwater[mode], hueC2, yMin, yMax, c2.episodes[mode]);
+      const pior1 = Math.min(...c1.underwater[mode]), pior2 = Math.min(...c2.underwater[mode]);
+      drawUnderwater('chart-dd-c1','tt-dd-c1', c1.underwater[mode], hueC1, yMin, yMax, c1.episodes[mode],
+        `Drawdown e tempo de recuperação — Carteira 1: ${c1.episodes[mode].length} episódio${c1.episodes[mode].length===1?'':'s'} de queda de ao menos 5%, pior queda de ${fmtPct1(pior1)}.`);
+      drawUnderwater('chart-dd-c2','tt-dd-c2', c2.underwater[mode], hueC2, yMin, yMax, c2.episodes[mode],
+        `Drawdown e tempo de recuperação — Carteira 2: ${c2.episodes[mode].length} episódio${c2.episodes[mode].length===1?'':'s'} de queda de ao menos 5%, pior queda de ${fmtPct1(pior2)}.`);
       renderDrawdownTable('dd-table-c1', c1.episodes[mode], hueC1);
       renderDrawdownTable('dd-table-c2', c2.episodes[mode], hueC2);
     }
@@ -1528,7 +1626,8 @@ footer{ max-width: var(--maxw); margin: 0 auto; padding: 30px 24px 60px; font-fa
       const pontos = buildEpisodePoints(c1.episodes[mode], 'c1')
         .concat(buildEpisodePoints(c2.episodes[mode], 'c2'))
         .sort((a,b) => a.troughIdx - b.troughIdx);
-      drawScatter('chart-scatter','tt-scatter', pontos, hueC1, hueC2);
+      drawScatter('chart-scatter','tt-scatter', pontos, hueC1, hueC2,
+        `Gráfico de dispersão: profundidade da queda versus meses até recuperar, para ${pontos.length} episódios de drawdown recuperados entre as duas carteiras (Carteira 1 e Carteira 2).`);
       renderLegendCarteiras('legend-scatter', hueC1, hueC2);
       renderDrawdownTable('scatter-table-c1', c1.episodes[mode], hueC1);
       renderDrawdownTable('scatter-table-c2', c2.episodes[mode], hueC2);
@@ -1536,15 +1635,22 @@ footer{ max-width: var(--maxw); margin: 0 auto; padding: 30px 24px 60px; font-fa
     // Ulcer
     {
       const { yMin, yMax } = yRangeUlcer(c1.ulcerFunil[mode], c2.ulcerFunil[mode]);
-      drawFunil('chart-ulcer-c1','tt-ulcer-c1', c1.ulcerFunil[mode], hueC1, yMin, yMax, fmtNum2);
-      drawFunil('chart-ulcer-c2','tt-ulcer-c2', c2.ulcerFunil[mode], hueC2, yMin, yMax, fmtNum2);
+      const lastU1 = c1.ulcerFunil[mode][c1.ulcerFunil[mode].length-1], lastU2 = c2.ulcerFunil[mode][c2.ulcerFunil[mode].length-1];
+      drawFunil('chart-ulcer-c1','tt-ulcer-c1', c1.ulcerFunil[mode], hueC1, yMin, yMax, fmtNum2,
+        `Funil de Ulcer Index por tamanho de janela — Carteira 1: mediana de ${fmtNum2(lastU1.p50)} na maior janela (${lastU1.anos} anos).`);
+      drawFunil('chart-ulcer-c2','tt-ulcer-c2', c2.ulcerFunil[mode], hueC2, yMin, yMax, fmtNum2,
+        `Funil de Ulcer Index por tamanho de janela — Carteira 2: mediana de ${fmtNum2(lastU2.p50)} na maior janela (${lastU2.anos} anos).`);
       renderLegendFunil('legend-ulcer-c1', hueC1, 'Ulcer Index'); renderLegendFunil('legend-ulcer-c2', hueC2, 'Ulcer Index');
     }
     // Sharpe/Sortino combo
     {
       const { yMin, yMax } = yRangeCombo(c1.combo[mode], c2.combo[mode]);
-      const hues1 = drawCombo('chart-combo-c1','tt-combo-c1', c1.combo[mode].sharpe, c1.combo[mode].sortino, yMin, yMax);
-      const hues2 = drawCombo('chart-combo-c2','tt-combo-c2', c2.combo[mode].sharpe, c2.combo[mode].sortino, yMin, yMax);
+      const lastSh1 = c1.combo[mode].sharpe[c1.combo[mode].sharpe.length-1], lastSo1 = c1.combo[mode].sortino[c1.combo[mode].sortino.length-1];
+      const lastSh2 = c2.combo[mode].sharpe[c2.combo[mode].sharpe.length-1], lastSo2 = c2.combo[mode].sortino[c2.combo[mode].sortino.length-1];
+      const hues1 = drawCombo('chart-combo-c1','tt-combo-c1', c1.combo[mode].sharpe, c1.combo[mode].sortino, yMin, yMax,
+        `Sharpe e Sortino por tamanho de janela — Carteira 1: Sharpe mediano de ${fmtNum2(lastSh1.mediana)} e Sortino mediano de ${fmtNum2(lastSo1.mediana)} na maior janela.`);
+      const hues2 = drawCombo('chart-combo-c2','tt-combo-c2', c2.combo[mode].sharpe, c2.combo[mode].sortino, yMin, yMax,
+        `Sharpe e Sortino por tamanho de janela — Carteira 2: Sharpe mediano de ${fmtNum2(lastSh2.mediana)} e Sortino mediano de ${fmtNum2(lastSo2.mediana)} na maior janela.`);
       renderLegendCombo('legend-combo-c1', hues1.hueSharpe, hues1.hueSortino);
       renderLegendCombo('legend-combo-c2', hues2.hueSharpe, hues2.hueSortino);
     }
