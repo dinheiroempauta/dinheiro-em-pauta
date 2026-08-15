@@ -31,9 +31,11 @@ dono da carteira. Uso secundário, eventual: virar artigo no blog.
   (retorno e CAGR sim; drawdown, Sharpe, correlação — decisão registrada em
   `decisions.md` sobre se calculamos só na série real, só na nominal, ou
   ambas).
-- Janelas **móveis** (rolling) de 1 a 15 anos, incremento de 1 ano
-  (15 tamanhos de janela: 12, 24, 36, ..., 180 meses), cada uma deslizando
-  mês a mês por toda a série disponível.
+- Janelas **móveis** (rolling) de 1 a 18 anos, incremento de 1 ano
+  (18 tamanhos de janela: 12, 24, 36, ..., 216 meses), cada uma deslizando
+  mês a mês por toda a série disponível. Limite de 18 anos definido em
+  `decisions.md` (acima de 18 anos a amostra de janelas por tamanho fica
+  pequena demais — n < 31 — pra sustentar percentis confiáveis).
 - Para cada tamanho de janela, todos os indicadores da seção 4 calculados em
   **cada** janela possível daquele tamanho (ex: janela de 5 anos = 246-60+1
   = 182 janelas de 60 meses cada) — o resultado é uma distribuição por
@@ -103,7 +105,7 @@ detalhar no `plan.md`, junto da fórmula exata de cada indicador.
   estatística básica como numpy/pandas/scipy são aceitáveis; nada que
   esconda a fórmula do indicador).
 - Saída: uma tabela por indicador (ou uma tabela larga única), com uma
-  linha por tamanho de janela (12 a 180 meses) e colunas de
+  linha por tamanho de janela (12 a 216 meses) e colunas de
   mediana/mínimo/máximo/percentis (p10/p25/p75/p90 a definir em
   `decisions.md`) daquele indicador entre todas as janelas daquele
   tamanho.

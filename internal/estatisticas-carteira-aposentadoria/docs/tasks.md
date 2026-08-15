@@ -128,3 +128,33 @@ os artifacts foram construídos ad-hoc a partir de `janelas_detalhado.csv`.
       de episódios com contexto) registrada em
       `internal/estatisticas-carteira-aposentadoria/docs/interpretacoes.md`.
       Mesma ressalva sobre componente JS interativo ao publicar no blog.
+
+## Extensão do tamanho máximo de janela: 15 → 18 anos
+
+- [x] Investigada queda abrupta no Sortino mediano em janelas de 15 anos
+      — causa raiz identificada como artefato de composição de amostra
+      (censura à direita), não comportamento real da carteira. Decisão
+      e racional completos em `docs/decisions.md`.
+- [x] `src/03_rolling_windows.py`: `TAMANHOS_JANELA` estendido de
+      `range(12,181,12)` (1-15 anos) para `range(12,217,12)` (1-18 anos).
+      Recalculado: 2.394 janelas ao todo (era 2.265), `n_janelas` mínimo
+      agora 31 (18 anos) em vez de 67 (15 anos).
+- [x] `output/janelas_detalhado.csv` e `output/estatisticas_por_janela.csv`
+      regenerados com os novos tamanhos.
+- [x] `docs/spec.md` e `docs/plan.md` atualizados (15→18 anos, 180→216
+      meses) para refletir o novo escopo.
+- [x] Os 3 gráficos que dependem de tamanho de janela atualizados e
+      revalidados com screenshot real (Playwright headless, inclusive
+      testando o toggle nominal/real e o slider no valor máximo):
+      `cagr-janela-selecionavel.html` (slider `max` 15→18),
+      `funil-cagr-percentis.html` e `ulcer-funil-percentis.html` (funil
+      estendido até 18 anos). Os dois gráficos de drawdown/recuperação
+      (`drawdown-underwater.html`,
+      `drawdown-profundidade-x-duracao.html`) **não** dependem de
+      tamanho de janela — usam a série completa — e não precisaram de
+      atualização.
+- [x] Efeito colateral interessante confirmado visualmente: o funil de
+      Ulcer agora mostra com clareza o salto de composição de amostra
+      entre 15 e 16 anos (mediana sobe de repente), ilustrando ao vivo o
+      artefato documentado em `decisions.md` — vale mencionar essa
+      ressalva ao lado do gráfico se ele entrar no artigo.

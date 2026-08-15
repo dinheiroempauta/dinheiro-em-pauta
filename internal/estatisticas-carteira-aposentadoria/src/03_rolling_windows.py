@@ -9,7 +9,7 @@ import numpy as np
 import pandas as pd
 
 BASE_DIR = "internal/estatisticas-carteira-aposentadoria"
-TAMANHOS_JANELA = list(range(12, 181, 12))  # 12, 24, ..., 180
+TAMANHOS_JANELA = list(range(12, 217, 12))  # 12, 24, ..., 216 (1 a 18 anos)
 PERCENTIS = [10, 25, 75, 90]
 
 

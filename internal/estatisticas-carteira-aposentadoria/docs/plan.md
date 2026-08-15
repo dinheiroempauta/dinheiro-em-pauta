@@ -63,10 +63,10 @@ conforme o indicador pede as duas) referente a uma janela de N meses.
 
 ## 3. Geração das janelas móveis
 
-Para cada tamanho de janela `w` em `{12, 24, 36, ..., 180}` (meses):
+Para cada tamanho de janela `w` em `{12, 24, 36, ..., 216}` (meses):
 - Gerar todas as janelas contíguas de tamanho `w` dentro da série de 246
   meses: `n_janelas = 246 - w + 1`.
-- Para `w = 180` (15 anos): `n_janelas = 62`.
+- Para `w = 216` (18 anos): `n_janelas = 31`.
 - Para `w = 12` (1 ano): `n_janelas = 230`.
 - Para cada janela, calcular todos os indicadores da seção 2 (nominal e
   real conforme aplicável).

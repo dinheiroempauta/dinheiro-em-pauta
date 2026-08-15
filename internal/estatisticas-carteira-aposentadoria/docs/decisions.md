@@ -93,3 +93,41 @@ mês a mês — atrelar isso à inflação do mesmo mês (que teria efeito na
 série real) mistura dois fenômenos diferentes (retorno de mercado vs.
 poder de compra), o que os outros indicadores (CAGR, Sharpe etc.) já
 cobrem separadamente em suas versões real e nominal.
+
+## 2026-08-15 — Tamanho máximo de janela: estendido de 15 para 18 anos
+
+**Contexto:** ao investigar uma queda abrupta no Sortino mediano em
+janelas de 15 anos, descobri que era um artefato de amostra: ao crescer
+de 14 para 15 anos, as 12 janelas de início mais recente (as de melhor
+desempenho, cobrindo majoritariamente o período pós-2012) somem da
+amostra — não porque piorem, mas porque não existe ainda histórico
+suficiente (até jun/2026) para estendê-las a 15 anos completos. Efeito
+médio de estender uma mesma janela em 1 ano: praticamente zero (-0,01 no
+Sortino). O efeito observado na mediana é 100% efeito de composição de
+amostra (censura à direita), não comportamento real da carteira.
+
+**Pergunta:** até quando estender o tamanho de janela, dado que
+`n_janelas = 246 - (anos×12) + 1` cai 12 unidades a cada ano adicional?
+
+| Anos | Janelas possíveis |
+|---|---|
+| 15 | 67 |
+| 16 | 55 |
+| 17 | 43 |
+| 18 | 31 |
+| 19 | 19 (amostra já fina demais) |
+| 20 | 7 (deixa de ser distribuição) |
+| 20,5 (máximo absoluto) | 1 (a série inteira) |
+
+**Decisão:** estender o cálculo de todos os indicadores e gráficos de
+janela móvel até **18 anos** (`n_janelas` mínimo de 31) — generoso o
+bastante para mostrar a tendência de longo prazo, mas ainda com amostra
+minimamente defensável para percentis (p5/p95). Não estender além disso:
+a partir de 19 anos a amostra fica pequena demais e o mesmo efeito de
+censura à direita que distorceu os 15 anos ficaria ainda mais forte.
+
+**Racional prático:** o efeito de composição de amostra nos anos mais
+longos (16-18) deve ser mencionado como ressalva ao lado de qualquer
+gráfico que mostre esses tamanhos de janela — não é um sinal de que
+"janelas muito longas pioram o retorno", é uma limitação do tamanho da
+base de dados disponível (jan/2006–jun/2026).
