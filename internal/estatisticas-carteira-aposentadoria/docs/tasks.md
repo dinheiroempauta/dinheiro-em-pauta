@@ -229,6 +229,26 @@ os artifacts foram construídos ad-hoc a partir de `janelas_detalhado.csv`.
       usuário se vale a pena adicionar), Pior/melhor mês, % positivos/
       negativos, VaR/CVaR, Skewness/Curtose, Correlação entre ativos.
 
+- [x] **Correlação rolante (24 vs. 36 meses)** — extensão da correlação
+      estática (seção anterior) para uma correlação dinâmica no tempo,
+      janela fixa deslizando mês a mês, calculada para os 10 pares de
+      ativos individuais. Decisão de tamanho de janela (24 vs. 36 meses)
+      registrada em `docs/decisions.md`, com as duas janelas comparadas
+      visualmente antes de decidir — 24 meses adotado como padrão por
+      reagir mais cedo a mudanças de regime, mas ambas mantidas visíveis
+      no gráfico. Protótipo salvo em
+      `internal/estatisticas-carteira-aposentadoria/graficos/correlacao-rolante-24-36.html`
+      (seletor de par de ativos, faixas de crise marcadas — 2008, 2015-16,
+      2020, 2022). Interpretação completa (correlação está longe de ser
+      constante — varia de -0,5 a +0,8 dependendo do momento; não sobe de
+      forma consistente em toda crise, depende do par e da natureza do
+      evento) registrada em `docs/interpretacoes.md`. Validado com
+      screenshot real via Playwright headless (troca de par via seletor).
+      Script de geração ainda não existe em `src/` — só o resultado final
+      (HTML com dados embutidos) está salvo; dados calculados ad-hoc a
+      partir de `output/base_consolidada.csv`. Mesma ressalva sobre
+      componente JS interativo ao publicar no blog.
+
 ## Extensão do tamanho máximo de janela: 15 → 18 anos
 
 - [x] Investigada queda abrupta no Sortino mediano em janelas de 15 anos

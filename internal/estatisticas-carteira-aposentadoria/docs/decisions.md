@@ -131,3 +131,36 @@ longos (16-18) deve ser mencionado como ressalva ao lado de qualquer
 gráfico que mostre esses tamanhos de janela — não é um sinal de que
 "janelas muito longas pioram o retorno", é uma limitação do tamanho da
 base de dados disponível (jan/2006–jun/2026).
+
+## 2026-08-15 — Correlação rolante: janela de 24 vs. 36 meses
+
+**Pergunta:** a matriz de correlação entre os 5 ativos (seção anterior,
+`04_correlacao_ativos.py`) é estática — calculada uma única vez sobre o
+período completo. Isso não mostra se a correlação entre pares de ativos
+muda ao longo do tempo (ex: sobe durante crises, quando a diversificação
+mais importa). Vale estender para uma correlação rolante no tempo (janela
+fixa deslizando mês a mês)? E se sim, qual tamanho de janela usar: 24 ou
+36 meses?
+
+**Decisão:** gerar correlação rolante com janela fixa deslizando mês a
+mês para os 10 pares de ativos, comparando 24 e 36 meses simultaneamente
+no mesmo gráfico (não escolher só um). Adotar **24 meses como padrão**
+para o texto/discussão do artigo, mantendo a linha de 36 meses visível no
+gráfico como referência de quão sensível a leitura é à escolha do
+tamanho de janela.
+
+**Racional:** 12 meses seria ruidoso demais para uma correlação de
+Pearson estatisticamente estável; 48-60 meses suavizaria a ponto de
+diluir a reação da correlação a um evento de 6-12 meses como 2020,
+justamente o que se quer capturar. Comparação visual entre 24 e 36 meses
+(gráfico `graficos/correlacao-rolante-24-36.html`) confirmou o trade-off
+esperado: 24 meses reage mais cedo às transições de regime (ex: já
+recupera em 2010 e reage mais cedo em 2020/2022) mas é mais serrilhado;
+36 meses é mais suave mas atrasa a reação. Como o objetivo original da
+pergunta era ver se a correlação sobe justamente durante as crises,
+reatividade pesa mais que suavidade aqui — daí a escolha de 24 meses como
+padrão, sem descartar 36 meses do gráfico.
+
+**Escopo:** feito só para os 10 pares de ativos individuais (não para a
+carteira combinada nem por tamanho de janela de investimento — é um eixo
+de análise diferente, tempo civil, não tempo de investimento).

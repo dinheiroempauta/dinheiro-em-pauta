@@ -497,3 +497,55 @@ gráficos anteriores. Nenhum ativo é redundante do ponto de vista de
 diversificação — cada um contribui um perfil de comovimento distinto, com
 destaque para o ouro como o mais "contrário" e o CDI como o mais
 "neutro".
+
+## Correlação rolante (24 vs. 36 meses) — a diversificação varia no tempo
+
+**Gráfico:** `graficos/correlacao-rolante-24-36.html` (correlação de
+Pearson em janela deslizante mês a mês, seletor de par de ativos, 24 e
+36 meses sobrepostos, faixas de crise marcadas). Complementa a matriz
+estática da seção anterior — aqui o eixo é *tempo civil*, não tempo de
+investimento.
+
+### A correlação está longe de ser constante — varia de -0,5 a +0,8 ao longo do tempo
+
+Olhando VWRA11×GOLD11: a correlação (24 meses) passa de +0,60 em 2008,
+despenca para -0,45 entre 2009-2011, sobe gradualmente até +0,80 em
+2018-2019, cai de novo para perto de 0 em 2024. A matriz estática da
+seção anterior (+0,26 no período completo) é uma média que esconde essa
+variação enorme — dois investidores que olharam a correlação em anos
+diferentes teriam tirado conclusões opostas sobre o papel do ouro na
+carteira.
+
+### A correlação não sobe de forma consistente durante crises — depende do par e do tipo de crise
+
+Em 2008 (crise financeira), VWRA11×GOLD11 estava em ~0,55-0,60 — ouro não
+funcionou como proteção nesse episódio específico, contrariando a
+expectativa comum. Já em DIVO11×B5P211, a correlação cai bruscamente
+durante 2015-2017 (chegando a ficar negativa), justamente o período de
+recessão + Lava Jato + impeachment — os dois ativos brasileiros se
+descolaram um do outro nesse episódio doméstico, apesar de normalmente
+andarem juntos (+0,4 na média do período completo). Não há um padrão
+único de "toda correlação sobe em crise"; cada par reage de um jeito
+dependendo da natureza do evento.
+
+### 24 meses reage mais cedo às mudanças de regime, 36 meses é mais suave — trade-off visível, sem vencedor único
+
+Comparando as duas linhas: em 2010, a janela de 24 meses já mostra
+VWRA11×GOLD11 subindo de volta enquanto a de 36 meses ainda está caindo
+(porque ainda carrega meses de 2008 na janela). O mesmo padrão se repete
+em 2020 e 2022. Por outro lado, a linha de 24 meses tem mais serrilhado
+entre os picos — mais difícil separar ruído de sinal num único mês
+isolado. Adotamos 24 meses como padrão de discussão (decisão registrada
+em `decisions.md`), mas o gráfico mantém as duas linhas visíveis
+justamente para deixar claro que a leitura depende dessa escolha
+metodológica.
+
+### Síntese para o artigo
+
+A correlação entre ativos não é uma propriedade fixa da carteira — é
+dinâmica, e olhar só a média do período completo (matriz estática) pode
+esconder tanto momentos de diversificação muito mais forte quanto
+momentos em que ativos considerados "descorrelacionados" se moveram
+juntos por um tempo. Bom contraponto ao heatmap estático: mostra que a
+diversificação é uma aposta estatística de longo prazo, não uma garantia
+mês a mês.
