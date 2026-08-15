@@ -94,23 +94,26 @@ main{ max-width: var(--maxw); margin: 0 auto; padding: 40px 24px 100px; }
 .toggle-btn[aria-pressed="true"]{ background: var(--paper); color: var(--ink); box-shadow: 0 1px 3px rgba(0,0,0,.08); }
 
 /* ---------- Composition panels ---------- */
-.panels{ display:grid; grid-template-columns: 1fr 1fr; gap: 24px; margin-bottom: 40px; }
+.panels{ display:grid; grid-template-columns: 1fr 1fr; gap: 24px; margin-bottom: 32px; }
 @media (max-width: 760px){ .panels{ grid-template-columns: 1fr; } }
 .panel{
-  border: 1px solid var(--line-strong); border-radius: 6px; background: var(--paper-raised); padding: 22px 24px;
+  border: 1px solid var(--line-strong); border-radius: 6px; background: var(--paper-raised); padding: 16px 20px;
 }
 .panel[data-side="c1"]{ border-top: 3px solid var(--hue-c1); }
 .panel[data-side="c2"]{ border-top: 3px solid var(--hue-c2); }
-.panel h2{ font-family: var(--font-display); font-size: 1.25rem; margin: 0 0 4px; }
-.panel .panel-sub{ font-family: var(--font-mono); font-size: 11px; color: var(--muted); margin: 0 0 18px; }
-.weight-row{ display:flex; align-items:center; justify-content: space-between; gap: 12px; margin-bottom: 10px; }
-.weight-row label{ font-size: 14px; }
+.panel h2{ font-family: var(--font-display); font-size: 1.1rem; margin: 0 0 2px; }
+.panel .panel-sub{ font-family: var(--font-mono); font-size: 10.5px; color: var(--muted); margin: 0 0 12px; }
+.weights-grid{ display:grid; grid-template-columns: 1fr 1fr; gap: 6px 14px; }
+.weight-row{ display:flex; align-items:center; justify-content: space-between; gap: 8px; }
+.weight-row label{ font-size: 12.5px; font-family: var(--font-mono); color: var(--muted); }
+.weight-row .input-wrap{ display:flex; align-items:center; gap: 3px; }
 .weight-row input{
-  width: 76px; font-family: var(--font-mono); font-size: 14px; text-align: right;
-  padding: 6px 8px; border: 1px solid var(--line-strong); border-radius: 4px; background: var(--paper);
+  width: 52px; font-family: var(--font-mono); font-size: 13px; text-align: right;
+  padding: 4px 6px; border: 1px solid var(--line-strong); border-radius: 4px; background: var(--paper);
   color: var(--ink);
 }
-.weight-sum{ display:flex; justify-content: space-between; align-items:center; margin-top: 14px; padding-top: 12px; border-top: 1px dashed var(--line-strong); font-family: var(--font-mono); font-size: 13px; }
+.weight-row .pct-sign{ font-size: 12px; color: var(--muted); }
+.weight-sum{ display:flex; justify-content: space-between; align-items:center; margin-top: 10px; padding-top: 8px; border-top: 1px dashed var(--line-strong); font-family: var(--font-mono); font-size: 12px; }
 .weight-sum-value{ font-weight: 600; }
 .weight-sum-value.ok{ color: var(--green); }
 .weight-sum-value.bad{ color: var(--danger); }
@@ -670,6 +673,7 @@ footer{ max-width: var(--maxw); margin: 0 auto; padding: 30px 24px 60px; font-fa
   /* ---------- UI: pesos ---------- */
   function buildWeightInputs(side){
     const container = document.getElementById('weights-'+side);
+    container.className = 'weights-grid';
     ASSET_KEYS.forEach(k => {
       const row = document.createElement('div');
       row.className = 'weight-row';
@@ -677,13 +681,16 @@ footer{ max-width: var(--maxw); margin: 0 auto; padding: 30px 24px 60px; font-fa
       label.textContent = ASSET_LABELS[k];
       label.setAttribute('for', 'w-'+side+'-'+k);
       const inputWrap = document.createElement('div');
+      inputWrap.className = 'input-wrap';
       const input = document.createElement('input');
       input.type = 'number'; input.min = '0'; input.max = '100'; input.step = '1';
       input.id = 'w-'+side+'-'+k;
       input.value = state.weights[side][k];
       input.addEventListener('input', () => updateSum(side));
       inputWrap.appendChild(input);
-      const pctSpan = document.createTextNode(' %');
+      const pctSpan = document.createElement('span');
+      pctSpan.className = 'pct-sign';
+      pctSpan.textContent = '%';
       inputWrap.appendChild(pctSpan);
       row.appendChild(label); row.appendChild(inputWrap);
       container.appendChild(row);
