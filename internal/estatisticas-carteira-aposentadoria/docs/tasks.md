@@ -66,18 +66,21 @@ gerados como artifact) que o usuário confirmou querer no artigo quando
 ele for escrito. Ainda não há código de geração de gráfico em `src/` —
 os artifacts foram construídos ad-hoc a partir de `janelas_detalhado.csv`.
 
-- [ ] CAGR (real e nominal) em janelas móveis, com seletor de tamanho de
+- [x] CAGR (real e nominal) em janelas móveis, com seletor de tamanho de
       janela (1 a 15 anos) — confirmado pelo usuário como gráfico
       desejado, **versão interativa com slider** (decisão fechada, não
-      estática). Ao escrever o artigo: (1) checar em
-      `internal/CHECKLIST-NOVO-ARTIGO.md` e `internal/template-artigo.html`
-      se o design system do blog já suporta um componente JS interativo
-      embutido no artigo, ou se isso é uma extensão nova do padrão; (2)
-      se for extensão nova, é decisão arquiteturalmente significativa —
-      não implementar sem alinhar com o usuário antes (ver CLAUDE.md,
-      seção "Modo de operação"); (3) reconstruir o componente a partir de
-      `janelas_detalhado.csv` (script de geração ainda não existe em
-      `src/`, o protótipo foi feito ad-hoc como artifact).
+      estática). Protótipo final salvo em
+      `internal/estatisticas-carteira-aposentadoria/graficos/cagr-janela-selecionavel.html`
+      (HTML/SVG/JS autocontido, dados das 15 janelas embutidos inline,
+      todas as 2.265 janelas individuais — não só o resumo agregado).
+      Ao escrever o artigo: (1) checar em `internal/CHECKLIST-NOVO-ARTIGO.md`
+      e `internal/template-artigo.html` se o design system do blog já
+      suporta um componente JS interativo embutido no artigo, ou se isso
+      é uma extensão nova do padrão; (2) se for extensão nova, é decisão
+      arquiteturalmente significativa — não implementar sem alinhar com
+      o usuário antes (ver CLAUDE.md, seção "Modo de operação"); (3)
+      script de geração dos dados ainda não existe em `src/` — só o
+      resultado final (HTML com dados embutidos) está salvo.
 
 - [x] **Funil de distribuição do CAGR por tempo investido** (bandas de
       percentil p5–p95 e p20–p80, mediana, pior/melhor caso observado,
