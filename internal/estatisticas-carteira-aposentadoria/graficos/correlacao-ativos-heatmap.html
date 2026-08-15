@@ -1,0 +1,268 @@
+<title>Correlação entre os ativos da carteira</title>
+<style>
+  .viz-root {
+    color-scheme: light;
+    --surface-1:      #fcfcfb;
+    --page:           #f9f9f7;
+    --text-primary:   #0b0b0b;
+    --text-secondary: #52514e;
+    --text-muted:     #898781;
+    --border:         rgba(11,11,11,0.10);
+    --cell-border:    #fcfcfb;
+    --hue-pos:        #2a78d6;
+    --hue-neg:        #c74343;
+    --hue-zero:       #e1e0d9;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:where(:not([data-theme="light"])) .viz-root {
+      color-scheme: dark;
+      --surface-1:      #1a1a19;
+      --page:           #0d0d0d;
+      --text-primary:   #ffffff;
+      --text-secondary: #c3c2b7;
+      --text-muted:     #898781;
+      --border:         rgba(255,255,255,0.10);
+      --cell-border:    #1a1a19;
+      --hue-pos:        #3987e5;
+      --hue-neg:        #e05a5a;
+      --hue-zero:       #2c2c2a;
+    }
+  }
+  :root[data-theme="dark"] .viz-root {
+    color-scheme: dark;
+    --surface-1:      #1a1a19;
+    --page:           #0d0d0d;
+    --text-primary:   #ffffff;
+    --text-secondary: #c3c2b7;
+    --text-muted:     #898781;
+    --border:         rgba(255,255,255,0.10);
+    --cell-border:    #1a1a19;
+    --hue-pos:        #3987e5;
+    --hue-neg:        #e05a5a;
+    --hue-zero:       #2c2c2a;
+  }
+
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    background: var(--page);
+    font-family: system-ui, -apple-system, "Segoe UI", sans-serif;
+    color: var(--text-primary);
+  }
+  .viz-root {
+    max-width: 720px;
+    margin: 32px auto;
+    padding: 28px 28px 20px;
+    background: var(--surface-1);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+  }
+  h1 {
+    font-size: 18px;
+    font-weight: 600;
+    margin: 0 0 2px;
+  }
+  .subtitle {
+    font-size: 13px;
+    color: var(--text-secondary);
+    margin: 0 0 18px;
+  }
+
+  .chart-wrap { position: relative; }
+  svg { width: 100%; height: auto; display: block; overflow: visible; }
+  .cell-label { font-size: 13px; font-weight: 600; text-anchor: middle; dominant-baseline: central; }
+  .axis-label { fill: var(--text-secondary); font-size: 12px; font-weight: 500; }
+  .axis-label-y { fill: var(--text-secondary); font-size: 12px; font-weight: 500; text-anchor: end; }
+
+  .legend-scale {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin: 18px 0 4px;
+    font-size: 11.5px;
+    color: var(--text-muted);
+  }
+  .legend-bar {
+    flex: 1;
+    height: 10px;
+    border-radius: 5px;
+    background: linear-gradient(to right,
+      var(--hue-neg) 0%, var(--hue-zero) 50%, var(--hue-pos) 100%);
+  }
+
+  .tooltip {
+    position: absolute;
+    pointer-events: none;
+    background: var(--surface-1);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 8px 12px;
+    font-size: 12px;
+    box-shadow: 0 4px 16px rgba(0,0,0,0.12);
+    opacity: 0;
+    transition: opacity 0.08s;
+    white-space: nowrap;
+    z-index: 10;
+  }
+  .tooltip-title { font-weight: 600; margin-bottom: 3px; }
+  .tooltip-value { color: var(--text-secondary); }
+
+  .footnote {
+    font-size: 12px;
+    color: var(--text-muted);
+    margin-top: 14px;
+    line-height: 1.5;
+  }
+</style>
+
+<div class="viz-root">
+  <h1>Correlação entre os ativos da carteira</h1>
+  <p class="subtitle">Correlação de Pearson dos retornos mensais, período completo (jan/2006–jun/2026, 246 meses)</p>
+
+  <div class="chart-wrap">
+    <svg id="chart" viewBox="0 0 640 500" preserveAspectRatio="xMidYMid meet"></svg>
+    <div class="tooltip" id="tooltip"></div>
+  </div>
+
+  <div class="legend-scale">
+    <span>-1,0 (inversa)</span>
+    <div class="legend-bar"></div>
+    <span>+1,0 (perfeita)</span>
+  </div>
+
+  <p class="footnote">Correlação de Pearson entre retornos mensais nominais de cada par de ativos, calculada sobre a série completa (não varia por tamanho de janela). Valores próximos de 0 ou negativos indicam diversificação efetiva — os ativos não sobem/caem juntos. Fonte: internal/estatisticas-carteira-aposentadoria/output/matriz_correlacao_ativos.csv</p>
+</div>
+
+<script>
+(function () {
+  const ASSETS = ['VWRA11', 'DIVO11', 'B5P211', 'CDIB11', 'GOLD11'];
+  const LABELS_FULL = {
+    VWRA11: 'VWRA11 (ações globais)',
+    DIVO11: 'DIVO11 (dividendos BR)',
+    B5P211: 'B5P211 (renda fixa)',
+    CDIB11: 'CDIB11 (CDI)',
+    GOLD11: 'GOLD11 (ouro)',
+  };
+  const M = [
+    [1.0, -0.0407, -0.2018, -0.1646, 0.2624],
+    [-0.0407, 1.0, 0.4016, -0.0035, -0.4043],
+    [-0.2018, 0.4016, 1.0, 0.2118, -0.1837],
+    [-0.1646, -0.0035, 0.2118, 1.0, 0.0017],
+    [0.2624, -0.4043, -0.1837, 0.0017, 1.0],
+  ];
+
+  const root = document.querySelector('.viz-root');
+  const W = 640, H = 500;
+  const M_PAD = { top: 24, right: 24, bottom: 24, left: 100 };
+  const gridSize = Math.min(W - M_PAD.left - M_PAD.right, H - M_PAD.top - M_PAD.bottom - 30);
+  const cell = gridSize / ASSETS.length;
+  const ns = 'http://www.w3.org/2000/svg';
+  const el = (tag, attrs) => {
+    const e = document.createElementNS(ns, tag);
+    for (const k in attrs) e.setAttribute(k, attrs[k]);
+    return e;
+  };
+
+  const huePos = getComputedStyle(root).getPropertyValue('--hue-pos').trim();
+  const hueNeg = getComputedStyle(root).getPropertyValue('--hue-neg').trim();
+  const hueZero = getComputedStyle(root).getPropertyValue('--hue-zero').trim();
+
+  function lerp(a, b, t) { return a + (b - a) * t; }
+  function hexToRgb(hex) {
+    const v = hex.replace('#', '');
+    return [parseInt(v.slice(0,2),16), parseInt(v.slice(2,4),16), parseInt(v.slice(4,6),16)];
+  }
+  function rgbToHex(r,g,b) {
+    return '#' + [r,g,b].map(x => Math.round(x).toString(16).padStart(2,'0')).join('');
+  }
+  function colorFor(v) {
+    const [nr,ng,nb] = hexToRgb(hueNeg);
+    const [zr,zg,zb] = hexToRgb(hueZero);
+    const [pr,pg,pb] = hexToRgb(huePos);
+    if (v <= 0) {
+      const t = 1 + v; // v in [-1,0] -> t in [0,1]
+      return rgbToHex(lerp(nr,zr,t), lerp(ng,zg,t), lerp(nb,zb,t));
+    } else {
+      const t = v; // v in [0,1]
+      return rgbToHex(lerp(zr,pr,t), lerp(zg,pg,t), lerp(zb,pb,t));
+    }
+  }
+  function textColorFor(v) {
+    return Math.abs(v) > 0.55 ? '#ffffff' : 'var(--text-primary)';
+  }
+
+  const svg = document.getElementById('chart');
+  svg.setAttribute('viewBox', `0 0 ${W} ${H}`);
+  const tooltip = document.getElementById('tooltip');
+
+  const gridTop = M_PAD.top + 30;
+
+  // column headers
+  ASSETS.forEach((a, j) => {
+    const cx = M_PAD.left + j * cell + cell / 2;
+    const label = el('text', { x: cx, y: gridTop - 12, class: 'axis-label', 'text-anchor': 'middle' });
+    label.textContent = a;
+    svg.appendChild(label);
+  });
+
+  // row headers
+  ASSETS.forEach((a, i) => {
+    const cy = gridTop + i * cell + cell / 2;
+    const label = el('text', { x: M_PAD.left - 12, y: cy + 4, class: 'axis-label-y' });
+    label.textContent = a;
+    svg.appendChild(label);
+  });
+
+  const cells = [];
+  ASSETS.forEach((rowAsset, i) => {
+    ASSETS.forEach((colAsset, j) => {
+      const v = M[i][j];
+      const x0 = M_PAD.left + j * cell;
+      const y0 = gridTop + i * cell;
+      const rect = el('rect', {
+        x: x0, y: y0, width: cell - 2, height: cell - 2,
+        rx: 4, fill: colorFor(v), stroke: 'var(--cell-border)', 'stroke-width': 2,
+      });
+      svg.appendChild(rect);
+      cells.push({ x0, y0, rowAsset, colAsset, v });
+
+      const label = el('text', {
+        x: x0 + (cell - 2) / 2, y: y0 + (cell - 2) / 2, class: 'cell-label',
+        fill: Math.abs(v) > 0.55 ? '#ffffff' : getComputedStyle(root).getPropertyValue('--text-primary').trim(),
+      });
+      const vRounded = Math.abs(v) < 0.005 ? 0 : v;
+      label.textContent = vRounded.toFixed(2).replace('.', ',');
+      svg.appendChild(label);
+    });
+  });
+
+  cells.forEach(c => {
+    const hit = el('rect', { x: c.x0, y: c.y0, width: cell - 2, height: cell - 2, fill: 'transparent', style: 'cursor: pointer;' });
+    hit.addEventListener('mouseenter', (e) => {
+      tooltip.innerHTML = '';
+      const title = document.createElement('div');
+      title.className = 'tooltip-title';
+      title.textContent = c.rowAsset === c.colAsset
+        ? c.rowAsset
+        : `${c.rowAsset} × ${c.colAsset}`;
+      const value = document.createElement('div');
+      value.className = 'tooltip-value';
+      value.textContent = c.rowAsset === c.colAsset
+        ? 'Correlação consigo mesmo = 1,00'
+        : `Correlação: ${c.v.toFixed(4).replace('.', ',')}`;
+      tooltip.appendChild(title);
+      tooltip.appendChild(value);
+
+      const svgRect = svg.getBoundingClientRect();
+      const scale = svgRect.width / W;
+      const left = (c.x0 + cell / 2) * scale;
+      const top = c.y0 * scale;
+      tooltip.style.left = (left - 70) + 'px';
+      tooltip.style.top = (top - 54) + 'px';
+      tooltip.style.opacity = 1;
+    });
+    hit.addEventListener('mouseleave', () => { tooltip.style.opacity = 0; });
+    svg.appendChild(hit);
+  });
+})();
+</script>

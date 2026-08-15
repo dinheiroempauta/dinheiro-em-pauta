@@ -446,3 +446,54 @@ bastante para capturar 2008, apresenta mais eventos extremos que uma
 distribuição normal preveria (curtose positiva). Isso reforça, de forma
 matemática, por que métricas como VaR/CVaR (que olham direto pra cauda)
 são mais informativas que só olhar média e desvio-padrão.
+
+## Correlação entre os 5 ativos — o "porquê" estatístico da diversificação
+
+**Gráfico:** `graficos/correlacao-ativos-heatmap.html` (heatmap 5×5,
+escala divergente vermelho–branco–azul, período completo, sem toggle
+nominal/real e sem variação por tamanho de janela — é uma matriz única).
+
+### Nenhum par de ativos tem correlação forte na mesma direção
+
+A correlação mais alta da matriz é DIVO11 × B5P211 (+0,40) — moderada,
+não forte. Todos os outros pares ficam abaixo de 0,26 em módulo. Não há
+nenhum par redundante (correlação muito próxima de 1) nem nenhum par que
+sempre se move junto.
+
+### GOLD11 é o ativo mais "contrário" da carteira
+
+Ouro tem correlação negativa com 3 dos outros 4 ativos: DIVO11 (-0,40,
+a correlação mais negativa da matriz), B5P211 (-0,18) e correlação
+essencialmente nula com CDIB11 (0,00). Só com VWRA11 tem correlação
+positiva (+0,26), e mesmo assim moderada. Isso confirma numericamente o
+papel clássico do ouro como ativo de descorrelação/proteção numa
+carteira multi-classe.
+
+### CDIB11 (renda fixa pós-fixada) funciona como o ativo mais "neutro"
+
+CDIB11 tem correlação próxima de zero com quase todos os outros ativos
+(-0,16 com VWRA11, -0,00 com DIVO11, 0,00 com GOLD11), com exceção de uma
+correlação moderada positiva com B5P211 (+0,21, esperado — os dois são
+instrumentos de renda fixa/CDI, ainda que com mecânicas diferentes). Isso
+é consistente com o papel de "âncora" de baixa volatilidade e baixo
+comovimento que a renda fixa pós-fixada deveria exercer numa carteira.
+
+### VWRA11 e DIVO11 (as duas pernas de renda variável) quase não se correlacionam
+
+Correlação de apenas -0,04 entre VWRA11 (ações globais) e DIVO11
+(dividendos Brasil) — praticamente independentes uma da outra, apesar de
+ambas serem renda variável. Faz sentido geograficamente: um é
+exposição global diversificada, o outro é concentrado em ações
+brasileiras pagadoras de dividendos, dois mercados com dinâmicas bem
+diferentes.
+
+### Síntese para o artigo
+
+A matriz de correlação é o "porquê" estatístico por trás de todos os
+gráficos anteriores: os 5 ativos raramente sobem ou caem juntos, o que é
+exatamente o que permite à carteira ter os Ulcer Index/drawdowns
+moderados e o Sharpe/Sortino consistentemente positivos vistos nos
+gráficos anteriores. Nenhum ativo é redundante do ponto de vista de
+diversificação — cada um contribui um perfil de comovimento distinto, com
+destaque para o ouro como o mais "contrário" e o CDI como o mais
+"neutro".

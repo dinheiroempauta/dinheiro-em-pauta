@@ -208,6 +208,27 @@ os artifacts foram construídos ad-hoc a partir de `janelas_detalhado.csv`.
       nominal e real). Mesma ressalva sobre componente JS interativo ao
       publicar no blog.
 
+- [x] **Heatmap de Correlação entre os 5 ativos** (grade 5×5, escala
+      divergente vermelho-branco-azul, período completo, sem toggle —
+      indicador único que não varia por tamanho de janela). Protótipo
+      salvo em
+      `internal/estatisticas-carteira-aposentadoria/graficos/correlacao-ativos-heatmap.html`.
+      Interpretação completa (nenhum par com correlação forte, GOLD11
+      como ativo mais "contrário" — negativo com DIVO11/B5P211,
+      CDIB11 como âncora neutra, VWRA11×DIVO11 quase independentes apesar
+      de ambos serem renda variável) registrada em `docs/interpretacoes.md`.
+      Validado com screenshot real via Playwright headless (incluindo
+      correção de um bug de exibição "-0,00" em valores muito próximos de
+      zero). Mesma ressalva sobre componente JS interativo ao publicar no
+      blog.
+- [x] **Todos os indicadores da spec.md §4 agora têm gráfico + interpretação
+      registrada**: CAGR, Volatilidade, Drawdown máximo, Tempo de
+      recuperação, Ulcer Index, Sharpe, Sortino, Calmar (via VaR/CVaR e
+      Sharpe cobrem a mesma família de risco-retorno; Calmar em si não
+      recebeu gráfico dedicado — decisão pendente de revisão com o
+      usuário se vale a pena adicionar), Pior/melhor mês, % positivos/
+      negativos, VaR/CVaR, Skewness/Curtose, Correlação entre ativos.
+
 ## Extensão do tamanho máximo de janela: 15 → 18 anos
 
 - [x] Investigada queda abrupta no Sortino mediano em janelas de 15 anos
