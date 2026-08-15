@@ -171,6 +171,55 @@ svg.chart-svg{ width: 100%; height: auto; display:block; overflow: visible; }
 .hit-layer{ fill: transparent; cursor: crosshair; }
 .footnote{ font-size: 12px; color: var(--muted); margin-top: 40px; line-height: 1.6; border-top: 1px solid var(--line-strong); padding-top: 18px; }
 
+/* ---------- Otimizador ---------- */
+.optimizer-section{ margin-bottom: 40px; }
+.optimizer-panel{
+  margin-top: 14px; border: 1px solid var(--line-strong); border-radius: 8px; background: var(--paper-raised);
+  padding: 22px 24px;
+}
+.optimizer-intro{ font-size: 13px; color: var(--muted); line-height: 1.55; margin: 0 0 20px; max-width: 90ch; }
+.opt-constraints{ display:grid; grid-template-columns: repeat(auto-fit, minmax(220px,1fr)); gap: 14px; margin-bottom: 22px; }
+.opt-constraint{
+  border: 1px solid var(--line-strong); border-radius: 8px; background: var(--paper); padding: 12px 14px;
+  display:flex; flex-direction: column; gap: 8px;
+}
+.opt-constraint label{ display:flex; align-items:center; gap: 8px; font-size: 13px; font-weight: 600; cursor:pointer; }
+.opt-constraint input[type="checkbox"]{ width: 15px; height: 15px; accent-color: var(--green); cursor:pointer; }
+.opt-input-wrap{ display:flex; align-items:center; gap: 6px; }
+.opt-input-wrap input[type="number"]{
+  width: 100%; font-family: var(--font-mono); font-size: 14px; padding: 7px 9px;
+  border: 1px solid var(--line-strong); border-radius: 5px; background: var(--paper-raised); color: var(--ink);
+}
+.opt-input-wrap input[type="number"]:disabled{ opacity: .45; }
+.opt-input-wrap span{ font-size: 12px; color: var(--muted); min-width: 8px; }
+
+.opt-settings{ display:grid; grid-template-columns: repeat(auto-fit, minmax(180px,1fr)); gap: 16px; margin-bottom: 22px; }
+.opt-setting{ display:flex; flex-direction: column; gap: 6px; }
+.opt-setting label{ font-family: var(--font-mono); font-size: 10.5px; color: var(--muted); letter-spacing: .04em; text-transform: uppercase; }
+.opt-setting select{
+  font-family: var(--font-mono); font-size: 13px; padding: 8px 10px; border: 1px solid var(--line-strong);
+  border-radius: 5px; background: var(--paper); color: var(--ink);
+}
+
+.opt-result{ margin-top: 22px; }
+.opt-result-card{ border: 1px solid var(--line-strong); border-radius: 8px; background: var(--paper); padding: 18px 20px; }
+.opt-result-title{ font-family: var(--font-display); font-size: 1.05rem; margin: 0 0 4px; }
+.opt-result-badge{ display:inline-block; font-family: var(--font-mono); font-size: 11px; padding: 3px 9px; border-radius: 12px; margin-bottom: 12px; }
+.opt-result-badge.full{ background: var(--gold-soft); color: var(--gold); }
+.opt-result-badge.partial{ background: var(--brick-soft); color: var(--brick); }
+.opt-weights-list{ display:flex; gap: 10px; flex-wrap: wrap; margin-bottom: 16px; }
+.opt-weight-chip{ font-family: var(--font-mono); font-size: 13px; background: var(--paper-raised); border: 1px solid var(--line-strong); border-radius: 6px; padding: 6px 10px; }
+.opt-weight-chip b{ color: var(--ink); }
+.opt-check-table{ width: 100%; border-collapse: collapse; margin-bottom: 16px; font-size: 13px; }
+.opt-check-table td{ padding: 6px 4px; border-bottom: 1px solid var(--line); }
+.opt-check-table td:last-child{ text-align: right; font-family: var(--font-mono); }
+.opt-check-ok{ color: var(--green); font-weight: 700; }
+.opt-check-bad{ color: var(--danger); font-weight: 700; }
+.opt-metrics-list{ display:flex; gap: 16px; flex-wrap: wrap; margin-bottom: 18px; font-family: var(--font-mono); font-size: 12.5px; color: var(--muted); }
+.opt-metrics-list b{ color: var(--ink); }
+.opt-result-actions{ display:flex; gap: 10px; flex-wrap: wrap; }
+.opt-empty{ font-size: 13.5px; color: var(--muted); }
+
 .explainer{ margin-top: 16px; border: 1px solid var(--line-strong); border-radius: 6px; background: var(--paper-raised); padding: 4px 18px; }
 .explainer summary{
   cursor: pointer; font-family: var(--font-mono); font-size: 12px; color: var(--green); padding: 12px 0;
@@ -247,6 +296,73 @@ footer{ max-width: var(--maxw); margin: 0 auto; padding: 30px 24px 60px; font-fa
       </div>
     </div>
   </div>
+
+  <section class="optimizer-section">
+    <button class="btn btn-secondary" id="opt-toggle" type="button" aria-expanded="false">Otimizar composição por restrições</button>
+
+    <div class="optimizer-panel" id="opt-panel" hidden>
+      <p class="optimizer-intro">Defina restrições opcionais (deixe em branco pra ignorar) e o que priorizar entre as composições que atendem tudo. A busca testa composições em múltiplos de 5% (depois refina em 1% ao redor da melhor encontrada) — não é um ótimo matemático exato, é a melhor composição testada na grade. "Período completo" é quase instantâneo; "janela específica" pode levar alguns segundos, mais em janelas menores (mais sub-períodos pra testar por composição).</p>
+
+      <div class="opt-constraints">
+        <div class="opt-constraint" data-key="cagr">
+          <label><input type="checkbox" id="opt-en-cagr"> CAGR ≥</label>
+          <div class="opt-input-wrap"><input type="number" id="opt-val-cagr" step="0.1" placeholder="ex: 10"><span>%</span></div>
+        </div>
+        <div class="opt-constraint" data-key="drawdown">
+          <label><input type="checkbox" id="opt-en-drawdown"> Perda máxima tolerável ≤</label>
+          <div class="opt-input-wrap"><input type="number" id="opt-val-drawdown" step="0.1" placeholder="ex: 15"><span>%</span></div>
+        </div>
+        <div class="opt-constraint" data-key="ulcer">
+          <label><input type="checkbox" id="opt-en-ulcer"> Ulcer Index ≤</label>
+          <div class="opt-input-wrap"><input type="number" id="opt-val-ulcer" step="0.1" placeholder="ex: 3"><span></span></div>
+        </div>
+        <div class="opt-constraint" data-key="sharpe">
+          <label><input type="checkbox" id="opt-en-sharpe"> Sharpe ≥</label>
+          <div class="opt-input-wrap"><input type="number" id="opt-val-sharpe" step="0.01" placeholder="ex: 0,7"><span></span></div>
+        </div>
+        <div class="opt-constraint" data-key="sortino">
+          <label><input type="checkbox" id="opt-en-sortino"> Sortino ≥</label>
+          <div class="opt-input-wrap"><input type="number" id="opt-val-sortino" step="0.01" placeholder="ex: 1,0"><span></span></div>
+        </div>
+      </div>
+
+      <div class="opt-settings">
+        <div class="opt-setting">
+          <label for="opt-basis">Base de cálculo</label>
+          <select id="opt-basis"><option value="nominal">Nominal</option><option value="real">Real</option></select>
+        </div>
+        <div class="opt-setting">
+          <label for="opt-scope">Considerar</label>
+          <select id="opt-scope">
+            <option value="full">Período completo</option>
+            <option value="window">Mediana de uma janela específica</option>
+          </select>
+        </div>
+        <div class="opt-setting" id="opt-scope-years-wrap" hidden>
+          <label for="opt-scope-years">Tamanho da janela</label>
+          <select id="opt-scope-years"></select>
+        </div>
+        <div class="opt-setting">
+          <label for="opt-min-weight">Peso mínimo por ativo</label>
+          <div class="opt-input-wrap"><input type="number" id="opt-min-weight" value="5" min="0" max="20" step="1"><span>%</span></div>
+        </div>
+        <div class="opt-setting">
+          <label for="opt-objective">Priorizar</label>
+          <select id="opt-objective">
+            <option value="cagr_max">Maximizar CAGR</option>
+            <option value="sharpe_max">Maximizar Sharpe</option>
+            <option value="sortino_max">Maximizar Sortino</option>
+            <option value="ulcer_min">Minimizar Ulcer Index</option>
+            <option value="drawdown_max">Minimizar drawdown máximo</option>
+          </select>
+        </div>
+      </div>
+
+      <button class="btn btn-primary" id="opt-run" type="button">Buscar composição</button>
+
+      <div id="opt-result"></div>
+    </div>
+  </section>
 
   <section class="indicator-section">
     <h2 class="indicator-title">CAGR</h2>
@@ -404,6 +520,109 @@ footer{ max-width: var(--maxw); margin: 0 auto; padding: 30px 24px 60px; font-fa
       combo: { nominal: rollingCombo(nominal, DATA.cdi_nominal), real: rollingCombo(real, DATA.cdi_real) },
       underwater: { nominal: drawdownSerie(curvaCapital(nominal)), real: drawdownSerie(curvaCapital(real)) },
     };
+  }
+
+  /* ---------- otimizador: busca por restrições ---------- */
+  function evaluateWeights(weightsPct, mode, scope){
+    const { nominal, real } = combine(weightsPct);
+    const ret = mode === 'nominal' ? nominal : real;
+    const rf = mode === 'nominal' ? DATA.cdi_nominal : DATA.cdi_real;
+    if (scope === 'full'){
+      return {
+        cagr: cagrCalc(ret), drawdown: drawdownMax(ret), ulcer: ulcerCalc(ret),
+        sharpe: sharpeCalc(ret, rf), sortino: sortinoCalc(ret, rf),
+      };
+    }
+    const w = scope; // meses
+    const n = ret.length;
+    const cagrs=[], dds=[], ulcers=[], sharpes=[], sortinos=[];
+    for (let i=0; i+w<=n; i++){
+      const rw = ret.slice(i,i+w), rfw = rf.slice(i,i+w);
+      cagrs.push(cagrCalc(rw)); dds.push(drawdownMax(rw)); ulcers.push(ulcerCalc(rw));
+      sharpes.push(sharpeCalc(rw,rfw)); sortinos.push(sortinoCalc(rw,rfw));
+    }
+    const med = arr => { const s = arr.slice().sort((a,b)=>a-b); return percentile(s,50); };
+    return { cagr: med(cagrs), drawdown: med(dds), ulcer: med(ulcers), sharpe: med(sharpes), sortino: med(sortinos) };
+  }
+
+  function checkConstraints(metrics, constraints){
+    let violated = 0;
+    const details = constraints.map(c => {
+      const val = metrics[c.key];
+      const ok = c.comparator === '>=' ? val >= c.internalValue : val <= c.internalValue;
+      if (!ok) violated++;
+      return Object.assign({}, c, { actual: val, ok });
+    });
+    return { violated, details };
+  }
+
+  function objectiveValue(metrics, objective){
+    switch(objective){
+      case 'cagr_max': return metrics.cagr;
+      case 'sharpe_max': return metrics.sharpe;
+      case 'sortino_max': return metrics.sortino;
+      case 'ulcer_min': return -metrics.ulcer;
+      case 'drawdown_max': return metrics.drawdown;
+      default: return 0;
+    }
+  }
+
+  function enumerateWeightGrid(){
+    const STEP = 5;
+    const out = [];
+    for (let w1=0; w1<=100; w1+=STEP)
+      for (let w2=0; w2<=100-w1; w2+=STEP)
+        for (let w3=0; w3<=100-w1-w2; w3+=STEP)
+          for (let w4=0; w4<=100-w1-w2-w3; w4+=STEP){
+            const w5 = 100-w1-w2-w3-w4;
+            out.push([w1,w2,w3,w4,w5]);
+          }
+    return out;
+  }
+
+  function toWeightsObj(arr){
+    const w = {};
+    ASSET_KEYS.forEach((k,i) => { w[k] = arr[i]; });
+    return w;
+  }
+
+  function runOptimizer(constraints, mode, scope, minWeight, objective){
+    const grid = enumerateWeightGrid().filter(arr => arr.every(w => w >= minWeight));
+    let best = null, bestMetrics = null, bestCheck = null, bestObj = -Infinity;
+
+    grid.forEach(arr => {
+      const w = toWeightsObj(arr);
+      const metrics = evaluateWeights(w, mode, scope);
+      const check = checkConstraints(metrics, constraints);
+      const obj = objectiveValue(metrics, objective);
+      if (best === null || check.violated < bestCheck.violated || (check.violated === bestCheck.violated && obj > bestObj)){
+        best = arr; bestMetrics = metrics; bestCheck = check; bestObj = obj;
+      }
+    });
+
+    if (!best) return null;
+
+    // refinamento: segunda passada em passo de 1% ao redor do melhor achado da grade de 5%
+    const RANGE = 4;
+    const ranges = best.map(w => ({ lo: Math.max(0, w-RANGE), hi: Math.min(100, w+RANGE) }));
+    for (let w1=ranges[0].lo; w1<=ranges[0].hi; w1++)
+      for (let w2=ranges[1].lo; w2<=ranges[1].hi; w2++)
+        for (let w3=ranges[2].lo; w3<=ranges[2].hi; w3++)
+          for (let w4=ranges[3].lo; w4<=ranges[3].hi; w4++){
+            const w5 = 100-w1-w2-w3-w4;
+            if (w5 < ranges[4].lo || w5 > ranges[4].hi) continue;
+            const arr=[w1,w2,w3,w4,w5];
+            if (!arr.every(w => w >= minWeight)) continue;
+            const w = toWeightsObj(arr);
+            const metrics = evaluateWeights(w, mode, scope);
+            const check = checkConstraints(metrics, constraints);
+            const obj = objectiveValue(metrics, objective);
+            if (check.violated < bestCheck.violated || (check.violated === bestCheck.violated && obj > bestObj)){
+              best = arr; bestMetrics = metrics; bestCheck = check; bestObj = obj;
+            }
+          }
+
+    return { weights: toWeightsObj(best), metrics: bestMetrics, check: bestCheck };
   }
 
   /* ---------- estado ---------- */
@@ -841,6 +1060,123 @@ footer{ max-width: var(--maxw); margin: 0 auto; padding: 30px 24px 60px; font-fa
   });
 
   renderAll();
+
+  /* ---------- UI do otimizador ---------- */
+  const CONSTRAINT_DEFS = [
+    { key:'cagr', comparator:'>=', toInternal: v => v/100, label:'CAGR', fmt: v => (v*100).toFixed(2).replace('.',',')+'%' },
+    { key:'drawdown', comparator:'>=', toInternal: v => -Math.abs(v)/100, label:'Perda máxima', fmt: v => (v*100).toFixed(2).replace('.',',')+'%' },
+    { key:'ulcer', comparator:'<=', toInternal: v => v, label:'Ulcer Index', fmt: v => v.toFixed(2).replace('.',',') },
+    { key:'sharpe', comparator:'>=', toInternal: v => v, label:'Sharpe', fmt: v => v.toFixed(2).replace('.',',') },
+    { key:'sortino', comparator:'>=', toInternal: v => v, label:'Sortino', fmt: v => v.toFixed(2).replace('.',',') },
+  ];
+
+  const scopeYearsSelect = document.getElementById('opt-scope-years');
+  for (let a=1; a<=18; a++){
+    const opt = document.createElement('option');
+    opt.value = a*12; opt.textContent = a + (a>1 ? ' anos' : ' ano');
+    if (a===10) opt.selected = true;
+    scopeYearsSelect.appendChild(opt);
+  }
+
+  document.getElementById('opt-toggle').addEventListener('click', () => {
+    const panel = document.getElementById('opt-panel');
+    const btn = document.getElementById('opt-toggle');
+    const willShow = panel.hidden;
+    panel.hidden = !willShow;
+    btn.setAttribute('aria-expanded', String(willShow));
+  });
+
+  document.getElementById('opt-scope').addEventListener('change', e => {
+    document.getElementById('opt-scope-years-wrap').hidden = e.target.value !== 'window';
+  });
+
+  CONSTRAINT_DEFS.forEach(def => {
+    const cb = document.getElementById('opt-en-'+def.key);
+    const input = document.getElementById('opt-val-'+def.key);
+    input.disabled = true;
+    cb.addEventListener('change', () => { input.disabled = !cb.checked; });
+  });
+
+  function renderOptimizerResult(result, constraints){
+    const el = document.getElementById('opt-result');
+    if (!result){
+      el.innerHTML = '<p class="opt-empty">Nenhuma restrição habilitada, ou nenhuma composição na grade testada — ajuste os filtros e tente de novo.</p>';
+      return;
+    }
+    const { weights, metrics, check } = result;
+    const badgeClass = check.violated === 0 ? 'full' : 'partial';
+    const badgeText = check.violated === 0
+      ? 'Atende todas as restrições'
+      : `Não há composição na grade que atenda tudo — mais próxima encontrada, viola ${check.violated} restrição${check.violated>1?'ões':''}`;
+
+    const weightsHtml = ASSET_KEYS.map(k => `<span class="opt-weight-chip">${ASSET_LABELS[k]} <b>${weights[k]}%</b></span>`).join('');
+
+    const checksHtml = check.details.length === 0
+      ? '<tr><td colspan="2" style="color:var(--muted)">Nenhuma restrição habilitada — resultado otimiza só o critério de prioridade.</td></tr>'
+      : check.details.map(d => {
+          const def = CONSTRAINT_DEFS.find(c => c.key === d.key);
+          return `<tr><td>${def.label} ${def.comparator} ${def.fmt(d.internalValue)}</td><td class="${d.ok?'opt-check-ok':'opt-check-bad'}">${d.ok?'✓':'✗'} obteve ${def.fmt(d.actual)}</td></tr>`;
+        }).join('');
+
+    const metricsHtml = CONSTRAINT_DEFS.map(def => `<span>${def.label}: <b>${def.fmt(metrics[def.key])}</b></span>`).join('');
+
+    el.innerHTML = `
+      <div class="opt-result-card">
+        <p class="opt-result-title">Composição encontrada</p>
+        <span class="opt-result-badge ${badgeClass}">${badgeText}</span>
+        <div class="opt-weights-list">${weightsHtml}</div>
+        <table class="opt-check-table"><tbody>${checksHtml}</tbody></table>
+        <div class="opt-metrics-list">${metricsHtml}</div>
+        <div class="opt-result-actions">
+          <button class="btn btn-primary" id="opt-apply-c1" type="button">Aplicar na Carteira 1</button>
+          <button class="btn btn-primary" id="opt-apply-c2" type="button">Aplicar na Carteira 2</button>
+          <button class="btn btn-secondary" id="opt-discard" type="button">Descartar</button>
+        </div>
+      </div>
+    `;
+
+    function applyFound(side){
+      ASSET_KEYS.forEach(k => { document.getElementById('w-'+side+'-'+k).value = weights[k]; });
+      updateSum(side);
+      state.weights[side] = Object.assign({}, weights);
+      state.data[side] = computePortfolio(weights);
+      renderAll();
+    }
+    document.getElementById('opt-apply-c1').addEventListener('click', () => applyFound('c1'));
+    document.getElementById('opt-apply-c2').addEventListener('click', () => applyFound('c2'));
+    document.getElementById('opt-discard').addEventListener('click', () => { el.innerHTML = ''; });
+  }
+
+  document.getElementById('opt-run').addEventListener('click', () => {
+    const constraints = [];
+    CONSTRAINT_DEFS.forEach(def => {
+      const cb = document.getElementById('opt-en-'+def.key);
+      if (!cb.checked) return;
+      const raw = parseFloat(document.getElementById('opt-val-'+def.key).value);
+      if (Number.isNaN(raw)) return;
+      constraints.push({ key: def.key, comparator: def.comparator, internalValue: def.toInternal(raw) });
+    });
+
+    const mode = document.getElementById('opt-basis').value;
+    const scopeSel = document.getElementById('opt-scope').value;
+    const scope = scopeSel === 'full' ? 'full' : parseInt(scopeYearsSelect.value, 10);
+    const minWeight = parseFloat(document.getElementById('opt-min-weight').value) || 0;
+    const objective = document.getElementById('opt-objective').value;
+
+    const runBtn = document.getElementById('opt-run');
+    const resultEl = document.getElementById('opt-result');
+    runBtn.disabled = true;
+    const originalText = runBtn.textContent;
+    runBtn.textContent = 'Calculando…';
+    resultEl.innerHTML = '';
+
+    setTimeout(() => {
+      const result = runOptimizer(constraints, mode, scope, minWeight, objective);
+      renderOptimizerResult(result, constraints);
+      runBtn.disabled = false;
+      runBtn.textContent = originalText;
+    }, 30);
+  });
 })();
 </script>
 
