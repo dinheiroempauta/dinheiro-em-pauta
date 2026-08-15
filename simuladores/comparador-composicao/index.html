@@ -593,14 +593,13 @@ footer{ max-width: var(--maxw); margin: 0 auto; padding: 30px 24px 60px; font-fa
     return episodes;
   }
   // pior (maior) tempo de recuperação entre os episódios de drawdown de uma série
-  // de retornos; episódios ainda não recuperados até o fim da série contam com o
-  // tempo decorrido até ali (limite inferior do verdadeiro tempo de recuperação).
+  // de retornos; episódios ainda não recuperados até o fim da série são excluídos
+  // (o tempo real de recuperação é desconhecido, não dá pra estimar por baixo).
   function worstRecoveryMonths(ret){
     const dd = drawdownSerie(curvaCapital(ret));
-    const episodes = detectDrawdownEpisodes(dd);
-    if (episodes.length === 0) return 0;
-    const n = ret.length;
-    return Math.max(...episodes.map(e => e.recovered ? e.months : (n-1-e.troughIdx)));
+    const recovered = detectDrawdownEpisodes(dd).filter(e => e.recovered);
+    if (recovered.length === 0) return 0;
+    return Math.max(...recovered.map(e => e.months));
   }
   // série CRUA (não agregada) de uma métrica calculada em janelas móveis de
   // tamanho fixo — diferente de rollingFunil, que agrega os valores em percentis.
