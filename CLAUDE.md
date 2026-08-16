@@ -57,6 +57,18 @@ E sempre usar `--force-with-lease` (nunca `--force` puro) em qualquer
 push que reescreva histórico de branch remota — a lease bloqueia o push
 se o remoto tiver avançado de um jeito que o comando não previa.
 
+## Não limitar largura de texto com `max-width` em `ch` por hábito
+
+Em artigo ou simulador novo, não colar um `max-width: NNch` em parágrafos
+(`.lede`, `.page-subheading`, corpo do texto etc.) só porque outra página
+do site tem isso — o container (`main`, `--maxw`) já limita a largura da
+página. Um `max-width` em `ch` adicional por cima disso costuma ser mais
+estreito que o container e força quebra de linha bem antes da borda
+disponível, deixando um espaço em branco enorme à direita do texto (já
+aconteceu nos dois simuladores de PU). Se não for pra uma coluna de leitura
+deliberadamente estreita (ex: corpo de um artigo longo, onde isso é
+intencional), deixe o texto ocupar a largura do container.
+
 ## Invariante: card da home tem que espelhar o artigo
 
 O card de cada artigo em `index.html` (dentro de `.article-grid`) é texto
