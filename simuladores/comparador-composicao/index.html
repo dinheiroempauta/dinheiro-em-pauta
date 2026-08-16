@@ -613,7 +613,7 @@ footer{ max-width: var(--maxw); margin: 0 auto; padding: 30px 24px 60px; font-fa
     </button>
 
     <div class="optimizer-panel" id="pwrswr-panel" hidden>
-      <p class="pwrswr-note">Escolha PWR (perpétua, proxy de 60 anos), uma SWR de horizonte fixo, ou as duas. A base (nominal/real) segue o alternador do topo da página. O cálculo roda em segundo plano (Web Worker), uma trajetória por carteira em paralelo — não trava a página.</p>
+      <p class="pwrswr-note">Escolha PWR (perpétua, proxy de 60 anos) e/ou qualquer combinação de SWRs de horizonte fixo. A base (nominal/real) segue o alternador do topo da página. O cálculo roda em segundo plano (Web Worker), uma trajetória por carteira em paralelo — não trava a página.</p>
 
       <div class="pwrswr-fields">
         <div class="pwrswr-field">
@@ -621,15 +621,14 @@ footer{ max-width: var(--maxw); margin: 0 auto; padding: 30px 24px 60px; font-fa
           <span style="font-size:11.5px;color:var(--muted)">Sucesso = capital final real ≥ capital inicial, simulado em 60 anos.</span>
         </div>
         <div class="pwrswr-field">
-          <label for="pwrswr-swr">SWR (horizonte fixo)</label>
-          <select id="pwrswr-swr">
-            <option value="">Nenhuma</option>
-            <option value="30">30 anos</option>
-            <option value="40" selected>40 anos</option>
-            <option value="50">50 anos</option>
-            <option value="60">60 anos</option>
-            <option value="70">70 anos</option>
-          </select>
+          <span style="font-size:13px;font-weight:600;">SWR (horizonte fixo)</span>
+          <div id="pwrswr-swr-group" style="display:flex; flex-wrap:wrap; gap:10px;">
+            <label style="display:flex; align-items:center; gap:5px; font-size:13px; font-weight:400; cursor:pointer;"><input type="checkbox" class="pwrswr-swr-cb" value="30"> 30 anos</label>
+            <label style="display:flex; align-items:center; gap:5px; font-size:13px; font-weight:400; cursor:pointer;"><input type="checkbox" class="pwrswr-swr-cb" value="40" checked> 40 anos</label>
+            <label style="display:flex; align-items:center; gap:5px; font-size:13px; font-weight:400; cursor:pointer;"><input type="checkbox" class="pwrswr-swr-cb" value="50"> 50 anos</label>
+            <label style="display:flex; align-items:center; gap:5px; font-size:13px; font-weight:400; cursor:pointer;"><input type="checkbox" class="pwrswr-swr-cb" value="60"> 60 anos</label>
+            <label style="display:flex; align-items:center; gap:5px; font-size:13px; font-weight:400; cursor:pointer;"><input type="checkbox" class="pwrswr-swr-cb" value="70"> 70 anos</label>
+          </div>
         </div>
         <div class="pwrswr-field">
           <label for="pwrswr-success">Percentual de sucesso alvo</label>
@@ -2164,13 +2163,15 @@ footer{ max-width: var(--maxw); margin: 0 auto; padding: 30px 24px 60px; font-fa
 
     const targets = [];
     if (document.getElementById('pwrswr-en-pwr').checked) targets.push({ name: 'PWR', months: 720, mode: 'preserve_capital' });
-    const swrYears = document.getElementById('pwrswr-swr').value;
-    if (swrYears) targets.push({ name: 'SWR-' + swrYears, months: parseInt(swrYears, 10) * 12, mode: 'never_ruin' });
+    Array.from(document.querySelectorAll('.pwrswr-swr-cb:checked'))
+      .map(cb => parseInt(cb.value, 10))
+      .sort((a,b) => a-b)
+      .forEach(years => targets.push({ name: 'SWR-' + years, months: years * 12, mode: 'never_ruin' }));
 
     const resultEl = document.getElementById('pwrswr-result');
     resultEl.innerHTML = '';
     if (targets.length === 0){
-      resultEl.innerHTML = '<p class="pwrswr-error">Selecione PWR e/ou uma SWR antes de calcular.</p>';
+      resultEl.innerHTML = '<p class="pwrswr-error">Selecione PWR e/ou pelo menos uma SWR antes de calcular.</p>';
       return;
     }
     let successPct = parseFloat(document.getElementById('pwrswr-success').value);
