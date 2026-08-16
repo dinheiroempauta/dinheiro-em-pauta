@@ -8,6 +8,52 @@
 (function(){
   "use strict";
 
+  /* ---------- toggle de tema (claro/escuro) ---------- */
+  var themeToggle = document.getElementById('themeToggle');
+  if (themeToggle) {
+    var root = document.documentElement;
+    var systemPrefersDark = function(){
+      return window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+    };
+    var isDarkNow = function(){
+      var explicit = root.getAttribute('data-theme');
+      if (explicit === 'dark') return true;
+      if (explicit === 'light') return false;
+      return systemPrefersDark();
+    };
+    themeToggle.setAttribute('aria-pressed', String(isDarkNow()));
+    themeToggle.addEventListener('click', function(){
+      var next = isDarkNow() ? 'light' : 'dark';
+      root.setAttribute('data-theme', next);
+      try { localStorage.setItem('ic-theme', next); } catch(e){}
+      themeToggle.setAttribute('aria-pressed', String(next === 'dark'));
+    });
+  }
+
+  /* ---------- menu compacto (Sobre / Artigos / Simuladores) ---------- */
+  var menuToggle = document.getElementById('menuToggle');
+  var siteMenu = document.getElementById('siteMenu');
+  if (menuToggle && siteMenu) {
+    var closeMenu = function(){
+      siteMenu.hidden = true;
+      menuToggle.setAttribute('aria-expanded', 'false');
+    };
+    var openMenu = function(){
+      siteMenu.hidden = false;
+      menuToggle.setAttribute('aria-expanded', 'true');
+    };
+    menuToggle.addEventListener('click', function(e){
+      e.stopPropagation();
+      if (siteMenu.hidden) openMenu(); else closeMenu();
+    });
+    document.addEventListener('click', function(e){
+      if (!siteMenu.hidden && !siteMenu.contains(e.target) && e.target !== menuToggle) closeMenu();
+    });
+    document.addEventListener('keydown', function(e){
+      if (e.key === 'Escape' && !siteMenu.hidden) { closeMenu(); menuToggle.focus(); }
+    });
+  }
+
   /* ---------- barra de progresso de leitura ---------- */
   var progressFill = document.getElementById('progressFill');
   if (progressFill) {

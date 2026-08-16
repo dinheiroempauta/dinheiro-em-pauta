@@ -3,6 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<script src="assets/theme-init.js"></script>
 <title>Independência Calculada — FIRE, renda fixa e carteira</title>
 <meta name="description" content="Estudos quantitativos sobre FIRE, taxa de retirada, renda fixa e alocação de carteira, com metodologia aberta e calculadoras interativas.">
 <meta name="robots" content="index, follow">
@@ -131,11 +132,20 @@ main{ max-width: var(--maxw); margin: 0 auto; padding: 48px 24px 90px; }
 
 <div class="masthead">
   <div class="masthead-inner">
-    <div class="masthead-left">
-      <a href="." class="wordmark"><span>Independência</span>Calculada</a>
-      <a href="sobre/" class="masthead-nav-link">Sobre</a>
-      <a href="artigos/" class="masthead-nav-link">Artigos</a>
-      <a href="simuladores/" class="masthead-nav-link">Simuladores</a>
+    <a href="." class="wordmark"><span>Independência</span>Calculada</a>
+    <div class="masthead-actions">
+      <button type="button" class="icon-btn theme-toggle" id="themeToggle" aria-label="Alternar entre tema claro e escuro">
+        <svg class="icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"/></svg>
+        <svg class="icon-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79Z"/></svg>
+      </button>
+      <button type="button" class="icon-btn menu-toggle" id="menuToggle" aria-haspopup="true" aria-expanded="false" aria-controls="siteMenu" aria-label="Abrir menu">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 7h16M4 12h16M4 17h16"/></svg>
+      </button>
+      <nav class="site-menu" id="siteMenu" hidden aria-label="Navegação principal">
+        <a href="sobre/">Sobre</a>
+        <a href="artigos/">Artigos</a>
+        <a href="simuladores/">Simuladores</a>
+      </nav>
     </div>
   </div>
 </div>
