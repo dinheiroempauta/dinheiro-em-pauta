@@ -115,7 +115,7 @@ a:focus-visible, button:focus-visible, input:focus-visible, textarea:focus-visib
 /* ícones à direita: tema + menu */
 .masthead-actions{ display:flex; align-items:center; gap: 6px; position: relative; }
 .icon-btn{
-  display:flex; align-items:center; justify-content:center; width: 40px; height: 40px;
+  display:flex; align-items:center; justify-content:center; width: 44px; height: 44px;
   border: 1px solid transparent; border-radius: 6px; background: transparent; color: var(--ink);
   cursor: pointer; transition: background .15s ease, border-color .15s ease;
 }
@@ -143,7 +143,7 @@ a:focus-visible, button:focus-visible, input:focus-visible, textarea:focus-visib
 .site-menu[hidden]{ display:none; }
 .site-menu a{
   font-family: var(--font-mono); font-size: 13px; letter-spacing: .02em; color: var(--ink);
-  text-decoration:none; padding: 10px 12px; border-radius: 5px; min-height: 40px; display:flex; align-items:center;
+  text-decoration:none; padding: 10px 12px; border-radius: 5px; min-height: 44px; display:flex; align-items:center;
 }
 .site-menu a:hover{ background: var(--paper); color: var(--green); }
 .site-menu a[aria-current="page"]{ color: var(--green); font-weight: 600; }
