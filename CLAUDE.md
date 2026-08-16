@@ -34,6 +34,29 @@ Ainda assim, pare e pergunte antes se:
   histórico publicado)
 - Envolver custo real (compra de domínio, upgrade de plano pago, etc.)
 
+## Git: checkout seguro de branch de trabalho existente
+
+`git checkout -B <branch>` sozinho, sem apontar pra `origin/<branch>`, cria
+(ou **reseta**) a branch local a partir do commit em que HEAD já está —
+isso descarta silenciosamente qualquer commit que só exista no remoto,
+sem aviso nenhum. Já causou um quase-incidente aqui (branch de trabalho
+que estava presa num ponto antigo do `main` quase teve 46 commits do
+remoto sobrescritos por um `checkout -B` que assumiu a base errada).
+
+Ao retomar ou criar uma branch de trabalho que já existe no remoto,
+sempre um dos dois:
+- `git fetch origin <branch> && git checkout -B <branch> origin/<branch>`
+  (aponta a base explicitamente pro remoto, nunca implicitamente pro HEAD
+  atual), ou
+- se a branch local já existe e só precisa atualizar:
+  `git fetch origin <branch> && git merge --ff-only origin/<branch>` —
+  isso **falha** em vez de sobrescrever quando há divergência, servindo
+  de rede de segurança real.
+
+E sempre usar `--force-with-lease` (nunca `--force` puro) em qualquer
+push que reescreva histórico de branch remota — a lease bloqueia o push
+se o remoto tiver avançado de um jeito que o comando não previa.
+
 ## Invariante: card da home tem que espelhar o artigo
 
 O card de cada artigo em `index.html` (dentro de `.article-grid`) é texto
