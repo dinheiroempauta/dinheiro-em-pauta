@@ -388,6 +388,31 @@ svg.chart-svg{ width: 100%; height: auto; display:block; overflow: visible; }
 .explainer p:last-child{ margin-bottom: 16px; }
 .explainer p b{ color: var(--green-deep); }
 
+/* ---------- PWR / SWR ---------- */
+.pwrswr-fields{ display:grid; grid-template-columns: repeat(auto-fit, minmax(200px,1fr)); gap: 14px; margin-bottom: 20px; }
+.pwrswr-field{ border: 1px solid var(--line-strong); border-radius: 8px; background: var(--paper); padding: 12px 14px; display:flex; flex-direction: column; gap: 8px; }
+.pwrswr-field label{ display:flex; align-items:center; gap: 8px; font-size: 13px; font-weight: 600; cursor:pointer; }
+.pwrswr-field input[type="checkbox"]{ width: 15px; height: 15px; accent-color: var(--green); cursor:pointer; }
+.pwrswr-field select, .pwrswr-field input[type="number"]{
+  font-family: var(--font-mono); font-size: 13px; padding: 7px 9px; border: 1px solid var(--line-strong);
+  border-radius: 5px; background: var(--paper-raised); color: var(--ink);
+}
+.pwrswr-note{ font-size: 13px; color: var(--muted); line-height: 1.55; margin: 0 0 20px; max-width: none; }
+.pwrswr-progress-wrap{ margin-top: 14px; display:none; }
+.pwrswr-progress-wrap.active{ display:block; }
+.pwrswr-progress-track{ height: 8px; border-radius: 4px; background: var(--line); overflow:hidden; }
+.pwrswr-progress-fill{ height: 100%; width:0%; background: linear-gradient(90deg, var(--gold), var(--green)); transition: width .2s ease; }
+.pwrswr-progress-label{ font-family: var(--font-mono); font-size: 11.5px; color: var(--muted); margin-top: 6px; }
+.pwrswr-result{ margin-top: 22px; }
+.pwrswr-table{ width: 100%; border-collapse: collapse; font-size: 13.5px; }
+.pwrswr-table th, .pwrswr-table td{ padding: 9px 8px; border-bottom: 1px solid var(--line); text-align: left; }
+.pwrswr-table th{ font-size: 11px; text-transform: uppercase; letter-spacing:.03em; color: var(--muted); font-weight:500; border-bottom: 1px solid var(--line-strong); }
+.pwrswr-table td.num{ text-align:right; font-family: var(--font-mono); font-weight: 600; }
+.pwrswr-table td.c1{ color: var(--hue-c1); }
+.pwrswr-table td.c2{ color: var(--hue-c2); }
+.pwrswr-error{ font-size: 13px; color: var(--danger); background: var(--brick-soft); border-radius: 6px; padding: 10px 14px; margin-top: 16px; }
+.pwrswr-actions{ display:flex; gap: 10px; flex-wrap:wrap; margin-top: 18px; }
+
 footer{ max-width: var(--maxw); margin: 0 auto; padding: 30px 24px 60px; font-family: var(--font-mono); font-size: 12px; color: var(--muted); text-align:center; line-height: 1.8; }
 </style>
 </head>
@@ -397,6 +422,7 @@ footer{ max-width: var(--maxw); margin: 0 auto; padding: 30px 24px 60px; font-fa
 
 <nav class="toc-rail" id="tocRail" aria-label="Navegação do comparador">
   <a href="#otimizador" aria-label="Otimizador"><span class="toc-label">Otimizador</span></a>
+  <a href="#pwr-swr" aria-label="Taxa de retirada"><span class="toc-label">Taxa de retirada</span></a>
   <a href="#cagr-janela-movel" aria-label="CAGR por janela móvel"><span class="toc-label">CAGR por janela móvel</span></a>
   <a href="#cagr-funil" aria-label="Funil de CAGR"><span class="toc-label">Funil de CAGR</span></a>
   <a href="#drawdown" aria-label="Drawdown"><span class="toc-label">Drawdown</span></a>
@@ -565,6 +591,68 @@ footer{ max-width: var(--maxw); margin: 0 auto; padding: 30px 24px 60px; font-fa
       <button class="btn btn-primary" id="opt-run" type="button"><span class="btn-spinner" aria-hidden="true"></span><span class="btn-label">Buscar composição</span></button>
 
       <div id="opt-result"></div>
+    </div>
+  </section>
+
+  <section class="optimizer-section optimizer-highlight" id="pwr-swr">
+    <div class="optimizer-header">
+      <div class="optimizer-header-icon" aria-hidden="true">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2v20M2 12h20"/></svg>
+      </div>
+      <div class="optimizer-header-text">
+        <div class="optimizer-header-title-row">
+          <h2 class="optimizer-header-title">Encontrar taxa de retirada</h2>
+          <span class="optimizer-badge">Experimente</span>
+        </div>
+        <p class="optimizer-header-sub">Simula milhares de trajetórias sintéticas (bootstrap estacionário sobre o histórico real da carteira) e encontra a maior taxa de retirada mensal que atinge o percentual de sucesso escolhido — perpétua (PWR) e/ou por horizonte fixo (SWR).</p>
+      </div>
+    </div>
+    <button class="btn btn-primary opt-toggle-btn" id="pwrswr-toggle" type="button" aria-expanded="false">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" width="15" height="15" aria-hidden="true"><path d="M12 2v20M2 12h20"/></svg>
+      Calcular taxa de retirada
+    </button>
+
+    <div class="optimizer-panel" id="pwrswr-panel" hidden>
+      <p class="pwrswr-note">Escolha PWR (perpétua, proxy de 60 anos), uma SWR de horizonte fixo, ou as duas. A base (nominal/real) segue o alternador do topo da página. O cálculo roda em segundo plano (Web Worker), uma trajetória por carteira em paralelo — não trava a página.</p>
+
+      <div class="pwrswr-fields">
+        <div class="pwrswr-field">
+          <label><input type="checkbox" id="pwrswr-en-pwr" checked> PWR (taxa perpétua)</label>
+          <span style="font-size:11.5px;color:var(--muted)">Sucesso = capital final real ≥ capital inicial, simulado em 60 anos.</span>
+        </div>
+        <div class="pwrswr-field">
+          <label for="pwrswr-swr">SWR (horizonte fixo)</label>
+          <select id="pwrswr-swr">
+            <option value="">Nenhuma</option>
+            <option value="30">30 anos</option>
+            <option value="40" selected>40 anos</option>
+            <option value="50">50 anos</option>
+            <option value="60">60 anos</option>
+            <option value="70">70 anos</option>
+          </select>
+        </div>
+        <div class="pwrswr-field">
+          <label for="pwrswr-success">Percentual de sucesso alvo</label>
+          <div class="opt-input-wrap"><input type="number" id="pwrswr-success" min="70" max="100" step="1" value="95"><span>%</span></div>
+        </div>
+      </div>
+
+      <button class="btn btn-primary" id="pwrswr-run" type="button"><span class="btn-spinner" aria-hidden="true"></span><span class="btn-label">Calcular</span></button>
+      <button class="btn btn-secondary" id="pwrswr-cancel" type="button" style="display:none;">Cancelar</button>
+
+      <div class="pwrswr-progress-wrap" id="pwrswr-progress-wrap">
+        <div class="pwrswr-progress-track"><div class="pwrswr-progress-fill" id="pwrswr-progress-fill"></div></div>
+        <p class="pwrswr-progress-label" id="pwrswr-progress-label">Calculando…</p>
+      </div>
+
+      <div id="pwrswr-result"></div>
+
+      <details class="explainer">
+        <summary>O que é, como se calcula e como ler este resultado</summary>
+        <p><b>O que é:</b> a maior taxa de retirada mensal (em % ao ano do capital inicial, corrigida pela base escolhida) que, numa amostra de trajetórias sintéticas da carteira, atinge o percentual de sucesso definido. PWR mira uma retirada que dura indefinidamente (proxy: 60 anos sem esgotar o capital, terminando com valor real ≥ inicial); SWR mira um horizonte fixo (nunca zerar o patrimônio dentro dele).</p>
+        <p><b>Como se calcula:</b> reamostra blocos do histórico real de retornos mensais da carteira (bootstrap estacionário, bloco médio de 12 meses) para gerar 10.000 trajetórias sintéticas; para cada trajetória, testa se uma dada taxa de retirada mensal (rate/12 do capital inicial) sobrevive ao critério de sucesso; busca por bisseção a maior taxa cujo percentual de trajetórias bem-sucedidas atinge o alvo escolhido.</p>
+        <p><b>Como ler:</b> é uma taxa de retirada específica desta amostra e desta composição — não uma garantia, é uma estimativa estatística baseada no histórico observado (jan/2006–jun/2026). Rodar de novo com a mesma composição e o mesmo alvo dá sempre o mesmo número (semente fixa), mas mudar os pesos ou o alvo de sucesso muda o resultado.</p>
+      </details>
     </div>
   </section>
 
@@ -1947,6 +2035,201 @@ footer{ max-width: var(--maxw); margin: 0 auto; padding: 30px 24px 60px; font-fa
       runBtn.removeAttribute('aria-busy');
       runBtnLabel.textContent = originalText;
     }, 30);
+  });
+
+  /* ---------- PWR / SWR: bootstrap estacionário rodando em Web Worker ---------- */
+  // Código do worker embutido como string (site é HTML puro, sem etapa de build,
+  // então o worker nasce de um Blob em vez de um arquivo .js separado).
+  const PWRSWR_WORKER_SRC = `
+    function mulberry32(seed){
+      return function(){
+        seed |= 0; seed = (seed + 0x6D2B79F5) | 0;
+        var t = Math.imul(seed ^ (seed >>> 15), 1 | seed);
+        t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t;
+        return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
+      };
+    }
+    // Bootstrap estacionário (Politis-Romano): reamostra blocos do histórico real,
+    // com prob. 1/meanBlockLength de "pular" pra um novo ponto aleatório a cada mês.
+    function stationaryBootstrapPaths(returns, nPaths, nMonths, meanBlockLength, rng){
+      var n = returns.length, p = 1/meanBlockLength;
+      var paths = new Float64Array(nPaths*nMonths);
+      for (var i=0;i<nPaths;i++){
+        var idx = Math.floor(rng()*n);
+        var base = i*nMonths;
+        for (var j=0;j<nMonths;j++){
+          paths[base+j] = returns[idx];
+          idx = (idx+1) % n;
+          if (rng() < p) idx = Math.floor(rng()*n);
+        }
+      }
+      return paths;
+    }
+    // Fração de trajetórias bem-sucedidas pra uma taxa de retirada anual "w",
+    // usando só os primeiros "months" meses de cada trajetória (recorte do
+    // horizonte máximo gerado, reaproveitado entre PWR e SWR).
+    function successRate(paths, nPaths, maxMonths, months, w, mode, initialValue){
+      var monthly = (w/12)*initialValue;
+      var success = 0;
+      for (var i=0;i<nPaths;i++){
+        var v = initialValue, base = i*maxMonths, ruined = false;
+        for (var j=0;j<months;j++){
+          v = v*(1+paths[base+j]) - monthly;
+          if (v <= 0){ v = 0; ruined = true; if (mode === 'never_ruin') break; }
+        }
+        if (mode === 'never_ruin' ? !ruined : v >= initialValue) success++;
+      }
+      return success/nPaths;
+    }
+    function findRate(paths, nPaths, maxMonths, months, mode, targetSuccess, initialValue, onIter){
+      var successAt0 = successRate(paths, nPaths, maxMonths, months, 0, mode, initialValue);
+      if (successAt0 < targetSuccess){
+        return { error: 'Mesmo sem nenhuma retirada, essa composição não atinge ' + Math.round(targetSuccess*100) + '% de sucesso nesse horizonte.' };
+      }
+      var lo = 0, hi = 0.15, maxIter = 13;
+      for (var it=0; it<maxIter; it++){
+        var mid = (lo+hi)/2;
+        var s = successRate(paths, nPaths, maxMonths, months, mid, mode, initialValue);
+        if (s >= targetSuccess) lo = mid; else hi = mid;
+        onIter(it+1, maxIter);
+      }
+      var achieved = successRate(paths, nPaths, maxMonths, months, lo, mode, initialValue);
+      return { rate: lo, achieved: achieved };
+    }
+    self.onmessage = function(e){
+      var d = e.data;
+      var rng = mulberry32(d.seed);
+      var maxMonths = 0;
+      d.targets.forEach(function(t){ if (t.months > maxMonths) maxMonths = t.months; });
+      var paths = stationaryBootstrapPaths(d.returns, d.nPaths, maxMonths, d.meanBlockLength, rng);
+      var results = [];
+      for (var k=0;k<d.targets.length;k++){
+        var t = d.targets[k];
+        var res = findRate(paths, d.nPaths, maxMonths, t.months, t.mode, d.targetSuccess, 100, function(iter,total){
+          self.postMessage({ type:'progress', targetIdx:k, targetCount:d.targets.length, name:t.name, iter:iter, total:total });
+        });
+        results.push(Object.assign({ name:t.name }, res));
+      }
+      self.postMessage({ type:'done', results: results });
+    };
+  `;
+
+  let pwrswrWorkers = null;
+  function pwrswrCancel(){
+    if (pwrswrWorkers){ pwrswrWorkers.forEach(w => w && w.terminate()); pwrswrWorkers = null; }
+    const runBtn = document.getElementById('pwrswr-run');
+    const cancelBtn = document.getElementById('pwrswr-cancel');
+    const progressWrap = document.getElementById('pwrswr-progress-wrap');
+    runBtn.disabled = false; runBtn.classList.remove('loading'); runBtn.removeAttribute('aria-busy');
+    runBtn.querySelector('.btn-label').textContent = 'Calcular';
+    cancelBtn.style.display = 'none';
+    progressWrap.classList.remove('active');
+  }
+
+  function renderPwrSwrResult(targets, resC1, resC2){
+    const el = document.getElementById('pwrswr-result');
+    const errors = [];
+    [['Carteira 1', resC1], ['Carteira 2', resC2]].forEach(([label, res]) => {
+      res.forEach(r => { if (r.error) errors.push(`${label} — ${r.name}: ${r.error}`); });
+    });
+    const rowsHtml = targets.map((t, i) => {
+      const r1 = resC1[i], r2 = resC2[i];
+      const fmt = r => r.error ? '—' : (r.rate*100).toFixed(2).replace('.', ',') + '%';
+      return `<tr><td>${t.name}</td><td class="num c1">${fmt(r1)}</td><td class="num c2">${fmt(r2)}</td></tr>`;
+    }).join('');
+    let html = `
+      <div class="pwrswr-table-wrap" style="overflow-x:auto">
+        <table class="pwrswr-table">
+          <thead><tr><th>Alvo</th><th class="num">Carteira 1</th><th class="num">Carteira 2</th></tr></thead>
+          <tbody>${rowsHtml}</tbody>
+        </table>
+      </div>
+    `;
+    if (errors.length) html += `<p class="pwrswr-error">${errors.join('<br>')}</p>`;
+    el.innerHTML = html;
+  }
+
+  document.getElementById('pwrswr-toggle').addEventListener('click', () => {
+    const panel = document.getElementById('pwrswr-panel');
+    const btn = document.getElementById('pwrswr-toggle');
+    const willShow = panel.hidden;
+    panel.hidden = !willShow;
+    btn.setAttribute('aria-expanded', String(willShow));
+  });
+
+  document.getElementById('pwrswr-cancel').addEventListener('click', pwrswrCancel);
+
+  document.getElementById('pwrswr-run').addEventListener('click', () => {
+    if (pwrswrWorkers) pwrswrCancel();
+
+    const targets = [];
+    if (document.getElementById('pwrswr-en-pwr').checked) targets.push({ name: 'PWR', months: 720, mode: 'preserve_capital' });
+    const swrYears = document.getElementById('pwrswr-swr').value;
+    if (swrYears) targets.push({ name: 'SWR-' + swrYears, months: parseInt(swrYears, 10) * 12, mode: 'never_ruin' });
+
+    const resultEl = document.getElementById('pwrswr-result');
+    resultEl.innerHTML = '';
+    if (targets.length === 0){
+      resultEl.innerHTML = '<p class="pwrswr-error">Selecione PWR e/ou uma SWR antes de calcular.</p>';
+      return;
+    }
+    let successPct = parseFloat(document.getElementById('pwrswr-success').value);
+    if (Number.isNaN(successPct)) successPct = 95;
+    successPct = Math.max(70, Math.min(100, successPct));
+    document.getElementById('pwrswr-success').value = successPct;
+    const targetSuccess = successPct/100;
+
+    const runBtn = document.getElementById('pwrswr-run');
+    const runBtnLabel = runBtn.querySelector('.btn-label');
+    const cancelBtn = document.getElementById('pwrswr-cancel');
+    const progressWrap = document.getElementById('pwrswr-progress-wrap');
+    const progressFill = document.getElementById('pwrswr-progress-fill');
+    const progressLabel = document.getElementById('pwrswr-progress-label');
+    runBtn.disabled = true; runBtn.classList.add('loading'); runBtn.setAttribute('aria-busy', 'true');
+    runBtnLabel.textContent = 'Calculando…';
+    cancelBtn.style.display = '';
+    progressWrap.classList.add('active');
+    progressFill.style.width = '0%';
+    progressLabel.textContent = 'Iniciando…';
+
+    const blobUrl = URL.createObjectURL(new Blob([PWRSWR_WORKER_SRC], { type: 'application/javascript' }));
+    const sides = ['c1', 'c2'];
+    const progressBySide = { c1: 0, c2: 0 };
+    const resultsBySide = { c1: null, c2: null };
+    let doneCount = 0;
+    const totalSteps = targets.length * 13 * 2; // 13 iterações de bisseção por alvo, 2 carteiras
+
+    pwrswrWorkers = sides.map(side => {
+      const { nominal, real } = combine(state.weights[side]);
+      const returns = state.mode === 'nominal' ? nominal : real;
+      const worker = new Worker(blobUrl);
+      worker.onmessage = (e) => {
+        const msg = e.data;
+        if (msg.type === 'progress'){
+          progressBySide[side] = (msg.targetIdx*13) + msg.iter;
+          const totalDone = progressBySide.c1 + progressBySide.c2;
+          progressFill.style.width = Math.min(100, (totalDone/totalSteps)*100).toFixed(0) + '%';
+          progressLabel.textContent = `Calculando ${msg.name} — ${side === 'c1' ? 'Carteira 1' : 'Carteira 2'}…`;
+        } else if (msg.type === 'done'){
+          resultsBySide[side] = msg.results;
+          doneCount++;
+          if (doneCount === 2){
+            URL.revokeObjectURL(blobUrl);
+            renderPwrSwrResult(targets, resultsBySide.c1, resultsBySide.c2);
+            pwrswrWorkers = null;
+            runBtn.disabled = false; runBtn.classList.remove('loading'); runBtn.removeAttribute('aria-busy');
+            runBtnLabel.textContent = 'Calcular';
+            cancelBtn.style.display = 'none';
+            progressWrap.classList.remove('active');
+          }
+        }
+      };
+      worker.postMessage({
+        returns: returns, nPaths: 10000, meanBlockLength: 12, seed: 2026,
+        targets: targets, targetSuccess: targetSuccess,
+      });
+      return worker;
+    });
   });
 
   /* ---------- barra de progresso de leitura ---------- */
