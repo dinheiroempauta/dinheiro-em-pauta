@@ -3,16 +3,17 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Qual é a PWR da minha carteira? Um estudo com 20 anos de dados reais | Independência Calculada</title>
-<meta name="description" content="PWR de uma carteira 40/30/20/5/5 (B5P211, VWRA11, DIVO11, CDIB11, GOLD11): 5,16% a.a. real a 90% de confiança e 4,75% a 95%, via bootstrap estacionário sobre 20 anos de dados. Com calculadora interativa.">
+<title>Qual é a PWR da minha carteira? 20 anos de dados reais</title>
+<meta name="description" content="PWR de uma carteira 40/30/20/5/5: 5,16% a.a. real a 90% de confiança e 4,75% a 95%, calculada via bootstrap estacionário sobre 20 anos de dados reais.">
 <meta name="robots" content="index, follow">
 <meta name="author" content="Independência Calculada">
-<link rel="canonical" href="https://independenciacalculada.com.br/pwr-carteira-fire">
+<!-- TODO: trocar para domínio próprio (independenciacalculada.com.br) quando o CNAME estiver ativo — canonical/og:url/JSON-LD abaixo usam a URL do GitHub Pages por enquanto -->
+<link rel="canonical" href="https://independenciacalculada-droid.github.io/independencia-calculada/pwr-carteira-fire/">
 <link rel="alternate" type="application/rss+xml" title="Independência Calculada" href="../feed.xml">
 <meta property="og:title" content="Qual é a PWR da minha carteira? Um estudo com 20 anos de dados reais">
 <meta property="og:description" content="PWR@90% = 5,16% e PWR@95% = 4,75% ao ano, em termos reais — calculado via bootstrap estacionário sobre dados de 2006 a 2026. Metodologia completa e calculadora interativa.">
 <meta property="og:type" content="article">
-<meta property="og:url" content="https://independenciacalculada.com.br/pwr-carteira-fire">
+<meta property="og:url" content="https://independenciacalculada-droid.github.io/independencia-calculada/pwr-carteira-fire/">
 <meta property="og:image" content="https://independenciacalculada-droid.github.io/independencia-calculada/assets/og-cover-pwr-carteira-fire-v2.png">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
@@ -41,10 +42,10 @@
   "inLanguage": "pt-BR",
   "keywords": "PWR, Perpetual Withdrawal Rate, taxa de retirada perpétua, FIRE, independência financeira, bootstrap estacionário, aposentadoria, carteira de investimentos, VWRA11, DIVO11, B5P211, CDIB11, GOLD11",
   "about": ["Taxa de retirada perpétua", "Independência financeira", "FIRE", "Alocação de ativos"],
-  "author": {"@type": "Organization", "name": "Independência Calculada", "url": "https://independenciacalculada.com.br"},
+  "author": {"@type": "Organization", "name": "Independência Calculada", "url": "https://independenciacalculada-droid.github.io/independencia-calculada/"},
   "publisher": {"@type": "Organization", "name": "Independência Calculada"},
-  "mainEntityOfPage": {"@type": "WebPage", "@id": "https://independenciacalculada.com.br/pwr-carteira-fire"},
-  "isPartOf": {"@type": "WebSite", "name": "Independência Calculada", "url": "https://independenciacalculada.com.br"}
+  "mainEntityOfPage": {"@type": "WebPage", "@id": "https://independenciacalculada-droid.github.io/independencia-calculada/pwr-carteira-fire/"},
+  "isPartOf": {"@type": "WebSite", "name": "Independência Calculada", "url": "https://independenciacalculada-droid.github.io/independencia-calculada/"}
 }
 </script>
 <script type="application/ld+json">
@@ -52,9 +53,9 @@
   "@context": "https://schema.org",
   "@type": "BreadcrumbList",
   "itemListElement": [
-    {"@type": "ListItem", "position": 1, "name": "Independência Calculada", "item": "https://independenciacalculada.com.br"},
-    {"@type": "ListItem", "position": 2, "name": "Aposentadoria", "item": "https://independenciacalculada.com.br/aposentadoria"},
-    {"@type": "ListItem", "position": 3, "name": "Qual é a PWR da minha carteira?", "item": "https://independenciacalculada.com.br/pwr-carteira-fire"}
+    {"@type": "ListItem", "position": 1, "name": "Independência Calculada", "item": "https://independenciacalculada-droid.github.io/independencia-calculada/"},
+    {"@type": "ListItem", "position": 2, "name": "Artigos", "item": "https://independenciacalculada-droid.github.io/independencia-calculada/artigos/"},
+    {"@type": "ListItem", "position": 3, "name": "Qual é a PWR da minha carteira?", "item": "https://independenciacalculada-droid.github.io/independencia-calculada/pwr-carteira-fire/"}
   ]
 }
 </script>
@@ -627,7 +628,7 @@ footer{ max-width: var(--maxw); margin: 0 auto; padding: 30px 24px 60px; font-fa
 
   <h2 id="carteira" class="reveal"><span class="num">01</span>A carteira</h2>
   <div class="prose">
-    <p>Você verá um portfólio de longo prazo, para fins de aposentadoria, selecionado com bastante critério para a minha própria realidade (não é recomendação de investimentos, não copie). Neste artigo não vou explicar por que e como escolhi as classes, os ativos e os pesos — isto é tópico de outra conversa.</p>
+    <p>Você verá um portfólio de longo prazo, para fins de aposentadoria, selecionado com bastante critério para a minha própria realidade (não é recomendação de investimentos, não copie). Neste artigo não vou explicar por que e como escolhi as classes, os ativos e os pesos — isto é tópico de outra conversa. Se você quiser testar outros pesos ou outra combinação de ativos antes de seguir, dá para comparar composições diferentes lado a lado no <a href="../simuladores/comparador-composicao/">comparador de composição de carteira</a>.</p>
     <p>Para maximizar diversificação, diminuir custos, diminuir gasto de tempo, melhorar consistência de retorno e aumentar a eficiência tributária, montei esta carteira usando apenas ETFs passivos negociados na B3. Como esses fundos têm histórico curto demais para uma análise robusta, usei o índice ou ativo subjacente de cada um como proxy, descontando a taxa de administração do ETF. São cinco ativos, com pesos fixos e rebalanceamento mensal.</p>
   </div>
 
@@ -1084,6 +1085,10 @@ footer{ max-width: var(--maxw); margin: 0 auto; padding: 30px 24px 60px; font-fa
     </a>
     <a class="cta-related-link" href="../montar-carteira-estudo-de-caso/">
       <span class="cta-related-title">Passo a passo para montar uma carteira de investimentos: um estudo de caso</span>
+      <span class="cta-related-arrow">→</span>
+    </a>
+    <a class="cta-related-link" href="../simuladores/comparador-composicao/">
+      <span class="cta-related-title">Comparador de composição de carteira</span>
       <span class="cta-related-arrow">→</span>
     </a>
   </div>

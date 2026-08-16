@@ -4,16 +4,17 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>A confusão generalizada sobre os Títulos IPCA+ — Independência Calculada</title>
-<meta name="description" content="A narrativa de que inflação alta 'quebra' a rentabilidade dos Títulos IPCA+ usa uma fórmula errada de Imposto de Renda. Com a fórmula certa, mostro por que isso só é matematicamente possível numa combinação rara de prazo curto e juro real baixo — e trago um simulador interativo.">
+<meta name="description" content="A narrativa de que inflação alta 'quebra' os Títulos IPCA+ usa uma fórmula errada de Imposto de Renda. Mostro a fórmula certa e um simulador interativo.">
 <meta name="robots" content="index, follow, max-image-preview:large">
 <meta name="author" content="Independência Calculada">
-<link rel="canonical" href="https://independenciacalculada.com.br/ipca-hiperinflacao">
+<!-- TODO: trocar para domínio próprio (independenciacalculada.com.br) quando o CNAME estiver ativo — canonical/og:url/JSON-LD abaixo usam a URL do GitHub Pages por enquanto -->
+<link rel="canonical" href="https://independenciacalculada-droid.github.io/independencia-calculada/ipca-hiperinflacao/">
 <link rel="alternate" type="application/rss+xml" title="Independência Calculada" href="../feed.xml">
 
 <meta property="og:type" content="article">
 <meta property="og:site_name" content="Independência Calculada">
 <meta property="og:locale" content="pt_BR">
-<meta property="og:url" content="https://independenciacalculada.com.br/ipca-hiperinflacao">
+<meta property="og:url" content="https://independenciacalculada-droid.github.io/independencia-calculada/ipca-hiperinflacao/">
 <meta property="og:title" content="A confusão generalizada sobre os Títulos IPCA+">
 <meta property="og:description" content="A fórmula usada para 'provar' que a inflação alta destrói a rentabilidade dos Títulos IPCA+ está errada. Mostro a fórmula certa, com simulador interativo.">
 <meta property="og:image" content="https://independenciacalculada-droid.github.io/independencia-calculada/assets/og-cover-ipca-hiperinflacao-v2.png">
@@ -46,10 +47,10 @@
   "articleSection": "Renda Fixa",
   "keywords": "Tesouro IPCA+, Tesouro Direto, inflação, Imposto de Renda, renda fixa, taxa real líquida, hiperinflação, FIRE, independência financeira",
   "about": ["Tesouro IPCA+", "Renda fixa", "Imposto de Renda sobre renda fixa"],
-  "author": {"@type": "Organization", "name": "Independência Calculada", "url": "https://independenciacalculada.com.br"},
+  "author": {"@type": "Organization", "name": "Independência Calculada", "url": "https://independenciacalculada-droid.github.io/independencia-calculada/"},
   "publisher": {"@type": "Organization", "name": "Independência Calculada"},
-  "mainEntityOfPage": {"@type": "WebPage", "@id": "https://independenciacalculada.com.br/ipca-hiperinflacao"},
-  "isPartOf": {"@type": "WebSite", "name": "Independência Calculada", "url": "https://independenciacalculada.com.br"}
+  "mainEntityOfPage": {"@type": "WebPage", "@id": "https://independenciacalculada-droid.github.io/independencia-calculada/ipca-hiperinflacao/"},
+  "isPartOf": {"@type": "WebSite", "name": "Independência Calculada", "url": "https://independenciacalculada-droid.github.io/independencia-calculada/"}
 }
 </script>
 <script type="application/ld+json">
@@ -57,9 +58,9 @@
   "@context": "https://schema.org",
   "@type": "BreadcrumbList",
   "itemListElement": [
-    {"@type": "ListItem", "position": 1, "name": "Independência Calculada", "item": "https://independenciacalculada.com.br"},
-    {"@type": "ListItem", "position": 2, "name": "Renda Fixa", "item": "https://independenciacalculada.com.br/renda-fixa"},
-    {"@type": "ListItem", "position": 3, "name": "A confusão generalizada sobre os Títulos IPCA+", "item": "https://independenciacalculada.com.br/ipca-hiperinflacao"}
+    {"@type": "ListItem", "position": 1, "name": "Independência Calculada", "item": "https://independenciacalculada-droid.github.io/independencia-calculada/"},
+    {"@type": "ListItem", "position": 2, "name": "Artigos", "item": "https://independenciacalculada-droid.github.io/independencia-calculada/artigos/"},
+    {"@type": "ListItem", "position": 3, "name": "A confusão generalizada sobre os Títulos IPCA+", "item": "https://independenciacalculada-droid.github.io/independencia-calculada/ipca-hiperinflacao/"}
   ]
 }
 </script>
@@ -1709,7 +1710,7 @@ h3{ font-family: var(--font-display); font-weight: 600; font-size: 1.15rem; marg
   </details>
 
   <div class="prose">
-    <p>Ou seja, apesar de ser matematicamente possível a rentabilidade real líquida ficar negativa por conta da inflação, isso exige uma combinação específica e pouco comum — prazo curto e juro real baixo — muito distante do pânico generalizado que a narrativa do alarme sugere. Se você é investidor de longo prazo, com horizonte maior que 10 anos, pode dormir tranquilo com Títulos IPCA+ na carteira.</p>
+    <p>Ou seja, apesar de ser matematicamente possível a rentabilidade real líquida ficar negativa por conta da inflação, isso exige uma combinação específica e pouco comum — prazo curto e juro real baixo — muito distante do pânico generalizado que a narrativa do alarme sugere. Se você é investidor de longo prazo, com horizonte maior que 10 anos, pode dormir tranquilo com Títulos IPCA+ na carteira. Para ver como o peso desses títulos afeta o resultado da carteira como um todo, o <a href="../simuladores/comparador-composicao/">comparador de composição de carteira</a> permite testar diferentes combinações lado a lado.</p>
   </div>
 
   <div class="note brick">
@@ -1793,6 +1794,10 @@ h3{ font-family: var(--font-display); font-weight: 600; font-size: 1.15rem; marg
     </a>
     <a class="cta-related-link" href="../montar-carteira-estudo-de-caso/">
       <span class="cta-related-title">Passo a passo para montar uma carteira de investimentos: um estudo de caso</span>
+      <span class="cta-related-arrow">→</span>
+    </a>
+    <a class="cta-related-link" href="../simuladores/comparador-composicao/">
+      <span class="cta-related-title">Comparador de composição de carteira</span>
       <span class="cta-related-arrow">→</span>
     </a>
   </div>
