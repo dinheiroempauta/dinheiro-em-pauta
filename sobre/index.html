@@ -25,6 +25,7 @@
 <meta name="twitter:description" content="Quem escreve o Independência Calculada, sem nome — mas com metodologia aberta.">
 <meta name="twitter:image" content="https://independenciacalculada-droid.github.io/independencia-calculada/assets/og-cover-sobre.png">
 <meta name="theme-color" content="#1E6B4F">
+<meta name="color-scheme" content="light dark">
 <link rel="icon" type="image/png" href="../favicon.png">
 <!-- Privacy-friendly analytics by Umami -->
 <script defer src="https://cloud.umami.is/script.js" data-website-id="cfa01c19-23cd-468f-8d42-db9a697cf762"></script>
@@ -45,70 +46,12 @@
 <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@0,400;0,500;0,600;0,700;1,500;1,600&family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@0,400;0,500;0,600;0,700;1,500;1,600&family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" media="print" onload="this.media='all'">
 <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@0,400;0,500;0,600;0,700;1,500;1,600&family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap"></noscript>
+<link rel="stylesheet" href="../assets/site.css">
 <style>
-:root{
-  --paper: #EEF1EC;
-  --paper-raised: #F9FAF6;
-  --ink: #171A18;
-  --muted: #5B6259;
-  --green: #1E6B4F;
-  --green-deep: #123B2A;
-  --green-light: #6FA382;
-  --brick: #A8402A;
-  --gold: #7A5820;
-  --gold-soft: #EDE0C4;
-  --brick-soft: #F3DED8;
-  --line: #D7DBCF;
-  --line-strong: #BFC5B8;
-  --maxw: 1000px;
-  --font-display: 'Fraunces', serif;
-  --font-body: 'IBM Plex Sans', sans-serif;
-  --font-mono: 'IBM Plex Mono', monospace;
-}
-
-.visually-hidden{ position:absolute; width:1px; height:1px; padding:0; margin:-1px; overflow:hidden; clip:rect(0,0,0,0); white-space:nowrap; border:0; }
-
-*{ box-sizing: border-box; }
-html{ scroll-behavior: smooth; }
-
-body{ margin:0; background: var(--paper); color: var(--ink); font-family: var(--font-body); font-size: 17px; line-height: 1.65; -webkit-font-smoothing: antialiased; }
-
-a{ color: var(--green); text-decoration-thickness: 1px; text-underline-offset: 2px; }
-a:hover{ color: var(--brick); }
-a:focus-visible, button:focus-visible{ outline: 2px solid var(--gold); outline-offset: 3px; }
-.mono{ font-family: var(--font-mono); }
-
-
-.masthead{ border-bottom: 1px solid var(--line-strong); padding: 18px 24px; }
-.masthead-inner{ max-width: var(--maxw); margin: 0 auto; display:flex; align-items:center; justify-content: space-between; gap: 12px; flex-wrap: wrap; }
-.wordmark{ font-family: var(--font-mono); font-weight: 600; font-size: 13px; letter-spacing: .12em; text-transform: uppercase; color: var(--ink); text-decoration:none; }
-.wordmark span{ color: var(--green); }
-.masthead-left{ display:flex; align-items:center; gap: 20px; flex-wrap: wrap; }
-.masthead-nav-link{ font-family: var(--font-mono); font-size: 12px; letter-spacing: .04em; color: var(--muted); text-decoration:none; }
-.masthead-nav-link:hover{ color: var(--green); }
-
+:root{ --maxw: 1000px; }
 main{ max-width: var(--maxw); margin: 0 auto; padding: 0 24px 90px; }
-
-.prose{ margin-top: 46px; }
-.prose p{ margin: 0 0 20px; }
-.prose ul{ margin: 0 0 20px; padding-left: 0; list-style: none; }
-.prose ul li{ position:relative; padding-left: 22px; margin-bottom: 10px; font-size: 15.5px; }
-.prose ul li::before{ content:"—"; position:absolute; left:0; top:0; color: var(--gold); font-family: var(--font-mono); }
-
-h2{ font-family: var(--font-display); font-weight: 600; font-size: 1.5rem; letter-spacing: -0.01em; margin: 50px 0 4px; color: var(--ink); }
-h2 .num{ font-family: var(--font-mono); font-size: 13px; color: var(--gold); display:block; letter-spacing: .1em; margin-bottom: 6px; }
-
-.note{ border-left: 3px solid var(--green); background: var(--paper-raised); padding: 18px 22px; margin: 30px 0; font-size: 14.5px; }
-.note .cap{ font-family: var(--font-mono); font-size: 11px; letter-spacing:.08em; text-transform:uppercase; color: var(--green); margin-bottom:8px; }
-.note p{ margin:0 0 8px; }
-.note p:last-child{ margin-bottom:0; }
-
-.closing{ margin: 54px 0 10px; padding: 28px 26px; border: 1px solid var(--line-strong); border-radius: 3px; background: var(--paper-raised); text-align:center; }
-.closing p{ margin: 0 0 18px; font-family: var(--font-display); font-size: 1.1rem; }
-.closing-btn{ font-family: var(--font-mono); font-size: 13px; font-weight:600; letter-spacing:.03em; background: var(--green); color: var(--paper-raised); border: none; padding: 12px 22px; border-radius: 3px; cursor:pointer; white-space:nowrap; text-decoration:none; display:inline-block; }
-.closing-btn:hover{ background:#175A41; color: var(--paper-raised); }
-
-footer{ max-width: var(--maxw); margin: 0 auto; padding: 30px 24px 60px; font-family: var(--font-mono); font-size: 12px; color: var(--muted); text-align:center; line-height: 1.8; }
+.page-heading{ margin: 46px 0 0; }
+.prose{ margin-top: 20px; }
 </style>
 </head>
 <body>
@@ -117,7 +60,6 @@ footer{ max-width: var(--maxw); margin: 0 auto; padding: 30px 24px 60px; font-fa
   <div class="masthead-inner">
     <div class="masthead-left">
       <a href="../" class="wordmark"><span>Independência</span>Calculada</a>
-      <a href="../" class="masthead-nav-link" aria-label="Início">&larr;</a>
       <a href="../sobre/" class="masthead-nav-link" aria-current="page">Sobre</a>
       <a href="../artigos/" class="masthead-nav-link">Artigos</a>
       <a href="../simuladores/" class="masthead-nav-link">Simuladores</a>
@@ -126,7 +68,7 @@ footer{ max-width: var(--maxw); margin: 0 auto; padding: 30px 24px 60px; font-fa
 </div>
 
 <main>
-  <h1 class="visually-hidden">Sobre — Independência Calculada</h1>
+  <h1 class="page-heading">Sobre a Independência Calculada</h1>
 
   <div class="prose">
     <h2><span class="num">01</span>Por que este espaço existe</h2>
