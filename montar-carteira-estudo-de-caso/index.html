@@ -557,58 +557,68 @@
     <table class="data">
       <caption>Cenário 1 &mdash; aporte único de R$ 120.000, retiradas anuais, rentabilidade de 14% a.a. (Selic atual)</caption>
       <thead>
-        <tr><th>Ano</th><th>Início do ano</th><th>Resgate líquido</th><th>Após render juros</th></tr>
+        <tr><th>Ano</th><th>Início do ano</th><th>Resgate bruto</th><th>IR pago</th><th>Resgate líquido</th><th>Após render juros</th></tr>
       </thead>
       <tbody>
-        <tr><td>2027</td><td>R$ 120.000,00</td><td>&ndash;</td><td>R$ 136.800,00</td></tr>
-        <tr><td>2028</td><td>R$ 136.800,00</td><td>&ndash;</td><td>R$ 155.952,00</td></tr>
-        <tr><td>2029</td><td>R$ 155.952,00</td><td>&ndash;</td><td>R$ 177.785,28</td></tr>
-        <tr><td>2030</td><td>R$ 177.785,28</td><td>R$ 54.965,04</td><td>R$ 136.803,55</td></tr>
-        <tr><td>2031</td><td>R$ 136.803,55</td><td>R$ 58.788,97</td><td>R$ 84.568,57</td></tr>
-        <tr><td>2032</td><td>R$ 84.568,57</td><td>R$ 62.878,93</td><td>R$ 19.156,77</td></tr>
-        <tr><td>2033</td><td>R$ 19.156,77</td><td>R$ 67.253,43</td><td class="neg">R$ (54.077,09)</td></tr>
+        <tr><td>2027</td><td>R$ 120.000,00</td><td>&ndash;</td><td>&ndash;</td><td>&ndash;</td><td>R$ 136.800,00</td></tr>
+        <tr><td>2028</td><td>R$ 136.800,00</td><td>&ndash;</td><td>&ndash;</td><td>&ndash;</td><td>R$ 155.952,00</td></tr>
+        <tr><td>2029</td><td>R$ 155.952,00</td><td>&ndash;</td><td>&ndash;</td><td>&ndash;</td><td>R$ 177.785,28</td></tr>
+        <tr><td>2030</td><td>R$ 177.785,28</td><td>R$ 57.782,17</td><td>R$ 2.817,13</td><td>R$ 54.965,04</td><td>R$ 136.803,55</td></tr>
+        <tr><td>2031</td><td>R$ 136.803,55</td><td>R$ 62.620,59</td><td>R$ 3.831,63</td><td>R$ 58.788,97</td><td>R$ 84.568,57</td></tr>
+        <tr><td>2032</td><td>R$ 84.568,57</td><td>R$ 67.764,38</td><td>R$ 4.885,45</td><td>R$ 62.878,93</td><td>R$ 19.156,77</td></tr>
+        <tr><td>2033</td><td>R$ 19.156,77</td><td>R$ 73.233,86</td><td>R$ 5.980,43</td><td>R$ 67.253,43</td><td class="neg">R$ (54.077,09)</td></tr>
       </tbody>
     </table>
   </div>
 
   <div class="note brick reveal">
     <div class="cap">O plano quebra</div>
-    <p>Mesmo com retiradas anuais e uma rentabilidade de 14% a.a. — hoje a Selic, que pode cair — o dinheiro acaba em 2033, provavelmente no primeiro semestre do 4º ano de faculdade. O aporte único de R$ 120.000 não é suficiente.</p>
+    <p>Mesmo com retiradas anuais e uma rentabilidade de 14% a.a. — hoje a Selic, que pode cair — o dinheiro acaba em 2033, provavelmente no primeiro semestre do 4º ano de faculdade. O saldo negativo na última linha (R$ 54.077,09) não é um valor real: é o quanto faltaria se fosse possível continuar sacando no mesmo ritmo, só para dar a dimensão do rombo. O aporte único de R$ 120.000 não é suficiente.</p>
+  </div>
+
+  <div class="note reveal">
+    <div class="cap">Como ler a coluna "Resgate bruto" e "IR pago"</div>
+    <p>O que sai da carteira em cada resgate é o valor <strong>bruto</strong>, não o líquido: o Imposto de Renda é retido no momento do saque, então parte do bruto vira imposto e só o restante chega ao bolso de Alberto. Por isso "Início do ano" menos "Resgate bruto", capitalizado à taxa do cenário, é que fecha com "Após render juros" — não "Início do ano" menos "Resgate líquido". Quando há mais de um aporte na carteira (Cenário 2, a seguir), cada aporte é tratado como um lote com sua própria data de compra, e os resgates consomem primeiro o lote mais antigo — o mesmo critério <strong>PEPS</strong> ("primeiro que entra, primeiro que sai") que <a href="https://www.tesourodireto.com.br/conheca/regras.htm" target="_blank" rel="noopener">o próprio Tesouro Direto usa</a> para decidir automaticamente qual título vender em caso de resgate parcial, justamente para dar ao investidor a alíquota de IR mais vantajosa. A alíquota de cada lote (22,5% / 20% / 17,5% / 15%, regressiva pelo prazo) é calculada pelos dias corridos entre a compra daquele lote e a data do resgate — nunca fixada em 15% de antemão.</p>
   </div>
 
   <div class="prose">
     <h2 id="sec-05" class="reveal"><span class="num">05</span>Ajustando o plano</h2>
     <p>Quando o prognóstico inicial não fecha, não existe solução mágica — só voltar algumas casas e se questionar: existe faculdade privada mais barata? Faculdade pública em outra cidade é uma opção discutível? É possível aportar mais, e de onde viria esse dinheiro?</p>
-    <p>As duas primeiras perguntas revisam o objetivo, tentando reduzir o patrimônio-alvo. A terceira aumenta as chances de chegar lá com o mesmo objetivo. No caso de Alberto, a resposta veio pela terceira via: além do bônus deste ano, ele pode investir 75% do bônus do ano que vem — o mesmo valor deste ano, ou seja, mais R$ 90.000 no final de 2027.</p>
+    <p>As duas primeiras perguntas revisam o objetivo, tentando reduzir o patrimônio-alvo. A terceira aumenta as chances de chegar lá com o mesmo objetivo. No caso de Alberto, a resposta veio pela terceira via: além do bônus deste ano, ele pode investir 70% do bônus do ano que vem — o mesmo valor deste ano, ou seja, mais R$ 84.000 no final de 2027.</p>
   </div>
 
   <div class="table-wrap reveal">
     <table class="data">
-      <caption>Cenário 2 &mdash; aporte inicial + 75% do bônus de 2027, rentabilidade de 12% a.a.</caption>
+      <caption>Cenário 2 &mdash; aporte inicial + 70% do bônus de 2027, rentabilidade de 12% a.a.</caption>
       <thead>
-        <tr><th>Ano</th><th>Início do ano</th><th>Resgate líquido</th><th>Após render juros</th><th>Aporte extra</th></tr>
+        <tr><th>Ano</th><th>Início do ano</th><th>Resgate bruto</th><th>IR pago</th><th>Resgate líquido</th><th>Após render juros</th><th>Aporte extra</th></tr>
       </thead>
       <tbody>
-        <tr><td>2027</td><td>R$ 120.000,00</td><td>&ndash;</td><td>R$ 134.400,00</td><td>&ndash;</td></tr>
-        <tr><td>2028</td><td>R$ 134.400,00</td><td>&ndash;</td><td>R$ 150.528,00</td><td>R$ 90.000,00</td></tr>
-        <tr><td>2029</td><td>R$ 240.528,00</td><td>&ndash;</td><td>R$ 269.391,36</td><td>&ndash;</td></tr>
-        <tr><td>2030</td><td>R$ 269.391,36</td><td>R$ 54.965,04</td><td>R$ 238.052,05</td><td>&ndash;</td></tr>
-        <tr><td>2031</td><td>R$ 238.052,05</td><td>R$ 58.788,97</td><td>R$ 197.628,88</td><td>&ndash;</td></tr>
-        <tr><td>2032</td><td>R$ 197.628,88</td><td>R$ 62.878,93</td><td>R$ 146.680,22</td><td>&ndash;</td></tr>
-        <tr><td>2033</td><td>R$ 146.680,22</td><td>R$ 67.253,43</td><td>R$ 83.568,67</td><td>&ndash;</td></tr>
-        <tr><td>2034</td><td>R$ 83.568,67</td><td>R$ 71.932,27</td><td class="pos">R$ 6.435,64</td><td>&ndash;</td></tr>
+        <tr><td>2027</td><td>R$ 120.000,00</td><td>&ndash;</td><td>&ndash;</td><td>&ndash;</td><td>R$ 134.400,00</td><td>R$ 84.000,00</td></tr>
+        <tr><td>2028</td><td>R$ 218.400,00</td><td>&ndash;</td><td>&ndash;</td><td>&ndash;</td><td>R$ 244.608,00</td><td>&ndash;</td></tr>
+        <tr><td>2029</td><td>R$ 244.608,00</td><td>&ndash;</td><td>&ndash;</td><td>&ndash;</td><td>R$ 273.960,96</td><td>&ndash;</td></tr>
+        <tr><td>2030</td><td>R$ 273.960,96</td><td>R$ 57.448,72</td><td>R$ 2.483,68</td><td>R$ 54.965,04</td><td>R$ 242.493,71</td><td>&ndash;</td></tr>
+        <tr><td>2031</td><td>R$ 242.493,71</td><td>R$ 62.188,98</td><td>R$ 3.400,01</td><td>R$ 58.788,97</td><td>R$ 201.941,30</td><td>&ndash;</td></tr>
+        <tr><td>2032</td><td>R$ 201.941,30</td><td>R$ 67.241,99</td><td>R$ 4.363,06</td><td>R$ 62.878,93</td><td>R$ 150.863,22</td><td>&ndash;</td></tr>
+        <tr><td>2033</td><td>R$ 150.863,22</td><td>R$ 71.947,60</td><td>R$ 4.694,17</td><td>R$ 67.253,43</td><td>R$ 88.385,50</td><td>&ndash;</td></tr>
+        <tr><td>2034</td><td>R$ 88.385,50</td><td>R$ 77.681,09</td><td>R$ 5.748,81</td><td>R$ 71.932,27</td><td class="pos">R$ 11.988,94</td><td>&ndash;</td></tr>
       </tbody>
     </table>
   </div>
 
+  <div class="note reveal">
+    <div class="cap">Por que 2033 tem dois lotes</div>
+    <p>Em 2033, o lote comprado em 2026 chega perto do fim: sobram só R$ 2.826,52 de resgate bruto dele (R$ 2.617,34 líquidos, a 15% de IR sobre os 49,3% de ganho acumulado). O restante do resgate daquele ano — R$ 69.121,08 brutos, R$ 64.636,09 líquidos — já sai do lote de 2027, ainda com 43,3% de ganho acumulado e também na faixa de 15% de IR (1.828 dias corridos, acima dos 720 dias que dão direito à alíquota mais baixa). A partir de 2034, o lote de 2026 está zerado e todo resgate sai só do lote de 2027.</p>
+  </div>
+
   <div class="note green reveal">
     <div class="cap">O plano fecha — no fio da navalha</div>
-    <p>Com o segundo aporte, uma rentabilidade nominal de <strong>12% a.a.</strong> é suficiente para cobrir os 5 anos de faculdade, terminando 2034 com R$ 6.435,64. Mas repare como esse saldo final é pequeno: 1 p.p. a menos de rentabilidade (11% a.a.) já não cobriria o último ano.</p>
+    <p>Com o segundo aporte, uma rentabilidade nominal de <strong>12% a.a.</strong> é suficiente para cobrir os 5 anos de faculdade, terminando 2034 com R$ 11.988,94. Mas repare como esse saldo final é pequeno: a 11% a.a. o plano já quebra, faltando R$ 4.384,86 no último ano — o ponto de virada fica entre 11% e 11,5% a.a.</p>
   </div>
 
   <div class="prose">
     <p>Há um problema adicional: a tabela acima assume um alvo fixo, como se R$ 3.500 crescesse exatamente 6,96% a.a. — mas nada garante isso. A inflação do setor pode ser maior ou menor, e a faculdade escolhida pode descolar do próprio grupo IPCA &ndash; Educação, para cima ou para baixo.</p>
-    <p>E os 12% a.a. também não estão garantidos: a Selic hoje está em 14%, mas o <a href="https://www.bcb.gov.br/publicacoes/focus" target="_blank" rel="noopener">Boletim Focus</a> — a pesquisa semanal do Banco Central com as expectativas do mercado — projeta 12% em 2027, 10,5% em 2028 e 10% em 2029. Supor uma rentabilidade nominal média entre 10% e 11% de 2027 a 2034 não é uma estimativa fora da realidade. Isso coloca o plano de Alberto em risco novamente, e reforça a importância de travar taxas na renda fixa enquanto elas estão altas — o que vai definir a escolha do ativo mais à frente.</p>
+    <p>E os 12% a.a. também não estão garantidos: a Selic hoje está em 14%, mas o <a href="https://www.bcb.gov.br/publicacoes/focus" target="_blank" rel="noopener">Boletim Focus</a> — a pesquisa semanal do Banco Central com as expectativas do mercado — projeta 12% em 2027, 10,5% em 2028 e 10% em 2029. Supor uma rentabilidade nominal média entre 10% e 11% de 2027 a 2034 não é uma estimativa fora da realidade — e, como acabamos de ver, já é o suficiente para quebrar o plano. Isso reforça a importância de travar taxas na renda fixa enquanto elas estão altas — o que vai definir a escolha do ativo mais à frente.</p>
   </div>
 
   <div class="prose">
@@ -698,7 +708,7 @@
   <div class="prose">
     <p>A parte mais importante do simulador é achar a quantidade de títulos necessária para gerar a renda desejada. O primeiro erro comum é supor que a renda-alvo é R$ 3.500 — o valor de hoje da mensalidade — porque esse número é o custo, não o que se recebe: é preciso planejar em cima da renda <strong>bruta</strong>, já que o recebimento mensal do título sofre incidência de IR sobre a parcela de rendimento.</p>
     <p>Converter renda líquida desejada em renda bruta necessária não é trivial, porque depende de quanto de cada parcela é principal aportado e quanto é lucro tributável — mas uma boa aproximação prática é usar um fator multiplicador de <strong>x1,16</strong>. Uma renda líquida de R$ 3.500 exige, então, uma renda bruta de pouco menos de R$ 4.100.</p>
-    <p>Há ainda uma sutileza: planejar com R$ 3.500 seria apostar que a mensalidade vai corrigir exatamente pela inflação — mas já vimos que o grupo Educação tende a subir um pouco mais do que o IPCA cheio na maior parte dos anos. Para aumentar a margem de segurança, o alvo usado é <strong>R$ 5.000 de renda bruta mensal</strong>, e não os R$ 4.100 calculados. Usando o simulador do Tesouro Direto, essa renda bruta-alvo exige <strong>63,26 títulos do Educa+30</strong>.</p>
+    <p>Há ainda uma sutileza: planejar com R$ 3.500 seria apostar que a mensalidade vai corrigir exatamente pela inflação — mas já vimos que o grupo Educação tende a subir um pouco mais do que o IPCA cheio na maior parte dos anos. Para aumentar a margem de segurança, o alvo usado é <strong>R$ 4.800 de renda bruta mensal</strong>, e não os R$ 4.100 calculados. Usando o simulador do Tesouro Direto, essa renda bruta-alvo exige <strong>60,74 títulos do Educa+30</strong>.</p>
   </div>
 
   <div class="table-wrap reveal">
@@ -709,7 +719,7 @@
       </thead>
       <tbody>
         <tr><td>1º &mdash; R$ 120.000</td><td>31/12/2026</td><td>IPCA + 8,07%</td><td>R$ 3.122,55</td></tr>
-        <tr><td>2º &mdash; R$ 90.000</td><td>31/12/2027</td><td>IPCA + 6,50%</td><td>R$ 3.593,87</td></tr>
+        <tr><td>2º &mdash; R$ 84.000</td><td>31/12/2027</td><td>IPCA + 6,50%</td><td>R$ 3.593,87</td></tr>
       </tbody>
     </table>
   </div>
@@ -718,9 +728,9 @@
     <div class="cap">A conta final fecha</div>
     <div class="stat-grid">
       <div><b>38,43</b><span>títulos comprados no 1º aporte, com R$ 120.000</span></div>
-      <div><b>24,83</b><span>títulos restantes, necessários no 2º aporte</span></div>
-      <div><b>R$ 89.235,67</b><span>custo do 2º aporte, supondo taxa real caindo para IPCA + 6,50%</span></div>
-      <div><b>R$ 90.000,00</b><span>valor que Alberto tem disponível para o 2º aporte (75% do bônus de 2027)</span></div>
+      <div><b>22,31</b><span>títulos restantes, necessários no 2º aporte</span></div>
+      <div><b>R$ 84.000,00</b><span>custo do 2º aporte, comprando 23,37 títulos a IPCA + 6,50% — 1,06 título a mais do que o necessário</span></div>
+      <div><b>R$ 84.000,00</b><span>valor que Alberto tem disponível para o 2º aporte (70% do bônus de 2027)</span></div>
     </div>
   </div>
 
