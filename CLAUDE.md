@@ -94,6 +94,31 @@ Antes de considerar qualquer edição de artigo "pronta", confirmar
 explicitamente que o card está consistente com o artigo — não assumir,
 conferir.
 
+## Nunca inventar referência
+
+Toda citação em "Notas e referências" ou "Referências técnicas" — fonte de
+dado, artigo acadêmico, seção de handbook, URL — só entra no artigo se eu
+tiver **de fato verificado** o que estou citando: abri a página, confirmei
+que o número de seção/URL leva pro conteúdo certo, ou é uma citação
+acadêmica clássica que eu já conheço com segurança (ex: o paper original
+de um método consagrado). Já aconteceu de eu citar uma seção específica de
+um handbook (NIST) com número e URL que não levavam ao conteúdo alegado —
+citação puramente inventada, nunca conferida antes de publicar.
+
+Quando não for possível verificar uma fonte (ex: acesso à URL bloqueado
+neste ambiente), as opções são, nessa ordem de preferência:
+- Pedir a fonte/URL correta pro usuário, como já é feito para as séries de
+  dados
+- Citar algo mais genérico e verificável sem depender de link (ex: o nome
+  do método e seu autor/paper original, sem afirmar número de seção ou URL
+  específicos)
+- Deixar claro no texto que o cálculo foi feito internamente, sem citar
+  fonte externa nenhuma
+
+Nunca preencher o vazio com um número de seção, ano, autor ou URL plausível
+só para a nota parecer completa. Uma referência errada é pior para a
+credibilidade do artigo do que a ausência de referência.
+
 ## Publicação de artigo novo
 
 Siga `internal/CHECKLIST-NOVO-ARTIGO.md` à risca, partindo de

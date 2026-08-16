@@ -1383,9 +1383,24 @@ main{ max-width: var(--maxw); margin: 0 auto; padding: 0 24px 90px; }
   var elMemoriaBody = document.getElementById('sim-memoria-body');
   var elResetBtn = document.getElementById('sim-reset');
 
-  var TAXA_IR = 0.15; // fixa — regressiva de longo prazo (>720 dias), padrão Tesouro IPCA+
+  // alíquota regressiva de IR para renda fixa (Lei 11.033/2004), pelo prazo em DIAS CORRIDOS
+  // entre compra e resgate — não dias úteis, que são usados só para a rentabilidade (E).
+  function taxaIRPorPrazo(diasCorridos){
+    if(diasCorridos <= 180) return 0.225;
+    if(diasCorridos <= 360) return 0.20;
+    if(diasCorridos <= 720) return 0.175;
+    return 0.15;
+  }
+
+  // dias corridos entre duas datas (sem contar feriados/fins de semana) — base do IR, distinta
+  // dos dias úteis (du) usados para achar E, o prazo em anos que entra na rentabilidade.
+  function diasCorridosEntre(d1, d2){
+    var MS_POR_DIA = 24*60*60*1000;
+    return Math.round((d2.getTime() - d1.getTime()) / MS_POR_DIA);
+  }
 
   var fmtPct = new Intl.NumberFormat('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 3 });
+  var fmtPct1 = new Intl.NumberFormat('pt-BR', { minimumFractionDigits: 1, maximumFractionDigits: 1 });
   var fmtPctFull = new Intl.NumberFormat('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 5 });
   var fmtBRL = new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL', minimumFractionDigits: 2, maximumFractionDigits: 2 });
   var fmtNum = new Intl.NumberFormat('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
@@ -1762,6 +1777,8 @@ main{ max-width: var(--maxw); margin: 0 auto; padding: 0 24px 90px; }
 
     var du = businessDaysInclusive(d1, d2);
     var E = du / 252;
+    var diasCorridos = diasCorridosEntre(d1, d2);
+    var TAXA_IR = taxaIRPorPrazo(diasCorridos);
 
     var r = calcularTaxaRealLiquida(A, B, C, D, E, TAXA_IR);
 
@@ -1770,7 +1787,7 @@ main{ max-width: var(--maxw); margin: 0 auto; padding: 0 24px 90px; }
     var isNeg = r.taxaRealLiquida < 0;
     heroEl.textContent = (isNeg ? '' : '+') + fmtPctFull.format(r.taxaRealLiquida*100) + '%';
     heroEl.classList.toggle('neg', isNeg);
-    document.getElementById('res-taxa-real-sub').textContent = 'com IPCA a ' + fmtPct.format(C*100) + '% a.a., já líquida de IR (' + fmtInt.format(TAXA_IR*100) + '%)';
+    document.getElementById('res-taxa-real-sub').textContent = 'com IPCA a ' + fmtPct.format(C*100) + '% a.a., já líquida de IR (' + fmtPct1.format(TAXA_IR*100) + '%, pelo prazo de ' + fmtInt.format(diasCorridos) + ' dias corridos)';
     document.getElementById('res-prazo').textContent = fmtNum.format(E) + ' anos';
     document.getElementById('res-liquido').textContent = fmtBRLSmart(r.valorLiquido);
     document.getElementById('res-ganho').textContent = fmtBRLSmart(r.valorLiquido - A);
@@ -1785,12 +1802,13 @@ main{ max-width: var(--maxw); margin: 0 auto; padding: 0 24px 90px; }
     rows.push(buildMemoriaRow('Juros nominal, sem tx. custódia (a.a.)', fmtPct.format(r.jurosSemCustodia*100)+'%'));
     rows.push(buildMemoriaRow('Data de compra', fmtDateBR(d1)));
     rows.push(buildMemoriaRow('Data de vencimento', fmtDateBR(d2)));
-    rows.push(buildMemoriaRow('Prazo de vencimento (du)', fmtInt.format(du)));
-    rows.push(buildMemoriaRow('Prazo de vencimento (anos)', fmtNum.format(E)));
+    rows.push(buildMemoriaRow('Prazo de vencimento (du, dias úteis)', fmtInt.format(du)));
+    rows.push(buildMemoriaRow('Prazo de vencimento (anos, sobre du)', fmtNum.format(E)));
+    rows.push(buildMemoriaRow('Prazo até o resgate (dias corridos)', fmtInt.format(diasCorridos)));
     rows.push(buildMemoriaRow('Preço de hoje (unitário)', fmtBRL.format(A)));
     rows.push(buildMemoriaRow('Valor no vencimento, sem tx. custódia', fmtBRLSmart(r.valorVencimento)));
     rows.push(buildMemoriaRow('Ganho de capital', fmtBRLSmart(r.ganhoCapital)));
-    rows.push(buildMemoriaRow('Taxa do IR', fmtInt.format(TAXA_IR*100)+'%'));
+    rows.push(buildMemoriaRow('Taxa do IR (regressiva, pelo prazo em dias corridos)', fmtPct1.format(TAXA_IR*100)+'%'));
     rows.push(buildMemoriaRow('Abatimento do IR', fmtBRLSmart(r.ir)));
     rows.push('<tr><td>Valor líquido no vencimento</td><td><strong>'+fmtBRLSmart(r.valorLiquido)+'</strong></td></tr>');
     rows.push(buildMemoriaRow('Taxa nominal líquida (a.a.)', fmtPct.format(r.taxaNominalLiquida*100)+'%'));
