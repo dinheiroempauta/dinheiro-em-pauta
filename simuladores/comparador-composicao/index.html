@@ -240,8 +240,10 @@ svg.chart-svg{ width: 100%; height: auto; display:block; overflow: visible; }
 @keyframes chart-skeleton-pulse{ 0%{ background-position: 100% 0; } 100%{ background-position: 0 0; } }
 @media (prefers-reduced-motion: reduce){ .chart-skeleton{ animation-duration: 3s; } }
 .gridline{ stroke: var(--line); stroke-width: 1; }
+.gridline-ruler{ stroke: var(--brick); stroke-width: 1.1; stroke-dasharray: 3 2; opacity: .55; }
 .baseline{ stroke: var(--line-strong); stroke-width: 1; }
 .axis-label{ fill: var(--muted); font-family: var(--font-mono); font-size: 10px; }
+.axis-label-ruler{ fill: var(--brick); font-weight: 700; }
 .median-line{ fill:none; stroke-width: 2; stroke-linejoin: round; stroke-linecap: round; }
 .extreme-line{ fill:none; stroke-width: 1.3; stroke-dasharray: 4 3; opacity: .65; stroke-linecap: round; }
 .end-label{ font-family: var(--font-mono); font-size: 11px; font-weight: 600; }
@@ -722,7 +724,7 @@ footer{ max-width: var(--maxw); margin: 0 auto; padding: 30px 24px 60px; font-fa
     const dd = Math.sqrt(v)*Math.sqrt(12);
     return (cagrCalc(ret) - cagrCalc(rf)) / dd;
   }
-  const EPISODE_THRESHOLD = 0.05; // queda mínima do pico pra contar como "episódio" (mesmo critério dos protótipos de referência)
+  const EPISODE_THRESHOLD = 0.10; // queda mínima do pico pra contar como "episódio" — 10% filtra ruído de mercado e foca em quedas com causa identificável
   const HIST_EVENTS = [
     { from:'2008-01', to:'2009-03', tag:'2008', label:'Crise financeira global (colapso do Lehman Brothers)' },
     { from:'2015-01', to:'2016-06', tag:'2015–16', label:'Recessão + Lava Jato + crise política (impeachment)' },
@@ -1134,12 +1136,22 @@ footer{ max-width: var(--maxw); margin: 0 auto; padding: 30px 24px 60px; font-fa
     const x = i => M.left + (i/(n-1))*plotW;
     const y = v => M.top + plotH - ((v-yMin)/(yMax-yMin))*plotH;
 
-    const yRange=yMax-yMin;
-    const yStep = Math.ceil(yRange/6*100)/100;
-    for (let v=0; v>=yMin-1e-9; v-=yStep){
+    // grade fixa de 10 em 10 pontos percentuais — vira uma "régua" alinhada
+    // ao limiar de episódio (EPISODE_THRESHOLD = 10%), pra facilitar ver de
+    // relance quais quedas cruzam a linha que conta como episódio.
+    const RULER_STEP = 0.10;
+    for (let v=0; v>=yMin-1e-9; v-=RULER_STEP){
       const yy=y(v);
-      svg.appendChild(svgEl('line',{x1:M.left,x2:W-M.right,y1:yy,y2:yy,class:'gridline'}));
-      const lbl=svgEl('text',{x:M.left-6,y:yy+3,class:'axis-label','text-anchor':'end'});
+      const isThreshold = Math.abs(v + EPISODE_THRESHOLD) < 1e-9;
+      svg.appendChild(svgEl('line',{
+        x1:M.left,x2:W-M.right,y1:yy,y2:yy,
+        class: isThreshold ? 'gridline gridline-ruler' : 'gridline',
+      }));
+      const lbl=svgEl('text',{
+        x:M.left-6,y:yy+3,
+        class: isThreshold ? 'axis-label axis-label-ruler' : 'axis-label',
+        'text-anchor':'end',
+      });
       lbl.textContent=fmtPct1(v);
       svg.appendChild(lbl);
     }
