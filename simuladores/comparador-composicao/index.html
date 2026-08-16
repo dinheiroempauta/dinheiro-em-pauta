@@ -4,14 +4,14 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Comparador de Composição de Carteira — Independência Calculada</title>
-<meta name="description" content="Compare duas composições de carteira lado a lado e veja o efeito em CAGR, Drawdown, Ulcer Index e Sharpe/Sortino, com dados reais de jan/2006 a jun/2026.">
+<meta name="description" content="Compare duas composições de carteira: CAGR, Drawdown, Ulcer Index, Sharpe/Sortino, otimizador por restrições e calculadora de taxa de retirada (PWR/SWR), com dados reais de jan/2006 a jun/2026.">
 <meta name="robots" content="index, follow">
 <meta name="author" content="Independência Calculada">
 <!-- TODO: trocar para domínio próprio (independenciacalculada.com.br) quando o CNAME estiver ativo — canonical/og:url/JSON-LD abaixo usam a URL do GitHub Pages por enquanto -->
 <link rel="canonical" href="https://independenciacalculada-droid.github.io/independencia-calculada/simuladores/comparador-composicao/">
 <link rel="alternate" type="application/rss+xml" title="Independência Calculada" href="../../feed.xml">
 <meta property="og:title" content="Comparador de Composição de Carteira — Independência Calculada">
-<meta property="og:description" content="Compare duas composições de carteira lado a lado e veja o efeito em CAGR, Drawdown, Ulcer Index e Sharpe/Sortino.">
+<meta property="og:description" content="Compare duas composições de carteira: CAGR, Drawdown, Sharpe/Sortino, otimizador por restrições e calculadora de taxa de retirada (PWR/SWR).">
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://independenciacalculada-droid.github.io/independencia-calculada/simuladores/comparador-composicao/">
 <meta property="og:site_name" content="Independência Calculada">
@@ -22,7 +22,7 @@
 <meta property="og:image:alt" content="Independência Calculada — Comparador de Composição de Carteira">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Comparador de Composição de Carteira">
-<meta name="twitter:description" content="Compare duas composições de carteira lado a lado, com dados reais.">
+<meta name="twitter:description" content="Compare duas composições de carteira, com otimizador e calculadora de taxa de retirada (PWR/SWR).">
 <meta name="twitter:image" content="https://independenciacalculada-droid.github.io/independencia-calculada/assets/og-cover-comparador-composicao.png">
 <meta name="theme-color" content="#1E6B4F">
 <link rel="icon" type="image/png" href="../../favicon.png">
@@ -32,7 +32,7 @@
   "@type": "WebApplication",
   "name": "Comparador de Composição de Carteira",
   "url": "https://independenciacalculada-droid.github.io/independencia-calculada/simuladores/comparador-composicao/",
-  "description": "Compare duas composições de carteira lado a lado e veja o efeito em CAGR, Drawdown, Ulcer Index e Sharpe/Sortino, com dados reais de jan/2006 a jun/2026.",
+  "description": "Compare duas composições de carteira: CAGR, Drawdown, Ulcer Index, Sharpe/Sortino, otimizador por restrições e calculadora de taxa de retirada (PWR/SWR), com dados reais de jan/2006 a jun/2026.",
   "applicationCategory": "FinanceApplication",
   "operatingSystem": "Any (navegador web)",
   "isAccessibleForFree": true,
@@ -461,7 +461,7 @@ footer{ max-width: var(--maxw); margin: 0 auto; padding: 30px 24px 60px; font-fa
 
 <main>
   <h1 class="page-heading">Comparador de composição de carteira</h1>
-  <p class="page-subheading">Edite os pesos de cada carteira e veja o efeito em CAGR, Drawdown, Ulcer Index e Sharpe/Sortino — dados reais de jan/2006 a jun/2026, mesma base usada nos artigos do blog. Os dois gráficos de cada linha usam sempre a mesma escala vertical, pra comparação justa.</p>
+  <p class="page-subheading">Edite os pesos de cada carteira e veja o efeito em CAGR, Drawdown, Ulcer Index e Sharpe/Sortino — dados reais de jan/2006 a jun/2026, mesma base usada nos artigos do blog. Os dois gráficos de cada linha usam sempre a mesma escala vertical, pra comparação justa. Tem também um otimizador que busca composições por restrições e uma calculadora de taxa de retirada (PWR/SWR).</p>
 
   <div class="mode-bar">
     <div class="toggle-group" role="group" aria-label="Base de cálculo">
@@ -616,7 +616,7 @@ footer{ max-width: var(--maxw); margin: 0 auto; padding: 30px 24px 60px; font-fa
           <h2 class="optimizer-header-title">Encontrar taxa de retirada</h2>
           <span class="optimizer-badge">Experimente</span>
         </div>
-        <p class="optimizer-header-sub">Simula milhares de trajetórias sintéticas (bootstrap estacionário sobre o histórico real da carteira) e encontra a maior taxa de retirada mensal que atinge o percentual de sucesso escolhido — perpétua (PWR) e/ou por horizonte fixo (SWR).</p>
+        <p class="optimizer-header-sub">Simula milhares de trajetórias sintéticas (bootstrap estacionário sobre o histórico real da carteira) e encontra a maior taxa de retirada anual — sacada em parcelas mensais iguais, fixas em termos reais sobre o capital inicial, não um percentual do saldo atual — que atinge o percentual de sucesso escolhido: perpétua (PWR) e/ou por horizonte fixo (SWR).</p>
       </div>
     </div>
     <button class="btn btn-primary opt-toggle-btn" id="pwrswr-toggle" type="button" aria-expanded="false">
@@ -645,6 +645,7 @@ footer{ max-width: var(--maxw); margin: 0 auto; padding: 30px 24px 60px; font-fa
         <div class="pwrswr-field">
           <label for="pwrswr-success">Percentual de sucesso alvo</label>
           <div class="opt-input-wrap"><input type="number" id="pwrswr-success" min="70" max="100" step="1" value="95"><span>%</span></div>
+          <span style="font-size:11.5px;color:var(--muted)">Fração das 10.000 trajetórias que precisa atingir o critério de sucesso. Piso de 70%: abaixo disso a taxa encontrada deixa de ser útil como referência de planejamento.</span>
         </div>
       </div>
 
@@ -660,9 +661,9 @@ footer{ max-width: var(--maxw); margin: 0 auto; padding: 30px 24px 60px; font-fa
 
       <details class="explainer">
         <summary>O que é, como se calcula e como ler este resultado</summary>
-        <p><b>O que é:</b> a maior taxa de retirada mensal (em % ao ano do capital inicial, corrigida pela base escolhida) que, numa amostra de trajetórias sintéticas da carteira, atinge o percentual de sucesso definido. PWR mira uma retirada que dura indefinidamente (proxy: 60 anos sem esgotar o capital, terminando com valor real ≥ inicial); SWR mira um horizonte fixo (nunca zerar o patrimônio dentro dele).</p>
-        <p><b>Como se calcula:</b> reamostra blocos do histórico real de retornos mensais da carteira (bootstrap estacionário, bloco médio de 12 meses) para gerar 10.000 trajetórias sintéticas; para cada trajetória, testa se uma dada taxa de retirada mensal (rate/12 do capital inicial) sobrevive ao critério de sucesso; busca por bisseção a maior taxa cujo percentual de trajetórias bem-sucedidas atinge o alvo escolhido.</p>
-        <p><b>Como ler:</b> é uma taxa de retirada específica desta amostra e desta composição — não uma garantia, é uma estimativa estatística baseada no histórico observado (jan/2006–jun/2026). Rodar de novo com a mesma composição e o mesmo alvo dá sempre o mesmo número (semente fixa), mas mudar os pesos ou o alvo de sucesso muda o resultado.</p>
+        <p><b>O que é:</b> a maior taxa de retirada <b>anual</b> (expressa em % do capital inicial, na base nominal ou real escolhida) que, numa amostra de trajetórias sintéticas da carteira, atinge o percentual de sucesso definido. É importante entender o tipo de retirada simulado: é um valor <b>fixo</b>, definido uma vez sobre o capital inicial e sacado em parcelas mensais iguais (1/12 da taxa por mês) — não um percentual recalculado sobre o saldo atual a cada mês. Essa é a mesma lógica da "regra dos 4%" de Bengen (1994) e do Trinity Study: por isso, ao contrário de uma retirada por percentual do saldo (que matematicamente nunca zera o patrimônio), aqui é possível o dinheiro acabar antes do fim do horizonte. PWR mira uma retirada perpétua (proxy: 60 anos, terminando com saldo real ≥ inicial); SWR mira um horizonte fixo (nunca zerar o patrimônio dentro dele).</p>
+        <p><b>Como se calcula:</b> reamostra blocos do histórico real de retornos mensais da carteira (bootstrap estacionário de Politis &amp; Romano, 1994, bloco médio de 12 meses) para gerar 10.000 trajetórias sintéticas; para cada trajetória, testa se uma dada taxa de retirada anual (sacada em parcelas mensais fixas de rate/12 do capital inicial) sobrevive ao critério de sucesso; busca por bisseção a maior taxa cujo percentual de trajetórias bem-sucedidas atinge o alvo escolhido.</p>
+        <p><b>Como ler:</b> é uma taxa de retirada específica desta amostra e desta composição — não uma garantia, é uma estimativa estatística baseada no histórico observado (jan/2006–jun/2026, ~20 anos — ver limitação dessa janela em "Fontes e metodologia" no fim da página). Rodar de novo com a mesma composição e o mesmo alvo dá sempre o mesmo número (semente fixa), mas mudar os pesos ou o alvo de sucesso muda o resultado.</p>
       </details>
     </div>
   </section>
@@ -711,7 +712,7 @@ footer{ max-width: var(--maxw); margin: 0 auto; padding: 30px 24px 60px; font-fa
 
   <section class="indicator-section" id="drawdown">
     <h2 class="indicator-title">Drawdown</h2>
-    <p class="indicator-desc">Trajetória "underwater" completa — % abaixo do pico anterior, mês a mês, ao longo de todo o histórico (jan/2006–jun/2026). Não varia por tamanho de janela. Cada episódio de queda ≥5% do pico anterior vira um badge numerado no fundo da curva; os detalhes de cada um (pico, fundo, queda, recuperação e o evento histórico, quando identificável) ficam na tabela logo abaixo de cada gráfico.</p>
+    <p class="indicator-desc">Trajetória "underwater" completa — % abaixo do pico anterior, mês a mês, ao longo de todo o histórico (jan/2006–jun/2026). Não varia por tamanho de janela. Cada episódio de queda ≥10% do pico anterior vira um badge numerado no fundo da curva; os detalhes de cada um (pico, fundo, queda, recuperação e o evento histórico, quando identificável) ficam na tabela logo abaixo de cada gráfico.</p>
     <div class="chart-pair">
       <div class="chart-card" data-side="c1"><p class="chart-card-title">Carteira 1</p><div class="chart-wrap" style="aspect-ratio:560/300"><div class="chart-skeleton" aria-hidden="true"></div><svg class="chart-svg" id="chart-dd-c1" viewBox="0 0 560 300"></svg><div class="tooltip" id="tt-dd-c1"></div></div><div style="overflow-x:auto"><table class="dd-table" id="dd-table-c1"></table></div></div>
       <div class="chart-card" data-side="c2"><p class="chart-card-title">Carteira 2</p><div class="chart-wrap" style="aspect-ratio:560/300"><div class="chart-skeleton" aria-hidden="true"></div><svg class="chart-svg" id="chart-dd-c2" viewBox="0 0 560 300"></svg><div class="tooltip" id="tt-dd-c2"></div></div><div style="overflow-x:auto"><table class="dd-table" id="dd-table-c2"></table></div></div>
@@ -719,14 +720,14 @@ footer{ max-width: var(--maxw); margin: 0 auto; padding: 30px 24px 60px; font-fa
     <details class="explainer">
       <summary>O que é, como se calcula e como ler este gráfico</summary>
       <p><b>O que é:</b> quanto o capital chegou a cair, em %, em relação ao maior valor que ele já tinha atingido até aquele momento — a "dor" de ver o patrimônio encolher antes de se recuperar.</p>
-      <p><b>Como se calcula:</b> a cada mês, compara o capital acumulado com o pico mais alto já visto até ali; o gráfico é essa diferença percentual, mês a mês, ao longo de toda a história. Um "episódio" começa quando a linha sai de 0%, atinge um fundo, e (se recuperar) volta a tocar 0% — só entram episódios em que o fundo chega a pelo menos 5% abaixo do pico, pra não poluir o gráfico com ruído de curto prazo.</p>
+      <p><b>Como se calcula:</b> a cada mês, compara o capital acumulado com o pico mais alto já visto até ali; o gráfico é essa diferença percentual, mês a mês, ao longo de toda a história. Um "episódio" começa quando a linha sai de 0%, atinge um fundo, e (se recuperar) volta a tocar 0% — só entram episódios em que o fundo chega a pelo menos 10% abaixo do pico, pra não poluir o gráfico com ruído de curto prazo.</p>
       <p><b>Como ler:</b> o eixo X aqui é o tempo real (2006–2026), não tamanho de janela. Quando a linha toca 0%, a carteira está no seu pico histórico; quanto mais fundo (mais negativo), maior a perda em relação ao pico anterior. Os vales visíveis correspondem às crises de 2008, 2015-16, 2020 e 2022. Cada badge numerado marca o fundo de um episódio — passe o mouse ou veja a tabela abaixo pra detalhes.</p>
     </details>
   </section>
 
   <section class="indicator-section" id="perfil-episodios">
     <h2 class="indicator-title">Perfil dos episódios de queda</h2>
-    <p class="indicator-desc">Profundidade × duração de cada episódio de drawdown (mesmo critério do gráfico acima: queda ≥5% do pico anterior, mesma numeração), Carteira 1 e Carteira 2 no mesmo gráfico pra comparar diretamente. Só episódios já recuperados aparecem no gráfico de pontos (duração desconhecida enquanto não recupera); as tabelas abaixo listam todos, inclusive os ainda em curso.</p>
+    <p class="indicator-desc">Profundidade × duração de cada episódio de drawdown (mesmo critério do gráfico acima: queda ≥10% do pico anterior, mesma numeração), Carteira 1 e Carteira 2 no mesmo gráfico pra comparar diretamente. Só episódios já recuperados aparecem no gráfico de pontos (duração desconhecida enquanto não recupera); as tabelas abaixo listam todos, inclusive os ainda em curso.</p>
     <div class="legend-mini" id="legend-scatter"></div>
     <div class="chart-card">
       <div class="chart-wrap" style="aspect-ratio:1000/380"><div class="chart-skeleton" aria-hidden="true"></div><svg class="chart-svg" id="chart-scatter" viewBox="0 0 1000 380"></svg><div class="tooltip" id="tt-scatter"></div></div>
@@ -768,11 +769,22 @@ footer{ max-width: var(--maxw); margin: 0 auto; padding: 30px 24px 60px; font-fa
     <details class="explainer">
       <summary>O que é, como se calcula e como ler este gráfico</summary>
       <p><b>O que é:</b> quanto retorno a carteira entregou acima do CDI (a taxa livre de risco), para cada unidade de risco assumido. Quanto maior, melhor a relação entre o que se ganhou e o risco corrido pra ganhar.</p>
-      <p><b>Como se calcula:</b> (CAGR da carteira − CAGR do CDI) dividido pela volatilidade anualizada. O Sharpe usa o desvio-padrão de todos os meses; o Sortino usa só o desvio-padrão dos meses <i>negativos</i> — por isso costuma ficar mais alto, já que não penaliza a variação para cima.</p>
+      <p><b>Como se calcula:</b> calcula o retorno em excesso mês a mês (retorno da carteira menos CDI daquele mês) e tira a média anualizada (×12) desse excesso — esse é o numerador dos dois índices. O Sharpe divide pelo desvio-padrão anualizado (×√12) de todo o excesso mensal; o Sortino divide só pela <i>downside deviation</i> — o desvio-padrão da parte negativa do excesso, mas calculado sobre todos os meses (não só os negativos), como definido por Sortino &amp; van der Meer (1991) — por isso o Sortino costuma ficar mais alto, já que não penaliza a variação para cima. A anualização por √12 pressupõe retornos mês a mês sem autocorrelação relevante; é a convenção padrão de mercado, mas é uma aproximação.</p>
       <p><b>Como ler:</b> mesmo eixo X de tamanho de janela dos outros gráficos. As duas linhas (Sharpe e Sortino) e suas faixas de percentil aparecem juntas pra comparar as duas métricas diretamente — a distância entre elas mostra o quanto da "volatilidade" da carteira é oscilação pra cima, não risco de perda.</p>
     </details>
   </section>
 
+
+  <details class="explainer" id="fontes-metodologia">
+    <summary>Fontes e metodologia</summary>
+    <p>Os conceitos e fórmulas usados nesta página seguem a literatura de referência sobre cada tema, listada abaixo. Nenhum cálculo é proprietário ou inventado — são implementações das definições padrão da área, aplicadas aos dados reais da carteira.</p>
+    <p><b>Taxa de retirada (PWR/SWR):</b> Bengen, W. P. (1994), "<i>Determining Withdrawal Rates Using Historical Data</i>", <i>Journal of Financial Planning</i> — origem do conceito de taxa de retirada segura ("regra dos 4%"); Cooley, P., Hubbard, C. & Walz, D. (1998), "<i>Retirement Savings: Choosing a Withdrawal Rate That Is Sustainable</i>" (o "Trinity Study"), <i>AAII Journal</i>.</p>
+    <p><b>Bootstrap estacionário (reamostragem das trajetórias sintéticas):</b> Politis, D. N. & Romano, J. P. (1994), "<i>The Stationary Bootstrap</i>", <i>Journal of the American Statistical Association</i>, 89(428).</p>
+    <p><b>Ulcer Index:</b> Martin, P. G. & McCann, B. B. (1987), <i>The Investor's Guide to Fidelity Funds</i>.</p>
+    <p><b>Sharpe Ratio:</b> Sharpe, W. F. (1966), "<i>Mutual Fund Performance</i>", <i>Journal of Business</i>; revisado em Sharpe, W. F. (1994), "<i>The Sharpe Ratio</i>", <i>Journal of Portfolio Management</i>.</p>
+    <p><b>Sortino Ratio / downside deviation:</b> Sortino, F. A. & van der Meer, R. (1991), "<i>Downside Risk</i>", <i>Journal of Portfolio Management</i>.</p>
+    <p>Limitação importante: todo o histórico usado (jan/2006–jun/2026, ~20 anos) é uma única janela específica da economia brasileira — período de juro real historicamente alto via CDI, entre outras particularidades desse ciclo. O bootstrap estacionário reamostra blocos desse mesmo histórico; ele não cria informação nova sobre cenários que não aconteceram nesses 20 anos, só reordena e recombina os que aconteceram. Isso vale sobretudo para PWR/SWR, que projeta sustentabilidade de retiradas por 30 a 70 anos a partir de uma amostra bem mais curta — trate os números como uma estimativa estatística sobre o passado observado, não uma garantia sobre o futuro.</p>
+  </details>
 
   <p class="footnote">Metodologia idêntica à usada nos artigos do blog: retorno da carteira = soma ponderada dos retornos mensais dos 5 ativos (rebalanceamento mensal); conversão nominal→real via Fisher aplicada depois de combinar, não antes; CDI oficial como taxa livre de risco para Sharpe/Sortino (não varia com a composição). Cálculo roda inteiramente no navegador. Fonte dos dados: mesma base de <a href="../../artigos/">internal/estatisticas-carteira-aposentadoria</a> usada nos artigos do blog. Conteúdo educacional, não é recomendação de investimento.</p>
 </main>
@@ -814,14 +826,32 @@ footer{ max-width: var(--maxw); margin: 0 auto; padding: 30px 24px 60px; font-fa
   function volAnual(ret){ const n=ret.length; const m=ret.reduce((a,b)=>a+b,0)/n; const v=ret.reduce((a,b)=>a+(b-m)*(b-m),0)/(n-1); return Math.sqrt(v)*Math.sqrt(12); }
   function drawdownMax(ret){ return Math.min(...drawdownSerie(curvaCapital(ret))); }
   function ulcerCalc(ret){ const dd = drawdownSerie(curvaCapital(ret)).map(v => v*100); return Math.sqrt(dd.reduce((a,b)=>a+b*b,0)/dd.length); }
-  function sharpeCalc(ret, rf){ return (cagrCalc(ret) - cagrCalc(rf)) / volAnual(ret); }
+  // Retorno em excesso mês a mês (carteira − CDI) — base comum de Sharpe e Sortino,
+  // como em Sharpe (1966; revisão 1994, "The Sharpe Ratio") e Sortino & van der Meer
+  // (1991, "Downside Risk"). Sharpe usa a média/12 desse excesso anualizada dividida
+  // pelo desvio-padrão anualizado do próprio excesso; Sortino troca o denominador
+  // pela downside deviation (só a parcela abaixo do MAR = 0, sobre TODOS os meses,
+  // não só os negativos — divisor N, não a contagem de meses negativos).
+  function excessSeries(ret, rf){ return ret.map((r,i) => r - rf[i]); }
+  function meanExcessAnual(excess){ const n=excess.length; return (excess.reduce((a,b)=>a+b,0)/n) * 12; }
+  function stdAnual(arr){
+    const n = arr.length; const m = arr.reduce((a,b)=>a+b,0)/n;
+    const v = arr.reduce((a,b)=>a+(b-m)*(b-m),0)/(n-1);
+    return Math.sqrt(v)*Math.sqrt(12);
+  }
+  function downsideDevAnual(excess){
+    const n = excess.length;
+    const sq = excess.reduce((a,b) => a + Math.pow(Math.min(b,0),2), 0)/n;
+    return Math.sqrt(sq)*Math.sqrt(12);
+  }
+  function sharpeCalc(ret, rf){
+    const excess = excessSeries(ret, rf);
+    return meanExcessAnual(excess) / stdAnual(excess);
+  }
   function sortinoCalc(ret, rf){
-    const neg = ret.filter(r => r<0);
-    if (neg.length < 2) return NaN;
-    const m = neg.reduce((a,b)=>a+b,0)/neg.length;
-    const v = neg.reduce((a,b)=>a+(b-m)*(b-m),0)/(neg.length-1);
-    const dd = Math.sqrt(v)*Math.sqrt(12);
-    return (cagrCalc(ret) - cagrCalc(rf)) / dd;
+    const excess = excessSeries(ret, rf);
+    if (excess.filter(e => e<0).length < 2) return NaN;
+    return meanExcessAnual(excess) / downsideDevAnual(excess);
   }
   const EPISODE_THRESHOLD = 0.10; // queda mínima do pico pra contar como "episódio" — 10% filtra ruído de mercado e foca em quedas com causa identificável
   const HIST_EVENTS = [
@@ -893,8 +923,8 @@ footer{ max-width: var(--maxw); margin: 0 auto; padding: 30px 24px 60px; font-fa
       vals.sort((a,b)=>a-b);
       return {
         anos: w/12, n: vals.length,
-        p5: percentile(vals,10), p20: percentile(vals,25), p50: percentile(vals,50),
-        p80: percentile(vals,75), p95: percentile(vals,90),
+        p5: percentile(vals,5), p20: percentile(vals,20), p50: percentile(vals,50),
+        p80: percentile(vals,80), p95: percentile(vals,95),
         min: vals[0], max: vals[vals.length-1],
       };
     });
@@ -1335,7 +1365,7 @@ footer{ max-width: var(--maxw); margin: 0 auto; padding: 30px 24px 60px; font-fa
       const evt = histEventFor(DATA.dates[ep.troughIdx]);
       const recTxt = ep.recovered ? `${ep.months} meses (até ${DATA.dates[ep.recoveryIdx]})` : `ainda não recuperou (${DATA.dates.length-1-ep.troughIdx}m+)`;
       return `<tr><td><span class="dd-badge" style="background:${hue}">${i+1}</span></td><td>${DATA.dates[ep.peakIdx]}</td><td>${DATA.dates[ep.troughIdx]}</td><td>${fmtPct1(ep.troughVal)}</td><td>${recTxt}</td><td>${evt?evt.label:'—'}</td></tr>`;
-    }).join('') || '<tr><td colspan="6" style="color:var(--muted)">Nenhum episódio de queda ≥5% nesse histórico.</td></tr>';
+    }).join('') || '<tr><td colspan="6" style="color:var(--muted)">Nenhum episódio de queda ≥10% nesse histórico.</td></tr>';
     table.innerHTML = thead + '<tbody>' + body + '</tbody>';
   }
 
@@ -1732,9 +1762,9 @@ footer{ max-width: var(--maxw); margin: 0 auto; padding: 30px 24px 60px; font-fa
       const { yMin, yMax } = yRangeUnderwater(c1.underwater[mode], c2.underwater[mode]);
       const pior1 = Math.min(...c1.underwater[mode]), pior2 = Math.min(...c2.underwater[mode]);
       drawUnderwater('chart-dd-c1','tt-dd-c1', c1.underwater[mode], hueC1, yMin, yMax, c1.episodes[mode],
-        `Drawdown e tempo de recuperação — Carteira 1: ${c1.episodes[mode].length} episódio${c1.episodes[mode].length===1?'':'s'} de queda de ao menos 5%, pior queda de ${fmtPct1(pior1)}.`);
+        `Drawdown e tempo de recuperação — Carteira 1: ${c1.episodes[mode].length} episódio${c1.episodes[mode].length===1?'':'s'} de queda de ao menos 10%, pior queda de ${fmtPct1(pior1)}.`);
       drawUnderwater('chart-dd-c2','tt-dd-c2', c2.underwater[mode], hueC2, yMin, yMax, c2.episodes[mode],
-        `Drawdown e tempo de recuperação — Carteira 2: ${c2.episodes[mode].length} episódio${c2.episodes[mode].length===1?'':'s'} de queda de ao menos 5%, pior queda de ${fmtPct1(pior2)}.`);
+        `Drawdown e tempo de recuperação — Carteira 2: ${c2.episodes[mode].length} episódio${c2.episodes[mode].length===1?'':'s'} de queda de ao menos 10%, pior queda de ${fmtPct1(pior2)}.`);
       renderDrawdownTable('dd-table-c1', c1.episodes[mode], hueC1);
       renderDrawdownTable('dd-table-c2', c2.episodes[mode], hueC2);
     }
@@ -2152,11 +2182,12 @@ footer{ max-width: var(--maxw); margin: 0 auto; padding: 30px 24px 60px; font-fa
       const r1 = resC1[i], r2 = resC2[i];
       const fmt = r => r.error ? '—' : (r.rate*100).toFixed(2).replace('.', ',') + '%';
       const rowClass = t.name === 'PWR' ? ' class="pwr-row"' : '';
-      let cls1 = 'num c1', cls2 = 'num c2';
+      let cls1 = 'num c1', cls2 = 'num c2', title1 = '', title2 = '';
       if (!r1.error && !r2.error){
-        if (r1.rate > r2.rate) cls1 += ' winner'; else if (r2.rate > r1.rate) cls2 += ' winner';
+        if (r1.rate > r2.rate){ cls1 += ' winner'; title1 = ' title="Maior taxa entre as duas carteiras"'; }
+        else if (r2.rate > r1.rate){ cls2 += ' winner'; title2 = ' title="Maior taxa entre as duas carteiras"'; }
       }
-      return `<tr${rowClass}><td class="target-name">${t.name}<span class="target-sub">${pwrswrTargetSub(t)}</span></td><td class="${cls1}">${fmt(r1)}</td><td class="${cls2}">${fmt(r2)}</td></tr>`;
+      return `<tr${rowClass}><td class="target-name">${t.name}<span class="target-sub">${pwrswrTargetSub(t)}</span></td><td class="${cls1}"${title1}>${fmt(r1)}</td><td class="${cls2}"${title2}>${fmt(r2)}</td></tr>`;
     }).join('');
     let html = `
       <div class="pwrswr-result-card">
