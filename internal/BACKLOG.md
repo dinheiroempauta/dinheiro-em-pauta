@@ -23,17 +23,6 @@ para a seção "Concluído", no fim, com a data).
       O script no HTML (`data-website-id="cfa01c19-23cd-468f-8d42-db9a697cf762"`)
       não precisa mudar — é o mesmo ID de site pra sempre, só o domínio
       associado a ele no painel que precisa ser atualizado.
-- [ ] **Resend (e-mail de notificação dos comentários)** — verificar
-      `dinheiroempauta.com.br` no painel do Resend e trocar o `FROM_EMAIL`
-      em `cloudflare-worker-comments/src/email.js` de `onboarding@resend.dev`
-      pra `comentarios@dinheiroempauta.com.br`. Causa raiz confirmada em
-      17 ago: sem domínio verificado, o Resend só deixa mandar pro e-mail
-      usado pra criar a conta lá (não pra qualquer destinatário) — ciclo
-      completo testado com esse e-mail e funcionou. Depois de verificar o
-      domínio e confirmar envio pra destinatário qualquer, remover o
-      diagnóstico temporário do código (`reportEmailDebug` em
-      `adminPage.js`, campo `email_debug` em `index.js`).
-
 ---
 
 ## SEO e descoberta
@@ -67,6 +56,16 @@ para a seção "Concluído", no fim, com a data).
 ---
 
 ## Concluído
+
+- [x] **Domínio `dinheiroempauta.com.br` verificado no Resend** — 4
+      registros DNS (DKIM, MX, SPF, DMARC) adicionados na Hostinger,
+      verificação confirmada pelo Resend. `FROM_EMAIL` trocado de
+      `onboarding@resend.dev` pra `comentarios@dinheiroempauta.com.br` —
+      agora manda notificação pra qualquer destinatário, não só pro
+      e-mail da conta Resend. Diagnóstico temporário removido do código
+      (`reportEmailDebug`/`describeEmailResult` em `adminPage.js`, campo
+      `email_debug` em `index.js`) — não precisa mais dele.
+      *(17 ago. 2026)*
 
 - [x] **Notificação por e-mail nos comentários (via Resend)** — avisa por
       e-mail (se a pessoa preencheu o campo opcional) quando: o próprio

@@ -201,22 +201,6 @@ export const ADMIN_PAGE_HTML = `<!doctype html>
       });
   }
 
-  function describeEmailResult(r){
-    if (!r) return null;
-    if (r.skipped) return "não enviado (" + r.skipped + ")";
-    if (r.ok) return "enviado com sucesso para " + r.to;
-    if (r.error) return "erro de rede: " + r.error;
-    return "Resend recusou (status " + r.status + "): " + r.body;
-  }
-  function reportEmailDebug(debug){
-    var lines = [];
-    var mod = describeEmailResult(debug.moderation);
-    if (mod) lines.push("Aviso de aprovação/rejeição: " + mod);
-    var reply = describeEmailResult(debug.reply);
-    if (reply) lines.push("Aviso de resposta: " + reply);
-    if (lines.length) alert(lines.join("\\n\\n"));
-  }
-
   function moderate(id, action, itemEl){
     var buttons = itemEl.querySelectorAll("button");
     buttons.forEach(function(b){ b.disabled = true; });
@@ -232,10 +216,6 @@ export const ADMIN_PAGE_HTML = `<!doctype html>
           var remaining = listEl.querySelectorAll(".item").length;
           pendingCountEl.textContent = pluralPendentes(remaining);
           if (!remaining) listEl.innerHTML = '<p class="empty">Nenhum comentário pendente.</p>';
-          // Diagnóstico temporário do envio de e-mail (ver
-          // internal/BACKLOG.md) — mostra na tela em vez de precisar de
-          // wrangler tail ou curl pra saber se o Resend aceitou ou não.
-          if (res.data.email_debug) reportEmailDebug(res.data.email_debug);
         } else {
           buttons.forEach(function(b){ b.disabled = false; });
           alert("Não foi possível " + (action === "approve" ? "aprovar" : "rejeitar") + ": " + (res.data.error || "erro"));

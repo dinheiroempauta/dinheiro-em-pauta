@@ -193,19 +193,18 @@ async function handleAdminModerate(request, env, cors) {
   ).bind(body.id).first();
   if (!comment) return json({ error: "not_found" }, 404, cors);
 
-  const emailDebug = {};
   if (body.action === "approve") {
     await env.DB.prepare(`UPDATE comments SET status = 'approved' WHERE id = ?`).bind(body.id).run();
-    emailDebug.moderation = await notifyModerationResult(env, comment, "approve");
+    await notifyModerationResult(env, comment, "approve");
     if (comment.parent_id) {
       const parent = await env.DB.prepare(
         `SELECT nickname, email FROM comments WHERE id = ?`
       ).bind(comment.parent_id).first();
-      emailDebug.reply = await notifyReply(env, parent, comment);
+      await notifyReply(env, parent, comment);
     }
   } else {
     await env.DB.prepare(`DELETE FROM comments WHERE id = ?`).bind(body.id).run();
-    emailDebug.moderation = await notifyModerationResult(env, comment, "reject");
+    await notifyModerationResult(env, comment, "reject");
   }
-  return json({ status: "ok", email_debug: emailDebug }, 200, cors);
+  return json({ status: "ok" }, 200, cors);
 }
