@@ -8,8 +8,6 @@ para a seção "Concluído", no fim, com a data).
 
 ## Configuração pendente (já mapeado, falta executar)
 
-- [ ] **Google Search Console** — verificar a propriedade com o domínio
-      `dinheiroempauta.com.br` e reenviar o `sitemap.xml`.
 - [ ] **Umami (domínio do site)** — atualizar o domínio cadastrado para
       este site nas configurações do painel do Umami pro domínio novo.
       O script no HTML (`data-website-id="cfa01c19-23cd-468f-8d42-db9a697cf762"`)
@@ -37,6 +35,12 @@ para a seção "Concluído", no fim, com a data).
 ---
 
 ## Concluído
+
+- [x] **Google Search Console verificado e `sitemap.xml` reenviado** —
+      propriedade `dinheiroempauta.com.br` verificada por registro TXT
+      no DNS da Hostinger (mesmo provedor usado pra verificação do
+      Resend). `sitemap.xml` enviado e processado no mesmo dia — 11
+      páginas encontradas, status "Processado". *(17 ago. 2026)*
 
 - [x] **`http://` removido do `ALLOWED_ORIGINS` dos dois Workers e
       deploy confirmado** — "Enforce HTTPS" já estava disponível e
