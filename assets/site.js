@@ -324,13 +324,12 @@
       + "*{box-sizing:border-box;}"
       + "*" + B + ":not(html):not(body){color:inherit !important;}"
       + "::-webkit-scrollbar{display:none !important;}"
-      // Sem padding/font-size forçados aqui: o Cusdis posiciona o <label>
-      // (rótulo flutuante) com base no padding original do input/textarea
-      // dele. Forçar esses valores via !important desalinha o rótulo do
-      // campo (rótulo "solto", sobreposto à caixa) sem mudar a posição
-      // dele — só cor/fonte são seguros de sobrescrever sem depender do
-      // box model interno do widget.
-      + "label" + B + "{color:" + muted + " !important;}"
+      // Sem padding/font-size forçados no input/textarea: o Cusdis
+      // posiciona o rótulo com base no padding original do campo. Forçar
+      // esse valor via !important desalinhava rótulo e caixa (bug
+      // reportado com print do inspecionar). O <label> em si não afeta
+      // esse box model — dá pra estilizar a tipografia dele sem risco.
+      + "label" + B + "{font-family:'IBM Plex Mono',monospace !important;font-size:11px !important;letter-spacing:.05em !important;text-transform:uppercase !important;color:" + muted + " !important;}"
       + "input" + B + ",textarea" + B + "{font-family:'IBM Plex Sans',sans-serif !important;border:1px solid " + lineStrong + " !important;border-radius:3px !important;background:" + paperRaised + " !important;color:" + ink + " !important;}"
       + "input:focus" + B + ",textarea:focus" + B + "{outline:2px solid " + gold + " !important;outline-offset:2px !important;border-color:" + green + " !important;}"
       + "input::placeholder,textarea::placeholder{color:" + placeholder + " !important;}"
@@ -350,7 +349,51 @@
       // pequeno e discreto, igual ao padrão de metadado usado no resto do
       // site (ver .meta em qualquer artigo). Sem risco se não bater com nada.
       + "time" + B + ",[class*='date' i]" + B + ",[class*='time' i]" + B + "{font-family:'IBM Plex Mono',monospace !important;font-size:12px !important;color:" + muted + " !important;}"
-      + "[class*='name' i]" + B + ",[class*='author' i]" + B + ",[class*='nickname' i]" + B + "{font-weight:600 !important;color:" + ink + " !important;}";
+      + "[class*='name' i]" + B + ",[class*='author' i]" + B + ",[class*='nickname' i]" + B + "{font-weight:600 !important;color:" + ink + " !important;}"
+      // Rodapé de atribuição do widget ("Comentários via Cusdis"): mantido
+      // (obrigatório no plano gratuito), só discretizado — não é conteúdo
+      // do blog, não precisa competir visualmente com os comentários.
+      + "[class*='text-center' i][class*='text-xs' i]" + B + "{font-size:10px !important;opacity:.55 !important;}";
+
+    // O Cusdis não expõe classe própria pro nome do autor nem pra data de
+    // cada comentário (confirmado no DevTools: só classes utilitárias
+    // genéricas tipo "text-gray-500 text-sm", sem "name"/"date"/"time" no
+    // nome) — não dá pra mirar isso com seletor CSS. A única forma é achar
+    // o texto exato e marcar o elemento. Os dois valores abaixo vêm do
+    // mesmo CUSDIS_LOCALE customizado em cada página (mod_badge / o rótulo
+    // "Autor"); o padrão de data é o formato fixo que o Cusdis usa
+    // (YYYY-MM-DD HH:MM).
+    var AUTHOR_BADGE_TEXT = 'Autor';
+    var DATE_RE = /^(\d{4})-(\d{2})-(\d{2}) (\d{2}):(\d{2})$/;
+    var dateFormatter = null;
+    try { dateFormatter = new Intl.DateTimeFormat('pt-BR', { day: '2-digit', month: 'short', hour: '2-digit', minute: '2-digit' }); } catch(e){}
+
+    var enhanceCusdisText = function(doc){
+      try{
+        if (!doc || !doc.body) return;
+        var walker = doc.createTreeWalker(doc.body, NodeFilter.SHOW_TEXT, null);
+        var node;
+        while ((node = walker.nextNode())){
+          var text = node.nodeValue.trim();
+          if (!text) continue;
+          var parent = node.parentElement;
+          if (!parent) continue;
+
+          if (text === AUTHOR_BADGE_TEXT && parent.textContent.trim() === AUTHOR_BADGE_TEXT && !parent.hasAttribute('data-ic-badge')){
+            parent.setAttribute('data-ic-badge', '1');
+            parent.style.cssText += ';display:inline-block;font-family:"IBM Plex Mono",monospace;font-size:10px;font-weight:600;letter-spacing:.04em;text-transform:uppercase;color:' + paperRaised + ';background:' + green + ';border-radius:3px;padding:1px 6px;margin-left:4px;';
+            continue;
+          }
+
+          var m = DATE_RE.exec(text);
+          if (m && !parent.hasAttribute('data-ic-date') && dateFormatter){
+            parent.setAttribute('data-ic-date', '1');
+            var d = new Date(+m[1], +m[2] - 1, +m[3], +m[4], +m[5]);
+            if (!isNaN(d.getTime())) node.nodeValue = dateFormatter.format(d).replace('.', '');
+          }
+        }
+      }catch(e){}
+    };
 
     var styleCusdisFrame = function(node){
       if (cusdisApplied) return;
@@ -381,12 +424,26 @@
           style.textContent = cusdisCss;
           doc.head.appendChild(style);
           resize(doc);
+          enhanceCusdisText(doc);
           if (window.ResizeObserver && doc.body){
             var ro = new ResizeObserver(function(){ resize(doc); });
             ro.observe(doc.body);
           } else {
             var iv = setInterval(function(){ resize(doc); }, 500);
             setTimeout(function(){ clearInterval(iv); }, 20000);
+          }
+          // Comentários/respostas chegam de forma assíncrona bem depois do
+          // load do iframe — sem observar o body pra reprocessar, nome de
+          // autor e data de comentários que aparecem depois nunca ganham o
+          // badge/reformatação (só os que já existiam no primeiro passe).
+          if (doc.body){
+            var enhancePending = false;
+            var enhanceObserver = new MutationObserver(function(){
+              if (enhancePending) return;
+              enhancePending = true;
+              requestAnimationFrame(function(){ enhancePending = false; enhanceCusdisText(doc); });
+            });
+            enhanceObserver.observe(doc.body, { childList: true, subtree: true, characterData: true });
           }
         }catch(e){}
       };
