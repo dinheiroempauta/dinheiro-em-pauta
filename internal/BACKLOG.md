@@ -44,7 +44,14 @@ Pages e precisam ser atualizados assim que o domínio próprio estiver ativo:
       `cloudflare-worker-comments/src/email.js` de `onboarding@resend.dev`
       pra algo como `comentarios@independenciacalculada.com.br`. Até lá,
       o e-mail de teste do Resend funciona mas tem mais chance de cair em
-      spam.
+      spam. Testado em 17 ago e não chegou nenhum e-mail — suspeita mais
+      forte é o modo de teste do Resend sem domínio verificado só permitir
+      mandar pro endereço usado pra criar a conta lá. Investigando com um
+      diagnóstico temporário (`email_debug` na resposta de
+      `/admin/moderate`, mostrado como alerta no painel `/admin`) — depois
+      de confirmar a causa raiz e o e-mail chegar de verdade, remover esse
+      diagnóstico temporário do código (`reportEmailDebug` em
+      `adminPage.js`, campo `email_debug` em `index.js`).
 
 ---
 
