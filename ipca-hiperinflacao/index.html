@@ -29,6 +29,7 @@
 <meta name="twitter:description" content="A fórmula usada para 'provar' que a inflação alta destrói a rentabilidade dos Títulos IPCA+ está errada. Mostro a fórmula certa, com simulador interativo.">
 <meta name="twitter:image" content="https://independenciacalculada-droid.github.io/independencia-calculada/assets/og-cover-ipca-hiperinflacao-v2.png">
 
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://cloud.umami.is https://cusdis.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data:; connect-src 'self' https://independencia-likes.independenciacalculada.workers.dev https://api.web3forms.com https://cusdis.com; frame-src https://cusdis.com; form-action 'self' https://buttondown.com; base-uri 'self';">
 <meta name="theme-color" content="#1E6B4F">
 <link rel="icon" type="image/png" href="../favicon.png">
 <!-- Privacy-friendly analytics by Umami -->
@@ -2127,7 +2128,7 @@ h3{ font-family: var(--font-display); font-weight: 600; font-size: 1.15rem; marg
     return 'R$ ' + fmtNum.format(mantissa) + ' × 10^' + exp;
   }
 
-  function pad2(n){ return n < 10 ? '0'+n : ''+n; }
+  function pad2(n){ return String(n).padStart(2, '0'); }
   function dateToISO(d){ return d.getFullYear() + '-' + pad2(d.getMonth()+1) + '-' + pad2(d.getDate()); }
   function fmtDateBR(d){ return pad2(d.getDate()) + '/' + pad2(d.getMonth()+1) + '/' + d.getFullYear(); }
   function parseISO(str){
