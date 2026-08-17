@@ -12,7 +12,7 @@ dist/
   ipca-hiperinflacao/index.html                → artigo 2
   quanto-posso-retirar-aposentadoria/index.html → artigo 3
   .nojekyll                                   → obrigatório p/ GitHub Pages não processar o site com Jekyll
-  cloudflare-worker/
+  dinheiro-em-pauta-likes/
     likes-worker.js                          → código do contador de curtidas
     wrangler.toml                            → config de deploy do worker
 ```
@@ -63,7 +63,7 @@ perfeitamente assim que o domínio estiver ativo.
    npm install -g wrangler
    wrangler login
    ```
-3. Dentro da pasta `cloudflare-worker/`, crie o namespace de dados:
+3. Dentro da pasta `dinheiro-em-pauta-likes/`, crie o namespace de dados:
    ```
    wrangler kv namespace create LIKES
    ```
@@ -80,7 +80,7 @@ perfeitamente assim que o domínio estiver ativo.
    var API = 'https://independencia-likes.SEU-SUBDOMINIO.workers.dev';
    ```
    e substitua pela URL real que você recebeu no passo 5.
-7. Abra `cloudflare-worker/likes-worker.js` e confirme que `ALLOWED_ORIGIN`
+7. Abra `dinheiro-em-pauta-likes/likes-worker.js` e confirme que `ALLOWED_ORIGIN`
    está com o seu domínio final correto.
 
 ## Passo 4 — Comentários anônimos com moderação (Worker próprio)
@@ -88,12 +88,12 @@ perfeitamente assim que o domínio estiver ativo.
 Desde 17/08/2026 os comentários **não usam mais o Cusdis** (o widget
 hospedado deles roda em iframe de outra origem e não permitia customizar
 o visual — ficava sempre "torto" em relação ao design do site). O sistema
-atual é um Cloudflare Worker próprio (`cloudflare-worker-comments/`), com
+atual é um Cloudflare Worker próprio (`dinheiro-em-pauta-comments/`), com
 banco D1, que renderiza o formulário e a lista de comentários direto no
 HTML do site — mesmo comportamento de antes (anônimo, e-mail opcional,
 fila de moderação manual), mas com controle visual total.
 
-1. Siga o passo a passo completo em `cloudflare-worker-comments/DEPLOY.md`
+1. Siga o passo a passo completo em `dinheiro-em-pauta-comments/DEPLOY.md`
    (`wrangler d1 create`, secrets, `wrangler deploy`).
 2. Depois do deploy, todo comentário novo entra como `pending` — aprove ou
    rejeite no painel próprio em

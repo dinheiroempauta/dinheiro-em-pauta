@@ -1,4 +1,4 @@
-// Regressão: cloudflare-worker-comments/src/adminPage.js embute o HTML/JS
+// Regressão: dinheiro-em-pauta-comments/src/adminPage.js embute o HTML/JS
 // do painel de moderação dentro de uma template string. Qualquer `\n`
 // (ou outra sequência de escape) digitado "cru" ali dentro é processado
 // pelo JavaScript da PRÓPRIA template string, virando um caractere real
@@ -17,7 +17,7 @@ const assert = require('node:assert/strict');
 const vm = require('node:vm');
 
 test('o <script> do painel /admin é JavaScript sintaticamente válido', async () => {
-  const { ADMIN_PAGE_HTML } = await import('../../cloudflare-worker-comments/src/adminPage.js');
+  const { ADMIN_PAGE_HTML } = await import('../../dinheiro-em-pauta-comments/src/adminPage.js');
   const match = ADMIN_PAGE_HTML.match(/<script>([\s\S]*)<\/script>/);
   assert.ok(match, 'não achei um bloco <script>...</script> no HTML gerado');
 
