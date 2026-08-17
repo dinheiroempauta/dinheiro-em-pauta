@@ -8,6 +8,14 @@ para a seção "Concluído", no fim, com a data).
 
 ## Configuração pendente (já mapeado, falta executar)
 
+- [ ] **Conferir resultado da indexação manual no Search Console** —
+      usuário solicitou indexação manual de todas as páginas do site em
+      17/08/2026, mas o resultado ainda não foi conferido (a indexação
+      não é instantânea, leva de horas a alguns dias). Verificar depois
+      em Search Console → Páginas (relatório de indexação) se as
+      páginas aparecem como "Indexada" ou se algum erro apareceu; e/ou
+      testar `site:dinheiroempauta.com.br` no Google pra ver o que já
+      está aparecendo publicamente.
 - [ ] **Umami (domínio do site)** — atualizar o domínio cadastrado para
       este site nas configurações do painel do Umami pro domínio novo.
       O script no HTML (`data-website-id="cfa01c19-23cd-468f-8d42-db9a697cf762"`)
