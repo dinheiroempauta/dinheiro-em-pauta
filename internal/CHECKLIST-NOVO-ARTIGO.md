@@ -67,15 +67,17 @@ de escrever o HTML do zero.
       da árvore de acessibilidade porque fica `visibility:hidden` até o
       hover) — sem isso, o PageSpeed acusa "links sem nome compreensível"
 - [ ] `.back-to-top` (botão flutuante)
-- [ ] `.masthead` (nessa ordem: wordmark; seta `←` sozinha — sem o texto
-      "Todos os artigos", só `aria-label="Todos os artigos"` — apontando
-      pra `../`, entre a wordmark e o link "Sobre"; link "Sobre" apontando
-      pra `../sobre/`; tagline), idêntico ao de outros artigos. `.wordmark`
-      precisa de `text-decoration:none` e o CSS da página precisa de um
-      `a:hover{ color: var(--brick); }` global — sem os dois, o link fica
-      sublinhado e/ou não reage a hover (bug já visto em produção). Não
-      existe mais `.site-bar` (a barra preta foi
-      removida do design — tudo mora dentro do masthead agora)
+- [ ] `.masthead` — sticky, com só o `.wordmark` (= link pra home) à
+      esquerda e, à direita, dois ícones: `#themeToggle` (alternar
+      claro/escuro) e `#menuToggle` (abre `.site-menu` com Sobre /
+      Artigos / Simuladores). Copiar o bloco inteiro do template — sem
+      link de texto solto nem seta "←" no masthead (isso não existe
+      mais desde o menu compacto). Precisa de
+      `<script src="../assets/theme-init.js">` bem cedo no `<head>`
+      (antes do `site.css`) e de `<script src="../assets/site.js">`
+      perto do fim do `<body>` — sem o primeiro, o tema pisca errado ao
+      carregar; sem o segundo, os dois botões do masthead ficam mudos
+      (bug já visto em produção)
 - [ ] `.eyebrow` (categoria acima do H1, com o tracinho `::before`)
 - [ ] `h1.title` + `.subtitle` (subtítulo editorial, não repetir o H1)
 - [ ] `.meta` — publicado em / tempo de leitura / nível / "inclui
@@ -85,6 +87,12 @@ de escrever o HTML do zero.
       referências, engajamento e comentários) e dividir por 200
       palavras/minuto; não estimar de cabeça
 - [ ] `.promise` — bloco "Neste artigo, você vai entender" com 3-5 bullets
+- [ ] `#nivelamento-basico` (`class="note green"`) — **obrigatório em
+      todo artigo**, logo após o `.promise`. Parágrafo curto (2-3
+      frases): ponteiro pra outro artigo do blog que cubra a base
+      teórica (se houver um relacionado) + uma frase definindo o
+      conceito central em linguagem simples. Gerar a partir do conteúdo
+      do próprio artigo, sem precisar ser pedido — ver CLAUDE.md
 - [ ] Corpo do artigo (`.prose`, `h2`/`h3` com `.num`, e os componentes
       reutilizáveis do design system conforme o conteúdo pedir: `.note`,
       `.stat-card`, `.chart-card`, `.formula-box`, `.glossary`,
@@ -120,8 +128,9 @@ de escrever o HTML do zero.
 
 ## 4. Scripts no fim do arquivo
 
-- [ ] Script de progress bar / back-to-top / TOC ativo / reveal-on-scroll
-      (copiar inalterado — é genérico)
+- [ ] `<script src="../assets/site.js"></script>` — cuida de progress
+      bar, back-to-top, TOC ativo, reveal-on-scroll e os dois botões do
+      masthead (tema/menu). Não duplicar essa lógica inline no artigo
 - [ ] Script de curtidas: `var API = 'https://independencia-likes.independenciacalculada.workers.dev';`
       e `var slug = '<slug-do-artigo>';` corretos
 - [ ] Qualquer calculadora/simulador interativo específico do artigo

@@ -103,6 +103,21 @@ a:focus-visible, button:focus-visible, input:focus-visible, textarea:focus-visib
 
 .mono{ font-family: var(--font-mono); }
 
+/* ---------- Largura do container (--maxw) ----------
+   --maxw não é definido aqui de propósito — cada página define o seu
+   próprio valor num :root{} local, porque o valor certo depende do
+   tipo de conteúdo, não é um token de cor/fonte universal. Os três
+   valores em uso hoje, e por quê:
+     - 1000px: home, listagens (artigos/simuladores), páginas de
+       artigo e Sobre — largura de leitura confortável para prosa.
+     - 880px: simuladores de PU (RendA+/Educa+) — formulário + tabela
+       de parcelas, mais estreitos que uma coluna de leitura.
+     - 1200px: comparador de composição — dois painéis lado a lado
+       (Carteira 1/2) + gráficos largos, precisa de mais espaço
+       horizontal que os outros grupos.
+   Ao criar uma página nova, escolher o grupo mais parecido em vez de
+   inventar um quarto valor. */
+
 /* ---------- Masthead ---------- */
 .masthead{
   position: sticky; top: 0; z-index: 70;

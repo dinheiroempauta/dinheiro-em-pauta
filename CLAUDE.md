@@ -134,3 +134,15 @@ sem precisar ser pedido** — o usuário fornece o conteúdo, não o tempo de
 leitura. Calcular pelo método documentado no checklist (contagem de
 palavras do conteúdo real ÷ 200 palavras/minuto) e já entregar o artigo
 com esse campo preenchido corretamente desde a primeira versão.
+
+Da mesma forma, **todo artigo — atual e futuro — precisa de um bloco
+"Nivelamento básico"**, logo após o `.promise` e antes do corpo do
+artigo (`id="nivelamento-basico"`, `class="note green"`, ver
+`internal/template-artigo.html`). É um parágrafo curto (2-3 frases), no
+mesmo tom direto do resto do artigo — normalmente um ponteiro para outro
+artigo do blog que cobre a base teórica (quando existir um relacionado)
+mais uma frase definindo o conceito central em linguagem simples, pro
+leitor que chegou sem contexto não se perder. Gerar esse bloco a partir
+do conteúdo do próprio artigo faz parte do processo de construção, sem
+precisar ser pedido — mesmo espírito da estimativa de tempo de leitura
+acima.

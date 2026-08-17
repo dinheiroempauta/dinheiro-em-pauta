@@ -1058,8 +1058,13 @@ svg.chart-svg{ width: 100%; height: auto; display:block; overflow: visible; }
   /* ---------- SVG helpers ---------- */
   const NS = 'http://www.w3.org/2000/svg';
   const svgEl = (tag, attrs) => { const e = document.createElementNS(NS, tag); for (const k in attrs) e.setAttribute(k, attrs[k]); return e; };
-  const fmtPct1 = v => (v*100).toFixed(1).replace('.', ',') + '%';
-  const fmtNum2 = v => v.toFixed(2).replace('.', ',');
+  /* Formatação numérica pt-BR centralizada — todo ponto do arquivo que
+     precisa exibir percentual ou número decimal passa por aqui, em vez
+     de reimplementar toFixed().replace('.',',') isoladamente. */
+  const fmtPct = (v, decimals) => (v*100).toLocaleString('pt-BR', { minimumFractionDigits: decimals, maximumFractionDigits: decimals }) + '%';
+  const fmtNum = (v, decimals) => v.toLocaleString('pt-BR', { minimumFractionDigits: decimals, maximumFractionDigits: decimals });
+  const fmtPct1 = v => fmtPct(v, 1);
+  const fmtNum2 = v => fmtNum(v, 2);
 
   /* ---------- acessibilidade dos gráficos: <title>/role/aria-label dinâmicos ---------- */
   // injeta um <title> como primeiro filho do <svg> (obrigatório pra leitor de
@@ -1650,7 +1655,7 @@ svg.chart-svg{ width: 100%; height: auto; display:block; overflow: visible; }
       else if (v1 > v2) c1Wins++;
       else c2Wins++;
     }
-    const pct = n => total ? (n/total*100).toFixed(1).replace('.',',')+'%' : '—';
+    const pct = n => total ? fmtPct1(n/total) : '—';
     el.innerHTML = `
       <tr><td style="color:${hueC1}">Carteira 1 venceu</td><td>${c1Wins} <span style="color:var(--muted)">(${pct(c1Wins)})</span></td></tr>
       <tr><td style="color:${hueC2}">Carteira 2 venceu</td><td>${c2Wins} <span style="color:var(--muted)">(${pct(c2Wins)})</span></td></tr>
@@ -1831,13 +1836,13 @@ svg.chart-svg{ width: 100%; height: auto; display:block; overflow: visible; }
 
   /* ---------- UI do otimizador ---------- */
   const CONSTRAINT_DEFS = [
-    { key:'cagr', comparator:'>=', toInternal: v => v/100, label:'CAGR', fmt: v => (v*100).toFixed(2).replace('.',',')+'%' },
-    { key:'drawdown', comparator:'>=', toInternal: v => -Math.abs(v)/100, label:'Perda máxima', fmt: v => (v*100).toFixed(2).replace('.',',')+'%' },
-    { key:'ulcer', comparator:'<=', toInternal: v => v, label:'Ulcer Index', fmt: v => v.toFixed(2).replace('.',',') },
-    { key:'sharpe', comparator:'>=', toInternal: v => v, label:'Sharpe', fmt: v => v.toFixed(2).replace('.',',') },
-    { key:'sortino', comparator:'>=', toInternal: v => v, label:'Sortino', fmt: v => v.toFixed(2).replace('.',',') },
+    { key:'cagr', comparator:'>=', toInternal: v => v/100, label:'CAGR', fmt: v => fmtPct(v, 2) },
+    { key:'drawdown', comparator:'>=', toInternal: v => -Math.abs(v)/100, label:'Perda máxima', fmt: v => fmtPct(v, 2) },
+    { key:'ulcer', comparator:'<=', toInternal: v => v, label:'Ulcer Index', fmt: v => fmtNum(v, 2) },
+    { key:'sharpe', comparator:'>=', toInternal: v => v, label:'Sharpe', fmt: v => fmtNum(v, 2) },
+    { key:'sortino', comparator:'>=', toInternal: v => v, label:'Sortino', fmt: v => fmtNum(v, 2) },
     { key:'recovery', comparator:'<=', toInternal: v => v, label:'Tempo de recuperação (pior)', fmt: v => v.toFixed(0)+' meses' },
-    { key:'volatilidade', comparator:'<=', toInternal: v => v/100, label:'Volatilidade', fmt: v => (v*100).toFixed(2).replace('.',',')+'% a.a.' },
+    { key:'volatilidade', comparator:'<=', toInternal: v => v/100, label:'Volatilidade', fmt: v => fmtPct(v, 2) + ' a.a.' },
   ];
 
   const scopeYearsSelect = document.getElementById('opt-scope-years');
@@ -2117,7 +2122,7 @@ svg.chart-svg{ width: 100%; height: auto; display:block; overflow: visible; }
     });
     const rowsHtml = targets.map((t, i) => {
       const r1 = resC1[i], r2 = resC2[i];
-      const fmt = r => r.error ? '—' : (r.rate*100).toFixed(2).replace('.', ',') + '%';
+      const fmt = r => r.error ? '—' : fmtPct(r.rate, 2);
       const rowClass = t.name === 'PWR' ? ' class="pwr-row"' : '';
       let cls1 = 'num c1', cls2 = 'num c2', title1 = '', title2 = '';
       if (!r1.error && !r2.error){
