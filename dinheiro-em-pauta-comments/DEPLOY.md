@@ -1,13 +1,13 @@
-# Deploy do Worker de comentários (nome novo, Fase 2 do rebrand)
+# Deploy do Worker de comentários
 
 Rode isso com a conta Cloudflare já logada no `wrangler` (`wrangler login`,
 se ainda não tiver feito). Tudo a partir desta pasta
 (`dinheiro-em-pauta-comments/`).
 
-Este é um Worker **novo**, em paralelo ao antigo (`cloudflare-worker-comments/`,
-ainda no ar) — banco de dados novo e vazio, secrets novos. O antigo só
-deve ser apagado depois que este aqui estiver 100% testado e o front-end
-já apontar pra ele.
+**Já fez o deploy inicial antes e só quer atualizar o código do Worker
+(ex: depois que eu mudo algo em `src/`)?** Pula direto pro passo 4
+(`wrangler deploy`) — os passos 1-3 (banco, schema, secrets) só precisam
+rodar uma vez.
 
 ## 1. Criar o banco D1
 
@@ -52,18 +52,18 @@ wrangler deploy
 ```
 
 Anota a URL que aparece no final (deve ser
-`https://dinheiro-em-pauta-comments.dinheiroempauta.workers.dev` ou
-similar — se vier diferente, me avisa que eu ajusto o `data-comments-api`
-nas páginas e o CORS no Worker pra bater com a URL real).
+`https://dinheiro-em-pauta-comments.independenciacalculada.workers.dev`
+— se vier diferente, me avisa que eu ajusto o `data-comments-api` nas
+páginas e o CORS no Worker pra bater com a URL real).
 
 ## 5. Testar os endpoints
 
-Troca `SUA_URL_NOVA` pela URL real que apareceu no passo 4 em todos os
+Troca `https://dinheiro-em-pauta-comments.independenciacalculada.workers.dev` pela URL real que apareceu no passo 4 em todos os
 comandos abaixo.
 
 Comentar (deve entrar como pendente):
 ```
-curl -X POST SUA_URL_NOVA/comments \
+curl -X POST https://dinheiro-em-pauta-comments.independenciacalculada.workers.dev/comments \
   -H "Content-Type: application/json" \
   -H "Origin: https://dinheiroempauta.com.br" \
   -d '{"slug":"pwr-carteira-fire","nickname":"Teste","email":"","message":"Comentário de teste"}'
@@ -72,34 +72,36 @@ Resposta esperada: `{"status":"pending"}`.
 
 Listar pendentes (troca `SEU_TOKEN` pelo valor que você colou no passo 3):
 ```
-curl "SUA_URL_NOVA/admin/pending?token=SEU_TOKEN"
+curl "https://dinheiro-em-pauta-comments.independenciacalculada.workers.dev/admin/pending?token=SEU_TOKEN"
 ```
 
 Aprovar (troca `ID` pelo id retornado acima):
 ```
-curl -X POST SUA_URL_NOVA/admin/moderate \
+curl -X POST https://dinheiro-em-pauta-comments.independenciacalculada.workers.dev/admin/moderate \
   -H "Content-Type: application/json" \
   -d '{"token":"SEU_TOKEN","id":ID,"action":"approve"}'
 ```
 
 Ver se aparece na listagem pública:
 ```
-curl "SUA_URL_NOVA/comments?slug=pwr-carteira-fire"
+curl "https://dinheiro-em-pauta-comments.independenciacalculada.workers.dev/comments?slug=pwr-carteira-fire"
 ```
 
 ## 6. Painel de moderação
 
 ```
-SUA_URL_NOVA/admin
+https://dinheiro-em-pauta-comments.independenciacalculada.workers.dev/admin
 ```
 
 Mesmo fluxo de sempre: cola o `ADMIN_TOKEN` no login, fica salvo no
 navegador.
 
-## 7. Depois de tudo testado
+Alternativas que continuam funcionando, se preferir (ex: pra automatizar
+algo): os comandos `curl` do passo 5, ou direto pelo console D1 no
+dashboard da Cloudflare:
 
-Me avisa a URL final que apareceu no passo 4 — eu troco `data-comments-api`
-nas 8 páginas + template pra apontar pra ela, num PR único. Só depois
-disso o Worker antigo (`cloudflare-worker-comments/`) deve ser apagado
-(`wrangler delete` na pasta antiga) — nunca antes de confirmar que o
-novo está recebendo tráfego de verdade.
+```sql
+UPDATE comments SET status='approved' WHERE id=X;
+-- ou
+DELETE FROM comments WHERE id=X;
+```

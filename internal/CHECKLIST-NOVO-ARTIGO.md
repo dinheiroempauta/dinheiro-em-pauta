@@ -127,7 +127,7 @@ de escrever o HTML do zero.
 - [ ] `.engage` — botão "Achei útil" (curtir) + grupo de compartilhar
       (WhatsApp, LinkedIn, X, copiar link) com URLs e texto do slug atual
 - [ ] `.comments-section` com o widget de comentários próprio (Cloudflare
-      Worker, ver `cloudflare-worker-comments/`): `.comment-widget` com
+      Worker, ver `dinheiro-em-pauta-comments/`): `.comment-widget` com
       `data-slug="<slug>"` e `data-comments-api` apontando pro Worker, e
       os `id`/`for` dos três campos do formulário (`nickname`/`email`/
       `message`) seguindo o padrão `c-nickname-<slug>`, `c-email-<slug>`,

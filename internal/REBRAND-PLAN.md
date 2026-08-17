@@ -72,13 +72,16 @@ paralelo, testar, só depois cortar**:
    `data-comments-api` nas 8 páginas + template, e `connect-src` do CSP
    em todas as páginas do site (inclusive as 4 sem comentários, que só
    usam o worker de likes) apontando pros Workers novos.
-5. [ ] Usuário confirma que curtir/comentar funcionam de verdade no site
-   publicado (`dinheiroempauta.com.br`) com os Workers novos.
-6. [ ] Usuário apaga os Workers antigos (`wrangler delete` nas pastas
-   `cloudflare-worker/` e `cloudflare-worker-comments/`) só depois de
-   confirmar o passo 5. Depois disso, eu removo essas duas pastas antigas
-   do repositório.
-7. [ ] Só depois do passo 6: trocar o subdomínio `.workers.dev` da conta
+5. [x] Confirmado curtir/comentar funcionando no site publicado
+   (`dinheiroempauta.com.br`) com os Workers novos — inclusive achado e
+   corrigido que o painel de moderação também mudou de endereço (o
+   usuário estava com o `/admin` antigo salvo).
+6. [x] Workers antigos apagados (`wrangler delete` nas pastas
+   `cloudflare-worker/` e `cloudflare-worker-comments/`), e as duas
+   pastas removidas do repositório. Referências nos docs
+   (`README.md`/`CLAUDE.md`/`CHECKLIST-NOVO-ARTIGO.md`) atualizadas pros
+   nomes de pasta novos.
+7. [ ] Só falta trocar o subdomínio `.workers.dev` da conta
    Cloudflare (Workers & Pages → Overview → mudar subdomínio) pra tirar
    o `independenciacalculada` de vez — nesse ponto não sobra nada rodando
    sob o subdomínio antigo pra quebrar. Eu atualizo o front-end mais uma

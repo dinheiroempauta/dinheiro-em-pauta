@@ -179,7 +179,7 @@ Para simuladores/calculadoras novas especificamente, verificar também:
   o que quebra o dark mode automático
 - Todo simulador (não só artigo) precisa do bloco `.engage` (curtir +
   compartilhar) e `.comments-section` (comentários próprios via Cloudflare
-  Worker — ver `cloudflare-worker-comments/`, substituiu o Cusdis em
+  Worker — ver `dinheiro-em-pauta-comments/`, substituiu o Cusdis em
   17/08/2026), copiados de um simulador existente
   (`simuladores/pu-renda-mais/index.html` é a referência) — `data-slug` do
   botão de curtir, `data-slug`/`data-comments-api` do `.comment-widget` de
@@ -189,7 +189,7 @@ Para simuladores/calculadoras novas especificamente, verificar também:
   `https%3A//...` dentro do `href`, não só a versão normal) tudo
   customizado pro slug e caminho completo do simulador
   (`simuladores/<slug>/`, não só `<slug>/`) — inclusive adicionar o slug
-  nesse mapa em `cloudflare-worker-comments/src/email.js`
+  nesse mapa em `dinheiro-em-pauta-comments/src/email.js`
   (`SLUG_PATHS`), senão o link de "ver comentário" nos e-mails de
   notificação fica quebrado (aponta pra `<slug>/` em vez de
   `simuladores/<slug>/`). Os simuladores não tinham
