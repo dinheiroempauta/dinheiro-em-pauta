@@ -49,9 +49,12 @@ def stationary_bootstrap_paths(
 
 
 if __name__ == "__main__":
+    from pathlib import Path
+
     import pandas as pd
 
-    df = pd.read_csv("/home/claude/pwr-project/output/portfolio_monthly_returns.csv")
+    OUTPUT_DIR = Path(__file__).resolve().parent.parent / "output"
+    df = pd.read_csv(OUTPUT_DIR / "portfolio_monthly_returns.csv")
     r = df["ret_carteira_real"].values
 
     rng = np.random.default_rng(42)

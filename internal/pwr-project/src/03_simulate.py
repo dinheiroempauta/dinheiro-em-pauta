@@ -93,13 +93,23 @@ def find_pwr(
 
 
 if __name__ == "__main__":
-    import pandas as pd
-    import sys
-    sys.path.insert(0, "/home/claude/pwr-project/src")
-    from importlib import import_module
-    bootstrap_mod = import_module("02_bootstrap")
+    import importlib.util
+    from pathlib import Path
 
-    df = pd.read_csv("/home/claude/pwr-project/output/portfolio_monthly_returns.csv")
+    import pandas as pd
+
+    def _carregar_modulo(nome, caminho):
+        spec = importlib.util.spec_from_file_location(nome, caminho)
+        modulo = importlib.util.module_from_spec(spec)
+        spec.loader.exec_module(modulo)
+        return modulo
+
+    SRC_DIR = Path(__file__).resolve().parent
+    OUTPUT_DIR = SRC_DIR.parent / "output"
+
+    bootstrap_mod = _carregar_modulo("bootstrap", SRC_DIR / "02_bootstrap.py")
+
+    df = pd.read_csv(OUTPUT_DIR / "portfolio_monthly_returns.csv")
     r = df["ret_carteira_real"].values
 
     rng = np.random.default_rng(42)

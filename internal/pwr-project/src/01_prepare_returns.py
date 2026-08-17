@@ -15,11 +15,14 @@ Saída: output/portfolio_monthly_returns.csv
 Colunas: Data, ret_vwra11, ret_divo11, ret_b5p211, ret_cdib11, ret_gold11,
          ret_carteira_nominal, ret_ipca, ret_carteira_real
 """
+from pathlib import Path
+
 import pandas as pd
 import numpy as np
 
-XLS_PATH = "/home/claude/pwr-project/data/BD_Carteira_Claude_corrigida.xlsx"
-OUT_PATH = "/home/claude/pwr-project/output/portfolio_monthly_returns.csv"
+_BASE_DIR = Path(__file__).resolve().parent.parent
+XLS_PATH = _BASE_DIR / "data" / "BD_Carteira_Claude_corrigida.xlsx"
+OUT_PATH = _BASE_DIR / "output" / "portfolio_monthly_returns.csv"
 
 # Pesos da carteira (Decisão registrada no spec.md / conversa inicial)
 WEIGHTS = {
