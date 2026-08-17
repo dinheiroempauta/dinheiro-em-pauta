@@ -214,7 +214,7 @@ export const ADMIN_PAGE_HTML = `<!doctype html>
     if (mod) lines.push("Aviso de aprovação/rejeição: " + mod);
     var reply = describeEmailResult(debug.reply);
     if (reply) lines.push("Aviso de resposta: " + reply);
-    if (lines.length) alert(lines.join("\n\n"));
+    if (lines.length) alert(lines.join("\\n\\n"));
   }
 
   function moderate(id, action, itemEl){
