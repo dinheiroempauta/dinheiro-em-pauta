@@ -16,6 +16,24 @@ para a seção "Concluído", no fim, com a data).
       enquanto o `canonical` já aponta pro domínio final (comportamento
       esperado, documentado no checklist de novo artigo).
 
+- [ ] **Deploy do Worker de comentários (`independencia-comments`)** — o
+      código está pronto (`cloudflare-worker-comments/`), substituindo o
+      Cusdis (removido de todas as páginas: código já não referencia
+      `cusdis_thread`/`CUSDIS_LOCALE`/`cusdis.com` em lugar nenhum). Falta
+      rodar os comandos de infraestrutura na conta Cloudflare (`wrangler d1
+      create`, secrets, `wrangler deploy`) — passo a passo completo em
+      `cloudflare-worker-comments/DEPLOY.md`. Até isso rodar, os
+      formulários de comentário nas páginas ficam sem back-end (erro de
+      conexão ao tentar comentar). *(17 ago. 2026)*
+
+- [ ] **Painel de moderação HTML pros comentários** — hoje a moderação é só
+      via `curl` nos endpoints `/admin/pending` e `/admin/moderate`, ou
+      direto no console D1 do dashboard da Cloudflare (ver
+      `cloudflare-worker-comments/DEPLOY.md`, seção 6). Decisão consciente
+      de adiar a paginazinha HTML pra reduzir o escopo da primeira entrega
+      — próximo passo natural depois que o fluxo de comentar/exibir estiver
+      validado em produção. *(17 ago. 2026)*
+
 ## ⚠️ Checklist para quando migrar pro domínio próprio
 
 Vários itens já configurados hoje apontam pro endereço temporário do GitHub
@@ -28,8 +46,6 @@ Pages e precisam ser atualizados assim que o domínio próprio estiver ativo:
       o domínio final, então não precisa mexer no código; só confirmar que
       segue funcionando depois da troca. Confirmado em 12 ago, direto no
       arquivo: `ALLOWED_ORIGINS` já lista os dois domínios.
-- [ ] **Cusdis** — atualizar a URL do site cadastrada no painel (hoje está
-      com o endereço do GitHub Pages).
 - [ ] **Google Search Console** — verificar a propriedade de novo com o
       domínio final e reenviar o sitemap.xml.
 - [ ] **sitemap.xml e feed.xml** — trocar todas as URLs internas do

@@ -83,17 +83,25 @@ perfeitamente assim que o domínio estiver ativo.
 7. Abra `cloudflare-worker/likes-worker.js` e confirme que `ALLOWED_ORIGIN`
    está com o seu domínio final correto.
 
-## Passo 4 — Comentários anônimos com moderação (Cusdis, gratuito)
+## Passo 4 — Comentários anônimos com moderação (Worker próprio)
 
-1. Crie uma conta em [cusdis.com](https://cusdis.com).
-2. Crie um site novo, informando a URL do seu blog.
-3. Copie o **App ID** que o Cusdis gera.
-4. Em **cada** artigo, procure por `data-app-id="SEU_APP_ID_CUSDIS"` e substitua
-   pelo App ID real.
-5. No painel do Cusdis, em Settings, ative a opção de **moderação manual**
-   (comentários ficam pendentes até você aprovar).
-6. Todo comentário novo aparece no painel do Cusdis para você aprovar ou rejeitar
-   — o leitor não precisa de conta, só digita nome (e email opcional).
+Desde 17/08/2026 os comentários **não usam mais o Cusdis** (o widget
+hospedado deles roda em iframe de outra origem e não permitia customizar
+o visual — ficava sempre "torto" em relação ao design do site). O sistema
+atual é um Cloudflare Worker próprio (`cloudflare-worker-comments/`), com
+banco D1, que renderiza o formulário e a lista de comentários direto no
+HTML do site — mesmo comportamento de antes (anônimo, e-mail opcional,
+fila de moderação manual), mas com controle visual total.
+
+1. Siga o passo a passo completo em `cloudflare-worker-comments/DEPLOY.md`
+   (`wrangler d1 create`, secrets, `wrangler deploy`).
+2. Depois do deploy, todo comentário novo entra como `pending` — aprove ou
+   rejeite via `curl` nos endpoints `/admin/*` (comandos exatos no
+   `DEPLOY.md`) ou direto no console D1 do dashboard da Cloudflare. Não
+   existe painel de moderação HTML ainda (pendência conhecida, ver
+   `internal/BACKLOG.md`).
+3. O leitor não precisa de conta, só digita nome (e e-mail opcional) —
+   igual ao comportamento anterior.
 
 ## Passo 5 — Favicon
 
@@ -116,7 +124,7 @@ Esse é o fluxo que você já usa e que continua igual:
    - todas as meta tags de SEO (title, description, Open Graph, Twitter Card,
      canonical, JSON-LD de Article + BreadcrumbList, e FAQPage quando cabível)
    - bloco de curtir/compartilhar
-   - seção de comentários (Cusdis)
+   - seção de comentários (Worker próprio, ver Passo 4 acima)
    - barra de navegação "← Todos os artigos", progress bar, TOC e botão
      "voltar ao topo"
 4. Também gero a imagem de capa (og:image) seguindo o prompt padronizado em

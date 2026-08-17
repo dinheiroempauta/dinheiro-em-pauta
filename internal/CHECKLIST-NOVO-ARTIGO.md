@@ -126,11 +126,13 @@ de escrever o HTML do zero.
       ao dos outros artigos (não parafrasear)
 - [ ] `.engage` — botão "Achei útil" (curtir) + grupo de compartilhar
       (WhatsApp, LinkedIn, X, copiar link) com URLs e texto do slug atual
-- [ ] `.comments-section` com Cusdis: `data-app-id` (mesmo de todo o
-      blog), `data-page-id="<slug>"`, `data-page-url` e `data-page-title`
-      corretos para este artigo + o script de estilização do iframe
-      (copiar inalterado, já inclui `node.setAttribute('title', ...)`
-      no `styleFrame` — sem isso o PageSpeed acusa "iframe sem título")
+- [ ] `.comments-section` com o widget de comentários próprio (Cloudflare
+      Worker, ver `cloudflare-worker-comments/`): `.comment-widget` com
+      `data-slug="<slug>"` e `data-comments-api` apontando pro Worker, e
+      os `id`/`for` dos três campos do formulário (`nickname`/`email`/
+      `message`) seguindo o padrão `c-nickname-<slug>`, `c-email-<slug>`,
+      `c-message-<slug>` — únicos por página (copiar o bloco inteiro de
+      um artigo existente e só trocar o slug nos 7 lugares)
 - [ ] Qualquer cor de texto customizada sobre fundo colorido (ex: gráficos
       inline com `style="background:#..."`) precisa de contraste ≥ 4.5:1
       — conferir com a calculadora de contraste do PageSpeed/DevTools
@@ -155,14 +157,13 @@ idioma no automático.
 
 - [ ] `<script src="../assets/site.js"></script>` — cuida de progress
       bar, back-to-top, TOC ativo, reveal-on-scroll, os dois botões do
-      masthead (tema/menu), curtir, newsletter, sugerir tema e a
-      estilização do iframe de comentários. Não duplicar essa lógica
+      masthead (tema/menu), curtir, newsletter, sugerir tema e o widget
+      de comentários (fetch/render/reply). Não duplicar essa lógica
       inline no artigo
 - [ ] Botão de curtir precisa de `data-slug="<slug-do-artigo>"` no
-      `id="likeBtn"` — é o único dado específico do artigo que esse
-      bloco de `site.js` precisa
-- [ ] `window.CUSDIS_LOCALE` e a tag `<script src="cusdis.es.js">`
-      continuam inline no artigo (ordem importa, não mover pro site.js)
+      `id="likeBtn"`, e o `.comment-widget` precisa de
+      `data-slug="<slug-do-artigo>"` — são os únicos dados específicos do
+      artigo que `site.js` precisa pra curtir/comentários
 - [ ] Qualquer calculadora/simulador interativo específico do artigo
 
 ## 5. Fora do `index.html` do artigo

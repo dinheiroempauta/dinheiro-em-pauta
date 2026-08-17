@@ -298,174 +298,183 @@
     });
   }
 
-  /* ---------- comentários (Cusdis): estiliza o iframe pra seguir o design system ---------- */
-  function setupCusdisComments(){
-  var cusdisContainer = document.getElementById('cusdis_thread');
-  if (cusdisContainer) {
-    var cusdisApplied = false;
-    var rs = getComputedStyle(document.documentElement);
-    var tok = function(name){ return rs.getPropertyValue(name).trim(); };
-    var ink = tok('--ink'), muted = tok('--muted'), paperRaised = tok('--paper-raised');
-    var lineStrong = tok('--line-strong'), line = tok('--line'), placeholder = tok('--placeholder');
-    var green = tok('--green'), greenDeep = tok('--green-deep'), brick = tok('--brick');
-    var gold = tok('--gold');
-    // O Cusdis define cor própria (pensada pro fundo branco padrão dele) em
-    // nome/data/corpo do comentário. "*{color:inherit!important}" sozinho não
-    // é garantia: se a regra deles TAMBÉM usa !important (comum em widget de
-    // terceiro que quer resistir a CSS externo), quem ganha é especificidade
-    // — e uma classe deles bate um seletor universal nosso. B eleva a
-    // especificidade de qualquer seletor a três IDs (ninguém tem esse id, só
-    // usamos pra "roubar" pontos de especificidade), o suficiente pra vencer
-    // qualquer seletor de classe realista. Toda regra que define `color`
-    // usa B, senão perderia justamente para a regra "pega-tudo" de herança.
-    var B = ':not(#ic-x):not(#ic-x):not(#ic-x)';
-    var cusdisCss = ""
-      + "html" + B + ",body" + B + "{font-family:'IBM Plex Sans',sans-serif !important;font-size:15px !important;line-height:1.6 !important;color:" + ink + " !important;background:transparent !important;overflow:visible !important;height:auto !important;}"
-      + "*{box-sizing:border-box;}"
-      + "*" + B + ":not(html):not(body){color:inherit !important;}"
-      + "::-webkit-scrollbar{display:none !important;}"
-      // Sem padding/font-size forçados no input/textarea: o Cusdis
-      // posiciona o rótulo com base no padding original do campo. Forçar
-      // esse valor via !important desalinhava rótulo e caixa (bug
-      // reportado com print do inspecionar). O <label> em si não afeta
-      // esse box model — dá pra estilizar a tipografia dele sem risco.
-      + "label" + B + "{font-family:'IBM Plex Mono',monospace !important;font-size:11px !important;letter-spacing:.05em !important;text-transform:uppercase !important;color:" + muted + " !important;}"
-      + "input" + B + ",textarea" + B + "{font-family:'IBM Plex Sans',sans-serif !important;border:1px solid " + lineStrong + " !important;border-radius:3px !important;background:" + paperRaised + " !important;color:" + ink + " !important;}"
-      + "input:focus" + B + ",textarea:focus" + B + "{outline:2px solid " + gold + " !important;outline-offset:2px !important;border-color:" + green + " !important;}"
-      + "input::placeholder,textarea::placeholder{color:" + placeholder + " !important;}"
-      + "button:not([type='button'])" + B + "{font-family:'IBM Plex Mono',monospace !important;font-size:12px !important;font-weight:600 !important;letter-spacing:.04em !important;text-transform:uppercase !important;background:" + green + " !important;color:#fff !important;border:1px solid " + green + " !important;border-radius:3px !important;padding:9px 18px !important;cursor:pointer !important;transition:background .15s ease, border-color .15s ease !important;min-height:38px !important;}"
-      + "button:not([type='button']):hover" + B + "{background:" + greenDeep + " !important;border-color:" + greenDeep + " !important;}"
-      + "button:not([type='button']):focus-visible" + B + "{outline:2px solid " + gold + " !important;outline-offset:2px !important;}"
-      + "button[type='button']" + B + "{font-family:'IBM Plex Mono',monospace !important;font-size:11px !important;font-weight:600 !important;letter-spacing:.04em !important;text-transform:uppercase !important;background:transparent !important;color:" + green + " !important;border:0 !important;padding:4px 2px !important;cursor:pointer !important;}"
-      + "button[type='button']::before{content:'↳ ';}"
-      + "button[type='button']:hover" + B + "{color:" + greenDeep + " !important;text-decoration:underline !important;}"
-      + "a" + B + "{color:" + green + " !important;text-decoration:none !important;}"
-      + "a:hover" + B + "{color:" + brick + " !important;}"
-      + "a:focus-visible" + B + ",button:focus-visible" + B + "{outline:2px solid " + gold + " !important;outline-offset:2px !important;}"
-      + "hr{border-color:" + line + " !important;opacity:1 !important;}"
-      // Nome/data de cada comentário: sem saber os nomes de classe exatos do
-      // widget (não é possível inspecionar o DOM real dele a partir daqui),
-      // mira em tags/atributos comuns pra esse tipo de informação — mono
-      // pequeno e discreto, igual ao padrão de metadado usado no resto do
-      // site (ver .meta em qualquer artigo). Sem risco se não bater com nada.
-      + "time" + B + ",[class*='date' i]" + B + ",[class*='time' i]" + B + "{font-family:'IBM Plex Mono',monospace !important;font-size:12px !important;color:" + muted + " !important;}"
-      + "[class*='name' i]" + B + ",[class*='author' i]" + B + ",[class*='nickname' i]" + B + "{font-weight:600 !important;color:" + ink + " !important;}"
-      // Rodapé de atribuição do widget ("Comentários via Cusdis"): mantido
-      // (obrigatório no plano gratuito), só discretizado — não é conteúdo
-      // do blog, não precisa competir visualmente com os comentários.
-      + "[class*='text-center' i][class*='text-xs' i]" + B + "{font-size:10px !important;opacity:.55 !important;}";
+  /* ---------- comentários (Cloudflare Worker próprio) ---------- */
+  function setupComments(){
+    var widgets = document.querySelectorAll('.comment-widget');
+    if (!widgets.length) return;
 
-    // O Cusdis não expõe classe própria pro nome do autor nem pra data de
-    // cada comentário (confirmado no DevTools: só classes utilitárias
-    // genéricas tipo "text-gray-500 text-sm", sem "name"/"date"/"time" no
-    // nome) — não dá pra mirar isso com seletor CSS. A única forma é achar
-    // o texto exato e marcar o elemento. Os dois valores abaixo vêm do
-    // mesmo CUSDIS_LOCALE customizado em cada página (mod_badge / o rótulo
-    // "Autor"); o padrão de data é o formato fixo que o Cusdis usa
-    // (YYYY-MM-DD HH:MM).
-    var AUTHOR_BADGE_TEXT = 'Autor';
-    var DATE_RE = /^(\d{4})-(\d{2})-(\d{2}) (\d{2}):(\d{2})$/;
-    var dateFormatter = null;
-    try { dateFormatter = new Intl.DateTimeFormat('pt-BR', { day: '2-digit', month: 'short', hour: '2-digit', minute: '2-digit' }); } catch(e){}
-
-    var enhanceCusdisText = function(doc){
-      try{
-        if (!doc || !doc.body) return;
-        var walker = doc.createTreeWalker(doc.body, NodeFilter.SHOW_TEXT, null);
-        var node;
-        while ((node = walker.nextNode())){
-          var text = node.nodeValue.trim();
-          if (!text) continue;
-          var parent = node.parentElement;
-          if (!parent) continue;
-
-          if (text === AUTHOR_BADGE_TEXT && parent.textContent.trim() === AUTHOR_BADGE_TEXT && !parent.hasAttribute('data-ic-badge')){
-            parent.setAttribute('data-ic-badge', '1');
-            parent.style.cssText += ';display:inline-block;font-family:"IBM Plex Mono",monospace;font-size:10px;font-weight:600;letter-spacing:.04em;text-transform:uppercase;color:' + paperRaised + ';background:' + green + ';border-radius:3px;padding:1px 6px;margin-left:4px;';
-            continue;
-          }
-
-          var m = DATE_RE.exec(text);
-          if (m && !parent.hasAttribute('data-ic-date') && dateFormatter){
-            parent.setAttribute('data-ic-date', '1');
-            var d = new Date(+m[1], +m[2] - 1, +m[3], +m[4], +m[5]);
-            if (!isNaN(d.getTime())) node.nodeValue = dateFormatter.format(d).replace('.', '');
-          }
-        }
-      }catch(e){}
+    var formatDate = function(iso){
+      var d = new Date(iso);
+      if (isNaN(d.getTime())) return '';
+      var datePart = d.toLocaleDateString('pt-BR', { day: '2-digit', month: 'short' }).replace('.', '');
+      var timePart = d.toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' });
+      return datePart + ', ' + timePart;
     };
 
-    var styleCusdisFrame = function(node){
-      if (cusdisApplied) return;
-      cusdisApplied = true;
-      node.style.border = '0';
-      node.style.background = 'transparent';
-      node.style.width = '100%';
-      node.style.colorScheme = getComputedStyle(document.documentElement).getPropertyValue('--color-scheme').trim() || 'light';
-      node.style.minHeight = '120px';
-      node.setAttribute('title', 'Comentários do artigo');
-      var resizePending = false;
-      var resize = function(doc){
-        if (resizePending) return;
-        resizePending = true;
-        requestAnimationFrame(function(){
-          resizePending = false;
-          try{
-            var h = Math.max(doc.documentElement.scrollHeight, doc.body ? doc.body.scrollHeight : 0);
-            if (h > 0) node.style.height = (h + 24) + 'px';
-          }catch(e){}
-        });
-      };
-      var setup = function(){
-        try{
-          var doc = node.contentDocument;
-          if (!doc || !doc.head) return;
-          var style = doc.createElement('style');
-          style.textContent = cusdisCss;
-          doc.head.appendChild(style);
-          resize(doc);
-          enhanceCusdisText(doc);
-          if (window.ResizeObserver && doc.body){
-            var ro = new ResizeObserver(function(){ resize(doc); });
-            ro.observe(doc.body);
-          } else {
-            var iv = setInterval(function(){ resize(doc); }, 500);
-            setTimeout(function(){ clearInterval(iv); }, 20000);
-          }
-          // Comentários/respostas chegam de forma assíncrona bem depois do
-          // load do iframe — sem observar o body pra reprocessar, nome de
-          // autor e data de comentários que aparecem depois nunca ganham o
-          // badge/reformatação (só os que já existiam no primeiro passe).
-          if (doc.body){
-            var enhancePending = false;
-            var enhanceObserver = new MutationObserver(function(){
-              if (enhancePending) return;
-              enhancePending = true;
-              requestAnimationFrame(function(){ enhancePending = false; enhanceCusdisText(doc); });
-            });
-            enhanceObserver.observe(doc.body, { childList: true, subtree: true, characterData: true });
-          }
-        }catch(e){}
-      };
-      node.addEventListener('load', setup);
-      setup();
-    };
-
-    var cusdisObserver = new MutationObserver(function(mutations){
-      mutations.forEach(function(m){
-        m.addedNodes.forEach(function(node){
-          if (node.tagName === 'IFRAME') styleCusdisFrame(node);
-        });
+    var buildReplyForm = function(widget, parentId){
+      var template = widget.querySelector(':scope > .comment-form');
+      var clone = template.cloneNode(true);
+      clone.classList.add('comment-reply-form');
+      clone.dataset.parentId = String(parentId);
+      clone.querySelectorAll('input,textarea').forEach(function(el){
+        if (el.type === 'checkbox') { el.checked = false; } else { el.value = ''; }
       });
-    });
-    cusdisObserver.observe(cusdisContainer, { childList: true, subtree: true });
+      var status = clone.querySelector('.comment-status');
+      if (status) { status.hidden = true; status.textContent = ''; }
+      bindForm(clone, widget);
+      return clone;
+    };
 
-    // cusdis.es.js carrega com async e pode inserir o iframe antes deste
-    // script (no fim do <body>) registrar o observer acima — sem isso, o
-    // comentário fica sem o CSS do tema (visual padrão do Cusdis).
-    var existingFrame = cusdisContainer.querySelector('iframe');
-    if (existingFrame) styleCusdisFrame(existingFrame);
+    var toggleReplyForm = function(item, parentId, widget){
+      var existing = item.querySelector(':scope > .comment-reply-form');
+      if (existing) { existing.remove(); return; }
+      var form = buildReplyForm(widget, parentId);
+      item.appendChild(form);
+      var textarea = form.querySelector('textarea');
+      if (textarea) textarea.focus();
+    };
+
+    var renderComment = function(c, widget, depth){
+      var item = document.createElement('div');
+      item.className = 'comment-item';
+
+      var header = document.createElement('div');
+      header.className = 'comment-item-header';
+
+      var nick = document.createElement('span');
+      nick.className = 'comment-nickname';
+      nick.textContent = c.nickname;
+      header.appendChild(nick);
+
+      if (c.is_author) {
+        var badge = document.createElement('span');
+        badge.className = 'comment-badge-author';
+        badge.textContent = 'Autor';
+        header.appendChild(badge);
+      }
+
+      var date = document.createElement('span');
+      date.className = 'comment-date';
+      date.textContent = formatDate(c.created_at);
+      header.appendChild(date);
+
+      var message = document.createElement('p');
+      message.className = 'comment-message';
+      message.textContent = c.message;
+
+      item.appendChild(header);
+      item.appendChild(message);
+
+      // Cusdis só tinha 1 nível de resposta — mantém a mesma regra aqui
+      // (o Worker também recusa parent_id de um comentário que já é resposta).
+      if (depth === 0) {
+        var replyBtn = document.createElement('button');
+        replyBtn.type = 'button';
+        replyBtn.className = 'comment-reply-toggle';
+        replyBtn.textContent = 'Responder';
+        replyBtn.addEventListener('click', function(){ toggleReplyForm(item, c.id, widget); });
+        item.appendChild(replyBtn);
+      }
+
+      if (c.replies && c.replies.length) {
+        var repliesEl = document.createElement('div');
+        repliesEl.className = 'comment-replies';
+        c.replies.forEach(function(r){ repliesEl.appendChild(renderComment(r, widget, depth + 1)); });
+        item.appendChild(repliesEl);
+      }
+
+      return item;
+    };
+
+    var loadComments = function(widget){
+      var slug = widget.dataset.slug;
+      var api = widget.dataset.commentsApi;
+      var listEl = widget.querySelector('.comment-list');
+      if (!slug || !api || !listEl) return;
+      listEl.innerHTML = '<p class="comment-loading">Carregando comentários…</p>';
+      fetch(api + '/comments?slug=' + encodeURIComponent(slug))
+        .then(function(r){ return r.json(); })
+        .then(function(data){
+          listEl.innerHTML = '';
+          if (!data.comments || !data.comments.length) {
+            listEl.innerHTML = '<p class="comment-empty">Seja o primeiro a comentar.</p>';
+            return;
+          }
+          data.comments.forEach(function(c){ listEl.appendChild(renderComment(c, widget, 0)); });
+        })
+        .catch(function(){
+          listEl.innerHTML = '<p class="comment-empty">Não foi possível carregar os comentários agora.</p>';
+        });
+    };
+
+    var bindForm = function(form, widget){
+      var textarea = form.querySelector('textarea');
+      var counter = form.querySelector('.comment-counter');
+      var maxLen = textarea ? (parseInt(textarea.getAttribute('maxlength'), 10) || 2000) : 2000;
+      var updateCounter = function(){
+        if (counter && textarea) counter.textContent = (maxLen - textarea.value.length) + ' caracteres restantes';
+      };
+      if (textarea && counter) {
+        textarea.addEventListener('input', updateCounter);
+        updateCounter();
+      }
+
+      form.addEventListener('submit', function(e){
+        e.preventDefault();
+        var api = widget.dataset.commentsApi;
+        var slug = widget.dataset.slug;
+        var nicknameEl = form.querySelector('[name="nickname"]');
+        var emailEl = form.querySelector('[name="email"]');
+        var honeypotEl = form.querySelector('[name="botcheck"]');
+        var statusEl = form.querySelector('.comment-status');
+        var submitBtn = form.querySelector('button[type="submit"]');
+
+        var payload = {
+          slug: slug,
+          parent_id: form.dataset.parentId ? Number(form.dataset.parentId) : null,
+          nickname: nicknameEl ? nicknameEl.value.trim() : '',
+          email: emailEl ? emailEl.value.trim() : '',
+          message: textarea ? textarea.value.trim() : '',
+          botcheck: honeypotEl && honeypotEl.checked ? 'bot' : '',
+        };
+
+        if (submitBtn) submitBtn.disabled = true;
+        fetch(api + '/comments', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(payload),
+        })
+          .then(function(r){ return r.json().then(function(data){ return { ok: r.ok, data: data }; }); })
+          .then(function(res){
+            if (!statusEl) return;
+            statusEl.hidden = false;
+            if (res.ok) {
+              statusEl.classList.remove('error');
+              statusEl.textContent = 'Comentário enviado — ele passa por moderação antes de aparecer publicamente.';
+              form.reset();
+              updateCounter();
+              if (form.classList.contains('comment-reply-form')) {
+                setTimeout(function(){ form.remove(); }, 4000);
+              }
+            } else {
+              statusEl.classList.add('error');
+              statusEl.textContent = 'Não foi possível enviar (' + (res.data && res.data.error ? res.data.error : 'erro') + '). Tente novamente.';
+            }
+          })
+          .catch(function(){
+            if (statusEl) { statusEl.hidden = false; statusEl.classList.add('error'); statusEl.textContent = 'Erro de conexão. Tente novamente.'; }
+          })
+          .finally(function(){
+            if (submitBtn) submitBtn.disabled = false;
+          });
+      });
+    };
+
+    widgets.forEach(function(widget){
+      var rootForm = widget.querySelector(':scope > .comment-form');
+      if (rootForm) bindForm(rootForm, widget);
+      loadComments(widget);
+    });
   }
-  }
-  setupCusdisComments();
+  setupComments();
 })();
