@@ -928,72 +928,10 @@ input[type="range"]{ width: 100%; margin: 6px 0 8px; accent-color: var(--gold); 
   Conteúdo educacional, não é recomendação de investimento.
 </footer>
 
+<script src="../assets/site.js"></script>
 <script>
 (function() {
   "use strict";
-
-  /* ---------- barra de progresso de leitura ---------- */
-  var progressFill = document.getElementById('progressFill');
-  function updateProgress(){
-    var h = document.documentElement;
-    var scrollTop = h.scrollTop || document.body.scrollTop;
-    var scrollHeight = (h.scrollHeight || document.body.scrollHeight) - h.clientHeight;
-    var pct = scrollHeight > 0 ? (scrollTop / scrollHeight) * 100 : 0;
-    progressFill.style.width = pct.toFixed(2) + '%';
-  }
-
-  /* ---------- botão voltar ao topo ---------- */
-  var backToTop = document.getElementById('backToTop');
-  function updateBackToTop(){
-    if(window.scrollY > 600){ backToTop.classList.add('show'); }
-    else{ backToTop.classList.remove('show'); }
-  }
-  backToTop.addEventListener('click', function(){
-    window.scrollTo({ top:0, behavior: 'smooth' });
-  });
-
-  window.addEventListener('scroll', function(){
-    updateProgress();
-    updateBackToTop();
-  }, { passive:true });
-  updateProgress();
-  updateBackToTop();
-
-  /* ---------- navegação lateral (TOC) ---------- */
-  var tocLinks = Array.prototype.slice.call(document.querySelectorAll('#tocRail a'));
-  var sections = tocLinks.map(function(a){
-    return document.getElementById(a.getAttribute('href').slice(1));
-  }).filter(Boolean);
-
-  if('IntersectionObserver' in window && sections.length){
-    var tocObserver = new IntersectionObserver(function(entries){
-      entries.forEach(function(entry){
-        var link = document.querySelector('#tocRail a[href="#' + entry.target.id + '"]');
-        if(!link) return;
-        if(entry.isIntersecting){
-          tocLinks.forEach(function(l){ l.classList.remove('active'); });
-          link.classList.add('active');
-        }
-      });
-    }, { rootMargin: '-45% 0px -50% 0px', threshold: 0 });
-    sections.forEach(function(s){ tocObserver.observe(s); });
-  }
-
-  /* ---------- reveal on scroll ---------- */
-  var revealEls = document.querySelectorAll('.reveal');
-  if('IntersectionObserver' in window && revealEls.length){
-    var revealObserver = new IntersectionObserver(function(entries, obs){
-      entries.forEach(function(entry){
-        if(entry.isIntersecting){
-          entry.target.classList.add('visible');
-          obs.unobserve(entry.target);
-        }
-      });
-    }, { threshold: 0.12 });
-    revealEls.forEach(function(el){ revealObserver.observe(el); });
-  } else {
-    revealEls.forEach(function(el){ el.classList.add('visible'); });
-  }
 
   /* ---------- dados: gráficos ano a ano e CAGR em janelas móveis ---------- */
   var ANNUAL_LABELS = ["2006", "2007", "2008", "2009", "2010", "2011", "2012", "2013", "2014", "2015", "2016", "2017", "2018", "2019", "2020", "2021", "2022", "2023", "2024", "2025", "2026*"];
