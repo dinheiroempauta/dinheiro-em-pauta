@@ -23,11 +23,6 @@ para a seção "Concluído", no fim, com a data).
       Reinspecionar essa mesma busca depois de um tempo; se o
       `github.io` continuar aparecendo por semanas, considerar pedir
       remoção manual daquela URL específica no Search Console.
-- [ ] **Umami (domínio do site)** — atualizar o domínio cadastrado para
-      este site nas configurações do painel do Umami pro domínio novo.
-      O script no HTML (`data-website-id="cfa01c19-23cd-468f-8d42-db9a697cf762"`)
-      não precisa mudar — é o mesmo ID de site pra sempre, só o domínio
-      associado a ele no painel que precisa ser atualizado.
 ---
 
 ## SEO e descoberta
@@ -50,6 +45,12 @@ para a seção "Concluído", no fim, com a data).
 ---
 
 ## Concluído
+
+- [x] **Umami (domínio do site)** — conferido em 17/08/2026 (print do
+      painel) que o campo "Domain" já estava atualizado pra
+      `dinheiroempauta.com.br`, com "Website ID" batendo exatamente com
+      o `data-website-id` usado no script do site. Já tinha sido feito
+      antes, este item do backlog só estava desatualizado. *(17 ago. 2026)*
 
 - [x] **Google Search Console verificado e `sitemap.xml` reenviado** —
       propriedade `dinheiroempauta.com.br` verificada por registro TXT
