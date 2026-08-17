@@ -4,12 +4,15 @@
  * Rotas:
  *   GET  /comments?slug=X              -> { comments: [...] }  (só approved, em árvore de 1 nível)
  *   POST /comments                     -> { status: "pending" }
+ *   GET  /admin                        -> painel HTML de moderação (login por token)
  *   GET  /admin/pending?token=...      -> { pending: [...] }
  *   POST /admin/moderate               -> { status: "ok" }
  *
  * Requer um D1 database vinculado como "DB" (ver wrangler.toml) e os
  * secrets ADMIN_TOKEN e IP_SALT (`wrangler secret put ...`).
  */
+
+import { ADMIN_PAGE_HTML } from "./adminPage.js";
 
 const ALLOWED_ORIGINS = [
   "https://independenciacalculada.com.br",
@@ -69,6 +72,11 @@ export default {
       }
       if (url.pathname === "/comments" && request.method === "POST") {
         return await handlePostComment(request, env, cors);
+      }
+      if (url.pathname === "/admin" && request.method === "GET") {
+        return new Response(ADMIN_PAGE_HTML, {
+          headers: { "Content-Type": "text/html; charset=utf-8", "X-Robots-Tag": "noindex" },
+        });
       }
       if (url.pathname === "/admin/pending" && request.method === "GET") {
         return await handleAdminPending(url, env, cors);

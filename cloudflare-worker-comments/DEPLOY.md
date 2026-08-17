@@ -4,6 +4,11 @@ Rode isso com a conta Cloudflare já logada no `wrangler` (`wrangler login`,
 se ainda não tiver feito). Tudo a partir desta pasta
 (`cloudflare-worker-comments/`).
 
+**Já fez o deploy inicial antes e só quer atualizar o código do Worker
+(ex: depois que eu mudo algo em `src/`)?** Pula direto pro passo 4
+(`wrangler deploy`) — os passos 1-3 (banco, schema, secrets) só precisam
+rodar uma vez.
+
 ## 1. Criar o banco D1
 
 ```
@@ -81,21 +86,26 @@ curl -X POST https://independencia-comments.independenciacalculada.workers.dev/a
   -d '{"token":"SEU_TOKEN","id":ID,"action":"reject"}'
 ```
 
-## 6. Moderar no dia a dia (até existir painel HTML)
+## 6. Moderar no dia a dia
 
-Pendência conhecida do projeto — ainda não existe painel de moderação
-próprio. Por enquanto, moderar comentários novos com os dois comandos
-`curl` do passo 5 (listar pendentes + aprovar/rejeitar), ou direto pelo
-console D1 no dashboard da Cloudflare:
+Depois de rodar `wrangler deploy` (passo 4), existe um painel de
+moderação próprio em:
+
+```
+https://independencia-comments.independenciacalculada.workers.dev/admin
+```
+
+Abre essa URL no navegador, cola o `ADMIN_TOKEN` (o mesmo valor do passo
+3) no campo de login uma vez — ele fica salvo no navegador (localStorage),
+não precisa colar de novo depois. A partir daí é só ver a lista de
+pendentes e clicar em "Aprovar" ou "Rejeitar", sem terminal.
+
+Alternativas que continuam funcionando, se preferir (ex: pra automatizar
+algo): os comandos `curl` do passo 5, ou direto pelo console D1 no
+dashboard da Cloudflare:
 
 ```sql
 UPDATE comments SET status='approved' WHERE id=X;
 -- ou
 DELETE FROM comments WHERE id=X;
 ```
-
-## Depois de confirmar que está tudo funcionando
-
-Me avisa que o Worker está no ar e testado — aí eu confirmo com você se
-quer que eu apague de vez o app do Cusdis (não precisa fazer nada do lado
-do Cusdis, já não tem mais página nenhuma referenciando ele no código).
