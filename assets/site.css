@@ -311,7 +311,13 @@ table.summary tr:last-child td{ font-weight:600; color:var(--brick); }
 .note.green .cap{ color: var(--green); }
 
 /* ---------- Gráficos ---------- */
-.chart-card{ border: 1px solid var(--line-strong); background: var(--paper-raised); border-radius: 3px; padding: 22px 22px 18px; margin: 30px 0 32px; position: relative; }
+/* color explícito (não só herdado do body) para que os 4 artigos que fixam
+   --ink no tema claro dentro deste card (ver comentário local em cada
+   artigo) realmente apliquem esse --ink ao texto — herança de `color` usa
+   o valor já resolvido no ancestral, não reavalia var() nó a nó, então sem
+   isso o título ficava quase invisível no dark mode (ink claro sobre card
+   claro). */
+.chart-card{ border: 1px solid var(--line-strong); background: var(--paper-raised); color: var(--ink); border-radius: 3px; padding: 22px 22px 18px; margin: 30px 0 32px; position: relative; }
 .chart-head{ margin-bottom: 6px; }
 .chart-title{ font-family: var(--font-display); font-weight:600; font-size: 1.05rem; }
 .chart-sub{ font-size: 13px; color: var(--muted); margin-top: 2px; }
