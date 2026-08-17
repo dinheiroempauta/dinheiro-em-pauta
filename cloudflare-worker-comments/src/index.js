@@ -24,7 +24,7 @@ const ALLOWED_ORIGINS = [
 
 const SLUG_RE = /^[a-z0-9-]+$/;
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-const RATE_LIMIT_MAX = 5;
+const RATE_LIMIT_MAX = 10;
 const RATE_LIMIT_WINDOW_MINUTES = 10;
 
 // Origem desconhecida: não seta o header em vez de cair num allow-list "de
