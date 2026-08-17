@@ -94,6 +94,31 @@ Antes de considerar qualquer edição de artigo "pronta", confirmar
 explicitamente que o card está consistente com o artigo — não assumir,
 conferir.
 
+## Nunca inventar referência
+
+Toda citação em "Notas e referências" ou "Referências técnicas" — fonte de
+dado, artigo acadêmico, seção de handbook, URL — só entra no artigo se eu
+tiver **de fato verificado** o que estou citando: abri a página, confirmei
+que o número de seção/URL leva pro conteúdo certo, ou é uma citação
+acadêmica clássica que eu já conheço com segurança (ex: o paper original
+de um método consagrado). Já aconteceu de eu citar uma seção específica de
+um handbook (NIST) com número e URL que não levavam ao conteúdo alegado —
+citação puramente inventada, nunca conferida antes de publicar.
+
+Quando não for possível verificar uma fonte (ex: acesso à URL bloqueado
+neste ambiente), as opções são, nessa ordem de preferência:
+- Pedir a fonte/URL correta pro usuário, como já é feito para as séries de
+  dados
+- Citar algo mais genérico e verificável sem depender de link (ex: o nome
+  do método e seu autor/paper original, sem afirmar número de seção ou URL
+  específicos)
+- Deixar claro no texto que o cálculo foi feito internamente, sem citar
+  fonte externa nenhuma
+
+Nunca preencher o vazio com um número de seção, ano, autor ou URL plausível
+só para a nota parecer completa. Uma referência errada é pior para a
+credibilidade do artigo do que a ausência de referência.
+
 ## Publicação de artigo novo
 
 Siga `internal/CHECKLIST-NOVO-ARTIGO.md` à risca, partindo de
@@ -109,3 +134,54 @@ sem precisar ser pedido** — o usuário fornece o conteúdo, não o tempo de
 leitura. Calcular pelo método documentado no checklist (contagem de
 palavras do conteúdo real ÷ 200 palavras/minuto) e já entregar o artigo
 com esse campo preenchido corretamente desde a primeira versão.
+
+Da mesma forma, **todo artigo — atual e futuro — precisa de um bloco
+"Nivelamento básico"**, logo após o `.promise` e antes do corpo do
+artigo (`id="nivelamento-basico"`, `class="note green"`, ver
+`internal/template-artigo.html`). É um parágrafo curto (2-3 frases), no
+mesmo tom direto do resto do artigo — normalmente um ponteiro para outro
+artigo do blog que cobre a base teórica (quando existir um relacionado)
+mais uma frase definindo o conceito central em linguagem simples, pro
+leitor que chegou sem contexto não se perder. Gerar esse bloco a partir
+do conteúdo do próprio artigo faz parte do processo de construção, sem
+precisar ser pedido — mesmo espírito da estimativa de tempo de leitura
+acima.
+
+## Toda página nova herda o design system compartilhado — não é opcional
+
+`assets/site.css`, `assets/site.js` e `assets/theme-init.js` existem
+justamente para que nenhuma página precise reimplementar nada disso. Um
+bug real já aconteceu por pular esse passo: 9 das 12 páginas do site
+ficaram sem `<script src=".../assets/site.js"></script>`, e o toggle de
+tema/menu simplesmente não funcionava nelas — silenciosamente, sem erro
+visível, só descoberto porque o usuário reportou "às vezes funciona, às
+vezes não". Antes de dar por pronta qualquer página nova (artigo,
+simulador ou outra), confirmar — não assumir — que ela tem, na ordem:
+
+1. `<script src=".../assets/theme-init.js"></script>` no `<head>`, logo
+   após a viewport meta, antes de `site.css`
+2. `<link rel="stylesheet" href=".../assets/site.css">`
+3. `<script src=".../assets/site.js"></script>` no fim do `<body>`
+4. O masthead sticky padrão (wordmark + toggle de tema + menu compacto),
+   copiado de uma página existente — nunca reimplementado do zero
+
+Para simuladores/calculadoras novas especificamente, verificar também:
+- O bloco de resultado dinâmico tem `role="status" aria-live="polite"`
+  (leitor de tela precisa ser avisado quando o número muda — sem isso a
+  calculadora é muda para quem depende de leitor de tela)
+- Todo campo numérico com valor inválido marca `aria-invalid="true"` e
+  mostra o erro inline (padrão em `simuladores/pu-renda-mais/index.html`
+  e `pu-educa-mais/index.html`), em vez de só deixar o resultado cair
+  silenciosamente para "—"
+- Inputs e botões usam as classes compartilhadas (`.field input`, `.btn`)
+  em vez de CSS local — isso já garante os 44px de alvo de toque
+- Nenhuma cor hardcoded (hex direto) fora dos tokens de `site.css` — é
+  o que quebra o dark mode automático
+- Formatação de número usa `toLocaleString('pt-BR', {...})`, nunca
+  `.toFixed().replace('.', ',')` manual
+- Se o cálculo depender de dias úteis/feriados, reusar
+  `assets/feriados.js` em vez de duplicar a lista
+
+Isso vale tanto para eu gerar do zero quanto para eu revisar uma página
+que já foi criada — o checklist acima é o que teria pego o bug do
+toggle antes de virar um problema em produção.

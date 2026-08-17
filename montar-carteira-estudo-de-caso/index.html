@@ -3,6 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<script src="../assets/theme-init.js"></script>
 <title>Como montar uma carteira de investimentos: um estudo de caso</title>
 <meta name="description" content="Um estudo de caso completo — do objetivo de vida até a escolha do ativo — projetando patrimônio-alvo e comparando IPCA e IGP-M contra a inflação da educação.">
 <meta name="robots" content="index, follow, max-image-preview:large">
@@ -33,6 +34,7 @@
 
 <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://cloud.umami.is https://cusdis.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data:; connect-src 'self' https://independencia-likes.independenciacalculada.workers.dev https://api.web3forms.com https://cusdis.com; frame-src https://cusdis.com; form-action 'self' https://buttondown.com; base-uri 'self';">
 <meta name="theme-color" content="#1E6B4F">
+<meta name="color-scheme" content="light dark">
 <link rel="icon" type="image/png" href="../favicon.png">
 <!-- Privacy-friendly analytics by Umami -->
 <script defer src="https://cloud.umami.is/script.js" data-website-id="cfa01c19-23cd-468f-8d42-db9a697cf762"></script>
@@ -49,7 +51,7 @@
   "inLanguage": "pt-BR",
   "articleSection": "Planejamento",
   "keywords": "planejamento financeiro, carteira de investimentos, Tesouro Educa+, IPCA, IGP-M, taxa de retirada, alocação de ativos, renda fixa",
-  "about": [],
+  "about": ["Carteira de investimentos", "Tesouro Educa+", "IPCA", "IGP-M", "Alocação de ativos"],
   "author": {"@type": "Organization", "name": "Independência Calculada", "url": "https://independenciacalculada-droid.github.io/independencia-calculada/"},
   "publisher": {"@type": "Organization", "name": "Independência Calculada"},
   "mainEntityOfPage": {"@type": "WebPage", "@id": "https://independenciacalculada-droid.github.io/independencia-calculada/montar-carteira-estudo-de-caso/"},
@@ -84,119 +86,26 @@
 <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@0,400;0,500;0,600;0,700;1,500;1,600&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500;600&display=swap">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@0,400;0,500;0,600;0,700;1,500;1,600&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500;600&display=swap" media="print" onload="this.media='all'">
 <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@0,400;0,500;0,600;0,700;1,500;1,600&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500;600&display=swap"></noscript>
+<link rel="stylesheet" href="../assets/site.css">
 <style>
   :root{
-    --paper: #EEF1EC;
-    --paper-raised: #F9FAF6;
-    --ink: #171A18;
-    --muted: #5B6259;
-    --green: #1E6B4F;
-    --green-deep: #123B2A;
-    --green-light: #6FA382;
-    --brick: #A8402A;
-    --gold: #7A5820;
-    --gold-soft: #EDE0C4;
-    --brick-soft: #F3DED8;
-    --line: #D7DBCF;
-    --line-strong: #BFC5B8;
     --maxw: 1000px;
-    --font-display: 'Fraunces', serif;
-    --font-body: 'IBM Plex Sans', sans-serif;
-    --font-mono: 'IBM Plex Mono', monospace;
   }
-
-  @media (prefers-reduced-motion: no-preference){
-    .fade-in{ animation: fadeUp .7s ease-out both; }
-    .fade-in.d1{ animation-delay: .08s; }
-    .fade-in.d2{ animation-delay: .16s; }
-    @keyframes fadeUp{
-      from{ opacity:0; transform: translateY(10px); }
-      to{ opacity:1; transform: translateY(0); }
-    }
-  }
-
-  *{ box-sizing: border-box; }
-  html{ scroll-behavior: smooth; }
-
-  body{
-    margin:0;
-    background: var(--paper);
-    color: var(--ink);
-    font-family: 'IBM Plex Sans', sans-serif;
-    font-size: 17px;
-    line-height: 1.65;
-    -webkit-font-smoothing: antialiased;
-  }
-
-  a{ color: var(--green); text-decoration-thickness: 1px; text-underline-offset: 2px; }
-  a:hover{ color: var(--brick); }
-  a:focus-visible, button:focus-visible{ outline: 2px solid var(--gold); outline-offset: 3px; }
-  .mono{ font-family: 'IBM Plex Mono', monospace; }
-
-  .masthead{ border-bottom: 1px solid var(--line-strong); padding: 18px 24px; }
-  .masthead-inner{ max-width: var(--maxw); margin: 0 auto; display:flex; align-items:center; justify-content: space-between; }
-  .wordmark{ font-family: 'IBM Plex Mono', monospace; font-weight: 600; font-size: 13px; letter-spacing: .12em; text-transform: uppercase; color: var(--ink); text-decoration:none; }
-  .wordmark span{ color: var(--green); }
-  
-  .masthead-left{ display:flex; align-items:center; gap: 20px; flex-wrap: wrap; }
-  .masthead-nav-link{ font-family: 'IBM Plex Mono', monospace; font-size: 12px; letter-spacing: .04em; color: var(--muted); text-decoration:none; }
-  .masthead-nav-link:hover{ color: var(--green); }
 
   main{ max-width: var(--maxw); margin: 0 auto; padding: 0 24px 90px; }
 
-  .eyebrow{
-    margin-top: 46px; font-family: 'IBM Plex Mono', monospace; font-size: 12px; letter-spacing: .1em;
-    text-transform: uppercase; color: var(--green); display:flex; align-items:center; gap: 10px;
+  /* Os dois gráficos deste artigo usam cores fixas desenhadas no SVG (não var()) —
+     mantemos o cartão sempre no tema claro pra não ficarem ilegíveis no dark mode. */
+  .chart-card{
+    --paper-raised: #F9FAF6;
+    --ink: #171A18;
+    --muted: #5B6259;
+    --line: #D7DBCF;
+    --line-strong: #BFC5B8;
+    --green: #1E6B4F;
+    --brick: #A8402A;
+    --gold: #7A5820;
   }
-  .eyebrow::before{ content:""; width: 22px; height: 1px; background: var(--green); display:inline-block; }
-
-  h1.title{
-    font-family:'Fraunces', serif; font-weight: 600; font-size: clamp(2rem, 5vw, 2.9rem);
-    line-height: 1.08; letter-spacing: -0.01em; margin: 14px 0 8px;
-  }
-  .subtitle{
-    font-family:'Fraunces', serif; font-style: italic; font-weight: 500;
-    font-size: clamp(1.05rem, 2.4vw, 1.3rem); color: var(--muted); margin: 0 0 22px;
-  }
-  .meta{
-    font-family: 'IBM Plex Mono', monospace; font-size: 12px; color: var(--muted);
-    display:flex; gap:16px; flex-wrap:wrap; padding-bottom: 26px; border-bottom: 1px solid var(--line);
-  }
-  .meta b{ color: var(--ink); }
-
-  .promise{ margin: 30px 0 8px; background: var(--paper-raised); border: 1px solid var(--line-strong); border-radius: 3px; padding: 22px 24px; }
-  .promise-label{ font-family: 'IBM Plex Mono', monospace; font-size: 11px; letter-spacing: .1em; text-transform: uppercase; color: var(--green); margin-bottom: 10px; }
-  .promise ul{ margin:0; padding-left: 0; list-style:none; }
-  .promise li{ position:relative; padding-left: 22px; margin-bottom: 9px; font-size: 15.5px; }
-  .promise li:last-child{ margin-bottom:0; }
-  .promise li::before{ content:"—"; position:absolute; left:0; top:0; color: var(--gold); font-family: 'IBM Plex Mono', monospace; }
-
-  /* ---------- Prose ---------- */
-  .prose{ margin-top: 20px; }
-  .prose p{ margin: 0 0 20px; }
-  .section-lead{ color: var(--muted); font-size: 1.02rem; margin-bottom: 22px; }
-
-  h2{ font-family: var(--font-display); font-weight: 600; font-size: 1.55rem; letter-spacing: -0.01em; margin: 54px 0 4px; color: var(--ink); }
-  h2 .num{ font-family: var(--font-mono); font-size: 13px; color: var(--gold); display:block; letter-spacing: .1em; margin-bottom: 6px; }
-  h3{ font-family: var(--font-display); font-weight: 600; font-size: 1.15rem; margin: 30px 0 10px; color: var(--ink); }
-
-  .stat-card{ border: 1px solid var(--line-strong); background: var(--paper-raised); border-radius: 3px; padding: 20px 22px; margin: 24px 0 28px; }
-  .stat-card .cap{ font-family:'IBM Plex Mono', monospace; font-size: 11px; letter-spacing:.08em; text-transform:uppercase; color:var(--muted); margin-bottom:12px; }
-  .stat-grid{ display:grid; grid-template-columns: 1fr 1fr; gap: 14px 20px; }
-  @media (max-width: 480px){ .stat-grid{ grid-template-columns: 1fr; } }
-  .stat-grid div{ font-size: 14.5px; }
-  .stat-grid b{ display:block; font-family:'IBM Plex Mono', monospace; font-size: 1.05rem; color: var(--ink); font-variant-numeric: tabular-nums; }
-  .stat-grid span{ color: var(--muted); font-size: 13px; }
-
-  .table-wrap{ margin: 22px 0 10px; overflow-x:auto; }
-  table.data{ width:100%; border-collapse: collapse; font-family:'IBM Plex Mono', monospace; font-size: 13px; font-variant-numeric: tabular-nums; }
-  table.data caption{ text-align:left; font-family:'IBM Plex Sans', sans-serif; font-size: 13px; color: var(--muted); margin-bottom: 8px; caption-side: top; }
-  table.data th{ text-align:right; font-weight:600; padding: 8px 10px; border-bottom: 1.5px solid var(--ink); white-space:nowrap; font-size:11.5px; letter-spacing:.02em; }
-  table.data th:first-child, table.data td:first-child{ text-align:left; }
-  table.data td{ text-align:right; padding: 7px 10px; border-bottom: 1px solid var(--line); white-space:nowrap; }
-  table.data tr.ellipsis td{ color: var(--muted); text-align:center; letter-spacing:.2em; }
-  table.data td.neg{ color: var(--brick); }
-  table.data td.pos{ color: var(--green); }
 
   details.toggle{ margin: 18px 0 28px; border: 1px solid var(--line-strong); border-radius: 3px; background: var(--paper-raised); }
   details.toggle summary{ cursor:pointer; padding: 14px 18px; font-family:'IBM Plex Mono', monospace; font-size: 12.5px; color: var(--green); font-weight:600; list-style: none; }
@@ -204,175 +113,6 @@
   details.toggle summary::before{ content:"▸ "; }
   details.toggle[open] summary::before{ content:"▾ "; }
   details.toggle .toggle-body{ padding: 0 18px 18px; }
-
-  .note{ border-left: 3px solid var(--gold); background: var(--paper-raised); padding: 16px 20px; margin: 26px 0; font-size: 14.5px; }
-  .note .cap{ font-family:'IBM Plex Mono', monospace; font-size: 11px; letter-spacing:.08em; text-transform:uppercase; color: var(--gold); margin-bottom:6px; }
-  .note p{ margin:0 0 8px; }
-  .note p:last-child{ margin-bottom:0; }
-  .note.brick{ border-left-color: var(--brick); }
-  .note.brick .cap{ color: var(--brick); }
-  .note.green{ border-left-color: var(--green); }
-  .note.green .cap{ color: var(--green); }
-
-  .chart-card{ border: 1px solid var(--line-strong); background: var(--paper-raised); border-radius: 3px; padding: 22px 22px 18px; margin: 30px 0 32px; position: relative; }
-  .chart-head{ margin-bottom: 6px; }
-  .chart-title{ font-family:'Fraunces', serif; font-weight:600; font-size: 1.05rem; }
-  .chart-sub{ font-size: 13px; color: var(--muted); margin-top: 2px; }
-  .chart-svg-wrap{ margin: 14px 0 6px; position: relative; }
-  svg.chart{ width:100%; height:auto; display:block; }
-  .chart-legend{ display:flex; flex-wrap:wrap; gap: 16px; font-family:'IBM Plex Mono', monospace; font-size: 12px; color: var(--muted); margin-top: 4px; }
-  .chart-legend .sw{ display:inline-flex; align-items:center; gap:6px; }
-  .chart-legend .dot{ width:10px; height:10px; border-radius:50%; display:inline-block; }
-  .chart-caption{ font-size: 13.5px; color: var(--muted); margin-top: 12px; }
-
-  .formula-box{ border: 1px solid var(--line-strong); background: var(--paper-raised); border-radius: 3px; padding: 26px 24px; margin: 22px 0 26px; overflow-x: auto; }
-  .formula-box .cap{ font-family:'IBM Plex Mono', monospace; font-size: 11px; letter-spacing:.08em; text-transform:uppercase; color: var(--muted); margin-bottom: 16px; }
-  .formula{ font-family:'IBM Plex Mono', monospace; font-size: 16px; color: var(--ink); display:flex; align-items:center; justify-content:center; gap: 6px; min-width: max-content; padding: 6px 4px; flex-wrap: wrap; }
-  .formula .bracket{ font-size: 30px; color: var(--muted); font-weight: 300; }
-  .frac{ display:inline-flex; flex-direction:column; align-items:center; vertical-align:middle; margin: 0 4px; }
-  .frac .num{ padding: 0 4px 3px; border-bottom: 1.4px solid var(--ink); }
-  .frac .den{ padding: 3px 4px 0; }
-  .formula .exp{ font-size: 11px; vertical-align: super; color: var(--green); }
-  .formula-vars{ margin-top: 18px; padding-top: 16px; border-top: 1px solid var(--line); display:flex; flex-wrap: wrap; row-gap: 10px; column-gap: 36px; font-size: 13.5px; }
-  .formula-vars .fv{ white-space: nowrap; }
-  .formula-vars .fv b{ font-family:'IBM Plex Mono', monospace; color: var(--green); margin-right: 6px; }
-
-  .steps-list{ margin: 18px 0 26px; padding-left: 0; list-style:none; counter-reset: step; }
-  .steps-list li{ counter-increment: step; position:relative; padding: 10px 0 10px 40px; border-bottom: 1px solid var(--line); font-size: 15px; }
-  .steps-list li:last-child{ border-bottom:none; }
-  .steps-list li::before{
-    content: counter(step); position:absolute; left:0; top:8px; width: 24px; height: 24px; border-radius: 50%;
-    background: var(--green); color: var(--paper-raised); font-family: 'IBM Plex Mono', monospace; font-size: 12px; font-weight:600;
-    display:flex; align-items:center; justify-content:center;
-  }
-
-  .summary-table-wrap{ margin: 26px 0 32px; }
-  table.summary{ width:100%; border-collapse: collapse; font-size: 14.5px; }
-  table.summary th{ font-family:'IBM Plex Mono', monospace; font-size: 11px; text-transform:uppercase; letter-spacing:.05em; text-align: right; padding: 10px 12px; border-bottom: 1.5px solid var(--ink); }
-  table.summary th:first-child{ text-align:left; }
-  table.summary td{ padding: 12px; border-bottom: 1px solid var(--line); text-align:right; font-family:'IBM Plex Mono', monospace; font-variant-numeric: tabular-nums; }
-  table.summary td:first-child{ text-align:left; font-family:'IBM Plex Sans', sans-serif; font-weight:500; }
-  table.summary tr:last-child td{ font-weight:600; color:var(--brick); }
-
-  blockquote.pull{
-    font-family:'Fraunces', serif; font-style: italic; font-weight: 500; font-size: clamp(1.2rem, 3vw, 1.55rem);
-    line-height: 1.4; color: var(--ink); border-left: 3px solid var(--green); padding: 4px 0 4px 24px; margin: 38px 0;
-  }
-  blockquote.pull cite{ display:block; font-family:'IBM Plex Mono', monospace; font-style: normal; font-size: 12px; color: var(--muted); margin-top: 10px; }
-
-  .recap{ background: var(--ink); color: var(--paper); border-radius: 4px; padding: 28px 26px; margin: 46px 0 28px; }
-  .recap .cap{ font-family:'IBM Plex Mono', monospace; font-size: 11px; letter-spacing:.1em; text-transform:uppercase; color: #9FD9BE; margin-bottom: 14px; }
-  .recap ol{ margin:0; padding-left: 20px; }
-  .recap li{ margin-bottom: 10px; font-size: 15px; }
-  .recap li:last-child{ margin-bottom:0; }
-  .recap li::marker{ font-family:'IBM Plex Mono', monospace; color:#9FD9BE; }
-
-  .cta{ border: 1px solid var(--line-strong); border-radius: 3px; padding: 24px 24px; margin: 30px 0; display:flex; justify-content: space-between; align-items:center; gap: 20px; flex-wrap: wrap; }
-  .cta-text h3{ margin:0 0 6px; font-size:1.1rem; }
-  .cta-text p{ margin:0; font-size:14px; color:var(--muted); max-width: 40ch; }
-  .cta-btn{ font-family:'IBM Plex Mono', monospace; font-size: 13px; font-weight:600; letter-spacing:.03em; background: var(--green); color: var(--paper-raised); border: none; padding: 12px 20px; border-radius: 3px; cursor:pointer; white-space:nowrap; text-decoration:none; display:inline-block; }
-  .cta-btn:hover{ background:#175A41; }
-  .cta-buttons{ display: flex; gap: 16px; flex-wrap: wrap; align-items: center; }
-  .newsletter-form{ width: 100%; display:flex; align-items:center; gap: 10px; flex-wrap: wrap; margin-top: 14px; padding-top: 14px; border-top: 1px solid var(--line); }
-  .newsletter-form[hidden]{ display: none; }
-  .newsletter-label{ font-family: 'IBM Plex Mono', monospace; font-size: 11px; text-transform: uppercase; letter-spacing: .08em; color: var(--muted); }
-  .newsletter-form input[type="email"]{ font-family: 'IBM Plex Sans', sans-serif; font-size: 14px; padding: 9px 12px; border: 1px solid var(--line-strong); border-radius: 3px; background: var(--paper); color: var(--ink); flex: 1; min-width: 200px; }
-  .newsletter-form input[type="email"]:focus{ outline:none; border-color: var(--green); }
-  .newsletter-form input[type="email"]::placeholder{ color: #9AA396; }
-  .newsletter-submit{ font-family: 'IBM Plex Mono', monospace; font-size: 13px; font-weight:600; letter-spacing:.03em; background: var(--green); color:#fff; border:none; padding: 10px 18px; border-radius: 3px; cursor:pointer; white-space:nowrap; }
-  .newsletter-submit:hover{ background:#175A41; }
-  .newsletter-fields{ display:flex; align-items:center; gap: 10px; flex-wrap: wrap; }
-  .newsletter-note{ font-size: 12px; color: var(--muted); width: 100%; margin: 0; }
-  .newsletter-note.success{ color: var(--green); font-weight: 600; }
-  .newsletter-hidden-frame{ display:none; }
-
-  .suggest-form{ width: 100%; display:flex; flex-direction:column; gap: 10px; margin-top: 14px; padding-top: 14px; border-top: 1px solid var(--line); }
-  .suggest-form[hidden]{ display: none; }
-  .suggest-fields{ display:flex; flex-direction:column; gap: 8px; }
-  .suggest-form textarea{
-    font-family: 'IBM Plex Sans', sans-serif; font-size: 14px; padding: 10px 12px;
-    border: 1px solid var(--line-strong); border-radius: 3px; background: var(--paper);
-    color: var(--ink); resize: vertical; min-height: 90px;
-  }
-  .suggest-form textarea:focus{ outline:none; border-color: var(--green); }
-  .suggest-form textarea::placeholder{ color: #9AA396; }
-  .suggest-actions{ display:flex; align-items:center; justify-content:space-between; gap: 10px; flex-wrap: wrap; }
-  .suggest-counter{ font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: var(--muted); }
-  .suggest-honeypot{ position:absolute; left:-9999px; width:1px; height:1px; opacity:0; }
-  .newsletter-note.error{ color: var(--brick); font-weight: 600; }
-  .cta-related{ width: 100%; margin-top: 4px; padding-top: 16px; border-top: 1px solid var(--line); }
-  .cta-related-label{ font-family: 'IBM Plex Mono', monospace; font-size: 11px; letter-spacing: .1em; text-transform: uppercase; color: var(--green); margin-bottom: 12px; }
-  .cta-related-link{ display: flex; align-items: center; justify-content: space-between; padding: 12px 0; border-bottom: 1px solid var(--line); color: var(--ink); text-decoration: none; }
-  .cta-related-link:last-child{ border-bottom: none; }
-  .cta-related-title{ font-family: 'Fraunces', serif; font-weight: 500; font-size: 15px; }
-  .cta-related-arrow{ color: var(--gold); font-family: 'IBM Plex Mono', monospace; transition: transform .15s ease; }
-  .cta-related-link:hover .cta-related-arrow{ transform: translateX(4px); }
-  .cta-related-link:hover .cta-related-title{ color: var(--green); }
-
-  .disclaimer{ font-size: 13px; color: var(--muted); border-top: 1px solid var(--line); padding-top: 20px; margin-top: 40px; }
-  .disclaimer-spacer{ font-size: 13px; color: var(--muted); border-top: 1px solid var(--line); padding-top: 20px; margin-top: 12px; }
-  .disclaimer .cap{ font-family:'IBM Plex Mono', monospace; font-size: 11px; letter-spacing:.08em; text-transform:uppercase; margin-bottom: 8px; color: var(--ink); }
-
-  .refs{ margin-top: 30px; font-size: 13px; color: var(--muted); }
-  .refs .cap{ font-family:'IBM Plex Mono', monospace; font-size: 11px; letter-spacing:.08em; text-transform:uppercase; color: var(--ink); margin-bottom: 10px; }
-  .refs ol{ padding-left: 18px; margin:0; }
-  .refs li{ margin-bottom: 8px; }
-
-  footer{ max-width: var(--maxw); margin: 0 auto; padding: 30px 24px 60px; font-family:'IBM Plex Mono', monospace; font-size: 12px; color: var(--muted); text-align:center; }
-
-  /* ---------- Engagement (curtir + compartilhar) ---------- */
-  .engage{ margin: 46px 0 32px; padding: 22px 24px; border: 1px solid var(--line-strong); border-radius: 3px; background: var(--paper-raised); }
-  .engage-row{ display:flex; align-items:center; justify-content: space-between; gap: 20px; flex-wrap: wrap; }
-  .like-btn{ display:inline-flex; align-items:center; gap: 10px; font-family: var(--font-mono); font-size: 13px; font-weight: 600; letter-spacing: .02em; color: var(--ink); background: var(--paper); border: 1px solid var(--line-strong); border-radius: 3px; padding: 10px 16px; cursor: pointer; transition: border-color .15s ease, color .15s ease, background .15s ease; }
-  .like-btn:hover{ border-color: var(--green); color: var(--green); }
-  .like-btn .like-icon{ width:16px; height:16px; transition: transform .2s ease; }
-  .like-btn.liked{ background: var(--green); color: #fff; border-color: var(--green); }
-  .like-btn.liked .like-icon{ fill: currentColor; transform: scale(1.12); }
-  .like-btn .like-count{ font-variant-numeric: tabular-nums; color: var(--muted); }
-  .like-btn.liked .like-count{ color: #DDEFE5; }
-  .share-group{ display:flex; align-items:center; gap: 10px; flex-wrap: wrap; }
-  .share-label{ font-family: var(--font-mono); font-size: 11px; text-transform: uppercase; letter-spacing:.08em; color: var(--muted); margin-right: 4px; }
-  .share-btn{ display:inline-flex; align-items:center; justify-content:center; width: 34px; height: 34px; border: 1px solid var(--line-strong); border-radius: 3px; background: var(--paper); color: var(--muted); text-decoration:none; cursor:pointer; transition: border-color .15s ease, color .15s ease; }
-  .share-btn:hover{ border-color: var(--green); color: var(--green); }
-  .share-btn svg{ width:15px; height:15px; }
-  .share-btn.copied{ border-color: var(--gold); color: var(--gold); }
-
-  /* ---------- Comentários ---------- */
-  .comments-section{ margin: 8px 0 40px; padding-top: 30px; border-top: 1px solid var(--line); }
-  .comments-section .cap{ font-family: var(--font-mono); font-size: 11px; letter-spacing: .08em; text-transform: uppercase; color: var(--ink); margin-bottom: 8px; }
-  .comments-note{ font-size: 13px; color: var(--muted); margin: 0 0 18px; }
-
-  /* ============ MELHORIAS DE LEITURA ============ */
-  .progress-rail{ position: fixed; top:0; left:0; right:0; height: 3px; background: transparent; z-index: 60; }
-  .progress-fill{ height: 100%; width:0%; background: linear-gradient(90deg, var(--gold), var(--green)); transition: width .08s linear; }
-
-  .back-to-top{
-    position: fixed; right: 22px; bottom: 22px; width: 42px; height:42px; border-radius: 50%;
-    background: var(--ink); color: var(--paper); border: none; display:flex; align-items:center; justify-content:center;
-    cursor:pointer; opacity:0; visibility:hidden; transform: translateY(8px);
-    transition: opacity .25s ease, transform .25s ease, background .15s ease; z-index: 55; box-shadow: 0 4px 14px rgba(0,0,0,.18);
-  }
-  .back-to-top.show{ opacity:1; visibility:visible; transform:translateY(0); }
-  .back-to-top:hover{ background: var(--green); }
-  .back-to-top svg{ width:16px; height:16px; }
-
-  .toc-rail{ position: fixed; top: 50%; transform: translateY(-50%); right: max(14px, calc((100vw - var(--maxw)) / 2 - 46px)); display:flex; flex-direction:column; gap: 10px; z-index: 40; }
-  .toc-rail a{ width: 24px; height:24px; display:flex; align-items:center; justify-content:center; position:relative; text-decoration:none; }
-  .toc-rail a::after{ content:""; width:9px; height:9px; border-radius:50%; background: var(--line-strong); transition: background .2s ease, transform .2s ease; }
-  .toc-rail a:hover::after, .toc-rail a.active::after{ background: var(--green); transform: scale(1.3); }
-  .toc-rail a .toc-label{
-    position:absolute; right: 20px; top:50%; transform: translateY(-50%); font-family:'IBM Plex Mono', monospace; font-size: 11px; color: var(--ink);
-    background: var(--paper-raised); border: 1px solid var(--line-strong); padding: 4px 9px; border-radius: 3px; white-space: nowrap;
-    opacity:0; visibility:hidden; transition: opacity .15s ease; pointer-events:none;
-  }
-  .toc-rail a:hover .toc-label{ opacity:1; visibility:visible; }
-  @media (max-width: 1240px){ .toc-rail{ display:none; } }
-
-  .reveal{ opacity:0; transform: translateY(16px); transition: opacity .6s ease, transform .6s ease; }
-  .reveal.visible{ opacity:1; transform:translateY(0); }
-  @media (prefers-reduced-motion: reduce){
-    .reveal{ opacity:1; transform:none; transition:none; }
-  }
 </style>
 </head>
 <body>
@@ -380,15 +120,13 @@
 <div class="progress-rail"><div class="progress-fill" id="progressFill"></div></div>
 
 <nav class="toc-rail" id="tocRail" aria-label="Navegação do artigo">
-  <a href="#sec-01" data-label="01" aria-label="O roteiro"><span class="toc-label">O roteiro</span></a>
-  <a href="#sec-02" data-label="02" aria-label="O caso de Alberto"><span class="toc-label">O caso de Alberto</span></a>
-  <a href="#sec-03" data-label="03" aria-label="Quanto vai custar"><span class="toc-label">Quanto vai custar</span></a>
-  <a href="#sec-04" data-label="04" aria-label="A rentabilidade necessária"><span class="toc-label">A rentabilidade necessária</span></a>
-  <a href="#sec-05" data-label="05" aria-label="Ajustando o plano"><span class="toc-label">Ajustando o plano</span></a>
-  <a href="#sec-06" data-label="06" aria-label="Risco e classe de ativo"><span class="toc-label">Risco e classe de ativo</span></a>
-  <a href="#sec-07" data-label="07" aria-label="IPCA ou IGP-M"><span class="toc-label">IPCA ou IGP-M</span></a>
-  <a href="#sec-08" data-label="08" aria-label="O ativo escolhido"><span class="toc-label">O ativo escolhido</span></a>
-  <a href="#sec-09" data-label="09" aria-label="Recapitulando"><span class="toc-label">Recapitulando</span></a>
+  <a href="#sec-01" data-label="01" aria-label="O roteiro e o caso de Alberto"><span class="toc-label">O roteiro e o caso de Alberto</span></a>
+  <a href="#sec-02" data-label="02" aria-label="Quanto vai custar"><span class="toc-label">Quanto vai custar</span></a>
+  <a href="#sec-03" data-label="03" aria-label="A rentabilidade necessária"><span class="toc-label">A rentabilidade necessária</span></a>
+  <a href="#sec-04" data-label="04" aria-label="Ajustando o plano"><span class="toc-label">Ajustando o plano</span></a>
+  <a href="#sec-05" data-label="05" aria-label="Risco e classe de ativo"><span class="toc-label">Risco e classe de ativo</span></a>
+  <a href="#sec-06" data-label="06" aria-label="IPCA ou IGP-M"><span class="toc-label">IPCA ou IGP-M</span></a>
+  <a href="#sec-07" data-label="07" aria-label="O ativo escolhido"><span class="toc-label">O ativo escolhido</span></a>
 </nav>
 
 <button type="button" class="back-to-top" id="backToTop" aria-label="Voltar ao topo">
@@ -397,12 +135,20 @@
 
 <div class="masthead">
   <div class="masthead-inner">
-    <div class="masthead-left">
-      <a href="../" class="wordmark"><span>Independência</span>Calculada</a>
-      <a href="../artigos/" class="masthead-nav-link" aria-label="Todos os artigos">&larr;</a>
-      <a href="../sobre/" class="masthead-nav-link">Sobre</a>
-      <a href="../artigos/" class="masthead-nav-link">Artigos</a>
-      <a href="../simuladores/" class="masthead-nav-link">Simuladores</a>
+    <a href="../" class="wordmark"><span>Independência</span>Calculada</a>
+    <div class="masthead-actions">
+      <button type="button" class="icon-btn theme-toggle" id="themeToggle" aria-label="Alternar entre tema claro e escuro">
+        <svg class="icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"/></svg>
+        <svg class="icon-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79Z"/></svg>
+      </button>
+      <button type="button" class="icon-btn menu-toggle" id="menuToggle" aria-haspopup="true" aria-expanded="false" aria-controls="siteMenu" aria-label="Abrir menu">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 7h16M4 12h16M4 17h16"/></svg>
+      </button>
+      <nav class="site-menu" id="siteMenu" hidden aria-label="Navegação principal">
+        <a href="../sobre/">Sobre</a>
+        <a href="../artigos/">Artigos</a>
+        <a href="../simuladores/">Simuladores</a>
+      </nav>
     </div>
   </div>
 </div>
@@ -427,6 +173,11 @@
     </ul>
   </div>
 
+  <div id="nivelamento-basico" class="note green">
+    <div class="cap">Nivelamento básico</div>
+    <p>Este é um estudo de caso aplicado — ele usa os conceitos de taxa de retirada e proteção contra inflação na prática, sem reexplicá-los do zero. Se alguma parte parecer densa, <a href="../quanto-posso-retirar-aposentadoria/">Quanto posso retirar dos meus investimentos durante a aposentadoria?</a> e <a href="../ipca-hiperinflacao/">A confusão generalizada sobre os Títulos IPCA+</a> cobrem essa base teórica com calma. Para nivelamento rápido: tudo aqui parte de um objetivo de vida concreto, não de um ativo específico — essa inversão de ordem é o fio condutor do artigo inteiro.</p>
+  </div>
+
   <div class="prose">
     <h2 id="sec-01" class="reveal"><span class="num">01</span>O roteiro que quase ninguém segue</h2>
     <p>Escolher uma carteira de investimentos é assim: dá trabalho no início, mas depois é só seguir o plano e fazer ajustes finos. Quanto melhores forem suas decisões iniciais, mais tranquilidade você terá para atravessar as incertezas do mercado, menos giro vai fazer — pagando menos impostos e taxas — e mais tempo vai sobrar para aumentar sua renda, elevar sua taxa de poupança e viver.</p>
@@ -447,13 +198,8 @@
       <li>O backtesting da carteira realmente está aderente ao objetivo e às restrições?</li>
     </ol>
     <p>Muita gente pula direto para a escolha dos ativos, porque é a parte mais "concreta" do processo — a mais glamourosa, a com maior apelo midiático e social. No churrasco em família, seu primo não enche a boca pra falar de "horizonte de investimentos" ou "classe de ativos": ele conta sobre aquela ação ou criptomoeda que deu uma porrada para cima (pura sorte, embora ele não admita). Sua mente vai direto pros ativos, e em pouco tempo você está comentando em post de influenciador — "qual é melhor, X ou Y?" — assinando revista com as "melhores ações do mês" e girando a carteira sem nenhuma linha de raciocínio estável.</p>
-    <p>Este artigo faz o caminho inverso: um estudo de caso hipotético, do objetivo até o backtesting, passando por todas as 13 perguntas na ordem.</p>
-  </div>
-
-  <div class="prose">
-    <h2 id="sec-02" class="reveal"><span class="num">02</span>O caso de Alberto</h2>
-    <p>Alberto tem 35 anos, é concursado em uma empresa pública da sua cidade, casado com Vera, e tem 2 filhos — um acabou de nascer, o outro entrará no Ensino Médio no início do próximo ano. Tem casa própria, carro com financiamento quitado e reserva de emergência estabelecida, cobrindo 12x o gasto mensal. Tem cobertura de seguro completa, nenhuma dívida ativa e o nome limpo. Já possui alguns investimentos e previdência privada da empresa.</p>
-    <p>É a partir desse contexto que as cinco primeiras perguntas do roteiro são respondidas.</p>
+    <p>Este artigo faz o caminho inverso: um estudo de caso hipotético, do objetivo até o backtesting, passando por todas as 13 perguntas na ordem — a começar pelo protagonista.</p>
+    <p>Alberto tem 35 anos, é concursado em uma empresa pública da sua cidade, casado com Vera, e tem 2 filhos — um acabou de nascer, o outro entrará no Ensino Médio no início do próximo ano. Tem casa própria, carro com financiamento quitado e reserva de emergência estabelecida, cobrindo 12x o gasto mensal. Tem cobertura de seguro completa, nenhuma dívida ativa e o nome limpo. Já possui alguns investimentos e previdência privada da empresa. É a partir desse contexto que as cinco primeiras perguntas do roteiro são respondidas.</p>
   </div>
 
   <div class="stat-card reveal">
@@ -469,7 +215,7 @@
   </div>
 
   <div class="prose">
-    <h2 id="sec-03" class="reveal"><span class="num">03</span>Quanto vai custar, de verdade</h2>
+    <h2 id="sec-02" class="reveal"><span class="num">02</span>Quanto vai custar, de verdade</h2>
     <p>R$ 3.500 é o valor de hoje — mas o filho de Alberto não vai entrar na faculdade agora. Então a conta não pode ser simplesmente R$ 3.500 × 12 × 4 = R$ 168.000. É preciso projetar o valor no tempo, corrigindo pela inflação, ano a ano. E como o tipo de gasto é conhecido — Educação — dá pra usar a série histórica do próprio grupo Educação do IPCA, publicada pelo Banco Central, em vez do índice cheio.</p>
   </div>
 
@@ -529,7 +275,7 @@
   </div>
 
   <div class="prose">
-    <h2 id="sec-04" class="reveal"><span class="num">04</span>A rentabilidade necessária não é realista</h2>
+    <h2 id="sec-03" class="reveal"><span class="num">03</span>A rentabilidade necessária não é realista</h2>
     <p>Se Alberto quisesse ter o montante inteiro disponível no início da faculdade, com um único aporte de R$ 120.000 hoje e resgate em 3 anos (2026 até 2030, ano de entrada), a rentabilidade nominal necessária seria calculada assim:</p>
   </div>
 
@@ -558,62 +304,72 @@
     <table class="data">
       <caption>Cenário 1 &mdash; aporte único de R$ 120.000, retiradas anuais, rentabilidade de 14% a.a. (Selic atual)</caption>
       <thead>
-        <tr><th>Ano</th><th>Início do ano</th><th>Resgate líquido</th><th>Após render juros</th></tr>
+        <tr><th>Ano</th><th>Início do ano</th><th>Resgate bruto</th><th>IR pago</th><th>Resgate líquido</th><th>Após render juros</th></tr>
       </thead>
       <tbody>
-        <tr><td>2027</td><td>R$ 120.000,00</td><td>&ndash;</td><td>R$ 136.800,00</td></tr>
-        <tr><td>2028</td><td>R$ 136.800,00</td><td>&ndash;</td><td>R$ 155.952,00</td></tr>
-        <tr><td>2029</td><td>R$ 155.952,00</td><td>&ndash;</td><td>R$ 177.785,28</td></tr>
-        <tr><td>2030</td><td>R$ 177.785,28</td><td>R$ 54.965,04</td><td>R$ 136.803,55</td></tr>
-        <tr><td>2031</td><td>R$ 136.803,55</td><td>R$ 58.788,97</td><td>R$ 84.568,57</td></tr>
-        <tr><td>2032</td><td>R$ 84.568,57</td><td>R$ 62.878,93</td><td>R$ 19.156,77</td></tr>
-        <tr><td>2033</td><td>R$ 19.156,77</td><td>R$ 67.253,43</td><td class="neg">R$ (54.077,09)</td></tr>
+        <tr><td>2027</td><td>R$ 120.000,00</td><td>&ndash;</td><td>&ndash;</td><td>&ndash;</td><td>R$ 136.800,00</td></tr>
+        <tr><td>2028</td><td>R$ 136.800,00</td><td>&ndash;</td><td>&ndash;</td><td>&ndash;</td><td>R$ 155.952,00</td></tr>
+        <tr><td>2029</td><td>R$ 155.952,00</td><td>&ndash;</td><td>&ndash;</td><td>&ndash;</td><td>R$ 177.785,28</td></tr>
+        <tr><td>2030</td><td>R$ 177.785,28</td><td>R$ 57.782,17</td><td>R$ 2.817,13</td><td>R$ 54.965,04</td><td>R$ 136.803,55</td></tr>
+        <tr><td>2031</td><td>R$ 136.803,55</td><td>R$ 62.620,59</td><td>R$ 3.831,63</td><td>R$ 58.788,97</td><td>R$ 84.568,57</td></tr>
+        <tr><td>2032</td><td>R$ 84.568,57</td><td>R$ 67.764,38</td><td>R$ 4.885,45</td><td>R$ 62.878,93</td><td>R$ 19.156,77</td></tr>
+        <tr><td>2033</td><td>R$ 19.156,77</td><td>R$ 73.233,86</td><td>R$ 5.980,43</td><td>R$ 67.253,43</td><td class="neg">R$ (54.077,09)</td></tr>
       </tbody>
     </table>
   </div>
 
   <div class="note brick reveal">
     <div class="cap">O plano quebra</div>
-    <p>Mesmo com retiradas anuais e uma rentabilidade de 14% a.a. — hoje a Selic, que pode cair — o dinheiro acaba em 2033, provavelmente no primeiro semestre do 4º ano de faculdade. O aporte único de R$ 120.000 não é suficiente.</p>
+    <p>Mesmo com retiradas anuais e uma rentabilidade de 14% a.a. — hoje a Selic, que pode cair — o dinheiro acaba em 2033, provavelmente no primeiro semestre do 4º ano de faculdade. O saldo negativo na última linha (R$ 54.077,09) não é um valor real: é o quanto faltaria se fosse possível continuar sacando no mesmo ritmo, só para dar a dimensão do rombo. O aporte único de R$ 120.000 não é suficiente.</p>
+  </div>
+
+  <div class="note reveal">
+    <div class="cap">Como ler a coluna "Resgate bruto" e "IR pago"</div>
+    <p>O que sai da carteira em cada resgate é o valor <strong>bruto</strong>, não o líquido: o Imposto de Renda é retido no momento do saque, então parte do bruto vira imposto e só o restante chega ao bolso de Alberto. Por isso "Início do ano" menos "Resgate bruto", capitalizado à taxa do cenário, é que fecha com "Após render juros" — não "Início do ano" menos "Resgate líquido". Quando há mais de um aporte na carteira (Cenário 2, a seguir), cada aporte é tratado como um lote com sua própria data de compra, e os resgates consomem primeiro o lote mais antigo — o mesmo critério <strong>PEPS</strong> ("primeiro que entra, primeiro que sai") que <a href="https://www.tesourodireto.com.br/conheca/regras.htm" target="_blank" rel="noopener">o próprio Tesouro Direto usa</a> para decidir automaticamente qual título vender em caso de resgate parcial, justamente para dar ao investidor a alíquota de IR mais vantajosa. A alíquota de cada lote (22,5% / 20% / 17,5% / 15%, regressiva pelo prazo) é calculada pelos dias corridos entre a compra daquele lote e a data do resgate — nunca fixada em 15% de antemão.</p>
   </div>
 
   <div class="prose">
-    <h2 id="sec-05" class="reveal"><span class="num">05</span>Ajustando o plano</h2>
+    <h2 id="sec-04" class="reveal"><span class="num">04</span>Ajustando o plano</h2>
     <p>Quando o prognóstico inicial não fecha, não existe solução mágica — só voltar algumas casas e se questionar: existe faculdade privada mais barata? Faculdade pública em outra cidade é uma opção discutível? É possível aportar mais, e de onde viria esse dinheiro?</p>
-    <p>As duas primeiras perguntas revisam o objetivo, tentando reduzir o patrimônio-alvo. A terceira aumenta as chances de chegar lá com o mesmo objetivo. No caso de Alberto, a resposta veio pela terceira via: além do bônus deste ano, ele pode investir 75% do bônus do ano que vem — o mesmo valor deste ano, ou seja, mais R$ 90.000 no final de 2027.</p>
+    <p>As duas primeiras perguntas revisam o objetivo, tentando reduzir o patrimônio-alvo. A terceira aumenta as chances de chegar lá com o mesmo objetivo. No caso de Alberto, a resposta veio pela terceira via: além do bônus deste ano, ele pode investir 70% do bônus do ano que vem — o mesmo valor deste ano, ou seja, mais R$ 84.000 no final de 2027.</p>
   </div>
 
   <div class="table-wrap reveal">
     <table class="data">
-      <caption>Cenário 2 &mdash; aporte inicial + 75% do bônus de 2027, rentabilidade de 12% a.a.</caption>
+      <caption>Cenário 2 &mdash; aporte inicial + 70% do bônus de 2027, rentabilidade de 12% a.a.</caption>
       <thead>
-        <tr><th>Ano</th><th>Início do ano</th><th>Resgate líquido</th><th>Após render juros</th><th>Aporte extra</th></tr>
+        <tr><th>Ano</th><th>Início do ano</th><th>Resgate bruto</th><th>IR pago</th><th>Resgate líquido</th><th>Após render juros</th><th>Aporte extra</th></tr>
       </thead>
       <tbody>
-        <tr><td>2027</td><td>R$ 120.000,00</td><td>&ndash;</td><td>R$ 134.400,00</td><td>&ndash;</td></tr>
-        <tr><td>2028</td><td>R$ 134.400,00</td><td>&ndash;</td><td>R$ 150.528,00</td><td>R$ 90.000,00</td></tr>
-        <tr><td>2029</td><td>R$ 240.528,00</td><td>&ndash;</td><td>R$ 269.391,36</td><td>&ndash;</td></tr>
-        <tr><td>2030</td><td>R$ 269.391,36</td><td>R$ 54.965,04</td><td>R$ 238.052,05</td><td>&ndash;</td></tr>
-        <tr><td>2031</td><td>R$ 238.052,05</td><td>R$ 58.788,97</td><td>R$ 197.628,88</td><td>&ndash;</td></tr>
-        <tr><td>2032</td><td>R$ 197.628,88</td><td>R$ 62.878,93</td><td>R$ 146.680,22</td><td>&ndash;</td></tr>
-        <tr><td>2033</td><td>R$ 146.680,22</td><td>R$ 67.253,43</td><td>R$ 83.568,67</td><td>&ndash;</td></tr>
-        <tr><td>2034</td><td>R$ 83.568,67</td><td>R$ 71.932,27</td><td class="pos">R$ 6.435,64</td><td>&ndash;</td></tr>
+        <tr><td>2027</td><td>R$ 120.000,00</td><td>&ndash;</td><td>&ndash;</td><td>&ndash;</td><td>R$ 134.400,00</td><td>R$ 84.000,00</td></tr>
+        <tr><td>2028</td><td>R$ 218.400,00</td><td>&ndash;</td><td>&ndash;</td><td>&ndash;</td><td>R$ 244.608,00</td><td>&ndash;</td></tr>
+        <tr><td>2029</td><td>R$ 244.608,00</td><td>&ndash;</td><td>&ndash;</td><td>&ndash;</td><td>R$ 273.960,96</td><td>&ndash;</td></tr>
+        <tr><td>2030</td><td>R$ 273.960,96</td><td>R$ 57.448,72</td><td>R$ 2.483,68</td><td>R$ 54.965,04</td><td>R$ 242.493,71</td><td>&ndash;</td></tr>
+        <tr><td>2031</td><td>R$ 242.493,71</td><td>R$ 62.188,98</td><td>R$ 3.400,01</td><td>R$ 58.788,97</td><td>R$ 201.941,30</td><td>&ndash;</td></tr>
+        <tr><td>2032</td><td>R$ 201.941,30</td><td>R$ 67.241,99</td><td>R$ 4.363,06</td><td>R$ 62.878,93</td><td>R$ 150.863,22</td><td>&ndash;</td></tr>
+        <tr><td>2033</td><td>R$ 150.863,22</td><td>R$ 71.947,60</td><td>R$ 4.694,17</td><td>R$ 67.253,43</td><td>R$ 88.385,50</td><td>&ndash;</td></tr>
+        <tr><td>2034</td><td>R$ 88.385,50</td><td>R$ 77.681,09</td><td>R$ 5.748,81</td><td>R$ 71.932,27</td><td class="pos">R$ 11.988,94</td><td>&ndash;</td></tr>
       </tbody>
     </table>
   </div>
 
+  <div class="note reveal">
+    <div class="cap">Por que 2033 tem dois lotes</div>
+    <p>Em 2033, o lote comprado em 2026 chega perto do fim: sobram só R$ 2.826,52 de resgate bruto dele (R$ 2.617,34 líquidos, a 15% de IR sobre os 49,3% de ganho acumulado). O restante do resgate daquele ano — R$ 69.121,08 brutos, R$ 64.636,09 líquidos — já sai do lote de 2027, ainda com 43,3% de ganho acumulado e também na faixa de 15% de IR (1.828 dias corridos, acima dos 720 dias que dão direito à alíquota mais baixa). A partir de 2034, o lote de 2026 está zerado e todo resgate sai só do lote de 2027.</p>
+  </div>
+
   <div class="note green reveal">
     <div class="cap">O plano fecha — no fio da navalha</div>
-    <p>Com o segundo aporte, uma rentabilidade nominal de <strong>12% a.a.</strong> é suficiente para cobrir os 5 anos de faculdade, terminando 2034 com R$ 6.435,64. Mas repare como esse saldo final é pequeno: 1 p.p. a menos de rentabilidade (11% a.a.) já não cobriria o último ano.</p>
+    <p>Com o segundo aporte, uma rentabilidade nominal de <strong>12% a.a.</strong> é suficiente para cobrir os 5 anos de faculdade, terminando 2034 com R$ 11.988,94. Mas repare como esse saldo final é pequeno: a 11% a.a. o plano já quebra, faltando R$ 4.384,86 no último ano — o ponto de virada fica entre 11% e 11,5% a.a.</p>
   </div>
 
   <div class="prose">
     <p>Há um problema adicional: a tabela acima assume um alvo fixo, como se R$ 3.500 crescesse exatamente 6,96% a.a. — mas nada garante isso. A inflação do setor pode ser maior ou menor, e a faculdade escolhida pode descolar do próprio grupo IPCA &ndash; Educação, para cima ou para baixo.</p>
-    <p>E os 12% a.a. também não estão garantidos: a Selic hoje está em 14%, mas o <a href="https://www.bcb.gov.br/publicacoes/focus" target="_blank" rel="noopener">Boletim Focus</a> — a pesquisa semanal do Banco Central com as expectativas do mercado — projeta 12% em 2027, 10,5% em 2028 e 10% em 2029. Supor uma rentabilidade nominal média entre 10% e 11% de 2027 a 2034 não é uma estimativa fora da realidade. Isso coloca o plano de Alberto em risco novamente, e reforça a importância de travar taxas na renda fixa enquanto elas estão altas — o que vai definir a escolha do ativo mais à frente.</p>
+    <p>E os 12% a.a. também não estão garantidos: a Selic hoje está em 14%, mas o <a href="https://www.bcb.gov.br/publicacoes/focus" target="_blank" rel="noopener">Boletim Focus</a> — a pesquisa semanal do Banco Central com as expectativas do mercado — projeta 12% em 2027, 10,5% em 2028 e 10% em 2029. Supor uma rentabilidade nominal média entre 10% e 11% de 2027 a 2034 não é uma estimativa fora da realidade — e, como acabamos de ver, já é o suficiente para quebrar o plano. Isso reforça a importância de travar taxas na renda fixa enquanto elas estão altas — o que vai definir a escolha do ativo mais à frente.</p>
   </div>
 
   <div class="prose">
-    <h2 id="sec-06" class="reveal"><span class="num">06</span>Risco, restrições e a classe de ativo certa</h2>
+    <h2 id="sec-05" class="reveal"><span class="num">05</span>Risco, restrições e a classe de ativo certa</h2>
     <p>Por mais que Alberto tenha experiência com investimentos, seguro e reserva de emergência, o risco que pode correr <em>nesta carteira específica</em> é pequeno. O horizonte é curto e a exigência de resgate é inevitável — a faculdade vai cobrar, faça chuva ou faça sol. A baixa flexibilidade de escolha também pesa: ele já sabe o curso, já escolheu a instituição e já sabe o valor da mensalidade. Se o horizonte até o uso do dinheiro fosse de 10 ou 15 anos, a resposta sobre risco seria bem diferente.</p>
     <p>Alberto também tem uma restrição pessoal relevante: já teve calote em debêntures e já precisou recorrer ao FGC com CDBs — e não quer repetir essa experiência. Isso descarta, de saída, qualquer crédito privado sem cobertura de garantidor.</p>
   </div>
@@ -632,7 +388,7 @@
   </div>
 
   <div class="prose">
-    <h2 id="sec-07" class="reveal"><span class="num">07</span>IPCA ou IGP-M? O que os dados dizem</h2>
+    <h2 id="sec-06" class="reveal"><span class="num">06</span>IPCA ou IGP-M? O que os dados dizem</h2>
     <p>Para responder, comparei as janelas móveis de 12 meses do IPCA &ndash; Educação, do IPCA cheio e do IGP-M, de julho de 2000 a junho de 2026 (312 observações mensais). A pergunta que interessa não é qual índice tem a média mais parecida — é qual dos dois se <em>move na mesma direção</em> que a inflação da educação, ano após ano.</p>
   </div>
 
@@ -685,7 +441,7 @@
   </div>
 
   <div class="prose">
-    <h2 id="sec-08" class="reveal"><span class="num">08</span>O ativo: Tesouro Educa+ 2030</h2>
+    <h2 id="sec-07" class="reveal"><span class="num">07</span>O ativo: Tesouro Educa+ 2030</h2>
     <p>Com a classe de ativo definida — 100% Renda Fixa Brasileira Indexada ao IPCA — restam as perguntas 11 e 12: qual o melhor ativo disponível, e quanto ele vai representar da carteira.</p>
     <p>Dentro de "renda fixa indexada ao IPCA", as opções são títulos públicos, crédito privado com cobertura do FGC (bancos e emissores financeiros) e crédito privado sem cobertura. Como Alberto já foi mal servido por crédito privado sem garantidor, essa opção é descartada de saída, e a preferência recai sobre títulos públicos. Entre veículos (ETFs, fundos) e ativos individuais, veículos costumam ser bons por diversificação automática e disciplina de alocação — mas dificilmente existe um fundo de títulos públicos indexados à inflação com a mesma exigência de fluxo de caixa mensal que Alberto vai ter.</p>
     <p>Como travar a taxa é importante, o ativo que combina IPCA com emissor público — o <strong>Tesouro Educa+ 2030</strong> — é o mais aderente: garante rentabilidade acima do IPCA e paga parcelas mensais ao longo de 5 anos, exatamente o período em que Alberto precisa de fluxo de caixa para a faculdade do filho.</p>
@@ -699,7 +455,7 @@
   <div class="prose">
     <p>A parte mais importante do simulador é achar a quantidade de títulos necessária para gerar a renda desejada. O primeiro erro comum é supor que a renda-alvo é R$ 3.500 — o valor de hoje da mensalidade — porque esse número é o custo, não o que se recebe: é preciso planejar em cima da renda <strong>bruta</strong>, já que o recebimento mensal do título sofre incidência de IR sobre a parcela de rendimento.</p>
     <p>Converter renda líquida desejada em renda bruta necessária não é trivial, porque depende de quanto de cada parcela é principal aportado e quanto é lucro tributável — mas uma boa aproximação prática é usar um fator multiplicador de <strong>x1,16</strong>. Uma renda líquida de R$ 3.500 exige, então, uma renda bruta de pouco menos de R$ 4.100.</p>
-    <p>Há ainda uma sutileza: planejar com R$ 3.500 seria apostar que a mensalidade vai corrigir exatamente pela inflação — mas já vimos que o grupo Educação tende a subir um pouco mais do que o IPCA cheio na maior parte dos anos. Para aumentar a margem de segurança, o alvo usado é <strong>R$ 5.000 de renda bruta mensal</strong>, e não os R$ 4.100 calculados. Usando o simulador do Tesouro Direto, essa renda bruta-alvo exige <strong>63,26 títulos do Educa+30</strong>.</p>
+    <p>Há ainda uma sutileza: planejar com R$ 3.500 seria apostar que a mensalidade vai corrigir exatamente pela inflação — mas já vimos que o grupo Educação tende a subir um pouco mais do que o IPCA cheio na maior parte dos anos. Para aumentar a margem de segurança, o alvo usado é <strong>R$ 4.800 de renda bruta mensal</strong>, e não os R$ 4.100 calculados. Usando o simulador do Tesouro Direto, essa renda bruta-alvo exige <strong>60,74 títulos do Educa+30</strong>.</p>
   </div>
 
   <div class="table-wrap reveal">
@@ -710,7 +466,7 @@
       </thead>
       <tbody>
         <tr><td>1º &mdash; R$ 120.000</td><td>31/12/2026</td><td>IPCA + 8,07%</td><td>R$ 3.122,55</td></tr>
-        <tr><td>2º &mdash; R$ 90.000</td><td>31/12/2027</td><td>IPCA + 6,50%</td><td>R$ 3.593,87</td></tr>
+        <tr><td>2º &mdash; R$ 84.000</td><td>31/12/2027</td><td>IPCA + 6,50%</td><td>R$ 3.593,87</td></tr>
       </tbody>
     </table>
   </div>
@@ -719,9 +475,9 @@
     <div class="cap">A conta final fecha</div>
     <div class="stat-grid">
       <div><b>38,43</b><span>títulos comprados no 1º aporte, com R$ 120.000</span></div>
-      <div><b>24,83</b><span>títulos restantes, necessários no 2º aporte</span></div>
-      <div><b>R$ 89.235,67</b><span>custo do 2º aporte, supondo taxa real caindo para IPCA + 6,50%</span></div>
-      <div><b>R$ 90.000,00</b><span>valor que Alberto tem disponível para o 2º aporte (75% do bônus de 2027)</span></div>
+      <div><b>22,31</b><span>títulos restantes, necessários no 2º aporte</span></div>
+      <div><b>R$ 80.178,47</b><span>custo do 2º aporte, comprando 22,31 títulos a IPCA + 6,50% — gastando alguns mil a menos do que poderia</span></div>
+      <div><b>R$ 84.000,00</b><span>valor que Alberto tem disponível para o 2º aporte (70% do bônus de 2027)</span></div>
     </div>
   </div>
 
@@ -794,11 +550,28 @@
         <span class="cta-related-title">Qual é a PWR da minha carteira? Um estudo com 20 anos de dados reais</span>
         <span class="cta-related-arrow">→</span>
       </a>
+      <a class="cta-related-link" href="../quanto-posso-retirar-aposentadoria/">
+        <span class="cta-related-title">Quanto posso retirar dos meus investimentos durante a aposentadoria?</span>
+        <span class="cta-related-arrow">→</span>
+      </a>
       <a class="cta-related-link" href="../simuladores/comparador-composicao/">
         <span class="cta-related-title">Comparador de composição de carteira</span>
         <span class="cta-related-arrow">→</span>
       </a>
     </div>
+  </div>
+
+  <div class="disclaimer-spacer"></div>
+
+  <div class="disclaimer">
+    <div class="cap">Notas e referências</div>
+    <ol>
+      <li>Banco Central do Brasil. Sistema Gerenciador de Séries Temporais — série 1643 (IPCA, grupo Educação). Disponível em: https://www3.bcb.gov.br/sgspub/consultarvalores/consultarValoresSeries.do?method=consultarSeries&amp;series=1643. Acesso em: 16 ago. 2026.</li>
+      <li>Banco Central do Brasil. Sistema Gerenciador de Séries Temporais — série 433 (IPCA). Disponível em: https://www3.bcb.gov.br/sgspub/consultarvalores/consultarValoresSeries.do?method=consultarSeries&amp;series=433. Acesso em: 16 ago. 2026.</li>
+      <li>Fundação Getulio Vargas, Conjuntura Econômica — IGP (FGV/Conj. Econ. — IGP-M), via Ipeadata. Disponível em: https://www.ipeadata.gov.br/ExibeSerie.aspx?stub=1&amp;serid37796=37796&amp;serid36482=36482. Acesso em: 16 ago. 2026.</li>
+      <li>As correlações da seção 07 foram calculadas usando o coeficiente de correlação de Pearson (r) a partir do CAGR das janelas móveis de 12 meses das séries de IPCA, IPCA – Educação e IGP-M, de julho/2000 a junho/2026 (312 observações mensais). Cálculo desenvolvido/formalizado em PEARSON, K. Notes on regression and inheritance in the case of two variable characteristics. Proceedings of the Royal Society of London, Londres, v. 58, p. 240-242, 1895.</li>
+      <li>A afirmação da seção 04 de que uma rentabilidade nominal consistente de 26% a.a. seria improvável em renda variável, mesmo em prazos longos, se baseia no CAGR nominal de longuíssimo prazo do Ibovespa e do IDIV, ambos abaixo desse patamar. Fontes: Mais Retorno. <em>Ibovespa (IBOV)</em>. Disponível em: https://maisretorno.com/indice/ibov. Acesso em: 16 ago. 2026; Mais Retorno. <em>Índice Dividendos (IDIV)</em>. Disponível em: https://maisretorno.com/indice/idiv. Acesso em: 16 ago. 2026.</li>
+    </ol>
   </div>
 
   <div class="disclaimer-spacer"></div>
@@ -856,29 +629,34 @@
       var container = document.getElementById('cusdis_thread');
       if (!container) return;
       var applied = false;
+      var rs = getComputedStyle(document.documentElement);
+      var tok = function(name){ return rs.getPropertyValue(name).trim(); };
+      var ink = tok('--ink'), muted = tok('--muted'), paperRaised = tok('--paper-raised');
+      var lineStrong = tok('--line-strong'), line = tok('--line'), placeholder = tok('--placeholder');
+      var green = tok('--green'), greenDeep = tok('--green-deep'), brick = tok('--brick');
       var css = ""
-        + "html,body{font-family:'IBM Plex Sans',sans-serif !important;color:#171A18 !important;background:transparent !important;overflow:visible !important;height:auto !important;}"
+        + "html,body{font-family:'IBM Plex Sans',sans-serif !important;color:" + ink + " !important;background:transparent !important;overflow:visible !important;height:auto !important;}"
         + "*{box-sizing:border-box;}"
         + "::-webkit-scrollbar{display:none !important;}"
-        + "label{font-family:'IBM Plex Mono',monospace !important;font-size:11px !important;letter-spacing:.05em !important;text-transform:uppercase !important;color:#5B6259 !important;}"
-        + "input,textarea{font-family:'IBM Plex Sans',sans-serif !important;font-size:14px !important;border:1px solid #BFC5B8 !important;border-radius:3px !important;background:#F9FAF6 !important;color:#171A18 !important;padding:10px 12px !important;}"
-        + "input:focus,textarea:focus{outline:none !important;border-color:#1E6B4F !important;}"
-        + "input::placeholder,textarea::placeholder{color:#9AA396 !important;}"
-        + "button:not([type='button']){font-family:'IBM Plex Mono',monospace !important;font-size:12px !important;font-weight:600 !important;letter-spacing:.04em !important;text-transform:uppercase !important;background:#1E6B4F !important;color:#fff !important;border:1px solid #1E6B4F !important;border-radius:3px !important;padding:9px 18px !important;cursor:pointer !important;transition:background .15s ease, border-color .15s ease !important;}"
-        + "button:not([type='button']):hover{background:#123B2A !important;border-color:#123B2A !important;}"
-        + "button[type='button']{font-family:'IBM Plex Mono',monospace !important;font-size:11px !important;font-weight:600 !important;letter-spacing:.04em !important;text-transform:uppercase !important;background:transparent !important;color:#1E6B4F !important;border:0 !important;padding:4px 2px !important;cursor:pointer !important;}"
+        + "label{font-family:'IBM Plex Mono',monospace !important;font-size:11px !important;letter-spacing:.05em !important;text-transform:uppercase !important;color:" + muted + " !important;}"
+        + "input,textarea{font-family:'IBM Plex Sans',sans-serif !important;font-size:14px !important;border:1px solid " + lineStrong + " !important;border-radius:3px !important;background:" + paperRaised + " !important;color:" + ink + " !important;padding:10px 12px !important;}"
+        + "input:focus,textarea:focus{outline:none !important;border-color:" + green + " !important;}"
+        + "input::placeholder,textarea::placeholder{color:" + placeholder + " !important;}"
+        + "button:not([type='button']){font-family:'IBM Plex Mono',monospace !important;font-size:12px !important;font-weight:600 !important;letter-spacing:.04em !important;text-transform:uppercase !important;background:" + green + " !important;color:#fff !important;border:1px solid " + green + " !important;border-radius:3px !important;padding:9px 18px !important;cursor:pointer !important;transition:background .15s ease, border-color .15s ease !important;}"
+        + "button:not([type='button']):hover{background:" + greenDeep + " !important;border-color:" + greenDeep + " !important;}"
+        + "button[type='button']{font-family:'IBM Plex Mono',monospace !important;font-size:11px !important;font-weight:600 !important;letter-spacing:.04em !important;text-transform:uppercase !important;background:transparent !important;color:" + green + " !important;border:0 !important;padding:4px 2px !important;cursor:pointer !important;}"
         + "button[type='button']::before{content:'↳ ';}"
-        + "button[type='button']:hover{color:#123B2A !important;text-decoration:underline !important;}"
-        + "a{color:#1E6B4F !important;text-decoration:none !important;}"
-        + "a:hover{color:#A8402A !important;}"
-        + "hr{border-color:#D7DBCF !important;}";
+        + "button[type='button']:hover{color:" + greenDeep + " !important;text-decoration:underline !important;}"
+        + "a{color:" + green + " !important;text-decoration:none !important;}"
+        + "a:hover{color:" + brick + " !important;}"
+        + "hr{border-color:" + line + " !important;}";
       function styleFrame(node){
         if (applied) return;
         applied = true;
         node.setAttribute('title', 'Comentários do artigo');
         node.style.border = '0';
         node.style.width = '100%';
-        node.style.colorScheme = 'light';
+        node.style.colorScheme = getComputedStyle(document.documentElement).getPropertyValue('--color-scheme').trim() || 'light';
         node.style.minHeight = '120px';
         var resizePending = false;
         function resize(doc){
@@ -930,74 +708,7 @@
   Independência Calculada — conteúdo educacional, não é recomendação de investimento.
 </footer>
 
-<script>
-(function(){
-  "use strict";
-
-  /* ---------- barra de progresso de leitura ---------- */
-  var progressFill = document.getElementById('progressFill');
-  function updateProgress(){
-    var h = document.documentElement;
-    var scrollTop = h.scrollTop || document.body.scrollTop;
-    var scrollHeight = (h.scrollHeight || document.body.scrollHeight) - h.clientHeight;
-    var pct = scrollHeight > 0 ? (scrollTop / scrollHeight) * 100 : 0;
-    progressFill.style.width = pct.toFixed(2) + '%';
-  }
-
-  /* ---------- botão voltar ao topo ---------- */
-  var backToTop = document.getElementById('backToTop');
-  function updateBackToTop(){
-    if(window.scrollY > 600){ backToTop.classList.add('show'); }
-    else{ backToTop.classList.remove('show'); }
-  }
-  backToTop.addEventListener('click', function(){
-    window.scrollTo({ top:0, behavior: 'smooth' });
-  });
-
-  window.addEventListener('scroll', function(){
-    updateProgress();
-    updateBackToTop();
-  }, { passive:true });
-  updateProgress();
-  updateBackToTop();
-
-  /* ---------- navegação lateral (TOC) ---------- */
-  var tocLinks = Array.prototype.slice.call(document.querySelectorAll('#tocRail a'));
-  var sections = tocLinks.map(function(a){
-    return document.getElementById(a.getAttribute('href').slice(1));
-  }).filter(Boolean);
-
-  if('IntersectionObserver' in window && sections.length){
-    var tocObserver = new IntersectionObserver(function(entries){
-      entries.forEach(function(entry){
-        var link = document.querySelector('#tocRail a[href="#' + entry.target.id + '"]');
-        if(!link) return;
-        if(entry.isIntersecting){
-          tocLinks.forEach(function(l){ l.classList.remove('active'); });
-          link.classList.add('active');
-        }
-      });
-    }, { rootMargin: '-45% 0px -50% 0px', threshold: 0 });
-    sections.forEach(function(s){ tocObserver.observe(s); });
-  }
-
-  /* ---------- reveal on scroll ---------- */
-  var revealEls = document.querySelectorAll('.reveal');
-  if('IntersectionObserver' in window && revealEls.length){
-    var revealObserver = new IntersectionObserver(function(entries, obs){
-      entries.forEach(function(entry){
-        if(entry.isIntersecting){
-          entry.target.classList.add('visible');
-          obs.unobserve(entry.target);
-        }
-      });
-    }, { threshold: 0.1 });
-    revealEls.forEach(function(el){ revealObserver.observe(el); });
-  } else {
-    revealEls.forEach(function(el){ el.classList.add('visible'); });
-  }
-})();
-</script>
+<script src="../assets/site.js"></script>
 
 <script>
 (function(){
