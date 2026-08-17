@@ -269,6 +269,11 @@ h3{ font-family: var(--font-display); font-weight: 600; font-size: 1.15rem; marg
 .stat-grid b{ display:block; font-family: var(--font-mono); font-size: 1.05rem; color: var(--ink); font-variant-numeric: tabular-nums; }
 .stat-grid span{ color: var(--muted); font-size: 13px; }
 
+/* Componente opcional, não obrigatório: só usar quando o artigo tiver 2-4
+   números-chave que resumem o resultado logo na abertura (ex: PWR@90%/95%
+   no artigo de PWR). Não é o padrão esperado em todo artigo — a maioria
+   não tem esse tipo de resultado numérico para destacar antes do corpo do
+   texto, e forçar o componente sem esse conteúdo é pior que não usá-lo. */
 .hero-stats{ display:grid; grid-template-columns: 1fr 1fr; gap: 14px; margin: 22px 0 0; }
 @media (max-width: 480px){ .hero-stats{ grid-template-columns: 1fr; } }
 .hero-stat{ border: 1px solid var(--line-strong); background: var(--paper-raised); border-radius: 3px; padding: 16px 18px; }
