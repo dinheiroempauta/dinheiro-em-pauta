@@ -96,12 +96,14 @@ test('estiliza o iframe de comentários mesmo se ele já existir antes da funç�
   // Regressão: nome/data/corpo do comentário postado (não os campos do
   // formulário) apareciam com contraste baixíssimo — o Cusdis define cor
   // própria nesses elementos, e herdar de html/body não é suficiente pra
-  // vencer uma regra explícita do widget. Confirmado com prova em
-  // navegador real (ver PR): sem "*{color:inherit!important}", o texto
-  // ficava com a cor original do widget (ex: #8a8a8a) mesmo em cima do
-  // fundo escuro da página; com essa regra, resolve pro --ink do tema.
-  assert.match(css, /\*\{color:inherit\s*!important;?\}/, 'precisa forçar herança de cor em todo o conteúdo do iframe, não só no html/body');
+  // vencer uma regra explícita do widget, principalmente se a deles também
+  // usa !important (aí quem decide é especificidade). Confirmado com prova
+  // em navegador real (ver PR) num cenário adversarial: um seletor de
+  // classe com !important simulando o Cusdis — sem o reforço de
+  // especificidade abaixo, a cor original do widget vazava mesmo com
+  // color:inherit!important; com o reforço, resolve pro --ink do tema.
+  assert.match(css, /\*:not\(#ic-x\):not\(#ic-x\):not\(#ic-x\):not\(html\):not\(body\)\{color:inherit\s*!important;?\}/, 'precisa forçar herança de cor com especificidade reforçada em todo o conteúdo do iframe, não só no html/body');
   // O focus ring precisa seguir o padrão global do site (outline dourado),
   // não o "outline:none" que existia antes (falha de acessibilidade).
-  assert.match(css, /input:focus,textarea:focus\{outline:2px solid #[0-9a-fA-F]{6} !important/, 'input/textarea precisam do anel de foco dourado do site, não outline:none');
+  assert.match(css, /input:focus:not\(#ic-x\).*textarea:focus:not\(#ic-x\).*outline:2px solid #[0-9a-fA-F]{6} !important/, 'input/textarea precisam do anel de foco dourado do site, não outline:none');
 });
