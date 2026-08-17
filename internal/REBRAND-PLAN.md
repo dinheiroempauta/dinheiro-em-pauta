@@ -59,18 +59,30 @@ paralelo, testar, só depois cortar**:
    `dinheiro-em-pauta-likes`). Código-fonte idêntico ao dos antigos, só
    nome/config mudam. `DEPLOY.md` próprio em cada pasta. Decisão do
    usuário em 17/08/2026: **não migrar dados**, os dois nascem vazios.
-2. [ ] Usuário roda os `wrangler d1 create` / `wrangler kv namespace create`
-   NOVOS e os deploys, com os secrets de novo
-   (`ADMIN_TOKEN`/`IP_SALT`/`RESEND_API_KEY`) — passo a passo em
-   `dinheiro-em-pauta-comments/DEPLOY.md` e `dinheiro-em-pauta-likes/DEPLOY.md`.
-3. [ ] Usuário testa os Workers novos via `curl` (comandos já nos DEPLOY.md).
-4. [ ] Só depois que os Workers novos estiverem testados e no ar, eu troco
-   `LIKES_API`/`data-comments-api` no front-end pras URLs novas, num PR
-   único.
-5. [ ] Usuário apaga os Workers antigos (`wrangler delete` nas pastas
+2. [x] Usuário rodou D1/KV novos, secrets e deploy dos dois Workers.
+   URLs finais: `https://dinheiro-em-pauta-likes.independenciacalculada.workers.dev`
+   e `https://dinheiro-em-pauta-comments.independenciacalculada.workers.dev`
+   (o `independenciacalculada` que sobra aí é só o subdomínio da conta
+   Cloudflare no workers.dev — decisão de trocar isso também, mas só no
+   passo 6, depois dos Workers antigos apagados, pra não derrubar o site
+   ao vivo no meio da transição).
+3. [x] Testado via `curl` pelo usuário: `/likes?slug=teste` e
+   `/comments?slug=teste` responderam certo nos dois Workers novos.
+4. [x] Front-end trocado: `LIKES_API` em `assets/site.js`,
+   `data-comments-api` nas 8 páginas + template, e `connect-src` do CSP
+   em todas as páginas do site (inclusive as 4 sem comentários, que só
+   usam o worker de likes) apontando pros Workers novos.
+5. [ ] Usuário confirma que curtir/comentar funcionam de verdade no site
+   publicado (`dinheiroempauta.com.br`) com os Workers novos.
+6. [ ] Usuário apaga os Workers antigos (`wrangler delete` nas pastas
    `cloudflare-worker/` e `cloudflare-worker-comments/`) só depois de
-   confirmar que os novos estão 100% funcionando — nunca antes. Depois
-   disso, eu removo essas duas pastas antigas do repositório.
+   confirmar o passo 5. Depois disso, eu removo essas duas pastas antigas
+   do repositório.
+7. [ ] Só depois do passo 6: trocar o subdomínio `.workers.dev` da conta
+   Cloudflare (Workers & Pages → Overview → mudar subdomínio) pra tirar
+   o `independenciacalculada` de vez — nesse ponto não sobra nada rodando
+   sob o subdomínio antigo pra quebrar. Eu atualizo o front-end mais uma
+   vez pra bater com a URL final depois da troca.
 
 ### Fase 3 — Domínio + infraestrutura que já tinha checklist mapeada
 Reaproveita o checklist que já existe em `internal/BACKLOG.md`
