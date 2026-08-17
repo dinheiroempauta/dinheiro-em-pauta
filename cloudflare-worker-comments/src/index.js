@@ -9,10 +9,13 @@
  *   POST /admin/moderate               -> { status: "ok" }
  *
  * Requer um D1 database vinculado como "DB" (ver wrangler.toml) e os
- * secrets ADMIN_TOKEN e IP_SALT (`wrangler secret put ...`).
+ * secrets ADMIN_TOKEN e IP_SALT (`wrangler secret put ...`). RESEND_API_KEY
+ * é opcional: sem ele, aprovar/rejeitar/responder funciona normalmente,
+ * só sem notificar por e-mail (ver src/email.js).
  */
 
 import { ADMIN_PAGE_HTML } from "./adminPage.js";
+import { notifyModerationResult, notifyReply } from "./email.js";
 
 const ALLOWED_ORIGINS = [
   "https://independenciacalculada.com.br",
@@ -173,12 +176,30 @@ async function handleAdminPending(url, env, cors) {
 async function handleAdminModerate(request, env, cors) {
   const body = await request.json().catch(() => null);
   if (!body || body.token !== env.ADMIN_TOKEN) return json({ error: "unauthorized" }, 401, cors);
+  if (body.action !== "approve" && body.action !== "reject") {
+    return json({ error: "invalid_action" }, 400, cors);
+  }
+
+  // Busca o comentário ANTES de aprovar/apagar — precisamos de
+  // slug/nickname/email/parent_id pra notificação, e no reject o registro
+  // deixa de existir depois do DELETE.
+  const comment = await env.DB.prepare(
+    `SELECT id, slug, parent_id, nickname, email FROM comments WHERE id = ?`
+  ).bind(body.id).first();
+  if (!comment) return json({ error: "not_found" }, 404, cors);
+
   if (body.action === "approve") {
     await env.DB.prepare(`UPDATE comments SET status = 'approved' WHERE id = ?`).bind(body.id).run();
-  } else if (body.action === "reject") {
-    await env.DB.prepare(`DELETE FROM comments WHERE id = ?`).bind(body.id).run();
+    await notifyModerationResult(env, comment, "approve");
+    if (comment.parent_id) {
+      const parent = await env.DB.prepare(
+        `SELECT nickname, email FROM comments WHERE id = ?`
+      ).bind(comment.parent_id).first();
+      await notifyReply(env, parent, comment);
+    }
   } else {
-    return json({ error: "invalid_action" }, 400, cors);
+    await env.DB.prepare(`DELETE FROM comments WHERE id = ?`).bind(body.id).run();
+    await notifyModerationResult(env, comment, "reject");
   }
   return json({ status: "ok" }, 200, cors);
 }
