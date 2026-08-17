@@ -44,7 +44,7 @@ function escapeHtml(str) {
 async function sendEmail(env, { to, subject, html }) {
   if (!env.RESEND_API_KEY || !to) return;
   try {
-    await fetch("https://api.resend.com/emails", {
+    const res = await fetch("https://api.resend.com/emails", {
       method: "POST",
       headers: {
         Authorization: `Bearer ${env.RESEND_API_KEY}`,
@@ -52,7 +52,16 @@ async function sendEmail(env, { to, subject, html }) {
       },
       body: JSON.stringify({ from: FROM_EMAIL, to: [to], subject, html }),
     });
+    if (!res.ok) {
+      // Só aparece em `wrangler tail` (log ao vivo) — nunca é exposto pro
+      // navegador de quem comentou nem pro painel de moderação. Sem isso,
+      // um erro do Resend (chave inválida, domínio não verificado, modo
+      // de teste restringindo o destinatário) falhava 100% em silêncio.
+      const body = await res.text().catch(() => "");
+      console.error("Resend falhou:", res.status, body);
+    }
   } catch (err) {
+    console.error("Resend: erro de rede", err);
     // Falha no envio de e-mail nunca deve derrubar a moderação — só perde
     // a notificação, o comentário já foi aprovado/rejeitado normalmente.
   }
