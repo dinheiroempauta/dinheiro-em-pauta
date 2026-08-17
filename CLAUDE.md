@@ -124,7 +124,7 @@ credibilidade do artigo do que a ausência de referência.
 Siga `internal/CHECKLIST-NOVO-ARTIGO.md` à risca, partindo de
 `internal/template-artigo.html`. Depois de gerar o artigo, adicionar o
 card na home, atualizar `sitemap.xml`/`feed.xml` e gerar a og:image
-(prompt em `internal/prompt-og-image-independencia-calculada.md`), o
+(prompt em `internal/prompt-og-image-dinheiro-em-pauta.md`), o
 fluxo é: commit → push → PR → conferir diff → merge — sem pausar pra
 aprovação em cada etapa, como descrito acima.
 

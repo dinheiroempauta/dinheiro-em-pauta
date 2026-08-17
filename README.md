@@ -26,11 +26,11 @@ funciona em qualquer host estático, sem configuração extra.
 ## Passo 1 — Publicar no GitHub Pages (gratuito)
 
 1. Crie uma conta no [github.com](https://github.com) se ainda não tiver.
-2. Crie um repositório novo, público, chamado `independencia-calculada` (ou o nome que quiser).
+2. Crie um repositório novo, público, chamado `dinheiro-em-pauta` (ou o nome que quiser).
 3. Suba todo o conteúdo da pasta `dist/` para a raiz do repositório (pode arrastar os arquivos direto na interface web do GitHub, em "Add file → Upload files").
 4. Vá em **Settings → Pages**.
 5. Em "Source", selecione a branch `main` e a pasta `/ (root)`. Salve.
-6. Em alguns minutos seu site estará no ar em `https://SEU-USUARIO.github.io/independencia-calculada/`.
+6. Em alguns minutos seu site estará no ar em `https://SEU-USUARIO.github.io/dinheiro-em-pauta/`.
 
 > Nesse endereço temporário os links internos (`/pwr-carteira-fire`, etc.) não vão
 > funcionar perfeitamente por causa do subcaminho do repositório. Isso se resolve
@@ -74,10 +74,10 @@ perfeitamente assim que o domínio estiver ativo.
    wrangler deploy
    ```
 5. O comando devolve uma URL parecida com:
-   `https://independencia-likes.SEU-SUBDOMINIO.workers.dev`
+   `https://dinheiro-em-pauta-likes.SEU-SUBDOMINIO.workers.dev`
 6. Em **cada** arquivo `index.html` de artigo, procure por (perto do fim do arquivo):
    ```js
-   var API = 'https://independencia-likes.SEU-SUBDOMINIO.workers.dev';
+   var API = 'https://dinheiro-em-pauta-likes.SEU-SUBDOMINIO.workers.dev';
    ```
    e substitua pela URL real que você recebeu no passo 5.
 7. Abra `dinheiro-em-pauta-likes/likes-worker.js` e confirme que `ALLOWED_ORIGIN`
@@ -97,7 +97,7 @@ fila de moderação manual), mas com controle visual total.
    (`wrangler d1 create`, secrets, `wrangler deploy`).
 2. Depois do deploy, todo comentário novo entra como `pending` — aprove ou
    rejeite no painel próprio em
-   `https://independencia-comments.dinheiroempauta.workers.dev/admin`
+   `https://dinheiro-em-pauta-comments.dinheiroempauta.workers.dev/admin`
    (login com o `ADMIN_TOKEN` configurado no deploy). Também dá pra usar
    `curl` nos endpoints `/admin/*` (comandos exatos no `DEPLOY.md`) ou o
    console D1 do dashboard da Cloudflare, se preferir.
@@ -133,7 +133,7 @@ Esse é o fluxo que você já usa e que continua igual:
    - barra de navegação "← Todos os artigos", progress bar, TOC e botão
      "voltar ao topo"
 4. Também gero a imagem de capa (og:image) seguindo o prompt padronizado em
-   `internal/prompt-og-image-independencia-calculada.md`.
+   `internal/prompt-og-image-dinheiro-em-pauta.md`.
 5. Você cria uma pasta nova no repositório com o slug do artigo (ex: `nome-do-artigo/`)
    e sobe o `index.html` gerado dentro dela, junto com a imagem em `assets/`.
 6. Eu te devolvo também: o card pronto pra colar em `index.html` (home), a
