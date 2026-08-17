@@ -52,18 +52,18 @@ wrangler deploy
 ```
 
 Anota a URL que aparece no final (deve ser
-`https://dinheiro-em-pauta-comments.independenciacalculada.workers.dev`
+`https://dinheiro-em-pauta-comments.dinheiroempauta.workers.dev`
 — se vier diferente, me avisa que eu ajusto o `data-comments-api` nas
 páginas e o CORS no Worker pra bater com a URL real).
 
 ## 5. Testar os endpoints
 
-Troca `https://dinheiro-em-pauta-comments.independenciacalculada.workers.dev` pela URL real que apareceu no passo 4 em todos os
+Troca `https://dinheiro-em-pauta-comments.dinheiroempauta.workers.dev` pela URL real que apareceu no passo 4 em todos os
 comandos abaixo.
 
 Comentar (deve entrar como pendente):
 ```
-curl -X POST https://dinheiro-em-pauta-comments.independenciacalculada.workers.dev/comments \
+curl -X POST https://dinheiro-em-pauta-comments.dinheiroempauta.workers.dev/comments \
   -H "Content-Type: application/json" \
   -H "Origin: https://dinheiroempauta.com.br" \
   -d '{"slug":"pwr-carteira-fire","nickname":"Teste","email":"","message":"Comentário de teste"}'
@@ -72,25 +72,25 @@ Resposta esperada: `{"status":"pending"}`.
 
 Listar pendentes (troca `SEU_TOKEN` pelo valor que você colou no passo 3):
 ```
-curl "https://dinheiro-em-pauta-comments.independenciacalculada.workers.dev/admin/pending?token=SEU_TOKEN"
+curl "https://dinheiro-em-pauta-comments.dinheiroempauta.workers.dev/admin/pending?token=SEU_TOKEN"
 ```
 
 Aprovar (troca `ID` pelo id retornado acima):
 ```
-curl -X POST https://dinheiro-em-pauta-comments.independenciacalculada.workers.dev/admin/moderate \
+curl -X POST https://dinheiro-em-pauta-comments.dinheiroempauta.workers.dev/admin/moderate \
   -H "Content-Type: application/json" \
   -d '{"token":"SEU_TOKEN","id":ID,"action":"approve"}'
 ```
 
 Ver se aparece na listagem pública:
 ```
-curl "https://dinheiro-em-pauta-comments.independenciacalculada.workers.dev/comments?slug=pwr-carteira-fire"
+curl "https://dinheiro-em-pauta-comments.dinheiroempauta.workers.dev/comments?slug=pwr-carteira-fire"
 ```
 
 ## 6. Painel de moderação
 
 ```
-https://dinheiro-em-pauta-comments.independenciacalculada.workers.dev/admin
+https://dinheiro-em-pauta-comments.dinheiroempauta.workers.dev/admin
 ```
 
 Mesmo fluxo de sempre: cola o `ADMIN_TOKEN` no login, fica salvo no

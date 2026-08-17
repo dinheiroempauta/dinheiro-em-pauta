@@ -97,7 +97,7 @@ fila de moderação manual), mas com controle visual total.
    (`wrangler d1 create`, secrets, `wrangler deploy`).
 2. Depois do deploy, todo comentário novo entra como `pending` — aprove ou
    rejeite no painel próprio em
-   `https://independencia-comments.independenciacalculada.workers.dev/admin`
+   `https://independencia-comments.dinheiroempauta.workers.dev/admin`
    (login com o `ADMIN_TOKEN` configurado no deploy). Também dá pra usar
    `curl` nos endpoints `/admin/*` (comandos exatos no `DEPLOY.md`) ou o
    console D1 do dashboard da Cloudflare, se preferir.

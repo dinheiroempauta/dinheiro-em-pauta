@@ -51,7 +51,7 @@ falamos sobre finanças, investimentos, economia e FIRE."**
       mudar — o site já serve do domínio próprio (`dinheiroempauta.com.br`),
       não do caminho do repositório no GitHub Pages.
 
-### Fase 2 — Workers da Cloudflare (risco real, cutover cuidadoso) — em andamento
+### Fase 2 — Workers da Cloudflare ✅ concluída em 17/08/2026
 Não dá pra renomear um Worker existente — a estratégia é **criar novo em
 paralelo, testar, só depois cortar**:
 1. [x] Diretórios novos criados: `dinheiro-em-pauta-comments/` (nome
@@ -59,13 +59,8 @@ paralelo, testar, só depois cortar**:
    `dinheiro-em-pauta-likes`). Código-fonte idêntico ao dos antigos, só
    nome/config mudam. `DEPLOY.md` próprio em cada pasta. Decisão do
    usuário em 17/08/2026: **não migrar dados**, os dois nascem vazios.
-2. [x] Usuário rodou D1/KV novos, secrets e deploy dos dois Workers.
-   URLs finais: `https://dinheiro-em-pauta-likes.independenciacalculada.workers.dev`
-   e `https://dinheiro-em-pauta-comments.independenciacalculada.workers.dev`
-   (o `independenciacalculada` que sobra aí é só o subdomínio da conta
-   Cloudflare no workers.dev — decisão de trocar isso também, mas só no
-   passo 6, depois dos Workers antigos apagados, pra não derrubar o site
-   ao vivo no meio da transição).
+2. [x] Usuário rodou D1/KV novos, secrets e deploy dos dois Workers
+   (URLs intermediárias sob o subdomínio antigo, trocadas no passo 7).
 3. [x] Testado via `curl` pelo usuário: `/likes?slug=teste` e
    `/comments?slug=teste` responderam certo nos dois Workers novos.
 4. [x] Front-end trocado: `LIKES_API` em `assets/site.js`,
@@ -81,11 +76,13 @@ paralelo, testar, só depois cortar**:
    pastas removidas do repositório. Referências nos docs
    (`README.md`/`CLAUDE.md`/`CHECKLIST-NOVO-ARTIGO.md`) atualizadas pros
    nomes de pasta novos.
-7. [ ] Só falta trocar o subdomínio `.workers.dev` da conta
-   Cloudflare (Workers & Pages → Overview → mudar subdomínio) pra tirar
-   o `independenciacalculada` de vez — nesse ponto não sobra nada rodando
-   sob o subdomínio antigo pra quebrar. Eu atualizo o front-end mais uma
-   vez pra bater com a URL final depois da troca.
+7. [x] Subdomínio `.workers.dev` da conta trocado pelo usuário:
+   `independenciacalculada` → `dinheiroempauta`. URLs finais:
+   `https://dinheiro-em-pauta-likes.dinheiroempauta.workers.dev` e
+   `https://dinheiro-em-pauta-comments.dinheiroempauta.workers.dev`.
+   Front-end (`LIKES_API`, `data-comments-api`, `connect-src` do CSP em
+   todas as páginas) e os `DEPLOY.md` dos dois Workers atualizados pra
+   bater com a URL final. **Fase 2 concluída por completo.**
 
 ### Fase 3 — Domínio + infraestrutura que já tinha checklist mapeada
 Reaproveita o checklist que já existe em `internal/BACKLOG.md`

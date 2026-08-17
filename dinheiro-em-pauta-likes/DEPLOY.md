@@ -25,16 +25,16 @@ wrangler deploy
 ```
 
 Anota a URL que aparece no final (deve ser
-`https://dinheiro-em-pauta-likes.independenciacalculada.workers.dev`).
+`https://dinheiro-em-pauta-likes.dinheiroempauta.workers.dev`).
 
 ## 3. Testar
 
 ```
-curl "https://dinheiro-em-pauta-likes.independenciacalculada.workers.dev/likes?slug=pwr-carteira-fire"
+curl "https://dinheiro-em-pauta-likes.dinheiroempauta.workers.dev/likes?slug=pwr-carteira-fire"
 ```
 Resposta esperada: `{"slug":"pwr-carteira-fire","count":0}`.
 
 ```
-curl -X POST "https://dinheiro-em-pauta-likes.independenciacalculada.workers.dev/likes?slug=pwr-carteira-fire" -H "Origin: https://dinheiroempauta.com.br"
+curl -X POST "https://dinheiro-em-pauta-likes.dinheiroempauta.workers.dev/likes?slug=pwr-carteira-fire" -H "Origin: https://dinheiroempauta.com.br"
 ```
 Resposta esperada: `{"slug":"pwr-carteira-fire","count":1}`.
