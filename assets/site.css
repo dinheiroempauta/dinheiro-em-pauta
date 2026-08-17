@@ -460,7 +460,7 @@ blockquote.pull cite{ display:block; font-family: var(--font-mono); font-style: 
 .comment-form{ border: 1px solid var(--line-strong); background: var(--paper-raised); border-radius: 3px; padding: 22px 24px; margin-bottom: 32px; }
 .comment-form-row{ display: flex; gap: 18px; flex-wrap: wrap; margin-bottom: 16px; }
 .comment-form-field{ flex: 1 1 220px; display: flex; flex-direction: column; gap: 7px; }
-.comment-form-field:last-of-type{ margin-bottom: 16px; }
+.comment-form-field:last-of-type{ margin-bottom: 22px; }
 /* input[type=text]/[type=email] já herdam padding/borda/min-height 44px
    da regra global (ver "Base de formulário" acima) — só a textarea
    precisa de regra própria aqui. */
@@ -470,10 +470,24 @@ blockquote.pull cite{ display:block; font-family: var(--font-mono); font-style: 
 }
 .comment-form textarea:focus, .comment-form input:focus{ outline: 2px solid var(--gold); outline-offset: 2px; border-color: var(--green); }
 .comment-form-actions{ display: flex; align-items: center; justify-content: space-between; gap: 14px; flex-wrap: wrap; margin-top: 4px; }
+/* .newsletter-note.success/.error (compartilhado com a newsletter) só dá
+   cor+negrito ao texto — pouco chamativo pra confirmar que um comentário
+   foi enviado de verdade. Reforça como um banner, igual ao padrão de
+   .note usado em artigos. */
 .comment-form .comment-status{ flex-basis: 100%; margin: 10px 0 0; }
+.comment-form .comment-status.success, .comment-form .comment-status.error{
+  padding: 10px 14px; border-radius: 3px; font-size: 13px;
+}
+.comment-form .comment-status.success{ background: var(--green); color: var(--paper-raised); }
+.comment-form .comment-status.error{ background: var(--brick); color: var(--paper-raised); }
 .comment-form.comment-reply-form{ margin: 14px 0 0; padding: 18px 20px; }
 
-.comment-list{ display: flex; flex-direction: column; }
+.comment-list{
+  display: flex; flex-direction: column; border: 1px solid var(--line-strong); border-radius: 3px; padding: 4px 22px;
+}
+.comment-list:empty, .comment-list:has(> .comment-empty:only-child), .comment-list:has(> .comment-loading:only-child){
+  border: none; padding: 0;
+}
 .comment-item{ padding: 18px 0; border-bottom: 1px solid var(--line); }
 .comment-item:last-child{ border-bottom: none; }
 .comment-item-header{ display: flex; align-items: baseline; gap: 10px; margin-bottom: 8px; flex-wrap: wrap; }
@@ -493,10 +507,17 @@ blockquote.pull cite{ display:block; font-family: var(--font-mono); font-style: 
 .comment-replies{ margin: 14px 0 0 22px; padding-left: 18px; border-left: 2px solid var(--line); display: flex; flex-direction: column; gap: 4px; }
 .comment-replies .comment-item{ padding: 14px 0; }
 .comment-replies .comment-item:first-child{ padding-top: 0; }
+/* Resposta sem limite de profundidade: a partir do 2º nível o recuo some
+   (usa o mesmo valor pro 2º, 3º, 4º... nível, em vez de somar 22px a cada
+   nível) — senão uma conversa de 4-5 respostas empurra o texto quase todo
+   pra fora da tela, principalmente no mobile. */
+.comment-replies .comment-replies{ margin-left: 14px; padding-left: 12px; }
 .comment-empty, .comment-loading{ color: var(--muted); font-size: 14px; padding: 10px 0; }
 @media (max-width: 480px){
   .comment-replies{ margin-left: 10px; padding-left: 12px; }
+  .comment-replies .comment-replies{ margin-left: 8px; padding-left: 8px; }
   .comment-form{ padding: 18px 16px; }
+  .comment-list{ padding: 4px 14px; }
 }
 
 /* ---------- Melhorias de leitura ---------- */

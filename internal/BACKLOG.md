@@ -74,6 +74,21 @@ Pages e precisam ser atualizados assim que o domínio próprio estiver ativo:
 
 ## Concluído
 
+- [x] **Revisão de UX do sistema de comentários (rodada 2)** — depois de
+      testar o painel/comentários publicados de verdade, usuário reportou
+      6 pontos: confirmação corrigida (`window.confirm` antes de
+      "Rejeitar" no painel — a ação apaga o comentário sem desfazer);
+      campo de token com foco automático; contador "N pendentes" no
+      painel; espaçamento entre a caixa de texto e o botão "Comentar"
+      aumentado; lista pública de comentários ganhou um card com
+      borda/padding (antes era só texto solto); **bug real corrigido** —
+      o aviso "Comentário enviado" nunca tinha a classe `success`
+      aplicada (só `error` era removida), por isso sempre aparecia no
+      estilo cinza padrão em vez do banner verde; e resposta deixou de
+      ter limite de 1 nível (Worker e front-end agora aceitam
+      resposta-de-resposta-de-resposta, com indentação reduzida nos
+      níveis mais fundos pra não estourar em mobile). *(17 ago. 2026)*
+
 - [x] **Painel de moderação HTML pros comentários** — `GET /admin` no
       Worker `independencia-comments`, servindo uma página HTML/JS
       auto-contida (login por token salvo em localStorage, lista de
