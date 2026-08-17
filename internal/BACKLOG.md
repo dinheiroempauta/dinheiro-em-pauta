@@ -16,16 +16,6 @@ para a seção "Concluído", no fim, com a data).
       enquanto o `canonical` já aponta pro domínio final (comportamento
       esperado, documentado no checklist de novo artigo).
 
-- [ ] **Deploy do Worker de comentários (`independencia-comments`)** — o
-      código está pronto (`cloudflare-worker-comments/`), substituindo o
-      Cusdis (removido de todas as páginas: código já não referencia
-      `cusdis_thread`/`CUSDIS_LOCALE`/`cusdis.com` em lugar nenhum). Falta
-      rodar os comandos de infraestrutura na conta Cloudflare (`wrangler d1
-      create`, secrets, `wrangler deploy`) — passo a passo completo em
-      `cloudflare-worker-comments/DEPLOY.md`. Até isso rodar, os
-      formulários de comentário nas páginas ficam sem back-end (erro de
-      conexão ao tentar comentar). *(17 ago. 2026)*
-
 - [ ] **Painel de moderação HTML pros comentários** — hoje a moderação é só
       via `curl` nos endpoints `/admin/pending` e `/admin/moderate`, ou
       direto no console D1 do dashboard da Cloudflare (ver
@@ -91,6 +81,20 @@ Pages e precisam ser atualizados assim que o domínio próprio estiver ativo:
 ---
 
 ## Concluído
+
+- [x] **Comentários próprios via Cloudflare Worker (substituiu o Cusdis)** —
+      o Cusdis hospedado renderiza tudo em iframe de outra origem, sem CSS
+      customizável no plano gratuito; depois de dois rounds de ajuste fino
+      (PRs #78/#79) o desalinhamento visual continuou porque a limitação é
+      estrutural. Trocado por comentários renderizados direto no HTML do
+      site (`.comment-widget`), consumindo a API do novo Worker
+      `independencia-comments` (D1 + fetch handler, mesmo padrão do worker
+      de likes). Deploy feito pelo usuário via `wrangler` (D1 criado,
+      schema aplicado, secrets `ADMIN_TOKEN`/`IP_SALT` configurados, Worker
+      publicado em `independencia-comments.independenciacalculada.workers.dev`
+      — bateu exatamente com a URL já configurada no código). Ciclo
+      completo testado via curl: comentar → fica pendente → aprovar →
+      aparece público → confirmado. *(17 ago. 2026)*
 
 - [x] **Página "Sobre" criada** — `/sobre/`, inspirada em blogs FIRE
       anônimos de referência (AA40, Mad Fientist): mantém anonimato,
