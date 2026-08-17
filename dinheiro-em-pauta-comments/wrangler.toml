@@ -7,4 +7,4 @@ compatibility_date = "2024-11-01"
 [[d1_databases]]
 binding = "DB"
 database_name = "dinheiro-em-pauta-comments-db"
-database_id = "COLE_AQUI_O_DATABASE_ID"
+database_id = "40b32bd0-a0fd-4d86-9809-25bec0bd9c25"
