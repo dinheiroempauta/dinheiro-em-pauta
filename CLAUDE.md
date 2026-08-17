@@ -146,3 +146,42 @@ leitor que chegou sem contexto não se perder. Gerar esse bloco a partir
 do conteúdo do próprio artigo faz parte do processo de construção, sem
 precisar ser pedido — mesmo espírito da estimativa de tempo de leitura
 acima.
+
+## Toda página nova herda o design system compartilhado — não é opcional
+
+`assets/site.css`, `assets/site.js` e `assets/theme-init.js` existem
+justamente para que nenhuma página precise reimplementar nada disso. Um
+bug real já aconteceu por pular esse passo: 9 das 12 páginas do site
+ficaram sem `<script src=".../assets/site.js"></script>`, e o toggle de
+tema/menu simplesmente não funcionava nelas — silenciosamente, sem erro
+visível, só descoberto porque o usuário reportou "às vezes funciona, às
+vezes não". Antes de dar por pronta qualquer página nova (artigo,
+simulador ou outra), confirmar — não assumir — que ela tem, na ordem:
+
+1. `<script src=".../assets/theme-init.js"></script>` no `<head>`, logo
+   após a viewport meta, antes de `site.css`
+2. `<link rel="stylesheet" href=".../assets/site.css">`
+3. `<script src=".../assets/site.js"></script>` no fim do `<body>`
+4. O masthead sticky padrão (wordmark + toggle de tema + menu compacto),
+   copiado de uma página existente — nunca reimplementado do zero
+
+Para simuladores/calculadoras novas especificamente, verificar também:
+- O bloco de resultado dinâmico tem `role="status" aria-live="polite"`
+  (leitor de tela precisa ser avisado quando o número muda — sem isso a
+  calculadora é muda para quem depende de leitor de tela)
+- Todo campo numérico com valor inválido marca `aria-invalid="true"` e
+  mostra o erro inline (padrão em `simuladores/pu-renda-mais/index.html`
+  e `pu-educa-mais/index.html`), em vez de só deixar o resultado cair
+  silenciosamente para "—"
+- Inputs e botões usam as classes compartilhadas (`.field input`, `.btn`)
+  em vez de CSS local — isso já garante os 44px de alvo de toque
+- Nenhuma cor hardcoded (hex direto) fora dos tokens de `site.css` — é
+  o que quebra o dark mode automático
+- Formatação de número usa `toLocaleString('pt-BR', {...})`, nunca
+  `.toFixed().replace('.', ',')` manual
+- Se o cálculo depender de dias úteis/feriados, reusar
+  `assets/feriados.js` em vez de duplicar a lista
+
+Isso vale tanto para eu gerar do zero quanto para eu revisar uma página
+que já foi criada — o checklist acima é o que teria pego o bug do
+toggle antes de virar um problema em produção.
