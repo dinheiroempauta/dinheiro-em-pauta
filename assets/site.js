@@ -316,6 +316,15 @@
       var clone = template.cloneNode(true);
       clone.classList.add('comment-reply-form');
       clone.dataset.parentId = String(parentId);
+      // cloneNode copia id/for literalmente — sem isso, um clique no
+      // <label> de um formulário de resposta focava (e rolava a página
+      // até) o campo do formulário PRINCIPAL lá no topo, porque os dois
+      // ficavam com o mesmo id e o navegador segue sempre o primeiro do
+      // documento. Sufixo pelo id do comentário respondido garante um id
+      // novo mesmo com várias respostas abertas ao mesmo tempo.
+      var suffix = '-reply-' + parentId;
+      clone.querySelectorAll('[id]').forEach(function(el){ el.id += suffix; });
+      clone.querySelectorAll('label[for]').forEach(function(el){ el.htmlFor += suffix; });
       clone.querySelectorAll('input,textarea').forEach(function(el){
         if (el.type === 'checkbox') { el.checked = false; } else { el.value = ''; }
       });
