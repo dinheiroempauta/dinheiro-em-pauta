@@ -51,27 +51,26 @@ falamos sobre finanças, investimentos, economia e FIRE."**
       mudar — o site já serve do domínio próprio (`dinheiroempauta.com.br`),
       não do caminho do repositório no GitHub Pages.
 
-### Fase 2 — Workers da Cloudflare (risco real, cutover cuidadoso)
+### Fase 2 — Workers da Cloudflare (risco real, cutover cuidadoso) — em andamento
 Não dá pra renomear um Worker existente — a estratégia é **criar novo em
 paralelo, testar, só depois cortar**:
-1. Eu crio `cloudflare-worker-comments` → novo diretório com
-   `wrangler.toml` apontando pro nome novo (`dinheiro-em-pauta-comments`)
-   e `cloudflare-worker` → `dinheiro-em-pauta-likes`. Código-fonte
-   idêntico, só nome/URL mudam.
-2. Usuário roda os `wrangler d1 create` / `wrangler kv namespace create`
-   NOVOS (bancos novos, não reaproveita os antigos — ver ponto de dados
-   abaixo) e os deploys, com os secrets de novo
-   (`ADMIN_TOKEN`/`IP_SALT`/`RESEND_API_KEY`).
-3. **Dados existentes** (comentários já aprovados, contador de curtidas):
-   usuário decide se migra manualmente (`wrangler d1 execute` com
-   `INSERT`, `wrangler kv key put` pros likes) ou aceita começar do zero
-   — pouco conteúdo hoje, então começar do zero é razoável, mas a decisão
-   é dele.
-4. Só depois que os Workers novos estiverem testados e no ar, eu troco
+1. [x] Diretórios novos criados: `dinheiro-em-pauta-comments/` (nome
+   `dinheiro-em-pauta-comments`) e `dinheiro-em-pauta-likes/` (nome
+   `dinheiro-em-pauta-likes`). Código-fonte idêntico ao dos antigos, só
+   nome/config mudam. `DEPLOY.md` próprio em cada pasta. Decisão do
+   usuário em 17/08/2026: **não migrar dados**, os dois nascem vazios.
+2. [ ] Usuário roda os `wrangler d1 create` / `wrangler kv namespace create`
+   NOVOS e os deploys, com os secrets de novo
+   (`ADMIN_TOKEN`/`IP_SALT`/`RESEND_API_KEY`) — passo a passo em
+   `dinheiro-em-pauta-comments/DEPLOY.md` e `dinheiro-em-pauta-likes/DEPLOY.md`.
+3. [ ] Usuário testa os Workers novos via `curl` (comandos já nos DEPLOY.md).
+4. [ ] Só depois que os Workers novos estiverem testados e no ar, eu troco
    `LIKES_API`/`data-comments-api` no front-end pras URLs novas, num PR
    único.
-5. Usuário apaga os Workers antigos (`wrangler delete`) só depois de
-   confirmar que os novos estão 100% funcionando — nunca antes.
+5. [ ] Usuário apaga os Workers antigos (`wrangler delete` nas pastas
+   `cloudflare-worker/` e `cloudflare-worker-comments/`) só depois de
+   confirmar que os novos estão 100% funcionando — nunca antes. Depois
+   disso, eu removo essas duas pastas antigas do repositório.
 
 ### Fase 3 — Domínio + infraestrutura que já tinha checklist mapeada
 Reaproveita o checklist que já existe em `internal/BACKLOG.md`
