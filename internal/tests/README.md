@@ -32,6 +32,10 @@ Duas formas de carregar:
   (taxa real líquida de um Tesouro IPCA+, o ponto que o artigo defende).
 - `pu-renda-mais.test.js` — contagem de dias úteis e regras de calendário
   do simulador de PU (`pu-renda-mais`; `pu-educa-mais` usa a mesma lógica).
+- `sync-cards.test.js` — testa `internal/tools/sync-cards.js` (a
+  ferramenta que confere/corrige eyebrow, título, data e tempo de leitura
+  dos cards contra o artigo real) contra um fixture temporário isolado,
+  nunca contra o repositório de verdade, mesmo em modo `--apply`.
 
 Não cobre (ainda): `quanto-posso-retirar-aposentadoria`,
 `pwr-carteira-fire`, `montar-carteira-estudo-de-caso`,
