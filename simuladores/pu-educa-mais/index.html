@@ -25,7 +25,7 @@
 <meta name="twitter:title" content="Simulador de PU — Tesouro Educa+ — Independência Calculada">
 <meta name="twitter:description" content="Simule o Preço Unitário (PU) do Tesouro Educa+ a partir da taxa real desejada — mesma metodologia ANBIMA de fluxo de caixa descontado, cálculo ao vivo no navegador.">
 <meta name="twitter:image" content="https://independenciacalculada-droid.github.io/independencia-calculada/assets/og-cover-simuladores.png">
-<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://cloud.umami.is https://cusdis.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data:; connect-src 'self' https://independencia-likes.independenciacalculada.workers.dev https://api.web3forms.com https://cusdis.com; frame-src https://cusdis.com; form-action 'self' https://buttondown.com; base-uri 'self';">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://cloud.umami.is; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data:; connect-src 'self' https://independencia-likes.independenciacalculada.workers.dev https://independencia-comments.independenciacalculada.workers.dev https://api.web3forms.com; form-action 'self' https://buttondown.com; base-uri 'self';">
 <meta name="theme-color" content="#1E6B4F">
 <meta name="color-scheme" content="light dark">
 <link rel="icon" type="image/png" href="../../favicon.png">
@@ -246,29 +246,33 @@ table.schedule-table tbody tr:last-child td{ border-bottom: none; font-weight: 6
   <div class="comments-section">
     <div class="cap">Comentários</div>
     <p class="comments-note">Deixe seu comentário abaixo — ele passa por moderação manual antes de aparecer publicamente.</p>
-    <div id="cusdis_thread"
-      data-host="https://cusdis.com"
-      data-app-id="34b2bb82-3331-4dc5-a4cb-3d71f0c4138d"
-      data-page-id="pu-educa-mais"
-      data-page-url="https://independenciacalculada-droid.github.io/independencia-calculada/simuladores/pu-educa-mais/"
-      data-page-title="Simulador de PU — Tesouro Educa+"></div>
-    <script>
-      window.CUSDIS_LOCALE = {
-        "powered_by": "Comentários via Cusdis",
-        "post_comment": "Comentar",
-        "loading": "Carregando",
-        "email": "E-mail (opcional)",
-        "nickname": "Nome de usuário (anonimato)",
-        "reply_placeholder": "Escreva sua resposta...",
-        "reply_btn": "Responder",
-        "sending": "Enviando...",
-        "mod_badge": "Autor",
-        "content_is_required": "O comentário não pode ficar em branco",
-        "nickname_is_required": "Informe um nome de usuário",
-        "comment_has_been_sent": "Comentário enviado — ele passa por moderação antes de aparecer publicamente"
-      };
-    </script>
-    <script async defer src="https://cusdis.com/js/cusdis.es.js" integrity="sha384-K8JQBqTnKbFxb1EJ2OmQbJzrCtUjB4unTDO9yt8PQpm2Vyk+IFYeCQzl5founzmx" crossorigin="anonymous"></script>
+
+    <div class="comment-widget" data-slug="pu-educa-mais" data-comments-api="https://independencia-comments.independenciacalculada.workers.dev">
+      <form class="comment-form">
+        <div class="comment-form-row">
+          <div class="comment-form-field">
+            <label for="c-nickname-pu-educa-mais" class="newsletter-label">Nome de usuário (anonimato)</label>
+            <input type="text" id="c-nickname-pu-educa-mais" name="nickname" maxlength="60" required>
+          </div>
+          <div class="comment-form-field">
+            <label for="c-email-pu-educa-mais" class="newsletter-label">E-mail (opcional)</label>
+            <input type="email" id="c-email-pu-educa-mais" name="email" maxlength="120">
+          </div>
+        </div>
+        <div class="comment-form-field">
+          <label for="c-message-pu-educa-mais" class="newsletter-label">Escreva seu comentário...</label>
+          <textarea id="c-message-pu-educa-mais" name="message" maxlength="2000" required rows="4"></textarea>
+        </div>
+        <input type="checkbox" name="botcheck" class="suggest-honeypot" tabindex="-1" autocomplete="off" aria-hidden="true">
+        <div class="comment-form-actions">
+          <span class="suggest-counter comment-counter">2000 caracteres restantes</span>
+          <button type="submit" class="btn btn-primary">Comentar</button>
+        </div>
+        <p class="newsletter-note comment-status" hidden></p>
+      </form>
+
+      <div class="comment-list" aria-live="polite"></div>
+    </div>
   </div>
 
 </main>

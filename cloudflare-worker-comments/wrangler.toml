@@ -1,0 +1,10 @@
+name = "independencia-comments"
+main = "src/index.js"
+compatibility_date = "2024-11-01"
+
+# Depois de rodar `wrangler d1 create independencia-comments-db`,
+# cole aqui o "database_id" que o comando devolver.
+[[d1_databases]]
+binding = "DB"
+database_name = "independencia-comments-db"
+database_id = "fd8b9dcf-c5d0-4ecd-835a-fa78ace1e3f9"

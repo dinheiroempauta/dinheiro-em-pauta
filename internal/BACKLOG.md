@@ -16,6 +16,14 @@ para a seção "Concluído", no fim, com a data).
       enquanto o `canonical` já aponta pro domínio final (comportamento
       esperado, documentado no checklist de novo artigo).
 
+- [ ] **Painel de moderação HTML pros comentários** — hoje a moderação é só
+      via `curl` nos endpoints `/admin/pending` e `/admin/moderate`, ou
+      direto no console D1 do dashboard da Cloudflare (ver
+      `cloudflare-worker-comments/DEPLOY.md`, seção 6). Decisão consciente
+      de adiar a paginazinha HTML pra reduzir o escopo da primeira entrega
+      — próximo passo natural depois que o fluxo de comentar/exibir estiver
+      validado em produção. *(17 ago. 2026)*
+
 ## ⚠️ Checklist para quando migrar pro domínio próprio
 
 Vários itens já configurados hoje apontam pro endereço temporário do GitHub
@@ -28,8 +36,6 @@ Pages e precisam ser atualizados assim que o domínio próprio estiver ativo:
       o domínio final, então não precisa mexer no código; só confirmar que
       segue funcionando depois da troca. Confirmado em 12 ago, direto no
       arquivo: `ALLOWED_ORIGINS` já lista os dois domínios.
-- [ ] **Cusdis** — atualizar a URL do site cadastrada no painel (hoje está
-      com o endereço do GitHub Pages).
 - [ ] **Google Search Console** — verificar a propriedade de novo com o
       domínio final e reenviar o sitemap.xml.
 - [ ] **sitemap.xml e feed.xml** — trocar todas as URLs internas do
@@ -75,6 +81,20 @@ Pages e precisam ser atualizados assim que o domínio próprio estiver ativo:
 ---
 
 ## Concluído
+
+- [x] **Comentários próprios via Cloudflare Worker (substituiu o Cusdis)** —
+      o Cusdis hospedado renderiza tudo em iframe de outra origem, sem CSS
+      customizável no plano gratuito; depois de dois rounds de ajuste fino
+      (PRs #78/#79) o desalinhamento visual continuou porque a limitação é
+      estrutural. Trocado por comentários renderizados direto no HTML do
+      site (`.comment-widget`), consumindo a API do novo Worker
+      `independencia-comments` (D1 + fetch handler, mesmo padrão do worker
+      de likes). Deploy feito pelo usuário via `wrangler` (D1 criado,
+      schema aplicado, secrets `ADMIN_TOKEN`/`IP_SALT` configurados, Worker
+      publicado em `independencia-comments.independenciacalculada.workers.dev`
+      — bateu exatamente com a URL já configurada no código). Ciclo
+      completo testado via curl: comentar → fica pendente → aprovar →
+      aparece público → confirmado. *(17 ago. 2026)*
 
 - [x] **Página "Sobre" criada** — `/sobre/`, inspirada em blogs FIRE
       anônimos de referência (AA40, Mad Fientist): mantém anonimato,
