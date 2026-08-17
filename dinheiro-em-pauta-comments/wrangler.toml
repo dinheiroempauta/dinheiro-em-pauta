@@ -1,0 +1,10 @@
+name = "dinheiro-em-pauta-comments"
+main = "src/index.js"
+compatibility_date = "2024-11-01"
+
+# Depois de rodar `wrangler d1 create dinheiro-em-pauta-comments-db`,
+# cole aqui o "database_id" que o comando devolver.
+[[d1_databases]]
+binding = "DB"
+database_name = "dinheiro-em-pauta-comments-db"
+database_id = "COLE_AQUI_O_DATABASE_ID"
