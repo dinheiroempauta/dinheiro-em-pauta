@@ -122,15 +122,26 @@ segue um padrão já identificado:
 - E-mail de contato (`independenciacalculada@gmail.com` →
   `dinheiroempauta.admin@gmail.com`) onde aparecer no código/docs
 
-### Fase 5 — Identidade visual (conteúdo, não código)
-- **Favicon**: monograma "IC" não faz mais sentido — preciso de um
-  prompt novo (mesmo processo do favicon atual) pra gerar um monograma
-  "DP" ou símbolo equivalente; usuário gera a imagem e sobe o arquivo,
-  eu ajusto nada no código (já referencia `/favicon.png` por nome fixo)
-- **og-images dos 3 artigos**: têm o nome do blog desenhado visualmente
-  dentro da imagem — precisam ser regeneradas (mesmo processo já usado:
-  prompt padronizado + geração externa pelo usuário), não é troca de
-  texto no HTML
+### Fase 5 — Identidade visual ✅ concluída em 17/08/2026
+- [x] **Favicon**: monograma "DP" (mesma paleta/estilo do "IC" anterior —
+      fundo `--green-deep`, letras `--gold-soft`, traço `--gold`) gerado
+      via Chromium headless + Fraunces, substituindo `favicon.png` na
+      raiz (nome do arquivo não mudou, nenhuma mudança de código
+      necessária).
+- [x] **og-images dos artigos**: eram 4, não 3 como este documento e o
+      `BACKLOG.md` registravam originalmente — `og-cover-montar-carteira-
+      estudo-de-caso.png` também tinha o wordmark antigo e só foi
+      encontrada ao conferir os arquivos publicados. As 4 regeneradas
+      (mesma composição/H1/motivo gráfico já aprovados, só o wordmark
+      trocado pra "Dinheiro em Pauta"), renomeadas com sufixo de versão
+      novo (cache de crawlers, ver `BACKLOG.md`), e `og:image`/
+      `twitter:image`/JSON-LD atualizados nos 4 artigos: `og-cover-pwr-
+      carteira-fire-v3.png`, `og-cover-ipca-hiperinflacao-v3.png`,
+      `og-cover-quanto-posso-retirar-v2.png`, `og-cover-montar-carteira-
+      estudo-de-caso-v2.png`.
+
+**Rebrand "Independência Calculada" → "Dinheiro em Pauta" concluído por
+completo — todas as 5 fases feitas.**
 
 ## O que eu NÃO vou tocar
 - Conteúdo/tom dos 3 artigos técnicos já publicados — decisão do usuário
