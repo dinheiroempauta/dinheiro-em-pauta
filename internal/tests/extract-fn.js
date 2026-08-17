@@ -61,17 +61,27 @@ function extractRaw(html, startMarker, endMarker) {
 /**
  * Como loadFunctions, mas com um trecho de código extra ("prelude") — para
  * funções puras que dependem de uma constante de módulo (ex: uma tabela de
- * feriados) em vez de só dos próprios parâmetros.
+ * feriados) em vez de só dos próprios parâmetros. O prelude pode vir de um
+ * arquivo diferente do que tem as funções (ex: uma tabela compartilhada em
+ * assets/, usada por vários simuladores) via `preludeFile`; por padrão usa
+ * o mesmo arquivo das funções. `extraPrelude` permite colar uma linha extra
+ * (ex: um alias de nome de variável) sem precisar de outro marcador.
  */
-function loadFunctionsWithPrelude(htmlRelativePath, preludeMarkers, fnNames) {
+function loadFunctionsWithPrelude(htmlRelativePath, preludeMarkers, fnNames, options) {
+  const { preludeFile, extraPrelude } = options || {};
   const htmlPath = path.join(__dirname, '..', '..', htmlRelativePath);
   const html = fs.readFileSync(htmlPath, 'utf-8');
-  const prelude = extractRaw(html, preludeMarkers[0], preludeMarkers[1]);
+  const preludeHtml = preludeFile
+    ? fs.readFileSync(path.join(__dirname, '..', '..', preludeFile), 'utf-8')
+    : html;
+  const prelude = extractRaw(preludeHtml, preludeMarkers[0], preludeMarkers[1]);
   const sources = fnNames.map((name) => extractFunctionSource(html, name));
   const exportsList = fnNames.map((name) => `module.exports.${name} = ${name};`).join('\n');
   const sandbox = { module: { exports: {} } };
   vm.createContext(sandbox);
-  const script = new vm.Script(`${prelude}\n\n${sources.join('\n\n')}\n\n${exportsList}`);
+  const script = new vm.Script(
+    `${prelude}\n${extraPrelude || ''}\n\n${sources.join('\n\n')}\n\n${exportsList}`
+  );
   script.runInContext(sandbox);
   return sandbox.module.exports;
 }

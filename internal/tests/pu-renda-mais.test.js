@@ -8,8 +8,9 @@ const { loadFunctionsWithPrelude } = require('./extract-fn');
 
 const { dateKey, isBiz, parseISO, sameDay, addMonths, businessDaysTo } = loadFunctionsWithPrelude(
   'simuladores/pu-renda-mais/index.html',
-  ['var HOLIDAYS_RAW = [', 'var HOLIDAYS = new Set(HOLIDAYS_RAW);'],
-  ['dateKey', 'isBiz', 'parseISO', 'sameDay', 'addMonths', 'businessDaysTo']
+  ['var IC_HOLIDAYS_RAW = [', 'var IC_HOLIDAYS = new Set(IC_HOLIDAYS_RAW);'],
+  ['dateKey', 'isBiz', 'parseISO', 'sameDay', 'addMonths', 'businessDaysTo'],
+  { preludeFile: 'assets/feriados.js', extraPrelude: 'var HOLIDAYS = IC_HOLIDAYS;' }
 );
 
 test('parseISO / dateKey / sameDay são consistentes entre si', () => {
