@@ -169,7 +169,7 @@ idioma no automático.
 ## 5. Fora do `index.html` do artigo
 
 - [ ] Gerar a **og:image** (1200×630) seguindo
-      `internal/prompt-og-image-independencia-calculada.md` à risca —
+      `internal/prompt-og-image-dinheiro-em-pauta.md` à risca —
       nome do arquivo tem que bater exatamente com o `og:image` do HTML
 - [ ] Adicionar o **card** do artigo em dois lugares: a vitrine da home
       (`index.html`, `.vitrine-track`, dentro de `<a class="vitrine-card">`)
@@ -198,7 +198,7 @@ idioma no automático.
       pro sistema), curtir funcionando, compartilhar com URL/slug certos,
       comentários carregando o thread certo (`data-page-id`), TOC
       sincronizado com as seções reais
-- [ ] Rodar contra `internal/prompt-og-image-independencia-calculada.md`
+- [ ] Rodar contra `internal/prompt-og-image-dinheiro-em-pauta.md`
       → seção 7 (checklist específico da imagem OG)
 - [ ] Se o domínio próprio ainda não estiver ativo, confirmar que os itens
       gerados aqui entram também no checklist de migração do
