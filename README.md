@@ -96,10 +96,11 @@ fila de moderação manual), mas com controle visual total.
 1. Siga o passo a passo completo em `cloudflare-worker-comments/DEPLOY.md`
    (`wrangler d1 create`, secrets, `wrangler deploy`).
 2. Depois do deploy, todo comentário novo entra como `pending` — aprove ou
-   rejeite via `curl` nos endpoints `/admin/*` (comandos exatos no
-   `DEPLOY.md`) ou direto no console D1 do dashboard da Cloudflare. Não
-   existe painel de moderação HTML ainda (pendência conhecida, ver
-   `internal/BACKLOG.md`).
+   rejeite no painel próprio em
+   `https://independencia-comments.independenciacalculada.workers.dev/admin`
+   (login com o `ADMIN_TOKEN` configurado no deploy). Também dá pra usar
+   `curl` nos endpoints `/admin/*` (comandos exatos no `DEPLOY.md`) ou o
+   console D1 do dashboard da Cloudflare, se preferir.
 3. O leitor não precisa de conta, só digita nome (e e-mail opcional) —
    igual ao comportamento anterior.
 

@@ -16,14 +16,6 @@ para a seção "Concluído", no fim, com a data).
       enquanto o `canonical` já aponta pro domínio final (comportamento
       esperado, documentado no checklist de novo artigo).
 
-- [ ] **Painel de moderação HTML pros comentários** — hoje a moderação é só
-      via `curl` nos endpoints `/admin/pending` e `/admin/moderate`, ou
-      direto no console D1 do dashboard da Cloudflare (ver
-      `cloudflare-worker-comments/DEPLOY.md`, seção 6). Decisão consciente
-      de adiar a paginazinha HTML pra reduzir o escopo da primeira entrega
-      — próximo passo natural depois que o fluxo de comentar/exibir estiver
-      validado em produção. *(17 ago. 2026)*
-
 ## ⚠️ Checklist para quando migrar pro domínio próprio
 
 Vários itens já configurados hoje apontam pro endereço temporário do GitHub
@@ -81,6 +73,15 @@ Pages e precisam ser atualizados assim que o domínio próprio estiver ativo:
 ---
 
 ## Concluído
+
+- [x] **Painel de moderação HTML pros comentários** — `GET /admin` no
+      Worker `independencia-comments`, servindo uma página HTML/JS
+      auto-contida (login por token salvo em localStorage, lista de
+      pendentes, botões Aprovar/Rejeitar). Sem essa página, moderar exigia
+      dois comandos `curl` por comentário — pedido do usuário depois de
+      testar o fluxo por terminal na prática. `nickname`/`message`
+      renderizados via `textContent` (nunca `innerHTML`), pra um comentário
+      malicioso não conseguir roubar o token do admin. *(17 ago. 2026)*
 
 - [x] **Comentários próprios via Cloudflare Worker (substituiu o Cusdis)** —
       o Cusdis hospedado renderiza tudo em iframe de outra origem, sem CSS
