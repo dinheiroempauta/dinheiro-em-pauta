@@ -51,7 +51,18 @@ de escrever o HTML do zero.
 - [ ] JSON-LD **BreadcrumbList** (Home → categoria → artigo)
 - [ ] JSON-LD **FAQPage** — se o conteúdo tiver perguntas respondíveis de
       forma autocontida (a maioria dos artigos técnicos tem 2-4 boas
-      candidatas); se não fizer sentido para este artigo, ok pular
+      candidatas); se não fizer sentido para este artigo, ok pular. Snippet:
+      ```html
+      <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "FAQPage",
+        "mainEntity": [
+          {"@type": "Question", "name": "...", "acceptedAnswer": {"@type": "Answer", "text": "..."}}
+        ]
+      }
+      </script>
+      ```
 - [ ] Fontes: preconnect + preload + stylesheet + `<noscript>` do Google
       Fonts (Fraunces, IBM Plex Sans, IBM Plex Mono) — sempre os 3
 - [ ] Design tokens `:root{}` idênticos aos outros artigos (não redefinir
@@ -117,6 +128,20 @@ de escrever o HTML do zero.
       — conferir com a calculadora de contraste do PageSpeed/DevTools
       antes de usar texto branco sobre tons claros/médios da paleta
 - [ ] `<footer>` padrão
+
+## 3.5 Convenção de nomenclatura no JavaScript
+
+O código de artigo/simulador mistura português e inglês — isso é esperado,
+não é bug, mas segue um padrão:
+
+- **Inglês**: nomes genéricos de infraestrutura de UI, reaproveitáveis em
+  qualquer site (`updateProgress`, `backToTop`, `setCount`, `tooltip`,
+  `handleMove`).
+- **Português**: qualquer coisa do domínio financeiro específico do artigo
+  (`taxaRealLiquida`, `fmtBRL`, `simulateRows`, `taxa_retirada_pct`).
+
+Ao escrever um artigo novo, seguir esse critério em vez de escolher o
+idioma no automático.
 
 ## 4. Scripts no fim do arquivo
 
