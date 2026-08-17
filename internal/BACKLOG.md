@@ -27,25 +27,14 @@ para a seção "Concluído", no fim, com a data).
 
 ## SEO e descoberta
 
-- [ ] **LinkedIn ainda mostra o IPCA borrado** — depois de renomear o
-      arquivo (`og-cover-ipca-hiperinflacao-v2.png`, PR #21), o PWR já
-      veio nítido no LinkedIn Post Inspector, mas o IPCA continuou
-      aparecendo com aspecto de baixa qualidade. Conferido em 13 ago:
-      os dois arquivos (`-v2.png` do PWR e do IPCA) são tecnicamente
-      idênticos (mesma resolução, mesmo modo de cor, sem sinal de
-      corrupção) — não há diferença no arquivo que explique isso. Tudo
-      indica atraso no processamento de miniatura do próprio LinkedIn,
-      não um problema no repositório. Reinspecionar só a URL do IPCA
-      depois de alguns minutos; se persistir por vários dias, investigar
-      de novo.
-
-- [ ] **Home sem imagem de compartilhamento** — o `index.html` nunca teve
-      tag `og:image`/`twitter:image`, e não existe nenhum arquivo de capa
-      pra home em `assets/` (só as 3 dos artigos). Testado em 13 ago no
-      WhatsApp e no LinkedIn Post Inspector: nenhuma imagem aparece ao
-      compartilhar o link da home, só título/descrição. Decisão do
-      usuário em 13 ago: **adiado por enquanto**, sem gerar imagem nova
-      no momento.
+- [ ] **Reinspecionar prévia de compartilhamento no LinkedIn Post
+      Inspector para as 9 og-images regeneradas na Fase 5 do rebrand**
+      (17/08/2026) — todas trocaram de nome (`-v2`/`-v3`), então o cache
+      antigo do LinkedIn não se aplica mais, mas ainda não foram testadas
+      na prática após a regeneração. O item anterior aqui ("LinkedIn
+      ainda mostra o IPCA borrado") ficou obsoleto porque referenciava
+      `og-cover-ipca-hiperinflacao-v2.png`, que nem existe mais — foi
+      renomeado pra `-v3.png` nesta mesma rodada.
 
 ## Distribuição
 
@@ -56,6 +45,14 @@ para a seção "Concluído", no fim, com a data).
 ---
 
 ## Concluído
+
+- [x] **Home sem imagem de compartilhamento** — resolvido como efeito
+      colateral da Fase 5 do rebrand: ao regenerar as og-images de todo
+      o site (favicon "DP" + troca de wordmark), a home passou a ter
+      `og-cover-home-v2.png` com `og:image`/`twitter:image` completos.
+      Ainda falta testar a prévia de compartilhamento na prática (ver
+      item em "SEO e descoberta" acima, que cobre as 9 imagens
+      regeneradas de uma vez). *(17 ago. 2026)*
 
 - [x] **Domínio `dinheiroempauta.com.br` verificado no Resend** — 4
       registros DNS (DKIM, MX, SPF, DMARC) adicionados na Hostinger,
