@@ -42,10 +42,14 @@ falamos sobre finanças, investimentos, economia e FIRE."**
       e o CNAME `www` do DNS já atualizados pro novo endereço
       `dinheiroempauta.github.io`)
 
-### Fase 1 — Repositório GitHub (baixo risco, GitHub redireciona sozinho)
-- Renomear `independencia-calculada` → `dinheiro-em-pauta` (Settings →
-  Repository name). Ação do usuário (não tenho permissão de admin pra
-  isso via API); eu atualizo o remote local depois.
+### Fase 1 — Repositório GitHub ✅ concluída em 17/08/2026
+- [x] Repositório renomeado: `independencia-calculada` → `dinheiro-em-pauta`
+      (feito pelo usuário em Settings → Repository name). `git remote`
+      local confirmado funcionando via redirecionamento automático do
+      GitHub (owner + repo renomeados no mesmo período, redirect encadeado
+      funciona normalmente). Nenhuma referência de código precisava
+      mudar — o site já serve do domínio próprio (`dinheiroempauta.com.br`),
+      não do caminho do repositório no GitHub Pages.
 
 ### Fase 2 — Workers da Cloudflare (risco real, cutover cuidadoso)
 Não dá pra renomear um Worker existente — a estratégia é **criar novo em
