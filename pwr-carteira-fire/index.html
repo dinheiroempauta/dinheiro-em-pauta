@@ -26,6 +26,7 @@
 <meta name="twitter:title" content="Qual é a PWR da minha carteira? Um estudo com 20 anos de dados reais">
 <meta name="twitter:description" content="PWR@90% = 5,16% e PWR@95% = 4,75% ao ano, real — bootstrap estacionário sobre 20 anos de dados reais, com calculadora interativa.">
 <meta name="twitter:image" content="https://independenciacalculada-droid.github.io/independencia-calculada/assets/og-cover-pwr-carteira-fire-v2.png">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://cloud.umami.is https://cusdis.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data:; connect-src 'self' https://independencia-likes.independenciacalculada.workers.dev https://api.web3forms.com https://cusdis.com; frame-src https://cusdis.com; form-action 'self' https://buttondown.com; base-uri 'self';">
 <meta name="theme-color" content="#1E6B4F">
 <link rel="icon" type="image/png" href="../favicon.png">
 <!-- Privacy-friendly analytics by Umami -->
@@ -1525,7 +1526,8 @@ footer{ max-width: var(--maxw); margin: 0 auto; padding: 30px 24px 60px; font-fa
         var v = values[i];
         var cls = v >= 0 ? 'tt-val-pos' : 'tt-val-neg';
         var sign = v >= 0 ? '+' : '';
-        tooltip.innerHTML = '<span class="tt-year">' + labels[i] + ' · CAGR ' + (windowLabelMap[windowKey] || windowKey) + '</span><span class="' + cls + '">' + sign + v.toFixed(2).replace('.', ',') + '%</span>';
+        var ttHtml = '<span class="tt-year">' + labels[i] + ' · CAGR ' + (windowLabelMap[windowKey] || windowKey) + '</span><span class="' + cls + '">' + sign + v.toFixed(2).replace('.', ',') + '%</span>';
+        if (tooltip.dataset.tt !== ttHtml) { tooltip.dataset.tt = ttHtml; tooltip.innerHTML = ttHtml; }
         tooltip.classList.add('visible');
 
         var wrapRect = posAnchor.getBoundingClientRect();
@@ -1617,7 +1619,8 @@ footer{ max-width: var(--maxw); margin: 0 auto; padding: 30px 24px 60px; font-fa
       hoverDot.setAttribute('cy', yPix.toFixed(1));
       hoverDot.setAttribute('opacity', '1');
 
-      tooltip.innerHTML = '<span class="tt-year">Retirada ' + point.taxa_retirada_pct.toFixed(1).replace('.', ',') + '%</span><span class="tt-val-pos">Sucesso ' + point.taxa_sucesso_pct.toFixed(2).replace('.', ',') + '%</span>';
+      var ttHtml = '<span class="tt-year">Retirada ' + point.taxa_retirada_pct.toFixed(1).replace('.', ',') + '%</span><span class="tt-val-pos">Sucesso ' + point.taxa_sucesso_pct.toFixed(2).replace('.', ',') + '%</span>';
+      if (tooltip.dataset.tt !== ttHtml) { tooltip.dataset.tt = ttHtml; tooltip.innerHTML = ttHtml; }
       tooltip.classList.add('visible');
 
       var anchorRect = posAnchor.getBoundingClientRect();
