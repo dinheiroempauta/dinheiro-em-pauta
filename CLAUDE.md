@@ -177,6 +177,17 @@ Para simuladores/calculadoras novas especificamente, verificar também:
   em vez de CSS local — isso já garante os 44px de alvo de toque
 - Nenhuma cor hardcoded (hex direto) fora dos tokens de `site.css` — é
   o que quebra o dark mode automático
+- Todo simulador (não só artigo) precisa do bloco `.engage` (curtir +
+  compartilhar) e `.comments-section` (Cusdis), copiados de um simulador
+  existente (`simuladores/pu-renda-mais/index.html` é a referência) —
+  `data-slug` do botão de curtir, `data-page-id`/`data-page-url`/
+  `data-page-title` do Cusdis e os três links de compartilhar (WhatsApp/
+  LinkedIn/X, repara na URL **codificada** `https%3A//...` dentro do
+  `href`, não só a versão normal) tudo customizado pro slug e caminho
+  completo do simulador (`simuladores/<slug>/`, não só `<slug>/`). Os
+  simuladores não tinham isso até um pedido explícito corrigir os 3
+  existentes — não pule isso silenciosamente como aconteceu com o
+  `site.js` (item acima)
 - Formatação de número usa `toLocaleString('pt-BR', {...})`, nunca
   `.toFixed().replace('.', ',')` manual
 - Se o cálculo depender de dias úteis/feriados, reusar
