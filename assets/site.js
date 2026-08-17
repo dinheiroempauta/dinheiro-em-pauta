@@ -160,7 +160,7 @@
   /* ---------- curtir (artigo) ---------- */
   var likeBtn = document.getElementById('likeBtn');
   if (likeBtn && likeBtn.dataset.slug) {
-    var LIKES_API = 'https://dinheiro-em-pauta-likes.independenciacalculada.workers.dev';
+    var LIKES_API = 'https://dinheiro-em-pauta-likes.dinheiroempauta.workers.dev';
     var slug = likeBtn.dataset.slug;
     var likeCountEl = document.getElementById('likeCount');
     var likeStorageKey = 'liked_' + slug;
