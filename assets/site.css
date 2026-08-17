@@ -460,7 +460,13 @@ blockquote.pull cite{ display:block; font-family: var(--font-mono); font-style: 
 .comment-form{ border: 1px solid var(--line-strong); background: var(--paper-raised); border-radius: 3px; padding: 22px 24px; margin-bottom: 32px; }
 .comment-form-row{ display: flex; gap: 18px; flex-wrap: wrap; margin-bottom: 16px; }
 .comment-form-field{ flex: 1 1 220px; display: flex; flex-direction: column; gap: 7px; }
-.comment-form-field:last-of-type{ margin-bottom: 22px; }
+/* Não usar :last-of-type aqui: ele conta por tag (div), não por classe —
+   o último <div> do formulário é .comment-form-actions, não este campo,
+   então a regra nunca batia em nada (bug real, comprovado por print: o
+   botão "Comentar" ficava colado na textarea mesmo com margem "definida"
+   aqui). .comment-form-row + já mira exatamente o campo da mensagem, que
+   sempre vem logo depois da linha de nome/e-mail. */
+.comment-form-row + .comment-form-field{ margin-bottom: 28px; }
 /* input[type=text]/[type=email] já herdam padding/borda/min-height 44px
    da regra global (ver "Base de formulário" acima) — só a textarea
    precisa de regra própria aqui. */
@@ -469,12 +475,12 @@ blockquote.pull cite{ display:block; font-family: var(--font-mono); font-style: 
   background: var(--paper); color: var(--ink); border: 1px solid var(--line-strong); border-radius: 3px; padding: 12px 14px;
 }
 .comment-form textarea:focus, .comment-form input:focus{ outline: 2px solid var(--gold); outline-offset: 2px; border-color: var(--green); }
-.comment-form-actions{ display: flex; align-items: center; justify-content: space-between; gap: 14px; flex-wrap: wrap; margin-top: 4px; }
+.comment-form-actions{ display: flex; align-items: center; justify-content: space-between; gap: 14px; flex-wrap: wrap; margin-top: 16px; }
 /* .newsletter-note.success/.error (compartilhado com a newsletter) só dá
    cor+negrito ao texto — pouco chamativo pra confirmar que um comentário
    foi enviado de verdade. Reforça como um banner, igual ao padrão de
    .note usado em artigos. */
-.comment-form .comment-status{ flex-basis: 100%; margin: 10px 0 0; }
+.comment-form .comment-status{ flex-basis: 100%; margin: 16px 0 0; }
 .comment-form .comment-status.success, .comment-form .comment-status.error{
   padding: 10px 14px; border-radius: 3px; font-size: 13px;
 }
