@@ -13,14 +13,34 @@ const ALLOWED_ORIGINS = [
   "https://independenciacalculada-droid.github.io",
 ];
 
+// Limite de requisições por IP+slug numa janela de tempo, para dificultar
+// abuso automatizado (inflar/zerar curtidas via script). Não é proteção
+// perfeita (IPs podem ser trocados), mas eleva o custo do abuso o
+// suficiente para um contador de "achei útil" de um blog pessoal.
+const RATE_LIMIT_MAX = 8;
+const RATE_LIMIT_WINDOW_SECONDS = 60;
+
 function corsHeaders(origin) {
-  const allow = ALLOWED_ORIGINS.includes(origin) ? origin : ALLOWED_ORIGINS[0];
-  return {
-    "Access-Control-Allow-Origin": allow,
+  const headers = {
     "Access-Control-Allow-Methods": "GET, POST, DELETE, OPTIONS",
     "Access-Control-Allow-Headers": "Content-Type",
     "Cache-Control": "no-store",
   };
+  // Origem desconhecida: não seta o header em vez de cair num allow-list
+  // "de mentira" — o navegador então bloqueia a leitura da resposta.
+  if (ALLOWED_ORIGINS.includes(origin)) {
+    headers["Access-Control-Allow-Origin"] = origin;
+  }
+  return headers;
+}
+
+async function isRateLimited(env, ip, slug) {
+  const key = `rl:${ip}:${slug}`;
+  const raw = await env.LIKES.get(key);
+  const count = raw ? parseInt(raw, 10) : 0;
+  if (count >= RATE_LIMIT_MAX) return true;
+  await env.LIKES.put(key, String(count + 1), { expirationTtl: RATE_LIMIT_WINDOW_SECONDS });
+  return false;
 }
 
 export default {
@@ -40,6 +60,13 @@ export default {
     const slug = (url.searchParams.get("slug") || "").trim();
     if (!slug || slug.length > 200 || !/^[a-z0-9-]+$/.test(slug)) {
       return new Response(JSON.stringify({ error: "invalid slug" }), { status: 400, headers });
+    }
+
+    if (request.method !== "GET") {
+      const ip = request.headers.get("CF-Connecting-IP") || "unknown";
+      if (await isRateLimited(env, ip, slug)) {
+        return new Response(JSON.stringify({ error: "too many requests" }), { status: 429, headers });
+      }
     }
 
     if (request.method === "GET") {
