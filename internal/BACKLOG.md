@@ -271,3 +271,10 @@ para a seção "Concluído", no fim, com a data).
 - [x] **Favicon** — monograma "IC" (verde escuro + creme/dourado, mesma
       paleta do site) criado, publicado na raiz do repositório e testado.
       *(11 ago. 2026)*
+- [x] **`wrangler.toml` com placeholders não commitados** — os dois Workers
+      (`dinheiro-em-pauta-comments` e `dinheiro-em-pauta-likes`) tinham
+      `database_id`/`id` do KV reais só no `wrangler.toml` local (na
+      máquina do usuário), nunca commitados — o repositório ainda tinha
+      `COLE_AQUI_O_DATABASE_ID`/`COLE_AQUI_O_ID_DO_KV_NAMESPACE`. Um clone
+      limpo do repo quebraria o deploy. Corrigido nos PRs #100 e #101 com
+      os valores reais já em produção. *(17 ago. 2026)*
