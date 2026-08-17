@@ -188,7 +188,11 @@ Para simuladores/calculadoras novas especificamente, verificar também:
   links de compartilhar (WhatsApp/LinkedIn/X, repara na URL **codificada**
   `https%3A//...` dentro do `href`, não só a versão normal) tudo
   customizado pro slug e caminho completo do simulador
-  (`simuladores/<slug>/`, não só `<slug>/`). Os simuladores não tinham
+  (`simuladores/<slug>/`, não só `<slug>/`) — inclusive adicionar o slug
+  nesse mapa em `cloudflare-worker-comments/src/email.js`
+  (`SLUG_PATHS`), senão o link de "ver comentário" nos e-mails de
+  notificação fica quebrado (aponta pra `<slug>/` em vez de
+  `simuladores/<slug>/`). Os simuladores não tinham
   isso até um pedido explícito corrigir os 3 existentes — não pule isso
   silenciosamente como aconteceu com o
   `site.js` (item acima)

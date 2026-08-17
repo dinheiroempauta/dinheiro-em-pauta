@@ -39,6 +39,29 @@ wrangler secret put IP_SALT
 Outra string aleatória qualquer (ex: `openssl rand -hex 16`) — só é usada
 pra hashear IP, nunca precisa ser lembrada por você depois.
 
+### 3.1 (Opcional) Notificação por e-mail
+
+Sem isso configurado, tudo funciona normalmente — só não manda e-mail
+quando um comentário é aprovado/rejeitado ou quando alguém responde.
+Pra ativar:
+
+1. Cria uma conta grátis em [resend.com](https://resend.com) (até 3 mil
+   e-mails/mês de graça).
+2. No painel do Resend, gera uma **API Key**.
+3. Roda:
+   ```
+   wrangler secret put RESEND_API_KEY
+   ```
+   e cola a chave gerada.
+
+**Limitação atual, até o domínio próprio ficar ativo**: sem um domínio
+verificado no Resend, os e-mails saem do endereço de teste deles
+(`onboarding@resend.dev`) — funciona, mas tem mais chance de cair em
+spam, e alguns provedores de e-mail podem recusar. Quando o domínio
+próprio (`independenciacalculada.com.br`) estiver comprado e ativo,
+verificar ele no painel do Resend e trocar o `FROM_EMAIL` em
+`src/email.js` — item já anotado no `internal/BACKLOG.md`.
+
 ## 4. Deploy
 
 ```

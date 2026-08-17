@@ -103,6 +103,10 @@ fila de moderação manual), mas com controle visual total.
    console D1 do dashboard da Cloudflare, se preferir.
 3. O leitor não precisa de conta, só digita nome (e e-mail opcional) —
    igual ao comportamento anterior.
+4. (Opcional) Configure `RESEND_API_KEY` — seção 3.1 do `DEPLOY.md` — pra
+   notificar por e-mail quando um comentário é aprovado/rejeitado ou
+   quando alguém responde. Sem isso, tudo funciona igual, só sem
+   notificação.
 
 ## Passo 5 — Favicon
 

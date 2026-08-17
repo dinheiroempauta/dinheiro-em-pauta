@@ -39,6 +39,12 @@ Pages e precisam ser atualizados assim que o domínio próprio estiver ativo:
       O script no HTML (`data-website-id="cfa01c19-23cd-468f-8d42-db9a697cf762"`)
       não precisa mudar — é o mesmo ID de site pra sempre, só o domínio
       associado a ele no painel que precisa ser atualizado.
+- [ ] **Resend (e-mail de notificação dos comentários)** — verificar o
+      domínio próprio no painel do Resend e trocar o `FROM_EMAIL` em
+      `cloudflare-worker-comments/src/email.js` de `onboarding@resend.dev`
+      pra algo como `comentarios@independenciacalculada.com.br`. Até lá,
+      o e-mail de teste do Resend funciona mas tem mais chance de cair em
+      spam.
 
 ---
 
@@ -73,6 +79,16 @@ Pages e precisam ser atualizados assim que o domínio próprio estiver ativo:
 ---
 
 ## Concluído
+
+- [x] **Notificação por e-mail nos comentários (via Resend)** — avisa por
+      e-mail (se a pessoa preencheu o campo opcional) quando: o próprio
+      comentário dela é aprovado, quando é rejeitado, e quando alguém
+      responde o comentário dela (só se a resposta for aprovada). Sem
+      `RESEND_API_KEY` configurado, tudo funciona igual, só sem notificar
+      — nunca bloqueia a moderação se o envio de e-mail falhar. Mapa
+      manual slug→caminho em `email.js` porque simuladores vivem em
+      `simuladores/<slug>/` mas o slug salvo no banco é só o nome curto.
+      *(17 ago. 2026)*
 
 - [x] **Revisão de UX do sistema de comentários (rodada 2)** — depois de
       testar o painel/comentários publicados de verdade, usuário reportou
