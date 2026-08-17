@@ -154,10 +154,15 @@ idioma no automático.
 ## 4. Scripts no fim do arquivo
 
 - [ ] `<script src="../assets/site.js"></script>` — cuida de progress
-      bar, back-to-top, TOC ativo, reveal-on-scroll e os dois botões do
-      masthead (tema/menu). Não duplicar essa lógica inline no artigo
-- [ ] Script de curtidas: `var API = 'https://independencia-likes.independenciacalculada.workers.dev';`
-      e `var slug = '<slug-do-artigo>';` corretos
+      bar, back-to-top, TOC ativo, reveal-on-scroll, os dois botões do
+      masthead (tema/menu), curtir, newsletter, sugerir tema e a
+      estilização do iframe de comentários. Não duplicar essa lógica
+      inline no artigo
+- [ ] Botão de curtir precisa de `data-slug="<slug-do-artigo>"` no
+      `id="likeBtn"` — é o único dado específico do artigo que esse
+      bloco de `site.js` precisa
+- [ ] `window.CUSDIS_LOCALE` e a tag `<script src="cusdis.es.js">`
+      continuam inline no artigo (ordem importa, não mover pro site.js)
 - [ ] Qualquer calculadora/simulador interativo específico do artigo
 
 ## 5. Fora do `index.html` do artigo
@@ -165,15 +170,20 @@ idioma no automático.
 - [ ] Gerar a **og:image** (1200×630) seguindo
       `internal/prompt-og-image-independencia-calculada.md` à risca —
       nome do arquivo tem que bater exatamente com o `og:image` do HTML
-- [ ] Adicionar o **card** do artigo na home (`index.html`), dentro de
-      `.article-grid`, na ordem cronológica correta (mais recente primeiro).
-      A home é só a grade de cards — sem hero, sem rótulo de seção, sem
-      bloco de "sobre este espaço" (isso vive só em `/sobre/`). **O card é
-      texto duplicado, não lê o artigo** — título, categoria, resumo, data
-      e tempo de leitura têm que ser copiados manualmente e batendo 100%
-      com o artigo (ver invariante no `CLAUDE.md`). Toda vez que um desses
-      campos for editado no artigo depois de publicado, o card tem que ser
-      atualizado junto, no mesmo commit.
+- [ ] Adicionar o **card** do artigo em dois lugares: a vitrine da home
+      (`index.html`, `.vitrine-track`, dentro de `<a class="vitrine-card">`)
+      e a listagem completa (`artigos/index.html`, `<a class="article-card">`)
+      — ordem cronológica correta (mais recente primeiro) nos dois. **O
+      card é texto duplicado, não lê o artigo** — título, categoria,
+      resumo e data/tempo de leitura têm que bater com o artigo (ver
+      invariante no `CLAUDE.md`).
+- [ ] Rodar `node internal/tools/sync-cards.js --check` depois de
+      publicar (ou editar) um artigo — confere automaticamente que
+      eyebrow, título, data e tempo de leitura batem entre o artigo e os
+      dois cards. `--apply` corrige sozinho se divergir. **O resumo
+      (`.card-summary`) fica de fora de propósito** — é editorial (o
+      teaser da home pode ser mais curto que o da listagem) e continua
+      exigindo revisão manual: só não pode contradizer o artigo.
 - [ ] Adicionar entrada em **`sitemap.xml`** (`<loc>`, `<lastmod>`,
       `changefreq`, `priority`)
 - [ ] Adicionar `<item>` em **`feed.xml`** (title, link, guid, description,
