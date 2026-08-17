@@ -308,27 +308,46 @@
     var ink = tok('--ink'), muted = tok('--muted'), paperRaised = tok('--paper-raised');
     var lineStrong = tok('--line-strong'), line = tok('--line'), placeholder = tok('--placeholder');
     var green = tok('--green'), greenDeep = tok('--green-deep'), brick = tok('--brick');
+    var gold = tok('--gold');
     var cusdisCss = ""
-      + "html,body{font-family:'IBM Plex Sans',sans-serif !important;color:" + ink + " !important;background:transparent !important;overflow:visible !important;height:auto !important;}"
+      + "html,body{font-family:'IBM Plex Sans',sans-serif !important;font-size:15px !important;line-height:1.6 !important;color:" + ink + " !important;background:transparent !important;overflow:visible !important;height:auto !important;}"
       + "*{box-sizing:border-box;}"
+      // O Cusdis define cor própria (pensada pro fundo branco padrão dele) em cada
+      // elemento — nome, data, corpo do comentário. Herdar de html/body não basta,
+      // porque uma regra explícita do widget (mesmo sem !important) sempre vence
+      // herança. Forçar herança em tudo, sem exceção, resolve isso de uma vez —
+      // as regras mais específicas abaixo (botão, link, data) ainda vencem por
+      // virem depois no CSS, com a mesma prioridade de !important.
+      + "*{color:inherit !important;}"
       + "::-webkit-scrollbar{display:none !important;}"
       + "label{font-family:'IBM Plex Mono',monospace !important;font-size:11px !important;letter-spacing:.05em !important;text-transform:uppercase !important;color:" + muted + " !important;}"
-      + "input,textarea{font-family:'IBM Plex Sans',sans-serif !important;font-size:14px !important;border:1px solid " + lineStrong + " !important;border-radius:3px !important;background:" + paperRaised + " !important;color:" + ink + " !important;padding:10px 12px !important;}"
-      + "input:focus,textarea:focus{outline:none !important;border-color:" + green + " !important;}"
+      + "input,textarea{font-family:'IBM Plex Sans',sans-serif !important;font-size:14px !important;line-height:1.5 !important;border:1px solid " + lineStrong + " !important;border-radius:3px !important;background:" + paperRaised + " !important;color:" + ink + " !important;padding:10px 12px !important;}"
+      + "textarea{min-height:84px !important;}"
+      + "input:focus,textarea:focus{outline:2px solid " + gold + " !important;outline-offset:2px !important;border-color:" + green + " !important;}"
       + "input::placeholder,textarea::placeholder{color:" + placeholder + " !important;}"
-      + "button:not([type='button']){font-family:'IBM Plex Mono',monospace !important;font-size:12px !important;font-weight:600 !important;letter-spacing:.04em !important;text-transform:uppercase !important;background:" + green + " !important;color:#fff !important;border:1px solid " + green + " !important;border-radius:3px !important;padding:9px 18px !important;cursor:pointer !important;transition:background .15s ease, border-color .15s ease !important;}"
+      + "button:not([type='button']){font-family:'IBM Plex Mono',monospace !important;font-size:12px !important;font-weight:600 !important;letter-spacing:.04em !important;text-transform:uppercase !important;background:" + green + " !important;color:#fff !important;border:1px solid " + green + " !important;border-radius:3px !important;padding:9px 18px !important;cursor:pointer !important;transition:background .15s ease, border-color .15s ease !important;min-height:38px !important;}"
       + "button:not([type='button']):hover{background:" + greenDeep + " !important;border-color:" + greenDeep + " !important;}"
+      + "button:not([type='button']):focus-visible{outline:2px solid " + gold + " !important;outline-offset:2px !important;}"
       + "button[type='button']{font-family:'IBM Plex Mono',monospace !important;font-size:11px !important;font-weight:600 !important;letter-spacing:.04em !important;text-transform:uppercase !important;background:transparent !important;color:" + green + " !important;border:0 !important;padding:4px 2px !important;cursor:pointer !important;}"
       + "button[type='button']::before{content:'↳ ';}"
       + "button[type='button']:hover{color:" + greenDeep + " !important;text-decoration:underline !important;}"
       + "a{color:" + green + " !important;text-decoration:none !important;}"
       + "a:hover{color:" + brick + " !important;}"
-      + "hr{border-color:" + line + " !important;}";
+      + "a:focus-visible,button:focus-visible{outline:2px solid " + gold + " !important;outline-offset:2px !important;}"
+      + "hr{border-color:" + line + " !important;opacity:1 !important;}"
+      // Nome/data de cada comentário: sem saber os nomes de classe exatos do
+      // widget (não é possível inspecionar o DOM real dele a partir daqui),
+      // mira em tags/atributos comuns pra esse tipo de informação — mono
+      // pequeno e discreto, igual ao padrão de metadado usado no resto do
+      // site (ver .meta em qualquer artigo). Sem risco se não bater com nada.
+      + "time,[class*='date' i],[class*='time' i]{font-family:'IBM Plex Mono',monospace !important;font-size:12px !important;color:" + muted + " !important;}"
+      + "[class*='name' i],[class*='author' i],[class*='nickname' i]{font-weight:600 !important;color:" + ink + " !important;}";
 
     var styleCusdisFrame = function(node){
       if (cusdisApplied) return;
       cusdisApplied = true;
       node.style.border = '0';
+      node.style.background = 'transparent';
       node.style.width = '100%';
       node.style.colorScheme = getComputedStyle(document.documentElement).getPropertyValue('--color-scheme').trim() || 'light';
       node.style.minHeight = '120px';
