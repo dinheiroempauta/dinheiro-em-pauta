@@ -324,9 +324,14 @@
       + "*{box-sizing:border-box;}"
       + "*" + B + ":not(html):not(body){color:inherit !important;}"
       + "::-webkit-scrollbar{display:none !important;}"
-      + "label" + B + "{font-family:'IBM Plex Mono',monospace !important;font-size:11px !important;letter-spacing:.05em !important;text-transform:uppercase !important;color:" + muted + " !important;}"
-      + "input" + B + ",textarea" + B + "{font-family:'IBM Plex Sans',sans-serif !important;font-size:14px !important;line-height:1.5 !important;border:1px solid " + lineStrong + " !important;border-radius:3px !important;background:" + paperRaised + " !important;color:" + ink + " !important;padding:10px 12px !important;}"
-      + "textarea{min-height:84px !important;}"
+      // Sem padding/font-size forçados aqui: o Cusdis posiciona o <label>
+      // (rótulo flutuante) com base no padding original do input/textarea
+      // dele. Forçar esses valores via !important desalinha o rótulo do
+      // campo (rótulo "solto", sobreposto à caixa) sem mudar a posição
+      // dele — só cor/fonte são seguros de sobrescrever sem depender do
+      // box model interno do widget.
+      + "label" + B + "{color:" + muted + " !important;}"
+      + "input" + B + ",textarea" + B + "{font-family:'IBM Plex Sans',sans-serif !important;border:1px solid " + lineStrong + " !important;border-radius:3px !important;background:" + paperRaised + " !important;color:" + ink + " !important;}"
       + "input:focus" + B + ",textarea:focus" + B + "{outline:2px solid " + gold + " !important;outline-offset:2px !important;border-color:" + green + " !important;}"
       + "input::placeholder,textarea::placeholder{color:" + placeholder + " !important;}"
       + "button:not([type='button'])" + B + "{font-family:'IBM Plex Mono',monospace !important;font-size:12px !important;font-weight:600 !important;letter-spacing:.04em !important;text-transform:uppercase !important;background:" + green + " !important;color:#fff !important;border:1px solid " + green + " !important;border-radius:3px !important;padding:9px 18px !important;cursor:pointer !important;transition:background .15s ease, border-color .15s ease !important;min-height:38px !important;}"
