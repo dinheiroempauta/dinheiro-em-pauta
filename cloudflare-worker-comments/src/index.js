@@ -20,6 +20,11 @@ import { notifyModerationResult, notifyReply } from "./email.js";
 const ALLOWED_ORIGINS = [
   "https://dinheiroempauta.com.br",
   "https://dinheiroempauta.github.io",
+  // TODO: remover "http://" assim que o "Enforce HTTPS" do GitHub Pages
+  // estiver disponível pro domínio (certificado ainda em emissão em
+  // 17/08/2026) — até lá o site é servido em HTTP puro, e o navegador
+  // manda Origin: http://... nesse caso.
+  "http://dinheiroempauta.com.br",
 ];
 
 const SLUG_RE = /^[a-z0-9-]+$/;
