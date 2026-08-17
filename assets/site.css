@@ -362,7 +362,18 @@ blockquote.pull cite{ display:block; font-family: var(--font-mono); font-style: 
 .mit-card h3{ margin: 6px 0 10px; font-size: 1.05rem; }
 .mit-card p{ font-size: 14.5px; margin:0; }
 
-.recap{ background: var(--ink); color: var(--paper); border-radius: 4px; padding: 28px 26px; margin: 46px 0 28px; }
+/* Cartão de fechamento sempre escuro (mesmo espírito do .chart-card: um
+   componente que não deve seguir o tema da página). --ink/--paper/
+   --recap-accent são theme-relativos (invertem no dark mode), então sem
+   fixá-los aqui o cartão vira um retângulo quase branco com texto verde
+   claro sobre fundo claro no dark mode — mesma classe de bug do título
+   do gráfico, mesmo fix. */
+.recap{
+  --ink: #171A18;
+  --paper: #F9FAF6;
+  --recap-accent: #9FD9BE;
+  background: var(--ink); color: var(--paper); border-radius: 4px; padding: 28px 26px; margin: 46px 0 28px;
+}
 .recap .cap{ font-family: var(--font-mono); font-size: 11px; letter-spacing:.1em; text-transform:uppercase; color: var(--recap-accent); margin-bottom: 14px; }
 .recap ol{ margin:0; padding-left: 20px; }
 .recap li{ margin-bottom: 10px; font-size: 15px; }
