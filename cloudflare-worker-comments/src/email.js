@@ -41,8 +41,16 @@ function escapeHtml(str) {
   ));
 }
 
+// Cada função de notificação devolve um diagnóstico (nunca lança) — usado
+// pelo /admin/moderate pra devolver no campo "email_debug" da resposta.
+// Sem isso, um erro do Resend (chave inválida, domínio não verificado,
+// modo de teste restringindo o destinatário) falhava 100% em silêncio, e
+// wrangler tail (log ao vivo) não é uma opção confiável — já deu erro de
+// rede na máquina do usuário. O token de admin já protege essa rota, então
+// devolver o diagnóstico ali não expõe nada pra quem não deveria ver.
 async function sendEmail(env, { to, subject, html }) {
-  if (!env.RESEND_API_KEY || !to) return;
+  if (!env.RESEND_API_KEY) return { skipped: "sem RESEND_API_KEY configurado" };
+  if (!to) return { skipped: "comentário sem e-mail preenchido" };
   try {
     const res = await fetch("https://api.resend.com/emails", {
       method: "POST",
@@ -52,47 +60,39 @@ async function sendEmail(env, { to, subject, html }) {
       },
       body: JSON.stringify({ from: FROM_EMAIL, to: [to], subject, html }),
     });
-    if (!res.ok) {
-      // Só aparece em `wrangler tail` (log ao vivo) — nunca é exposto pro
-      // navegador de quem comentou nem pro painel de moderação. Sem isso,
-      // um erro do Resend (chave inválida, domínio não verificado, modo
-      // de teste restringindo o destinatário) falhava 100% em silêncio.
-      const body = await res.text().catch(() => "");
-      console.error("Resend falhou:", res.status, body);
-    }
+    const body = await res.text().catch(() => "");
+    if (!res.ok) return { ok: false, to, status: res.status, body };
+    return { ok: true, to };
   } catch (err) {
-    console.error("Resend: erro de rede", err);
-    // Falha no envio de e-mail nunca deve derrubar a moderação — só perde
-    // a notificação, o comentário já foi aprovado/rejeitado normalmente.
+    return { ok: false, to, error: String(err) };
   }
 }
 
 export async function notifyModerationResult(env, comment, action) {
-  if (!comment.email) return;
+  if (!comment.email) return { skipped: "comentário sem e-mail preenchido" };
   const url = articleUrl(comment.slug);
   const nick = escapeHtml(comment.nickname);
   if (action === "approve") {
-    await sendEmail(env, {
+    return sendEmail(env, {
       to: comment.email,
       subject: "Seu comentário foi aprovado — Independência Calculada",
       html: `<p>Olá, ${nick}!</p><p>Seu comentário no Independência Calculada foi aprovado e já está visível para outros leitores.</p><p><a href="${url}">Ver o comentário</a></p>`,
     });
-  } else {
-    await sendEmail(env, {
-      to: comment.email,
-      subject: "Seu comentário não foi aprovado — Independência Calculada",
-      html: `<p>Olá, ${nick}!</p><p>Seu comentário no Independência Calculada passou por moderação manual e não foi aprovado para publicação.</p>`,
-    });
   }
+  return sendEmail(env, {
+    to: comment.email,
+    subject: "Seu comentário não foi aprovado — Independência Calculada",
+    html: `<p>Olá, ${nick}!</p><p>Seu comentário no Independência Calculada passou por moderação manual e não foi aprovado para publicação.</p>`,
+  });
 }
 
 export async function notifyReply(env, parentComment, replyComment) {
-  if (!parentComment || !parentComment.email) return;
+  if (!parentComment || !parentComment.email) return { skipped: "comentário pai sem e-mail preenchido (ou não existe)" };
   // Não notifica quando a pessoa responde o próprio comentário.
-  if (parentComment.email === replyComment.email) return;
+  if (parentComment.email === replyComment.email) return { skipped: "resposta é da mesma pessoa (mesmo e-mail)" };
   const url = articleUrl(replyComment.slug);
   const nick = escapeHtml(parentComment.nickname);
-  await sendEmail(env, {
+  return sendEmail(env, {
     to: parentComment.email,
     subject: "Alguém respondeu seu comentário — Independência Calculada",
     html: `<p>Olá, ${nick}!</p><p><strong>${escapeHtml(replyComment.nickname)}</strong> respondeu ao seu comentário no Independência Calculada.</p><p><a href="${url}">Ver a resposta</a></p>`,
