@@ -451,7 +451,10 @@ blockquote.pull cite{ display:block; font-family: var(--font-mono); font-style: 
 .share-btn.copied{ border-color: var(--gold); color: var(--gold); }
 
 /* ---------- Comentários ---------- */
-.comments-section{ margin: 8px 0 40px; padding-top: 30px; border-top: 1px solid var(--line); }
+/* scroll-margin-top: o link "Ver comentário" no e-mail de notificação
+   aponta pra #comentarios — sem isso, o masthead sticky (ver .masthead)
+   cobre o topo da seção ao pular direto pra âncora. */
+.comments-section{ margin: 8px 0 40px; padding-top: 30px; border-top: 1px solid var(--line); scroll-margin-top: 80px; }
 .comments-section .cap{ font-family: var(--font-mono); font-size: 11px; letter-spacing: .08em; text-transform: uppercase; color: var(--ink); margin-bottom: 8px; }
 .comments-note{ font-size: 13px; color: var(--muted); margin: 0 0 18px; }
 
