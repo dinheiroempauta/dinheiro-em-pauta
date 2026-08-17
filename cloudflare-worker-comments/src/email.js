@@ -8,13 +8,9 @@
  * as funções abaixo viram no-op — moderação continua funcionando
  * normalmente, só sem notificação.
  *
- * FROM_EMAIL usa o domínio de teste do Resend (onboarding@resend.dev)
- * até dinheiroempauta.com.br estar verificado no painel do Resend —
- * nesse ponto, trocar por algo como
- * "Dinheiro em Pauta <comentarios@dinheiroempauta.com.br>".
  */
 
-const FROM_EMAIL = "Dinheiro em Pauta <onboarding@resend.dev>";
+const FROM_EMAIL = "Dinheiro em Pauta <comentarios@dinheiroempauta.com.br>";
 
 // Mapa manual slug -> caminho real da página, porque simuladores vivem em
 // simuladores/<slug>/ mas o slug salvo no banco é só o nome curto (mesmo
