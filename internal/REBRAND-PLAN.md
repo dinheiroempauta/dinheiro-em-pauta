@@ -29,15 +29,18 @@ falamos sobre finanças, investimentos, economia e FIRE."**
 
 ## Fases
 
-### Fase 0 — Pré-requisitos (ação do usuário, fora do meu alcance)
-- [ ] Comprar `dinheiroempauta.com.br`
-- [ ] Criar `dinheiroempauta.admin@gmail.com`
-- [ ] Configurar DNS do domínio novo (A/CNAME pro GitHub Pages — passo já
-      documentado no README, Passo 2)
-- [ ] Renomear o usuário da conta GitHub (Settings → Account →
-      "Change username") — **eu não tenho acesso pra fazer isso**; depois
-      de renomeado, `git remote` local e minhas referências de owner
-      precisam ser atualizadas (eu faço essa parte)
+### Fase 0 — Pré-requisitos ✅ concluída em 17/08/2026
+- [x] Comprar `dinheiroempauta.com.br`
+- [x] Criar `dinheiroempauta.admin@gmail.com`
+- [x] Configurar DNS (5 registros: 4x A pro apex + CNAME `www`) + registro
+      TXT de verificação de domínio na conta GitHub
+- [x] `CNAME` criado no repo + custom domain ativado em Settings → Pages
+      (site confirmado no ar em `http://dinheiroempauta.com.br`, HTTPS
+      "Enforce" ainda pendente de emissão automática do certificado)
+- [x] Username da conta GitHub renomeado: `independenciacalculada-droid`
+      → `dinheiroempauta` (GitHub redirecionou sozinho; `git remote` local
+      e o CNAME `www` do DNS já atualizados pro novo endereço
+      `dinheiroempauta.github.io`)
 
 ### Fase 1 — Repositório GitHub (baixo risco, GitHub redireciona sozinho)
 - Renomear `independencia-calculada` → `dinheiro-em-pauta` (Settings →
