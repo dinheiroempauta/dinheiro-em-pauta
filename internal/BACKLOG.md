@@ -8,13 +8,6 @@ para a seção "Concluído", no fim, com a data).
 
 ## Configuração pendente (já mapeado, falta executar)
 
-- [ ] **Rodar `wrangler deploy` nos dois Workers** (likes e comments) —
-      confirmado em 17/08/2026 que "Enforce HTTPS" já está disponível e
-      marcado em Settings → Pages, então `http://dinheiroempauta.com.br`
-      já foi removido do `ALLOWED_ORIGINS` nos dois (`dinheiro-em-pauta-
-      likes/likes-worker.js` e `dinheiro-em-pauta-comments/src/index.js`).
-      Falta só publicar essa mudança — o deploy em si é feito pelo
-      usuário via `wrangler`, fora do repositório.
 - [ ] **Google Search Console** — verificar a propriedade com o domínio
       `dinheiroempauta.com.br` e reenviar o `sitemap.xml`.
 - [ ] **Umami (domínio do site)** — atualizar o domínio cadastrado para
@@ -44,6 +37,16 @@ para a seção "Concluído", no fim, com a data).
 ---
 
 ## Concluído
+
+- [x] **`http://` removido do `ALLOWED_ORIGINS` dos dois Workers e
+      deploy confirmado** — "Enforce HTTPS" já estava disponível e
+      marcado em Settings → Pages (confirmado por print do usuário), a
+      exceção temporária de HTTP foi removida do código
+      (`dinheiro-em-pauta-likes/likes-worker.js` e `dinheiro-em-pauta-
+      comments/src/index.js`) e o usuário rodou `wrangler deploy` nos
+      dois — confirmado pelo output do terminal (`Deployed dinheiro-em-
+      pauta-comments triggers` / `Deployed dinheiro-em-pauta-likes
+      triggers`). *(17 ago. 2026)*
 
 - [x] **Home sem imagem de compartilhamento** — resolvido como efeito
       colateral da Fase 5 do rebrand: ao regenerar as og-images de todo
