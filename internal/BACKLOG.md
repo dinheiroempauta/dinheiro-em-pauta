@@ -46,6 +46,23 @@ para a seção "Concluído", no fim, com a data).
 
 ## Concluído
 
+- [x] **Umami — conta recriada pra usar o e-mail certo** — a conta
+      original estava correta (domínio já apontava pra
+      `dinheiroempauta.com.br`, ver entrada anterior abaixo), mas
+      cadastrada com o e-mail antigo (`independenciacalculada@gmail.com`)
+      e não dava pra trocar diretamente porque o login é via Google
+      OAuth (e-mail gerenciado pelo provedor, não editável na tela de
+      conta do Umami). Usuário optou por deletar a conta antiga e criar
+      uma nova já com o e-mail certo — isso gera um Website ID novo, e
+      esse ID está craveijado no `<head>` de toda página do site, então
+      trocado em massa nos 12 arquivos que tinham o script (`index.html`
+      da home, dos 3 artigos, do estudo de caso, de `/artigos/`,
+      `/sobre/`, `/simuladores/` + os 3 simuladores individuais, e o
+      `internal/template-artigo.html` pra artigos futuros). ID novo:
+      `5ad06f25-a346-4669-9e09-55a75b4ee26b`. Custo aceito: perda do
+      pouco histórico de tráfego acumulado desde 12/08 (antes do site
+      aparecer em buscas orgânicas, então baixo impacto). *(17 ago. 2026)*
+
 - [x] **Umami (domínio do site)** — conferido em 17/08/2026 (print do
       painel) que o campo "Domain" já estava atualizado pra
       `dinheiroempauta.com.br`, com "Website ID" batendo exatamente com
