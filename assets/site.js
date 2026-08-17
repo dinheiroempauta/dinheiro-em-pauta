@@ -299,6 +299,7 @@
   }
 
   /* ---------- comentários (Cusdis): estiliza o iframe pra seguir o design system ---------- */
+  function setupCusdisComments(){
   var cusdisContainer = document.getElementById('cusdis_thread');
   if (cusdisContainer) {
     var cusdisApplied = false;
@@ -373,5 +374,13 @@
       });
     });
     cusdisObserver.observe(cusdisContainer, { childList: true, subtree: true });
+
+    // cusdis.es.js carrega com async e pode inserir o iframe antes deste
+    // script (no fim do <body>) registrar o observer acima — sem isso, o
+    // comentário fica sem o CSS do tema (visual padrão do Cusdis).
+    var existingFrame = cusdisContainer.querySelector('iframe');
+    if (existingFrame) styleCusdisFrame(existingFrame);
   }
+  }
+  setupCusdisComments();
 })();
