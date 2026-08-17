@@ -8,14 +8,13 @@ para a seção "Concluído", no fim, com a data).
 
 ## Configuração pendente (já mapeado, falta executar)
 
-- [ ] **Remover `http://dinheiroempauta.com.br` do `ALLOWED_ORIGINS`** dos
-      dois Workers (likes e comments) assim que "Enforce HTTPS" estiver
-      disponível em Settings → Pages (certificado ainda em emissão em
-      17/08/2026 — até lá o site é servido em HTTP puro e o navegador
-      manda `Origin: http://...`, sem isso curtidas/comentários ficavam
-      bloqueados por CORS mesmo com o domínio certo). Depois de marcar
-      "Enforce HTTPS", tirar a linha `http://` e rodar `wrangler deploy`
-      nos dois de novo.
+- [ ] **Rodar `wrangler deploy` nos dois Workers** (likes e comments) —
+      confirmado em 17/08/2026 que "Enforce HTTPS" já está disponível e
+      marcado em Settings → Pages, então `http://dinheiroempauta.com.br`
+      já foi removido do `ALLOWED_ORIGINS` nos dois (`dinheiro-em-pauta-
+      likes/likes-worker.js` e `dinheiro-em-pauta-comments/src/index.js`).
+      Falta só publicar essa mudança — o deploy em si é feito pelo
+      usuário via `wrangler`, fora do repositório.
 - [ ] **Google Search Console** — verificar a propriedade com o domínio
       `dinheiroempauta.com.br` e reenviar o `sitemap.xml`.
 - [ ] **Umami (domínio do site)** — atualizar o domínio cadastrado para
