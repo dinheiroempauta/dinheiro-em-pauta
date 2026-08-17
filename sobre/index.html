@@ -52,7 +52,11 @@
 :root{ --maxw: 1000px; }
 main{ max-width: var(--maxw); margin: 0 auto; padding: 0 24px 90px; }
 .page-heading{ margin: 46px 0 0; }
-.prose{ margin-top: 20px; }
+/* Coluna de leitura deliberadamente estreita: esta página é prosa longa
+   (texto pessoal, sem tabelas/gráficos que precisem da largura toda do
+   container) — mesma exceção que o CLAUDE.md reconhece pro corpo de um
+   artigo longo, não é um max-width solto por hábito. */
+.prose{ margin-top: 20px; max-width: 70ch; }
 </style>
 </head>
 <body>
