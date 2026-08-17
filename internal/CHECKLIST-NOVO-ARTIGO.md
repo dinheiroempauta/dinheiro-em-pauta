@@ -27,9 +27,9 @@ de escrever o HTML do zero.
 
 ## 2. `<head>` — sempre completo, nunca parcial
 
-- [ ] `<title>` no padrão `Título do artigo — Independência Calculada`
+- [ ] `<title>` no padrão `Título do artigo — Dinheiro em Pauta`
 - [ ] `<meta name="description">`
-- [ ] `<link rel="canonical" href="https://independenciacalculada.com.br/<slug>">`
+- [ ] `<link rel="canonical" href="https://dinheiroempauta.com.br/<slug>">`
       (domínio final, mesmo enquanto o site roda no GitHub Pages — ver
       item do BACKLOG sobre migração de domínio)
 - [ ] `<link rel="alternate" type="application/rss+xml" ... href="../feed.xml">`

@@ -9,12 +9,12 @@
  * normalmente, só sem notificação.
  *
  * FROM_EMAIL usa o domínio de teste do Resend (onboarding@resend.dev)
- * até o domínio próprio do site estar ativo e verificado no painel do
- * Resend — nesse ponto, trocar por algo como
- * "Independência Calculada <comentarios@independenciacalculada.com.br>".
+ * até dinheiroempauta.com.br estar verificado no painel do Resend —
+ * nesse ponto, trocar por algo como
+ * "Dinheiro em Pauta <comentarios@dinheiroempauta.com.br>".
  */
 
-const FROM_EMAIL = "Independência Calculada <onboarding@resend.dev>";
+const FROM_EMAIL = "Dinheiro em Pauta <onboarding@resend.dev>";
 
 // Mapa manual slug -> caminho real da página, porque simuladores vivem em
 // simuladores/<slug>/ mas o slug salvo no banco é só o nome curto (mesmo
@@ -26,9 +26,7 @@ const SLUG_PATHS = {
   "pu-educa-mais": "simuladores/pu-educa-mais",
 };
 
-// TODO: trocar para o domínio próprio quando estiver ativo (ver
-// internal/BACKLOG.md — mesmo TODO já existente nas páginas do site).
-const SITE_ORIGIN = "https://independenciacalculada-droid.github.io/independencia-calculada";
+const SITE_ORIGIN = "https://dinheiroempauta.com.br";
 
 function articleUrl(slug) {
   const path = SLUG_PATHS[slug] || slug;
@@ -75,14 +73,14 @@ export async function notifyModerationResult(env, comment, action) {
   if (action === "approve") {
     return sendEmail(env, {
       to: comment.email,
-      subject: "Seu comentário foi aprovado — Independência Calculada",
-      html: `<p>Olá, ${nick}!</p><p>Seu comentário no Independência Calculada foi aprovado e já está visível para outros leitores.</p><p><a href="${url}">Ver o comentário</a></p>`,
+      subject: "Seu comentário foi aprovado — Dinheiro em Pauta",
+      html: `<p>Olá, ${nick}!</p><p>Seu comentário no Dinheiro em Pauta foi aprovado e já está visível para outros leitores.</p><p><a href="${url}">Ver o comentário</a></p>`,
     });
   }
   return sendEmail(env, {
     to: comment.email,
-    subject: "Seu comentário não foi aprovado — Independência Calculada",
-    html: `<p>Olá, ${nick}!</p><p>Seu comentário no Independência Calculada passou por moderação manual e não foi aprovado para publicação.</p>`,
+    subject: "Seu comentário não foi aprovado — Dinheiro em Pauta",
+    html: `<p>Olá, ${nick}!</p><p>Seu comentário no Dinheiro em Pauta passou por moderação manual e não foi aprovado para publicação.</p>`,
   });
 }
 
@@ -94,7 +92,7 @@ export async function notifyReply(env, parentComment, replyComment) {
   const nick = escapeHtml(parentComment.nickname);
   return sendEmail(env, {
     to: parentComment.email,
-    subject: "Alguém respondeu seu comentário — Independência Calculada",
-    html: `<p>Olá, ${nick}!</p><p><strong>${escapeHtml(replyComment.nickname)}</strong> respondeu ao seu comentário no Independência Calculada.</p><p><a href="${url}">Ver a resposta</a></p>`,
+    subject: "Alguém respondeu seu comentário — Dinheiro em Pauta",
+    html: `<p>Olá, ${nick}!</p><p><strong>${escapeHtml(replyComment.nickname)}</strong> respondeu ao seu comentário no Dinheiro em Pauta.</p><p><a href="${url}">Ver a resposta</a></p>`,
   });
 }

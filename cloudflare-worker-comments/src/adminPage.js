@@ -11,7 +11,7 @@ export const ADMIN_PAGE_HTML = `<!doctype html>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="robots" content="noindex, nofollow">
-<title>Moderação de comentários — Independência Calculada</title>
+<title>Moderação de comentários — Dinheiro em Pauta</title>
 <style>
   :root{
     --ink:#EDEFE8; --muted:#A2A99B; --paper:#14170F; --paper-raised:#1B1F16;
@@ -62,7 +62,7 @@ export const ADMIN_PAGE_HTML = `<!doctype html>
 <body>
 <div class="wrap">
   <h1>Moderação de comentários</h1>
-  <p class="sub">Independência Calculada — só você tem o token de acesso.</p>
+  <p class="sub">Dinheiro em Pauta — só você tem o token de acesso.</p>
 
   <div class="card" id="loginCard">
     <label for="tokenInput">Token de administrador</label>
@@ -91,7 +91,7 @@ export const ADMIN_PAGE_HTML = `<!doctype html>
 (function(){
   "use strict";
   var API = location.origin;
-  var STORAGE_KEY = "ic_admin_token";
+  var STORAGE_KEY = "dp_admin_token";
 
   var loginCard = document.getElementById("loginCard");
   var panel = document.getElementById("panel");

@@ -1,5 +1,5 @@
 /**
- * Independência Calculada — contador de curtidas
+ * Dinheiro em Pauta — contador de curtidas
  *
  * Rotas:
  *   GET  /likes?slug=nome-do-artigo   -> { slug, count }
@@ -9,8 +9,8 @@
  */
 
 const ALLOWED_ORIGINS = [
-  "https://independenciacalculada.com.br",
-  "https://independenciacalculada-droid.github.io",
+  "https://dinheiroempauta.com.br",
+  "https://dinheiroempauta.github.io",
 ];
 
 // Limite de requisições por IP+slug numa janela de tempo, para dificultar

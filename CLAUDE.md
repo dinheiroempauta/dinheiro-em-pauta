@@ -1,4 +1,4 @@
-# Independência Calculada — instruções para o Claude
+# Dinheiro em Pauta — instruções para o Claude
 
 Blog estático (HTML puro, sem build) sobre FIRE, taxa de retirada e renda
 fixa, hospedado no GitHub Pages. Ver `README.md` para a visão geral do
