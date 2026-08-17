@@ -75,8 +75,11 @@ export const ADMIN_PAGE_HTML = `<!doctype html>
 
   <div id="panel">
     <div class="topbar">
-      <button class="secondary" id="refreshBtn">Atualizar lista</button>
-      <button class="secondary" id="logoutBtn">Sair</button>
+      <span class="item-meta" id="pendingCount"></span>
+      <div class="row" style="flex:0;">
+        <button class="secondary" id="refreshBtn">Atualizar lista</button>
+        <button class="secondary" id="logoutBtn">Sair</button>
+      </div>
     </div>
     <div class="card">
       <div id="list"><p class="loading">Carregando…</p></div>
@@ -98,6 +101,7 @@ export const ADMIN_PAGE_HTML = `<!doctype html>
   var refreshBtn = document.getElementById("refreshBtn");
   var logoutBtn = document.getElementById("logoutBtn");
   var listEl = document.getElementById("list");
+  var pendingCountEl = document.getElementById("pendingCount");
 
   function getToken(){ return localStorage.getItem(STORAGE_KEY) || ""; }
   function setToken(t){ localStorage.setItem(STORAGE_KEY, t); }
@@ -119,7 +123,10 @@ export const ADMIN_PAGE_HTML = `<!doctype html>
     panel.classList.remove("visible");
     loginCard.classList.remove("hidden");
     loginError.style.display = withError ? "block" : "none";
+    tokenInput.focus();
   }
+
+  function pluralPendentes(n){ return n === 1 ? "1 pendente" : n + " pendentes"; }
 
   function renderItem(c){
     var item = document.createElement("div");
@@ -152,7 +159,13 @@ export const ADMIN_PAGE_HTML = `<!doctype html>
     var rejectBtn = document.createElement("button");
     rejectBtn.className = "reject";
     rejectBtn.textContent = "Rejeitar";
-    rejectBtn.addEventListener("click", function(){ moderate(c.id, "reject", item); });
+    rejectBtn.addEventListener("click", function(){
+      // Rejeitar apaga o comentário de vez (DELETE no banco, sem
+      // desfazer) — confirmação evita apagar sem querer um comentário
+      // de leitor de verdade com um clique errado.
+      var ok = window.confirm('Rejeitar e apagar o comentário de "' + c.nickname + '"? Essa ação não pode ser desfeita.');
+      if (ok) moderate(c.id, "reject", item);
+    });
     actions.appendChild(approveBtn);
     actions.appendChild(rejectBtn);
 
@@ -173,7 +186,9 @@ export const ADMIN_PAGE_HTML = `<!doctype html>
       })
       .then(function(data){
         listEl.innerHTML = "";
-        if (!data.pending || !data.pending.length) {
+        var count = data.pending ? data.pending.length : 0;
+        pendingCountEl.textContent = pluralPendentes(count);
+        if (!count) {
           listEl.innerHTML = '<p class="empty">Nenhum comentário pendente.</p>';
           return;
         }
@@ -198,7 +213,9 @@ export const ADMIN_PAGE_HTML = `<!doctype html>
       .then(function(res){
         if (res.ok) {
           itemEl.remove();
-          if (!listEl.querySelector(".item")) listEl.innerHTML = '<p class="empty">Nenhum comentário pendente.</p>';
+          var remaining = listEl.querySelectorAll(".item").length;
+          pendingCountEl.textContent = pluralPendentes(remaining);
+          if (!remaining) listEl.innerHTML = '<p class="empty">Nenhum comentário pendente.</p>';
         } else {
           buttons.forEach(function(b){ b.disabled = false; });
           alert("Não foi possível " + (action === "approve" ? "aprovar" : "rejeitar") + ": " + (res.data.error || "erro"));

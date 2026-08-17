@@ -365,16 +365,15 @@
       item.appendChild(header);
       item.appendChild(message);
 
-      // Cusdis só tinha 1 nível de resposta — mantém a mesma regra aqui
-      // (o Worker também recusa parent_id de um comentário que já é resposta).
-      if (depth === 0) {
-        var replyBtn = document.createElement('button');
-        replyBtn.type = 'button';
-        replyBtn.className = 'comment-reply-toggle';
-        replyBtn.textContent = 'Responder';
-        replyBtn.addEventListener('click', function(){ toggleReplyForm(item, c.id, widget); });
-        item.appendChild(replyBtn);
-      }
+      // Sem limite de profundidade: resposta de resposta é permitida (o
+      // CSS de .comment-replies reduz o recuo visual nos níveis mais
+      // fundos pra não estourar a largura em telas estreitas).
+      var replyBtn = document.createElement('button');
+      replyBtn.type = 'button';
+      replyBtn.className = 'comment-reply-toggle';
+      replyBtn.textContent = 'Responder';
+      replyBtn.addEventListener('click', function(){ toggleReplyForm(item, c.id, widget); });
+      item.appendChild(replyBtn);
 
       if (c.replies && c.replies.length) {
         var repliesEl = document.createElement('div');
@@ -450,6 +449,7 @@
             statusEl.hidden = false;
             if (res.ok) {
               statusEl.classList.remove('error');
+              statusEl.classList.add('success');
               statusEl.textContent = 'Comentário enviado — ele passa por moderação antes de aparecer publicamente.';
               form.reset();
               updateCounter();
@@ -457,12 +457,13 @@
                 setTimeout(function(){ form.remove(); }, 4000);
               }
             } else {
+              statusEl.classList.remove('success');
               statusEl.classList.add('error');
               statusEl.textContent = 'Não foi possível enviar (' + (res.data && res.data.error ? res.data.error : 'erro') + '). Tente novamente.';
             }
           })
           .catch(function(){
-            if (statusEl) { statusEl.hidden = false; statusEl.classList.add('error'); statusEl.textContent = 'Erro de conexão. Tente novamente.'; }
+            if (statusEl) { statusEl.hidden = false; statusEl.classList.remove('success'); statusEl.classList.add('error'); statusEl.textContent = 'Erro de conexão. Tente novamente.'; }
           })
           .finally(function(){
             if (submitBtn) submitBtn.disabled = false;

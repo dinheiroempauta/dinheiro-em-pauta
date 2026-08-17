@@ -2,7 +2,7 @@
  * Independência Calculada — comentários próprios (substitui o Cusdis)
  *
  * Rotas:
- *   GET  /comments?slug=X              -> { comments: [...] }  (só approved, em árvore de 1 nível)
+ *   GET  /comments?slug=X              -> { comments: [...] }  (só approved, em árvore recursiva)
  *   POST /comments                     -> { status: "pending" }
  *   GET  /admin                        -> painel HTML de moderação (login por token)
  *   GET  /admin/pending?token=...      -> { pending: [...] }
@@ -135,11 +135,13 @@ async function handlePostComment(request, env, cors) {
 
   let parentId = null;
   if (body.parent_id) {
+    // Sem limite de profundidade: resposta de resposta de resposta é
+    // permitida (diferente do Cusdis, que só tinha 1 nível). O front-end
+    // renderiza a árvore inteira de forma recursiva.
     const parent = await env.DB.prepare(
-      `SELECT id, parent_id FROM comments WHERE id = ? AND slug = ? AND status = 'approved'`
+      `SELECT id FROM comments WHERE id = ? AND slug = ? AND status = 'approved'`
     ).bind(body.parent_id, slug).first();
     if (!parent) return json({ error: "invalid_parent" }, 400, cors);
-    if (parent.parent_id) return json({ error: "nesting_too_deep" }, 400, cors); // só 1 nível, igual ao Cusdis
     parentId = parent.id;
   }
 
