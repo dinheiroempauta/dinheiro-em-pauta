@@ -8,14 +8,21 @@ para a seção "Concluído", no fim, com a data).
 
 ## Configuração pendente (já mapeado, falta executar)
 
-- [ ] **Conferir resultado da indexação manual no Search Console** —
-      usuário solicitou indexação manual de todas as páginas do site em
-      17/08/2026, mas o resultado ainda não foi conferido (a indexação
-      não é instantânea, leva de horas a alguns dias). Verificar depois
-      em Search Console → Páginas (relatório de indexação) se as
-      páginas aparecem como "Indexada" ou se algum erro apareceu; e/ou
-      testar `site:dinheiroempauta.com.br` no Google pra ver o que já
-      está aparecendo publicamente.
+- [ ] **Busca do Google ainda mostra o endereço padrão do GitHub Pages
+      em vez do domínio próprio** — testado em 17/08/2026: busca por
+      `"Qual é a PWR da minha carteira"` retornou
+      `independenciacalculada-droid.github.io/...` em vez de
+      `dinheiroempauta.com.br/...`. Conferido que não é bug do
+      repositório — `CNAME` aponta pro domínio certo, a página tem
+      `<link rel="canonical" href="https://dinheiroempauta.com.br/...">`
+      correto, `robots.txt` aponta pro sitemap do domínio certo. O
+      GitHub Pages serve o mesmo conteúdo nos dois endereços
+      (comportamento padrão dele com domínio customizado); a tag
+      canônica é o sinal certo pro Google consolidar pro domínio
+      próprio, só falta o tempo de propagação (dias a semanas).
+      Reinspecionar essa mesma busca depois de um tempo; se o
+      `github.io` continuar aparecendo por semanas, considerar pedir
+      remoção manual daquela URL específica no Search Console.
 - [ ] **Umami (domínio do site)** — atualizar o domínio cadastrado para
       este site nas configurações do painel do Umami pro domínio novo.
       O script no HTML (`data-website-id="cfa01c19-23cd-468f-8d42-db9a697cf762"`)
