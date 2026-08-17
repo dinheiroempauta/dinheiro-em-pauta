@@ -51,7 +51,7 @@ test('estiliza o iframe de comentários mesmo se ele já existir antes da funç�
     '--ink': '#EDEFEA', '--muted': '#9AA396', '--paper-raised': '#1B1F16',
     '--line-strong': '#333', '--line': '#333', '--placeholder': '#777',
     '--green': '#1E6B4F', '--green-deep': '#123B2A', '--brick': '#A8402A',
-    '--color-scheme': 'dark',
+    '--gold': '#D6A94E', '--color-scheme': 'dark',
   };
 
   const sandboxWindow = { ResizeObserver: undefined };
@@ -89,6 +89,19 @@ test('estiliza o iframe de comentários mesmo se ele já existir antes da funç�
   );
 
   assert.equal(fakeDoc.head.children.length, 1, 'deveria ter injetado um <style> no head do iframe');
-  assert.ok(fakeDoc.head.children[0].textContent.includes('#EDEFEA'), 'o CSS injetado deveria usar as cores do tema atual');
+  const css = fakeDoc.head.children[0].textContent;
+  assert.ok(css.includes('#EDEFEA'), 'o CSS injetado deveria usar as cores do tema atual');
   assert.equal(fakeIframe.title, 'Comentários do artigo');
+
+  // Regressão: nome/data/corpo do comentário postado (não os campos do
+  // formulário) apareciam com contraste baixíssimo — o Cusdis define cor
+  // própria nesses elementos, e herdar de html/body não é suficiente pra
+  // vencer uma regra explícita do widget. Confirmado com prova em
+  // navegador real (ver PR): sem "*{color:inherit!important}", o texto
+  // ficava com a cor original do widget (ex: #8a8a8a) mesmo em cima do
+  // fundo escuro da página; com essa regra, resolve pro --ink do tema.
+  assert.match(css, /\*\{color:inherit\s*!important;?\}/, 'precisa forçar herança de cor em todo o conteúdo do iframe, não só no html/body');
+  // O focus ring precisa seguir o padrão global do site (outline dourado),
+  // não o "outline:none" que existia antes (falha de acessibilidade).
+  assert.match(css, /input:focus,textarea:focus\{outline:2px solid #[0-9a-fA-F]{6} !important/, 'input/textarea precisam do anel de foco dourado do site, não outline:none');
 });
