@@ -1,4 +1,4 @@
-# Backlog — Melhorias do blog Independência Calculada
+# Backlog — Melhorias do blog Dinheiro em Pauta
 
 Arquivo de controle das oportunidades de melhoria identificadas. Cada vez que
 uma melhoria for implementada, ela deve ser **removida** desta lista (ou movida
@@ -8,48 +8,31 @@ para a seção "Concluído", no fim, com a data).
 
 ## Configuração pendente (já mapeado, falta executar)
 
-- [ ] **Domínio próprio** — migrar do endereço temporário do GitHub Pages para
-      um domínio comprado (ex: independenciacalculada.com.br). Melhora
-      credibilidade e SEO. Processo já documentado, sem risco de quebrar nada.
-      Confirmado em 12 ago: arquivo `CNAME` ainda não existe no repositório;
-      `og:image`/`twitter:image` dos 3 artigos ainda apontam pro GitHub Pages
-      enquanto o `canonical` já aponta pro domínio final (comportamento
-      esperado, documentado no checklist de novo artigo).
-
-## ⚠️ Checklist para quando migrar pro domínio próprio
-
-Vários itens já configurados hoje apontam pro endereço temporário do GitHub
-Pages e precisam ser atualizados assim que o domínio próprio estiver ativo:
-
-- [ ] **og:image / twitter:image dos 3 artigos** — trocar de volta pra
-      `https://independenciacalculada.com.br/assets/...` (hoje apontam pro
-      GitHub Pages).
-- [ ] **Cloudflare Worker (likes-worker.js)** — o `ALLOWED_ORIGINS` já inclui
-      o domínio final, então não precisa mexer no código; só confirmar que
-      segue funcionando depois da troca. Confirmado em 12 ago, direto no
-      arquivo: `ALLOWED_ORIGINS` já lista os dois domínios.
-- [ ] **Google Search Console** — verificar a propriedade de novo com o
-      domínio final e reenviar o sitemap.xml.
-- [ ] **sitemap.xml e feed.xml** — trocar todas as URLs internas do
-      GitHub Pages pro domínio final.
-- [ ] **CNAME** — criar o arquivo `CNAME` no repositório com o domínio
-      (passo já documentado no README.md).
+- [ ] **Deploy do código atualizado dos Workers (likes-worker.js e
+      cloudflare-worker-comments)** — `ALLOWED_ORIGINS` já está corrigido
+      no código-fonte (`dinheiroempauta.com.br` + `dinheiroempauta.github.io`),
+      falta só rodar `wrangler deploy` nos dois pra isso valer de verdade
+      (até lá, os Workers ainda em produção rejeitam CORS de
+      `dinheiroempauta.com.br`, quebrando curtidas/comentários pra quem
+      acessa pelo domínio novo). Fase 2 do `internal/REBRAND-PLAN.md`
+      ainda planeja recriar os Workers com nome novo — esse deploy aqui é
+      só pra manter os Workers atuais funcionando enquanto isso não
+      acontece.
+- [ ] **Google Search Console** — verificar a propriedade com o domínio
+      `dinheiroempauta.com.br` e reenviar o `sitemap.xml`.
 - [ ] **Umami (domínio do site)** — atualizar o domínio cadastrado para
-      este site nas configurações do painel do Umami pro domínio final.
+      este site nas configurações do painel do Umami pro domínio novo.
       O script no HTML (`data-website-id="cfa01c19-23cd-468f-8d42-db9a697cf762"`)
       não precisa mudar — é o mesmo ID de site pra sempre, só o domínio
       associado a ele no painel que precisa ser atualizado.
-- [ ] **Resend (e-mail de notificação dos comentários)** — verificar o
-      domínio próprio no painel do Resend e trocar o `FROM_EMAIL` em
-      `cloudflare-worker-comments/src/email.js` de `onboarding@resend.dev`
-      pra algo como `comentarios@independenciacalculada.com.br`. Até lá,
-      o e-mail de teste do Resend funciona mas tem mais chance de cair em
-      spam. Testado em 17 ago e não chegou nenhum e-mail — suspeita mais
-      forte é o modo de teste do Resend sem domínio verificado só permitir
-      mandar pro endereço usado pra criar a conta lá. Investigando com um
-      diagnóstico temporário (`email_debug` na resposta de
-      `/admin/moderate`, mostrado como alerta no painel `/admin`) — depois
-      de confirmar a causa raiz e o e-mail chegar de verdade, remover esse
+- [ ] **Resend (e-mail de notificação dos comentários)** — verificar
+      `dinheiroempauta.com.br` no painel do Resend e trocar o `FROM_EMAIL`
+      em `cloudflare-worker-comments/src/email.js` de `onboarding@resend.dev`
+      pra `comentarios@dinheiroempauta.com.br`. Causa raiz confirmada em
+      17 ago: sem domínio verificado, o Resend só deixa mandar pro e-mail
+      usado pra criar a conta lá (não pra qualquer destinatário) — ciclo
+      completo testado com esse e-mail e funcionou. Depois de verificar o
+      domínio e confirmar envio pra destinatário qualquer, remover o
       diagnóstico temporário do código (`reportEmailDebug` em
       `adminPage.js`, campo `email_debug` em `index.js`).
 

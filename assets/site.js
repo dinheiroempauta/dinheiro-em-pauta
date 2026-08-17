@@ -1,5 +1,5 @@
 /* ============================================================
-   Independência Calculada — comportamento compartilhado
+   Dinheiro em Pauta — comportamento compartilhado
    Barra de progresso de leitura, botão voltar ao topo, TOC
    scroll-spy, reveal-on-scroll (artigos) e setas da vitrine
    horizontal (home). Cada bloco é um no-op se os elementos que

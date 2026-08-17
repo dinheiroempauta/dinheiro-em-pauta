@@ -1,4 +1,4 @@
-# Independência Calculada — guia de configuração
+# Dinheiro em Pauta — guia de configuração
 
 Este pacote já está pronto para publicar. Siga os passos abaixo uma única vez;
 depois disso, publicar um novo artigo leva menos de 1 minuto.
@@ -18,7 +18,7 @@ dist/
 ```
 
 Cada artigo fica em uma **pasta com o nome do artigo** contendo um `index.html`.
-Isso dá URLs limpas automaticamente: `independenciacalculada.com.br/pwr-carteira-fire`
+Isso dá URLs limpas automaticamente: `dinheiroempauta.com.br/pwr-carteira-fire`
 funciona em qualquer host estático, sem configuração extra.
 
 ---
@@ -45,12 +45,12 @@ funciona em qualquer host estático, sem configuração extra.
    - Um registro `CNAME` apontando `www` para `SEU-USUARIO.github.io`
 3. No repositório, crie um arquivo chamado `CNAME` (sem extensão) na raiz, contendo apenas:
    ```
-   independenciacalculada.com.br
+   dinheiroempauta.com.br
    ```
 4. Em **Settings → Pages**, digite o domínio próprio no campo "Custom domain" e marque "Enforce HTTPS".
 
 Isso não quebra nada do que já está pronto — todos os links internos já foram
-escritos para o domínio final (`independenciacalculada.com.br`), então funcionam
+escritos para o domínio final (`dinheiroempauta.com.br`), então funcionam
 perfeitamente assim que o domínio estiver ativo.
 
 ---

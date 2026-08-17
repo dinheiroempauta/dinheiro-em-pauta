@@ -1,5 +1,5 @@
 /* ============================================================
-   Independência Calculada — calendário de feriados nacionais
+   Dinheiro em Pauta — calendário de feriados nacionais
    2001-2099 (AAAAMMDD), compartilhado pelos simuladores de PU
    (RendA+ e Educa+) para cálculo de dias úteis/252.
    ============================================================ */

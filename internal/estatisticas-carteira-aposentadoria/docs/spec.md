@@ -2,7 +2,7 @@
 
 **Status:** rascunho inicial
 **Última atualização:** 2026-08-15
-**Dono:** Bruno (Independência Calculada)
+**Dono:** Bruno (Dinheiro em Pauta)
 
 ## 1. Objetivo
 

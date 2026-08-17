@@ -58,7 +58,7 @@ Pra ativar:
 verificado no Resend, os e-mails saem do endereço de teste deles
 (`onboarding@resend.dev`) — funciona, mas tem mais chance de cair em
 spam, e alguns provedores de e-mail podem recusar. Quando o domínio
-próprio (`independenciacalculada.com.br`) estiver comprado e ativo,
+próprio (`dinheiroempauta.com.br`) estiver comprado e ativo,
 verificar ele no painel do Resend e trocar o `FROM_EMAIL` em
 `src/email.js` — item já anotado no `internal/BACKLOG.md`.
 
@@ -80,7 +80,7 @@ Comentar (deve entrar como pendente):
 ```
 curl -X POST https://independencia-comments.independenciacalculada.workers.dev/comments \
   -H "Content-Type: application/json" \
-  -H "Origin: https://independenciacalculada-droid.github.io" \
+  -H "Origin: https://dinheiroempauta.com.br" \
   -d '{"slug":"pwr-carteira-fire","nickname":"Teste","email":"","message":"Comentário de teste"}'
 ```
 Resposta esperada: `{"status":"pending"}`.

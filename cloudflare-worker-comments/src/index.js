@@ -1,5 +1,5 @@
 /**
- * Independência Calculada — comentários próprios (substitui o Cusdis)
+ * Dinheiro em Pauta — comentários próprios (substitui o Cusdis)
  *
  * Rotas:
  *   GET  /comments?slug=X              -> { comments: [...] }  (só approved, em árvore recursiva)
@@ -18,8 +18,8 @@ import { ADMIN_PAGE_HTML } from "./adminPage.js";
 import { notifyModerationResult, notifyReply } from "./email.js";
 
 const ALLOWED_ORIGINS = [
-  "https://independenciacalculada.com.br",
-  "https://independenciacalculada-droid.github.io",
+  "https://dinheiroempauta.com.br",
+  "https://dinheiroempauta.github.io",
 ];
 
 const SLUG_RE = /^[a-z0-9-]+$/;
