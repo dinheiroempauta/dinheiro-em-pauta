@@ -217,24 +217,47 @@ svg.chart-svg{ width: 100%; height: auto; display:block; overflow: visible; }
   margin-top: 14px; border: 1px solid var(--line-strong); border-radius: 8px; background: var(--paper-raised);
   padding: 22px 24px;
 }
-.optimizer-intro{ font-size: 13px; color: var(--muted); line-height: 1.55; margin: 0 0 20px; max-width: none; }
-.opt-constraints{ display:grid; grid-template-columns: repeat(auto-fit, minmax(220px,1fr)); gap: 14px; margin-bottom: 22px; }
+.optimizer-intro{ font-size: 13px; color: var(--muted); line-height: 1.55; margin: 0 0 22px; max-width: 640px; }
+
+/* kicker "1. Restrições" / "2. Como buscar" / "3. Limites por ativo" — mesma
+   linguagem tipográfica do .eyebrow dos artigos (mono, versalete, regrinha
+   verde), mas compacto o bastante pra separar blocos dentro de um painel
+   sem empurrar tudo pra baixo como o .eyebrow original (que tem 46px de
+   margin-top, pensado pra abrir uma página, não uma sub-seção). */
+.opt-step-label{
+  display:flex; flex-wrap: wrap; align-items:baseline; column-gap: 10px; row-gap: 2px;
+  font-family: var(--font-mono); font-size: 11.5px; font-weight: 700; letter-spacing: .06em; text-transform: uppercase;
+  color: var(--green-deep); margin: 0 0 14px; padding-bottom: 8px; border-bottom: 1px solid var(--line-strong);
+}
+.opt-step-label span{ font-weight: 400; letter-spacing: normal; text-transform: none; color: var(--muted); font-size: 11px; }
+.opt-step-label-inline{ margin: 0; border-bottom: none; padding-bottom: 0; flex: 1 1 200px; }
+.optimizer-panel > .opt-step-label:not(:first-of-type){ margin-top: 30px; }
+
+.opt-constraints{ display:grid; grid-template-columns: repeat(auto-fit, minmax(220px,1fr)); gap: 14px; margin-bottom: 26px; align-items: stretch; }
 .opt-constraint{
   border: 1px solid var(--line-strong); border-radius: 8px; background: var(--paper); padding: 12px 14px;
   display:flex; flex-direction: column; gap: 8px;
 }
-.opt-constraint label{ display:flex; align-items:center; gap: 8px; font-size: 13px; font-weight: 600; cursor:pointer; }
-.opt-constraint input[type="checkbox"]{ width: 15px; height: 15px; accent-color: var(--green); cursor:pointer; }
-.opt-input-wrap{ display:flex; align-items:center; gap: 6px; }
+.opt-constraint label{ display:flex; align-items:flex-start; gap: 8px; font-size: 13px; font-weight: 600; cursor:pointer; }
+.opt-constraint input[type="checkbox"]{ width: 15px; height: 15px; margin-top: 2px; accent-color: var(--green); cursor:pointer; flex: none; }
+.opt-constraint-label-text{ flex: 1 1 auto; min-width: 0; }
+.opt-input-wrap{ display:flex; align-items:center; gap: 6px; margin-top: auto; }
 .opt-input-wrap input[type="number"]{
   width: 100%; font-family: var(--font-mono); font-size: 14px; padding: 7px 9px;
   border: 1px solid var(--line-strong); border-radius: 5px; background: var(--paper-raised); color: var(--ink);
 }
 .opt-input-wrap input[type="number"]:disabled{ opacity: .45; }
 .opt-input-wrap span{ font-size: 12px; color: var(--muted); min-width: 8px; }
-.opt-constraint-note{ font-size: 11px; color: var(--muted); line-height: 1.4; }
+/* pílula "histórico completo": comunica em uma palavra, sem quebrar a
+   altura do card (ao contrário da nota em parágrafo que existia antes) que
+   perda máxima/tempo de recuperação nunca são afetados pelo "Considerar". */
+.opt-tag-full{
+  display: inline-block; margin-left: 2px; font-family: var(--font-mono); font-size: 9.5px; font-weight: 700;
+  letter-spacing: .02em; text-transform: uppercase; color: var(--gold); background: var(--gold-soft);
+  border-radius: 10px; padding: 2px 7px; cursor: help;
+}
 
-.opt-settings{ display:grid; grid-template-columns: repeat(auto-fit, minmax(180px,1fr)); gap: 16px; margin-bottom: 22px; }
+.opt-settings{ display:grid; grid-template-columns: repeat(auto-fit, minmax(160px,1fr)); gap: 16px; margin-bottom: 26px; }
 .opt-setting{ display:flex; flex-direction: column; gap: 6px; }
 .opt-setting label{ font-family: var(--font-mono); font-size: 10.5px; color: var(--muted); letter-spacing: .04em; text-transform: uppercase; }
 .opt-setting-hint{ text-transform: none; letter-spacing: normal; font-size: 10px; }
@@ -243,12 +266,34 @@ svg.chart-svg{ width: 100%; height: auto; display:block; overflow: visible; }
   border-radius: 5px; background: var(--paper); color: var(--ink);
 }
 
-.opt-bounds-header{ display:flex; align-items:flex-end; justify-content: space-between; gap: 14px; flex-wrap: wrap; margin-bottom: 10px; }
-.opt-bounds-title{ font-family: var(--font-mono); font-size: 11px; color: var(--muted); text-transform: uppercase; letter-spacing: .04em; margin: 0; }
-.opt-bounds-title span{ text-transform: none; letter-spacing: normal; }
-.opt-bounds-actions{ display:flex; gap: 8px; flex-wrap: wrap; }
-.opt-bounds-action{ padding: 6px 12px; font-size: 12px; }
-.opt-bounds{ display:flex; flex-direction: column; gap: 8px; margin-bottom: 22px; }
+/* "Priorizar" é a decisão que de fato importa (o que o otimizador escolhe
+   entre as composições que sobrevivem às restrições) — por isso ganha um
+   bloco à parte, com a mesma moldura dourada do destaque do otimizador,
+   em vez de ser o 5º select numa fileira de ajustes mecânicos. */
+.opt-priority{
+  display:flex; align-items:center; gap: 18px; flex-wrap: wrap;
+  border: 1px solid var(--gold); border-radius: 8px; background: var(--gold-soft);
+  padding: 14px 18px; margin-bottom: 26px;
+}
+.opt-priority-text{ flex: 1 1 320px; }
+.opt-priority-text label{ display:block; font-family: var(--font-mono); font-size: 10.5px; font-weight: 700; color: var(--gold); letter-spacing: .05em; text-transform: uppercase; margin-bottom: 4px; }
+.opt-priority-text p{ margin: 0; font-size: 12.5px; color: var(--ink); line-height: 1.5; max-width: 46ch; }
+.opt-priority select{
+  flex: 1 1 220px; font-family: var(--font-mono); font-size: 13.5px; font-weight: 600; padding: 10px 12px;
+  border: 1.5px solid var(--gold); border-radius: 6px; background: var(--paper-raised); color: var(--ink);
+}
+
+.opt-bounds-header{
+  display:flex; align-items:center; justify-content: space-between; gap: 14px; flex-wrap: wrap;
+  margin-bottom: 14px; padding-bottom: 8px; border-bottom: 1px solid var(--line-strong);
+}
+.opt-bounds-actions{ display:flex; gap: 4px; flex-wrap: wrap; }
+.opt-bounds-action{
+  font-family: var(--font-mono); font-size: 11.5px; font-weight: 600; color: var(--muted);
+  background: transparent; border: none; padding: 4px 8px; border-radius: 4px; cursor: pointer;
+}
+.opt-bounds-action:hover{ color: var(--green-deep); background: var(--paper); text-decoration: underline; }
+.opt-bounds{ display:flex; flex-direction: column; gap: 8px; margin-bottom: 26px; }
 .opt-bound-row{
   display:grid; grid-template-columns: 96px 1fr 1fr; align-items:center; gap: 16px;
   background: var(--paper); border: 1px solid var(--line-strong); border-radius: 8px; padding: 10px 14px;
@@ -276,7 +321,12 @@ svg.chart-svg{ width: 100%; height: auto; display:block; overflow: visible; }
 @keyframes btn-spin{ to{ transform: rotate(360deg); } }
 @media (prefers-reduced-motion: reduce){ .btn-spinner{ animation-duration: 1.4s; } }
 .opt-result{ margin-top: 28px; }
-.opt-result-card{ border: 1px solid var(--line-strong); border-radius: 8px; background: var(--paper); padding: 20px 22px; }
+.opt-result-card{
+  border: 1px solid var(--line-strong); border-top-width: 3px; border-radius: 8px;
+  background: var(--paper); padding: 20px 22px;
+}
+.opt-result-card.full{ border-top-color: var(--green); }
+.opt-result-card.partial{ border-top-color: var(--brick); }
 .opt-result-title{ font-family: var(--font-display); font-size: 1.05rem; margin: 0 0 10px; }
 .opt-result-badge{ display:inline-block; font-family: var(--font-mono); font-size: 11px; font-weight: 600; padding: 4px 10px; border-radius: 12px; margin-bottom: 16px; }
 .opt-result-badge.full{ background: rgba(30,107,79,.14); color: var(--green-deep); }
@@ -467,17 +517,17 @@ svg.chart-svg{ width: 100%; height: auto; display:block; overflow: visible; }
     </button>
 
     <div class="optimizer-panel" id="opt-panel" hidden>
-      <p class="optimizer-intro">Defina restrições opcionais (deixe em branco pra ignorar) e o que priorizar entre as composições que atendem tudo. A busca testa composições em múltiplos de 5% (depois refina em 1% ao redor da melhor encontrada) — não é um ótimo matemático exato, é a melhor composição testada na grade. "Período completo" é quase instantâneo; "janela específica" pode levar alguns segundos, mais em janelas menores (mais sub-períodos pra testar por composição). <b>Perda máxima e tempo de recuperação são sempre calculados sobre o histórico completo</b> (mesmos dados dos gráficos de Drawdown, que não variam por tamanho de janela) — o campo "Considerar" abaixo só afeta CAGR, Ulcer Index, Sharpe, Sortino e Volatilidade.</p>
+      <p class="optimizer-intro">A busca testa composições em múltiplos de 5% (depois refina em 1% ao redor da melhor encontrada) — não é um ótimo matemático exato, é a melhor composição testada na grade.</p>
 
+      <p class="opt-step-label">1. Restrições <span>opcional, deixe em branco pra ignorar</span></p>
       <div class="opt-constraints">
         <div class="opt-constraint" data-key="cagr">
           <label><input type="checkbox" id="opt-en-cagr"> CAGR ≥</label>
           <div class="opt-input-wrap"><input type="number" id="opt-val-cagr" step="0.1" placeholder="ex: 10"><span>%</span></div>
         </div>
         <div class="opt-constraint" data-key="drawdown">
-          <label><input type="checkbox" id="opt-en-drawdown"> Perda máxima tolerável ≤</label>
+          <label><input type="checkbox" id="opt-en-drawdown"> <span class="opt-constraint-label-text">Perda máxima tolerável ≤ <span class="opt-tag-full">histórico completo</span></span></label>
           <div class="opt-input-wrap"><input type="number" id="opt-val-drawdown" step="0.1" placeholder="ex: 15"><span>%</span></div>
-          <span class="opt-constraint-note">Histórico completo (mesmo valor do gráfico de Drawdown) — não muda com "Considerar".</span>
         </div>
         <div class="opt-constraint" data-key="ulcer">
           <label><input type="checkbox" id="opt-en-ulcer"> Ulcer Index ≤</label>
@@ -492,9 +542,8 @@ svg.chart-svg{ width: 100%; height: auto; display:block; overflow: visible; }
           <div class="opt-input-wrap"><input type="number" id="opt-val-sortino" step="0.01" placeholder="ex: 1,0"><span></span></div>
         </div>
         <div class="opt-constraint" data-key="recovery">
-          <label><input type="checkbox" id="opt-en-recovery"> Tempo de recuperação (pior episódio) ≤</label>
+          <label><input type="checkbox" id="opt-en-recovery"> <span class="opt-constraint-label-text">Tempo de recuperação (pior) ≤ <span class="opt-tag-full">histórico completo</span></span></label>
           <div class="opt-input-wrap"><input type="number" id="opt-val-recovery" step="1" placeholder="ex: 18"><span>meses</span></div>
-          <span class="opt-constraint-note">Histórico completo (mesmo valor da tabela de Drawdown) — não muda com "Considerar".</span>
         </div>
         <div class="opt-constraint" data-key="volatilidade">
           <label><input type="checkbox" id="opt-en-volatilidade"> Volatilidade ≤</label>
@@ -502,6 +551,7 @@ svg.chart-svg{ width: 100%; height: auto; display:block; overflow: visible; }
         </div>
       </div>
 
+      <p class="opt-step-label">2. Como buscar</p>
       <div class="opt-settings">
         <div class="opt-setting">
           <label for="opt-basis">Base de cálculo</label>
@@ -528,23 +578,27 @@ svg.chart-svg{ width: 100%; height: auto; display:block; overflow: visible; }
             <option value="95">P95</option>
           </select>
         </div>
-        <div class="opt-setting">
+      </div>
+
+      <div class="opt-priority">
+        <div class="opt-priority-text">
           <label for="opt-objective">Priorizar</label>
-          <select id="opt-objective">
-            <option value="cagr_max">Maximizar CAGR</option>
-            <option value="sharpe_max">Maximizar Sharpe</option>
-            <option value="sortino_max">Maximizar Sortino</option>
-            <option value="ulcer_min">Minimizar Ulcer Index</option>
-            <option value="drawdown_max">Minimizar drawdown máximo</option>
-          </select>
+          <p>Entre as composições que atendem às restrições marcadas acima (ou entre todas, se nenhuma restrição estiver marcada), qual critério decide a vencedora.</p>
         </div>
+        <select id="opt-objective">
+          <option value="cagr_max">Maximizar CAGR</option>
+          <option value="sharpe_max">Maximizar Sharpe</option>
+          <option value="sortino_max">Maximizar Sortino</option>
+          <option value="ulcer_min">Minimizar Ulcer Index</option>
+          <option value="drawdown_max">Minimizar drawdown máximo</option>
+        </select>
       </div>
 
       <div class="opt-bounds-header">
-        <p class="opt-bounds-title">Limites por ativo <span>— deixe em branco pra não restringir aquele lado</span></p>
+        <p class="opt-step-label opt-step-label-inline">3. Limites por ativo <span>deixe em branco pra não restringir aquele lado</span></p>
         <div class="opt-bounds-actions">
-          <button class="btn btn-secondary opt-bounds-action" id="opt-bounds-clear" type="button">Limpar tudo</button>
-          <button class="btn btn-secondary opt-bounds-action" id="opt-bounds-reset" type="button">Restaurar padrão</button>
+          <button class="opt-bounds-action" id="opt-bounds-clear" type="button">Limpar tudo</button>
+          <button class="opt-bounds-action" id="opt-bounds-reset" type="button">Restaurar padrão</button>
         </div>
       </div>
       <div class="opt-bounds" id="opt-bounds"></div>
@@ -2031,7 +2085,7 @@ svg.chart-svg{ width: 100%; height: auto; display:block; overflow: visible; }
     }).join('');
 
     el.innerHTML = `
-      <div class="opt-result-card">
+      <div class="opt-result-card ${badgeClass}">
         <p class="opt-result-title">Composição encontrada</p>
         <span class="opt-result-badge ${badgeClass}">${badgeText}</span>
         <div class="opt-weights-list">${weightsHtml}</div>
