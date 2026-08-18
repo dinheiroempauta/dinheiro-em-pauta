@@ -259,8 +259,11 @@ svg.chart-svg{ width: 100%; height: auto; display:block; overflow: visible; }
 
 .opt-settings{ display:grid; grid-template-columns: repeat(auto-fit, minmax(160px,1fr)); gap: 16px; margin-bottom: 26px; }
 .opt-setting{ display:flex; flex-direction: column; gap: 6px; }
-.opt-setting label{ font-family: var(--font-mono); font-size: 10.5px; color: var(--muted); letter-spacing: .04em; text-transform: uppercase; }
-.opt-setting-hint{ text-transform: none; letter-spacing: normal; font-size: 10px; }
+.opt-setting label{
+  display:block; min-height: 26px; font-family: var(--font-mono); font-size: 10.5px; line-height: 1.3;
+  color: var(--muted); letter-spacing: .04em; text-transform: uppercase;
+}
+.opt-setting-hint{ display:block; text-transform: none; letter-spacing: normal; font-size: 10px; }
 .opt-setting select{
   font-family: var(--font-mono); font-size: 13px; padding: 8px 10px; border: 1px solid var(--line-strong);
   border-radius: 5px; background: var(--paper); color: var(--ink);
