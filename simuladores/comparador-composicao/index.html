@@ -241,8 +241,11 @@ svg.chart-svg{ width: 100%; height: auto; display:block; overflow: visible; }
   border-radius: 5px; background: var(--paper); color: var(--ink);
 }
 
-.opt-bounds-title{ font-family: var(--font-mono); font-size: 11px; color: var(--muted); text-transform: uppercase; letter-spacing: .04em; margin: 0 0 10px; }
+.opt-bounds-header{ display:flex; align-items:flex-end; justify-content: space-between; gap: 14px; flex-wrap: wrap; margin-bottom: 10px; }
+.opt-bounds-title{ font-family: var(--font-mono); font-size: 11px; color: var(--muted); text-transform: uppercase; letter-spacing: .04em; margin: 0; }
 .opt-bounds-title span{ text-transform: none; letter-spacing: normal; }
+.opt-bounds-actions{ display:flex; gap: 8px; flex-wrap: wrap; }
+.opt-bounds-action{ padding: 6px 12px; font-size: 12px; }
 .opt-bounds{ display:flex; flex-direction: column; gap: 8px; margin-bottom: 22px; }
 .opt-bound-row{
   display:grid; grid-template-columns: 96px 1fr 1fr; align-items:center; gap: 16px;
@@ -534,7 +537,13 @@ svg.chart-svg{ width: 100%; height: auto; display:block; overflow: visible; }
         </div>
       </div>
 
-      <p class="opt-bounds-title">Limites por ativo <span>— deixe em branco pra não restringir aquele lado</span></p>
+      <div class="opt-bounds-header">
+        <p class="opt-bounds-title">Limites por ativo <span>— deixe em branco pra não restringir aquele lado</span></p>
+        <div class="opt-bounds-actions">
+          <button class="btn btn-secondary opt-bounds-action" id="opt-bounds-clear" type="button">Limpar tudo</button>
+          <button class="btn btn-secondary opt-bounds-action" id="opt-bounds-reset" type="button">Restaurar padrão</button>
+        </div>
+      </div>
       <div class="opt-bounds" id="opt-bounds"></div>
 
       <button class="btn btn-primary" id="opt-run" type="button"><span class="btn-spinner" aria-hidden="true"></span><span class="btn-label">Buscar composição</span></button>
@@ -1960,6 +1969,19 @@ svg.chart-svg{ width: 100%; height: auto; display:block; overflow: visible; }
       container.appendChild(row);
     });
   })();
+
+  document.getElementById('opt-bounds-clear').addEventListener('click', () => {
+    ASSET_KEYS.forEach(k => {
+      document.getElementById('opt-bound-min-'+k).value = '';
+      document.getElementById('opt-bound-max-'+k).value = '';
+    });
+  });
+  document.getElementById('opt-bounds-reset').addEventListener('click', () => {
+    ASSET_KEYS.forEach(k => {
+      document.getElementById('opt-bound-min-'+k).value = BOUND_DEFAULTS[k].min;
+      document.getElementById('opt-bound-max-'+k).value = BOUND_DEFAULTS[k].max;
+    });
+  });
 
   function readBounds(){
     return ASSET_KEYS.map(k => {
