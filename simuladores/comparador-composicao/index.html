@@ -232,10 +232,12 @@ svg.chart-svg{ width: 100%; height: auto; display:block; overflow: visible; }
 }
 .opt-input-wrap input[type="number"]:disabled{ opacity: .45; }
 .opt-input-wrap span{ font-size: 12px; color: var(--muted); min-width: 8px; }
+.opt-constraint-note{ font-size: 11px; color: var(--muted); line-height: 1.4; }
 
 .opt-settings{ display:grid; grid-template-columns: repeat(auto-fit, minmax(180px,1fr)); gap: 16px; margin-bottom: 22px; }
 .opt-setting{ display:flex; flex-direction: column; gap: 6px; }
 .opt-setting label{ font-family: var(--font-mono); font-size: 10.5px; color: var(--muted); letter-spacing: .04em; text-transform: uppercase; }
+.opt-setting-hint{ text-transform: none; letter-spacing: normal; font-size: 10px; }
 .opt-setting select{
   font-family: var(--font-mono); font-size: 13px; padding: 8px 10px; border: 1px solid var(--line-strong);
   border-radius: 5px; background: var(--paper); color: var(--ink);
@@ -465,7 +467,7 @@ svg.chart-svg{ width: 100%; height: auto; display:block; overflow: visible; }
     </button>
 
     <div class="optimizer-panel" id="opt-panel" hidden>
-      <p class="optimizer-intro">Defina restrições opcionais (deixe em branco pra ignorar) e o que priorizar entre as composições que atendem tudo. A busca testa composições em múltiplos de 5% (depois refina em 1% ao redor da melhor encontrada) — não é um ótimo matemático exato, é a melhor composição testada na grade. "Período completo" é quase instantâneo; "janela específica" pode levar alguns segundos, mais em janelas menores (mais sub-períodos pra testar por composição).</p>
+      <p class="optimizer-intro">Defina restrições opcionais (deixe em branco pra ignorar) e o que priorizar entre as composições que atendem tudo. A busca testa composições em múltiplos de 5% (depois refina em 1% ao redor da melhor encontrada) — não é um ótimo matemático exato, é a melhor composição testada na grade. "Período completo" é quase instantâneo; "janela específica" pode levar alguns segundos, mais em janelas menores (mais sub-períodos pra testar por composição). <b>Perda máxima e tempo de recuperação são sempre calculados sobre o histórico completo</b> (mesmos dados dos gráficos de Drawdown, que não variam por tamanho de janela) — o campo "Considerar" abaixo só afeta CAGR, Ulcer Index, Sharpe, Sortino e Volatilidade.</p>
 
       <div class="opt-constraints">
         <div class="opt-constraint" data-key="cagr">
@@ -475,7 +477,7 @@ svg.chart-svg{ width: 100%; height: auto; display:block; overflow: visible; }
         <div class="opt-constraint" data-key="drawdown">
           <label><input type="checkbox" id="opt-en-drawdown"> Perda máxima tolerável ≤</label>
           <div class="opt-input-wrap"><input type="number" id="opt-val-drawdown" step="0.1" placeholder="ex: 15"><span>%</span></div>
-          <span style="font-size:11px;color:var(--muted);">Sempre a pior queda do histórico completo (mesmo valor do gráfico de Drawdown) — não muda com "Considerar".</span>
+          <span class="opt-constraint-note">Histórico completo (mesmo valor do gráfico de Drawdown) — não muda com "Considerar".</span>
         </div>
         <div class="opt-constraint" data-key="ulcer">
           <label><input type="checkbox" id="opt-en-ulcer"> Ulcer Index ≤</label>
@@ -492,6 +494,7 @@ svg.chart-svg{ width: 100%; height: auto; display:block; overflow: visible; }
         <div class="opt-constraint" data-key="recovery">
           <label><input type="checkbox" id="opt-en-recovery"> Tempo de recuperação (pior episódio) ≤</label>
           <div class="opt-input-wrap"><input type="number" id="opt-val-recovery" step="1" placeholder="ex: 18"><span>meses</span></div>
+          <span class="opt-constraint-note">Histórico completo (mesmo valor da tabela de Drawdown) — não muda com "Considerar".</span>
         </div>
         <div class="opt-constraint" data-key="volatilidade">
           <label><input type="checkbox" id="opt-en-volatilidade"> Volatilidade ≤</label>
@@ -505,7 +508,7 @@ svg.chart-svg{ width: 100%; height: auto; display:block; overflow: visible; }
           <select id="opt-basis"><option value="nominal">Nominal</option><option value="real" selected>Real</option></select>
         </div>
         <div class="opt-setting">
-          <label for="opt-scope">Considerar</label>
+          <label for="opt-scope">Considerar <span class="opt-setting-hint">(CAGR/Ulcer/Sharpe/Sortino/Vol.)</span></label>
           <select id="opt-scope">
             <option value="full">Período completo</option>
             <option value="window">Janela específica (P50 por padrão)</option>
@@ -548,7 +551,7 @@ svg.chart-svg{ width: 100%; height: auto; display:block; overflow: visible; }
 
       <button class="btn btn-primary" id="opt-run" type="button"><span class="btn-spinner" aria-hidden="true"></span><span class="btn-label">Buscar composição</span></button>
 
-      <div id="opt-result" role="status" aria-live="polite"></div>
+      <div id="opt-result" class="opt-result" role="status" aria-live="polite"></div>
     </div>
   </section>
 
@@ -962,36 +965,39 @@ svg.chart-svg{ width: 100%; height: auto; display:block; overflow: visible; }
     const { nominal, real } = combine(weightsPct);
     const ret = mode === 'nominal' ? nominal : real;
     const rf = mode === 'nominal' ? DATA.cdi_nominal : DATA.cdi_real;
-    // Drawdown é sempre o pior ponto da curva underwater do histórico
-    // completo (mesmo dado do gráfico "Drawdown", que explicitamente não
-    // varia por tamanho de janela) — nunca um percentil entre janelas.
-    // Um P50 de drawdowns-por-janela dilui o pior tombo real da série
-    // (ex: 2008/2020) entre várias janelas mais brandas, o que deixaria a
-    // restrição "perda máxima tolerável ≤ X%" reportar um número bem menor
-    // do que a queda de fato aparece no gráfico de drawdown completo.
+    // Drawdown e tempo de recuperação são sempre calculados sobre o
+    // histórico completo (mesmos dados do gráfico "Drawdown", que
+    // explicitamente não varia por tamanho de janela) — nunca um
+    // percentil entre janelas. Ambos são estatísticas de "pior caso"
+    // de uma trajetória contínua: um episódio de queda real (ex:
+    // 2008, que levou 57 meses pra recuperar) pode nem aparecer
+    // inteiro dentro de uma janela de 10 anos, ou aparecer picotado
+    // em várias janelas com recuperação parcial — um P50 entre essas
+    // janelas dilui o pior caso real e reporta um número bem menor do
+    // que a queda/recuperação de fato aparece no gráfico completo.
     const fullDrawdown = drawdownMax(ret);
+    const fullRecovery = needRecovery ? worstRecoveryMonths(ret) : undefined;
     if (scope === 'full'){
       const metrics = {
         cagr: cagrCalc(ret), drawdown: fullDrawdown, ulcer: ulcerCalc(ret),
         sharpe: sharpeCalc(ret, rf), sortino: sortinoCalc(ret, rf), volatilidade: volAnual(ret),
       };
-      if (needRecovery) metrics.recovery = worstRecoveryMonths(ret);
+      if (needRecovery) metrics.recovery = fullRecovery;
       return metrics;
     }
     const w = scope; // meses
     const n = ret.length;
-    const cagrs=[], ulcers=[], sharpes=[], sortinos=[], vols=[], recs=[];
+    const cagrs=[], ulcers=[], sharpes=[], sortinos=[], vols=[];
     for (let i=0; i+w<=n; i++){
       const rw = ret.slice(i,i+w), rfw = rf.slice(i,i+w);
       cagrs.push(cagrCalc(rw)); ulcers.push(ulcerCalc(rw));
       sharpes.push(sharpeCalc(rw,rfw)); sortinos.push(sortinoCalc(rw,rfw)); vols.push(volAnual(rw));
-      if (needRecovery) recs.push(worstRecoveryMonths(rw));
     }
     // "considerar" usa o percentil escolhido (P50/mediana por padrão) entre
     // as métricas de todas as janelas daquele tamanho, não sempre o meio.
     const pctOf = arr => { const s = arr.slice().sort((a,b)=>a-b); return percentile(s,pct); };
     const metrics = { cagr: pctOf(cagrs), drawdown: fullDrawdown, ulcer: pctOf(ulcers), sharpe: pctOf(sharpes), sortino: pctOf(sortinos), volatilidade: pctOf(vols) };
-    if (needRecovery) metrics.recovery = pctOf(recs);
+    if (needRecovery) metrics.recovery = fullRecovery;
     return metrics;
   }
 
