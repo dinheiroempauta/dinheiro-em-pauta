@@ -24,7 +24,7 @@
 <meta name="twitter:title" content="Comparador de Composição de Carteira">
 <meta name="twitter:description" content="Compare duas composições de carteira, com otimizador e calculadora de taxa de retirada (PWR/SWR).">
 <meta name="twitter:image" content="https://dinheiroempauta.com.br/assets/og-cover-comparador-composicao-v2.png">
-<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://cloud.umami.is; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data:; connect-src 'self' https://cloud.umami.is https://gateway.umami.is https://dinheiro-em-pauta-likes.dinheiroempauta.workers.dev https://dinheiro-em-pauta-comments.dinheiroempauta.workers.dev https://api.web3forms.com; form-action 'self' https://buttondown.com; base-uri 'self';">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://cloud.umami.is; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data:; connect-src 'self' https://cloud.umami.is https://gateway.umami.is https://dinheiro-em-pauta-likes.dinheiroempauta.workers.dev https://dinheiro-em-pauta-comments.dinheiroempauta.workers.dev https://api.web3forms.com; worker-src 'self' blob:; form-action 'self' https://buttondown.com; base-uri 'self';">
 <meta name="theme-color" content="#1E6B4F">
 <meta name="color-scheme" content="light dark">
 <link rel="icon" type="image/png" href="../../favicon.png">
@@ -472,6 +472,7 @@ svg.chart-svg{ width: 100%; height: auto; display:block; overflow: visible; }
         <div class="opt-constraint" data-key="drawdown">
           <label><input type="checkbox" id="opt-en-drawdown"> Perda máxima tolerável ≤</label>
           <div class="opt-input-wrap"><input type="number" id="opt-val-drawdown" step="0.1" placeholder="ex: 15"><span>%</span></div>
+          <span style="font-size:11px;color:var(--muted);">Sempre a pior queda do histórico completo (mesmo valor do gráfico de Drawdown) — não muda com "Considerar".</span>
         </div>
         <div class="opt-constraint" data-key="ulcer">
           <label><input type="checkbox" id="opt-en-ulcer"> Ulcer Index ≤</label>
@@ -952,9 +953,17 @@ svg.chart-svg{ width: 100%; height: auto; display:block; overflow: visible; }
     const { nominal, real } = combine(weightsPct);
     const ret = mode === 'nominal' ? nominal : real;
     const rf = mode === 'nominal' ? DATA.cdi_nominal : DATA.cdi_real;
+    // Drawdown é sempre o pior ponto da curva underwater do histórico
+    // completo (mesmo dado do gráfico "Drawdown", que explicitamente não
+    // varia por tamanho de janela) — nunca um percentil entre janelas.
+    // Um P50 de drawdowns-por-janela dilui o pior tombo real da série
+    // (ex: 2008/2020) entre várias janelas mais brandas, o que deixaria a
+    // restrição "perda máxima tolerável ≤ X%" reportar um número bem menor
+    // do que a queda de fato aparece no gráfico de drawdown completo.
+    const fullDrawdown = drawdownMax(ret);
     if (scope === 'full'){
       const metrics = {
-        cagr: cagrCalc(ret), drawdown: drawdownMax(ret), ulcer: ulcerCalc(ret),
+        cagr: cagrCalc(ret), drawdown: fullDrawdown, ulcer: ulcerCalc(ret),
         sharpe: sharpeCalc(ret, rf), sortino: sortinoCalc(ret, rf), volatilidade: volAnual(ret),
       };
       if (needRecovery) metrics.recovery = worstRecoveryMonths(ret);
@@ -962,17 +971,17 @@ svg.chart-svg{ width: 100%; height: auto; display:block; overflow: visible; }
     }
     const w = scope; // meses
     const n = ret.length;
-    const cagrs=[], dds=[], ulcers=[], sharpes=[], sortinos=[], vols=[], recs=[];
+    const cagrs=[], ulcers=[], sharpes=[], sortinos=[], vols=[], recs=[];
     for (let i=0; i+w<=n; i++){
       const rw = ret.slice(i,i+w), rfw = rf.slice(i,i+w);
-      cagrs.push(cagrCalc(rw)); dds.push(drawdownMax(rw)); ulcers.push(ulcerCalc(rw));
+      cagrs.push(cagrCalc(rw)); ulcers.push(ulcerCalc(rw));
       sharpes.push(sharpeCalc(rw,rfw)); sortinos.push(sortinoCalc(rw,rfw)); vols.push(volAnual(rw));
       if (needRecovery) recs.push(worstRecoveryMonths(rw));
     }
     // "considerar" usa o percentil escolhido (P50/mediana por padrão) entre
     // as métricas de todas as janelas daquele tamanho, não sempre o meio.
     const pctOf = arr => { const s = arr.slice().sort((a,b)=>a-b); return percentile(s,pct); };
-    const metrics = { cagr: pctOf(cagrs), drawdown: pctOf(dds), ulcer: pctOf(ulcers), sharpe: pctOf(sharpes), sortino: pctOf(sortinos), volatilidade: pctOf(vols) };
+    const metrics = { cagr: pctOf(cagrs), drawdown: fullDrawdown, ulcer: pctOf(ulcers), sharpe: pctOf(sharpes), sortino: pctOf(sortinos), volatilidade: pctOf(vols) };
     if (needRecovery) metrics.recovery = pctOf(recs);
     return metrics;
   }
@@ -2256,6 +2265,17 @@ svg.chart-svg{ width: 100%; height: auto; display:block; overflow: visible; }
       const { nominal, real } = combine(state.weights[side]);
       const returns = state.mode === 'nominal' ? nominal : real;
       const worker = new Worker(blobUrl);
+      worker.onerror = (err) => {
+        URL.revokeObjectURL(blobUrl);
+        pwrswrWorkers = null;
+        runBtn.disabled = false; runBtn.classList.remove('loading'); runBtn.removeAttribute('aria-busy');
+        runBtnLabel.textContent = 'Calcular';
+        cancelBtn.style.display = 'none';
+        progressWrap.classList.remove('active');
+        const resultEl = document.getElementById('pwrswr-result');
+        resultEl.innerHTML = `<p class="pwrswr-error">Não foi possível concluir o cálculo (erro no processamento em segundo plano). Tente recarregar a página e rodar de novo.</p>`;
+        console.error('pwrswr worker error', err);
+      };
       worker.onmessage = (e) => {
         const msg = e.data;
         if (msg.type === 'progress'){
