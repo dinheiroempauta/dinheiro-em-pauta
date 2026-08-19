@@ -149,6 +149,75 @@ Ao publicar uma pauta, mover pra "Concluído" no fim.
       dinâmica/guardrails (ver pautas acima) ajudam a dar segurança
       objetiva pra essa decisão emocional.
 
+## Prioridade média — série "papers clássicos": análise crítica dos fundamentos da teoria de carteiras
+
+Mesmo formato do artigo já publicado sobre "Beyond the Status Quo" (análise
+crítica de paper acadêmico, não resumo/cópia — comentário próprio, tensão
+com a prática, insight acionável) aplicado aos papers que formam a base de
+praticamente todo conselho de alocação de carteira em livro-texto. Ordem
+cronológica proposta porque cada um responde/reage ao anterior (Markowitz
+→ Sharpe formaliza o prêmio de risco do modelo de Markowitz → Fama testa
+empiricamente se mercados incorporam informação de forma eficiente → Fama
+e French mostram que o próprio modelo de risco de Sharpe não explica os
+retornos observados). Fonte primária (o paper em si) é obrigatória antes
+de publicar — mesmo cuidado de nunca inventar citação do `CLAUDE.md`.
+
+- [ ] **Harry Markowitz (1952), "Portfolio Selection"** — por que escolher
+      a "melhor" ação é apostar, e por que diversificação é o único
+      almoço grátis em investimentos. A origem matemática de "não coloque
+      todos os ovos na mesma cesta": por que combinar ativos
+      imperfeitamente correlacionados reduz risco sem sacrificar retorno
+      esperado proporcionalmente, e como isso virou a base de todo modelo
+      de alocação usado hoje (inclusive dos que o artigo sobre "Beyond
+      the Status Quo" questiona). Ângulo crítico: as premissas do modelo
+      original (retornos normalmente distribuídos, investidor conhece
+      médias/variâncias/covariâncias verdadeiras) são simplificações que
+      a prática desafia — vale conectar com por que "otimização de
+      variância média" ingênua costuma dar carteiras instáveis/
+      concentradas na prática.
+
+- [ ] **William Sharpe (1964), "Capital Asset Prices"** — por que parte do
+      risco não pode ser diversificada, e como o beta virou o preço
+      cobrado por carregar esse risco. Formaliza o CAPM: distingue risco
+      diversificável (elimina combinando ativos, não é remunerado) de
+      risco sistemático/de mercado (não elimina, é remunerado via beta).
+      Ângulo crítico: o CAPM depende de premissas fortes (mercados
+      eficientes, investidores racionais e homogêneos, existência de um
+      ativo livre de risco, "carteira de mercado" observável) que não
+      se sustentam integralmente na prática — e é exatamente isso que o
+      paper de Fama e French (1992) abaixo vai atacar empiricamente.
+      Ajuda o leitor a entender de onde vem a ideia de "beta" que
+      aparece em relatório de qualquer corretora.
+
+- [ ] **Eugene Fama (1991), "Efficient Capital Markets II"** — uma
+      reavaliação honesta da hipótese de mercados eficientes, incluindo
+      as rachaduras que o próprio Fama reconheceu na sua teoria. Não é
+      o paper original de 1970, é a autocrítica de duas décadas depois:
+      Fama revisita a hipótese de eficiência de mercado à luz de
+      anomalias documentadas (efeito tamanho, efeito valor, reversão de
+      longo prazo) e admite que o modelo de precificação usado para
+      testar eficiência (geralmente o CAPM) pode estar errado — o que
+      torna qualquer teste de eficiência um teste conjunto de duas
+      hipóteses ao mesmo tempo. Ângulo crítico/acionável: por que
+      "o mercado é eficiente" não deveria ser tratado como dogma
+      absoluto nem descartado por completo — é sobre calibrar quanto
+      confiar em gestão ativa vs. passiva com essa nuance em mente.
+
+- [ ] **Fama & French (1992), "The Cross-Section of Expected Stock
+      Returns"** — por que o beta explica quase nada, e como tamanho e
+      valor silenciosamente se tornaram os verdadeiros motores do
+      retorno de ações. O paper que efetivamente enterra o poder
+      explicativo isolado do beta do CAPM e mostra que tamanho da
+      empresa (small caps) e a razão valor contábil/valor de mercado
+      (value) explicam a variação de retornos entre ações muito melhor.
+      Deu origem ao modelo de três fatores e a toda a indústria de
+      "factor investing"/ETFs de fatores. Ângulo crítico: são fatores de
+      risco genuínos (recompensa por carregar algo sistematicamente mais
+      arriscado) ou padrões que funcionaram no período estudado e depois
+      se popularizaram/arbitraram? Vale contrastar com literatura mais
+      recente sobre "decay" de fatores após publicação acadêmica —
+      fonte a verificar antes de publicar, não citar de memória.
+
 ## Prioridade baixa — complementares, relevantes mas fora do núcleo SWR/renda fixa
 
 - [ ] **INSS: o teto que a maioria não sabe que existe** — explica o teto
