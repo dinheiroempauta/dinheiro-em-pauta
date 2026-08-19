@@ -1202,9 +1202,10 @@ svg.chart-svg{ width: 100%; height: auto; display:block; overflow: visible; }
   // de cada função de desenho, antes dos outros appendChild, pra garantir que
   // o <title> fique na posição correta mesmo após svg.innerHTML=''.
   function setChartA11y(svg, text){
-    const title = svgEl('title', {});
-    title.textContent = text;
-    svg.appendChild(title);
+    // Sem <title> filho de propósito: o navegador renderiza isso como
+    // tooltip nativo ao passar o mouse (igual ao atributo title do HTML),
+    // que fica em cima do tooltip customizado do próprio gráfico e atrapalha
+    // a leitura. role="img" + aria-label já é suficiente pra leitor de tela.
     svg.setAttribute('role', 'img');
     svg.setAttribute('aria-label', text);
   }
