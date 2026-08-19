@@ -594,6 +594,7 @@ svg.chart-svg{ width: 100%; height: auto; display:block; overflow: visible; }
           <option value="sortino_max">Maximizar Sortino</option>
           <option value="ulcer_min">Minimizar Ulcer Index</option>
           <option value="drawdown_max">Minimizar drawdown máximo</option>
+          <option value="recovery_min">Minimizar tempo de recuperação</option>
         </select>
       </div>
 
@@ -1076,6 +1077,7 @@ svg.chart-svg{ width: 100%; height: auto; display:block; overflow: visible; }
       case 'sortino_max': return metrics.sortino;
       case 'ulcer_min': return -metrics.ulcer;
       case 'drawdown_max': return metrics.drawdown;
+      case 'recovery_min': return -metrics.recovery;
       default: return 0;
     }
   }
@@ -1139,9 +1141,9 @@ svg.chart-svg{ width: 100%; height: auto; display:block; overflow: visible; }
 
   function runOptimizer(constraints, mode, scope, bounds, objective, pct){
     // calcular episódios de drawdown (recuperação) é caro pra rodar em toda
-    // a grade — só liga isso quando a restrição de tempo de recuperação
-    // está de fato habilitada.
-    const needRecovery = constraints.some(c => c.key === 'recovery');
+    // a grade — só liga isso quando a restrição de tempo de recuperação ou
+    // o critério de "Priorizar" de fato precisam do valor.
+    const needRecovery = constraints.some(c => c.key === 'recovery') || objective === 'recovery_min';
     const grid = enumerateGrid(bounds, 5);
     let best = null, bestMetrics = null, bestCheck = null, bestObj = -Infinity;
 
