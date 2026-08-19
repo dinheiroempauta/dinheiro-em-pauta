@@ -1,7 +1,8 @@
 # Dinheiro em Pauta — instruções para o Claude
 
-Blog estático (HTML puro, sem build) sobre FIRE, taxa de retirada e renda
-fixa, hospedado no GitHub Pages. Ver `README.md` para a visão geral do
+Blog estático (HTML puro, sem build) sobre finanças, investimentos,
+liberdade financeira e aposentadoria antecipada, hospedado no GitHub
+Pages. Ver `README.md` para a visão geral do
 projeto e o fluxo de publicação de artigos, e
 `internal/CHECKLIST-NOVO-ARTIGO.md` + `internal/template-artigo.html` para
 o padrão obrigatório de todo artigo novo.
