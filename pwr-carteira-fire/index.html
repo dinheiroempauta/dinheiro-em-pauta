@@ -247,6 +247,10 @@ input[type="range"]{ width: 100%; margin: 6px 0 8px; accent-color: var(--gold); 
 .pwrcmp-table td.num{ font-weight:600; }
 .pwrcmp-table td.delta-up{ color: var(--green); }
 .pwrcmp-table td.delta-down{ color: var(--brick); }
+.pwrcmp-table tbody tr:last-child td{ border-bottom: none; }
+.pwrcmp-actions{ display:flex; gap:10px; flex-wrap:wrap; margin: 4px 0 14px; }
+.btn-secondary{ background: transparent; color: var(--muted); border: 1px solid var(--line-strong); }
+.btn-secondary:hover{ color: var(--ink); border-color: var(--ink); }
 .pwrcmp-error{ font-size:13px; color: var(--brick); background: rgba(168,64,42,.08); border-radius:3px; padding:10px 14px; margin-top:12px; }
 @media (max-width:560px){ .pwrcmp-footer{ flex-direction:column; align-items:stretch; } }
 </style>
@@ -736,6 +740,11 @@ input[type="range"]{ width: 100%; margin: 6px 0 8px; accent-color: var(--gold); 
 
     <div class="pwrcmp-weights" id="pwrcmp-weights"></div>
     <p class="field-error" id="pwrcmp-weights-error">A soma dos pesos precisa ser 100% para simular.</p>
+
+    <div class="pwrcmp-actions">
+      <button class="btn btn-secondary" id="pwrcmp-reset" type="button">Restaurar padrão</button>
+      <button class="btn btn-secondary" id="pwrcmp-random" type="button">Composição aleatória</button>
+    </div>
 
     <div class="pwrcmp-footer">
       <div class="pwrcmp-sum"><span>Soma</span> <span class="pwrcmp-sum-value" id="pwrcmp-sum" aria-live="polite">100%</span></div>
@@ -1297,7 +1306,7 @@ input[type="range"]{ width: 100%; margin: 6px 0 8px; accent-color: var(--gold); 
 (function(){
   'use strict';
   var DATA = JSON.parse(document.getElementById('pwrcmp-data').textContent);
-  var ASSET_KEYS = ['vwra11','divo11','b5p211','cdib11','gold11'];
+  var ASSET_KEYS = ['b5p211','vwra11','divo11','cdib11','gold11'];
   var ASSET_LABELS = { vwra11:'VWRA11', divo11:'DIVO11', b5p211:'B5P211', cdib11:'CDIB11', gold11:'GOLD11' };
   var BASE_WEIGHTS = { b5p211:40, vwra11:30, divo11:20, cdib11:5, gold11:5 };
 
@@ -1349,6 +1358,22 @@ input[type="range"]{ width: 100%; margin: 6px 0 8px; accent-color: var(--gold); 
     return { w: w, ok: ok };
   }
   updateSum();
+
+  document.getElementById('pwrcmp-reset').addEventListener('click', function(){
+    ASSET_KEYS.forEach(function(k){ document.getElementById('pwrcmp-w-'+k).value = BASE_WEIGHTS[k]; });
+    updateSum();
+  });
+
+  document.getElementById('pwrcmp-random').addEventListener('click', function(){
+    var raw = ASSET_KEYS.map(function(){ return Math.random() + 0.05; });
+    var total = raw.reduce(function(a,b){ return a+b; }, 0);
+    var pct = raw.map(function(v){ return Math.round(v/total*100); });
+    var diff = 100 - pct.reduce(function(a,b){ return a+b; }, 0);
+    var maxIdx = pct.indexOf(Math.max.apply(null, pct));
+    pct[maxIdx] += diff;
+    ASSET_KEYS.forEach(function(k,i){ document.getElementById('pwrcmp-w-'+k).value = pct[i]; });
+    updateSum();
+  });
 
   /* ---------- bootstrap estacionário em Web Worker (mesmo motor do comparador de composição) ---------- */
   var PWRCMP_WORKER_SRC = [
