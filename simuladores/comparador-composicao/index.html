@@ -1060,14 +1060,23 @@ svg.chart-svg{ width: 100%; height: auto; display:block; overflow: visible; }
   }
 
   function checkConstraints(metrics, constraints){
-    let violated = 0;
+    let violated = 0, distance = 0;
     const details = constraints.map(c => {
       const val = metrics[c.key];
       const ok = c.comparator === '>=' ? val >= c.internalValue : val <= c.internalValue;
-      if (!ok) violated++;
+      if (!ok){
+        violated++;
+        // distância relativa até o limite pedido — soma quando várias
+        // restrições são violadas ao mesmo tempo. Normalizada pelo próprio
+        // limite (em vez de valor absoluto) pra poder somar métricas de
+        // unidades diferentes (CAGR em %, Ulcer Index num número puro,
+        // meses de recuperação etc.) numa mesma pontuação comparável.
+        const denom = Math.abs(c.internalValue) > 1e-9 ? Math.abs(c.internalValue) : 1e-9;
+        distance += Math.abs(val - c.internalValue) / denom;
+      }
       return Object.assign({}, c, { actual: val, ok });
     });
-    return { violated, details };
+    return { violated, distance, details };
   }
 
   function objectiveValue(metrics, objective){
@@ -1139,6 +1148,20 @@ svg.chart-svg{ width: 100%; height: auto; display:block; overflow: visible; }
     return out;
   }
 
+  // Compara dois candidatos na ordem: (1) menos restrições violadas vence;
+  // (2) empatado nisso, quem está mais perto de atender todas vence — soma
+  // das distâncias relativas das restrições violadas, não só a contagem.
+  // Sem esse passo, quando nada na grade atende tudo, o desempate caía
+  // direto pro "Priorizar" e podia escolher uma composição violando a
+  // restrição por uma margem enorme só por ter o melhor Ulcer/Sharpe/etc,
+  // o que contradiz o rótulo "mais próxima encontrada"; (3) só depois disso
+  // o critério de "Priorizar" desempata entre os igualmente próximos.
+  function isBetterCandidate(check, obj, bestCheck, bestObj){
+    if (check.violated !== bestCheck.violated) return check.violated < bestCheck.violated;
+    if (Math.abs(check.distance - bestCheck.distance) > 1e-9) return check.distance < bestCheck.distance;
+    return obj > bestObj;
+  }
+
   function runOptimizer(constraints, mode, scope, bounds, objective, pct){
     // calcular episódios de drawdown (recuperação) é caro pra rodar em toda
     // a grade — só liga isso quando a restrição de tempo de recuperação ou
@@ -1152,7 +1175,7 @@ svg.chart-svg{ width: 100%; height: auto; display:block; overflow: visible; }
       const metrics = evaluateWeights(w, mode, scope, needRecovery, pct);
       const check = checkConstraints(metrics, constraints);
       const obj = objectiveValue(metrics, objective);
-      if (best === null || check.violated < bestCheck.violated || (check.violated === bestCheck.violated && obj > bestObj)){
+      if (best === null || isBetterCandidate(check, obj, bestCheck, bestObj)){
         best = arr; bestMetrics = metrics; bestCheck = check; bestObj = obj;
       }
     });
@@ -1172,7 +1195,7 @@ svg.chart-svg{ width: 100%; height: auto; display:block; overflow: visible; }
       const metrics = evaluateWeights(w, mode, scope, needRecovery, pct);
       const check = checkConstraints(metrics, constraints);
       const obj = objectiveValue(metrics, objective);
-      if (check.violated < bestCheck.violated || (check.violated === bestCheck.violated && obj > bestObj)){
+      if (isBetterCandidate(check, obj, bestCheck, bestObj)){
         best = arr; bestMetrics = metrics; bestCheck = check; bestObj = obj;
       }
     });
