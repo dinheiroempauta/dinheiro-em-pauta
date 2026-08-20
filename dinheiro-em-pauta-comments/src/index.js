@@ -7,6 +7,9 @@
  *   GET  /admin                        -> painel HTML de moderação (login por token)
  *   GET  /admin/pending?token=...      -> { pending: [...] }
  *   POST /admin/moderate               -> { status: "ok" }
+ *   GET  /admin/approved?token=...&slug=X (slug opcional) -> { approved: [...] }
+ *   POST /admin/delete                 -> { status: "ok" } (apaga um comentário já aprovado
+ *                                          e toda a árvore de respostas dele)
  *
  * Requer um D1 database vinculado como "DB" (ver wrangler.toml) e os
  * secrets ADMIN_TOKEN e IP_SALT (`wrangler secret put ...`). RESEND_API_KEY
@@ -86,6 +89,12 @@ export default {
       }
       if (url.pathname === "/admin/moderate" && request.method === "POST") {
         return await handleAdminModerate(request, env, cors);
+      }
+      if (url.pathname === "/admin/approved" && request.method === "GET") {
+        return await handleAdminApproved(url, env, cors);
+      }
+      if (url.pathname === "/admin/delete" && request.method === "POST") {
+        return await handleAdminDelete(request, env, cors);
       }
       return json({ error: "not_found" }, 404, cors);
     } catch (err) {
@@ -201,5 +210,49 @@ async function handleAdminModerate(request, env, cors) {
     await env.DB.prepare(`DELETE FROM comments WHERE id = ?`).bind(body.id).run();
     await notifyModerationResult(env, comment, "reject");
   }
+  return json({ status: "ok" }, 200, cors);
+}
+
+async function handleAdminApproved(url, env, cors) {
+  if (url.searchParams.get("token") !== env.ADMIN_TOKEN) return json({ error: "unauthorized" }, 401, cors);
+
+  const slug = (url.searchParams.get("slug") || "").trim();
+  let query = `SELECT id, slug, parent_id, nickname, email, message, created_at FROM comments WHERE status = 'approved'`;
+  const binds = [];
+  if (slug) {
+    if (!SLUG_RE.test(slug)) return json({ error: "invalid_slug" }, 400, cors);
+    query += ` AND slug = ?`;
+    binds.push(slug);
+  }
+  query += ` ORDER BY created_at DESC LIMIT 200`;
+
+  const { results } = await env.DB.prepare(query).bind(...binds).all();
+  return json({ approved: results }, 200, cors);
+}
+
+async function handleAdminDelete(request, env, cors) {
+  const body = await request.json().catch(() => null);
+  if (!body || body.token !== env.ADMIN_TOKEN) return json({ error: "unauthorized" }, 401, cors);
+  if (!body.id) return json({ error: "invalid_id" }, 400, cors);
+
+  const comment = await env.DB.prepare(`SELECT id FROM comments WHERE id = ?`).bind(body.id).first();
+  if (!comment) return json({ error: "not_found" }, 404, cors);
+
+  // Apaga o comentário e toda a árvore de respostas abaixo dele (via CTE
+  // recursiva) — sem isso, respostas aprovadas ao comentário excluído
+  // ficariam órfãs e reapareceriam como comentário de nível 1 na listagem
+  // pública (handleGetComments empurra pra "top" qualquer registro cujo
+  // parent_id não existe mais em byId).
+  await env.DB.prepare(
+    `DELETE FROM comments WHERE id IN (
+       WITH RECURSIVE descendants(id) AS (
+         SELECT id FROM comments WHERE id = ?
+         UNION ALL
+         SELECT c.id FROM comments c JOIN descendants d ON c.parent_id = d.id
+       )
+       SELECT id FROM descendants
+     )`
+  ).bind(body.id).run();
+
   return json({ status: "ok" }, 200, cors);
 }

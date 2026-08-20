@@ -98,9 +98,12 @@ fila de moderação manual), mas com controle visual total.
 2. Depois do deploy, todo comentário novo entra como `pending` — aprove ou
    rejeite no painel próprio em
    `https://dinheiro-em-pauta-comments.dinheiroempauta.workers.dev/admin`
-   (login com o `ADMIN_TOKEN` configurado no deploy). Também dá pra usar
-   `curl` nos endpoints `/admin/*` (comandos exatos no `DEPLOY.md`) ou o
-   console D1 do dashboard da Cloudflare, se preferir.
+   (login com o `ADMIN_TOKEN` configurado no deploy). O painel tem duas
+   abas: "Pendentes" (aprovar/rejeitar) e "Aprovados" (buscar por slug e
+   excluir um comentário já publicado, se precisar remover algo depois
+   de aprovado). Também dá pra usar `curl` nos endpoints `/admin/*`
+   (comandos exatos no `DEPLOY.md`) ou o console D1 do dashboard da
+   Cloudflare, se preferir.
 3. O leitor não precisa de conta, só digita nome (e e-mail opcional) —
    igual ao comportamento anterior.
 4. (Opcional) Configure `RESEND_API_KEY` — seção 3.1 do `DEPLOY.md` — pra
