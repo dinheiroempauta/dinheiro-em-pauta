@@ -86,8 +86,19 @@
   ]
 }
 </script>
-<!-- FAQPage JSON-LD: incluir só se o artigo tiver perguntas autocontidas.
-     Snippet de referência em internal/CHECKLIST-NOVO-ARTIGO.md. -->
+<!-- FAQPage JSON-LD: obrigatório em todo artigo/simulador (ver
+     internal/CHECKLIST-NOVO-ARTIGO.md). Gerar 3-4 perguntas a partir do
+     próprio conteúdo do artigo, nunca inventadas. Snippet:
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {"@type": "Question", "name": "{{PERGUNTA}}", "acceptedAnswer": {"@type": "Answer", "text": "{{RESPOSTA}}"}}
+  ]
+}
+</script>
+-->
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
