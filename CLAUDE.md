@@ -125,9 +125,15 @@ credibilidade do artigo do que a ausência de referência.
 Siga `internal/CHECKLIST-NOVO-ARTIGO.md` à risca, partindo de
 `internal/template-artigo.html`. Depois de gerar o artigo, adicionar o
 card na home, atualizar `sitemap.xml`/`feed.xml` e gerar a og:image
-(prompt em `internal/prompt-og-image-dinheiro-em-pauta.md`), o
-fluxo é: commit → push → PR → conferir diff → merge — sem pausar pra
-aprovação em cada etapa, como descrito acima.
+(prompt em `internal/prompt-og-image-dinheiro-em-pauta.md`), rodar a
+skill `humanizer` sobre o texto do artigo (corpo, título, subtítulo,
+resumo, meta description/og/JSON-LD) faz parte do processo de
+construção, sem precisar ser pedido — mesmo espírito da estimativa de
+tempo de leitura e do bloco "Nivelamento básico" descritos abaixo. Só
+não decidir sozinho um corte de parágrafo, mudança de sentido de uma
+alegação ou algo que toque numa referência — isso é decisão editorial,
+chamar o usuário. O fluxo é: commit → push → PR → conferir diff →
+merge — sem pausar pra aprovação em cada etapa, como descrito acima.
 
 **A og:image não é opcional e "não tenho ferramenta de geração de
 imagem" não é uma saída válida sem checar primeiro.** Já aconteceu de eu

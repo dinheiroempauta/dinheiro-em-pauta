@@ -194,6 +194,13 @@ idioma no automático.
 
 ## 6. Verificação final antes de considerar publicado
 
+- [ ] Rodar a skill `humanizer` sobre o texto do artigo (corpo, título,
+      subtítulo, resumo, meta description/og/JSON-LD) antes de publicar —
+      remove clichês e maneirismos de escrita de IA sem cortar conteúdo,
+      número, data ou citação. Se algo exigir decisão editorial (cortar
+      parágrafo, mudar o sentido de uma alegação, mexer numa referência),
+      não decidir sozinho — chamar o usuário, como já vale pra qualquer
+      decisão editorial no `CLAUDE.md`
 - [ ] Abrir o HTML localmente e checar: fontes carregando (sem fallback
       pro sistema), curtir funcionando, compartilhar com URL/slug certos,
       comentários carregando o thread certo (`data-page-id`), TOC
