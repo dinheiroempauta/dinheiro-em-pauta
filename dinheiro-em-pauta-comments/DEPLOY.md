@@ -87,6 +87,19 @@ Ver se aparece na listagem pública:
 curl "https://dinheiro-em-pauta-comments.dinheiroempauta.workers.dev/comments?slug=pwr-carteira-fire"
 ```
 
+Listar aprovados (pra excluir um comentário já publicado — o `slug` é
+opcional, sem ele lista os 200 mais recentes de qualquer artigo):
+```
+curl "https://dinheiro-em-pauta-comments.dinheiroempauta.workers.dev/admin/approved?token=SEU_TOKEN&slug=pwr-carteira-fire"
+```
+
+Excluir um comentário já aprovado (também apaga qualquer resposta a ele):
+```
+curl -X POST https://dinheiro-em-pauta-comments.dinheiroempauta.workers.dev/admin/delete \
+  -H "Content-Type: application/json" \
+  -d '{"token":"SEU_TOKEN","id":ID}'
+```
+
 ## 6. Painel de moderação
 
 ```
@@ -94,7 +107,9 @@ https://dinheiro-em-pauta-comments.dinheiroempauta.workers.dev/admin
 ```
 
 Mesmo fluxo de sempre: cola o `ADMIN_TOKEN` no login, fica salvo no
-navegador.
+navegador. Tem duas abas: "Pendentes" (aprovar/rejeitar) e "Aprovados"
+(buscar por slug e excluir um comentário já publicado, com confirmação —
+apaga também qualquer resposta a ele).
 
 Alternativas que continuam funcionando, se preferir (ex: pra automatizar
 algo): os comandos `curl` do passo 5, ou direto pelo console D1 no

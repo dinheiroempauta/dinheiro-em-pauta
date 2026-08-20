@@ -43,6 +43,15 @@ export const ADMIN_PAGE_HTML = `<!doctype html>
   button.reject:hover{ background:var(--brick); color:var(--paper); }
   .row{ display:flex; gap:10px; }
   .row form{ flex:1; }
+  .tabs{ display:flex; gap:8px; margin-bottom:16px; }
+  .tab{ background:transparent; color:var(--muted); border:1px solid var(--line-strong); }
+  .tab:hover{ background:transparent; color:var(--ink); border-color:var(--ink); }
+  .tab.active{ background:var(--green); color:#0d0f0a; border-color:var(--green); }
+  .tabpage{ display:none; }
+  .tabpage.active{ display:block; }
+  .filter-row{ display:flex; gap:10px; margin-bottom:16px; }
+  .filter-row input{ flex:1; }
+  .filter-row button{ flex:0 0 auto; }
   #loginError, .item-error{ color:var(--brick); font-size:13px; margin-top:10px; display:none; }
   #panel{ display:none; }
   #panel.visible{ display:block; }
@@ -77,12 +86,31 @@ export const ADMIN_PAGE_HTML = `<!doctype html>
     <div class="topbar">
       <span class="item-meta" id="pendingCount"></span>
       <div class="row" style="flex:0;">
-        <button class="secondary" id="refreshBtn">Atualizar lista</button>
         <button class="secondary" id="logoutBtn">Sair</button>
       </div>
     </div>
-    <div class="card">
-      <div id="list"><p class="loading">Carregando…</p></div>
+    <div class="tabs">
+      <button class="tab active" id="tabPendingBtn">Pendentes</button>
+      <button class="tab" id="tabApprovedBtn">Aprovados</button>
+    </div>
+
+    <div class="tabpage active" id="tabPending">
+      <div class="row" style="margin-bottom:16px;">
+        <button class="secondary" id="refreshBtn">Atualizar lista</button>
+      </div>
+      <div class="card">
+        <div id="list"><p class="loading">Carregando…</p></div>
+      </div>
+    </div>
+
+    <div class="tabpage" id="tabApproved">
+      <div class="filter-row">
+        <input type="text" id="slugFilter" placeholder="Filtrar por slug (opcional)" autocomplete="off">
+        <button class="secondary" id="searchApprovedBtn">Buscar</button>
+      </div>
+      <div class="card">
+        <div id="approvedList"><p class="empty">Digite um slug ou clique em "Buscar" pra listar os mais recentes.</p></div>
+      </div>
     </div>
   </div>
 </div>
@@ -102,6 +130,13 @@ export const ADMIN_PAGE_HTML = `<!doctype html>
   var logoutBtn = document.getElementById("logoutBtn");
   var listEl = document.getElementById("list");
   var pendingCountEl = document.getElementById("pendingCount");
+  var tabPendingBtn = document.getElementById("tabPendingBtn");
+  var tabApprovedBtn = document.getElementById("tabApprovedBtn");
+  var tabPending = document.getElementById("tabPending");
+  var tabApproved = document.getElementById("tabApproved");
+  var slugFilter = document.getElementById("slugFilter");
+  var searchApprovedBtn = document.getElementById("searchApprovedBtn");
+  var approvedListEl = document.getElementById("approvedList");
 
   function getToken(){ return localStorage.getItem(STORAGE_KEY) || ""; }
   function setToken(t){ localStorage.setItem(STORAGE_KEY, t); }
@@ -227,6 +262,108 @@ export const ADMIN_PAGE_HTML = `<!doctype html>
       });
   }
 
+  function renderApprovedItem(c){
+    var item = document.createElement("div");
+    item.className = "item";
+
+    var header = document.createElement("div");
+    header.className = "item-header";
+    var nick = document.createElement("span");
+    nick.className = "item-nick";
+    nick.textContent = c.nickname + (c.email ? " (" + c.email + ")" : "");
+    var meta = document.createElement("span");
+    meta.className = "item-meta";
+    meta.textContent = formatDate(c.created_at);
+    header.appendChild(nick);
+    header.appendChild(meta);
+
+    var slug = document.createElement("span");
+    slug.className = "item-slug";
+    slug.textContent = c.slug + (c.parent_id ? " · resposta a #" + c.parent_id : "");
+
+    var message = document.createElement("p");
+    message.className = "item-message";
+    message.textContent = c.message;
+
+    var actions = document.createElement("div");
+    actions.className = "item-actions";
+    var deleteBtn = document.createElement("button");
+    deleteBtn.className = "reject";
+    deleteBtn.textContent = "Excluir";
+    deleteBtn.addEventListener("click", function(){
+      var ok = window.confirm('Excluir o comentário de "' + c.nickname + '"? Isso também apaga qualquer resposta a ele. Essa ação não pode ser desfeita.');
+      if (ok) deleteApproved(c.id, item);
+    });
+    actions.appendChild(deleteBtn);
+
+    item.appendChild(header);
+    item.appendChild(document.createElement("br"));
+    item.appendChild(slug);
+    item.appendChild(message);
+    item.appendChild(actions);
+    return item;
+  }
+
+  function loadApproved(){
+    approvedListEl.innerHTML = '<p class="loading">Carregando…</p>';
+    var slug = slugFilter.value.trim();
+    var qs = "token=" + encodeURIComponent(getToken()) + (slug ? "&slug=" + encodeURIComponent(slug) : "");
+    fetch(API + "/admin/approved?" + qs)
+      .then(function(r){
+        if (r.status === 401) { clearToken(); showLogin(true); throw new Error("unauthorized"); }
+        return r.json();
+      })
+      .then(function(data){
+        approvedListEl.innerHTML = "";
+        var items = data.approved || [];
+        if (!items.length) {
+          approvedListEl.innerHTML = '<p class="empty">Nenhum comentário aprovado encontrado.</p>';
+          return;
+        }
+        items.forEach(function(c){ approvedListEl.appendChild(renderApprovedItem(c)); });
+      })
+      .catch(function(err){
+        if (err.message !== "unauthorized") {
+          approvedListEl.innerHTML = '<p class="empty">Erro ao carregar. Tenta buscar de novo.</p>';
+        }
+      });
+  }
+
+  function deleteApproved(id, itemEl){
+    var buttons = itemEl.querySelectorAll("button");
+    buttons.forEach(function(b){ b.disabled = true; });
+    fetch(API + "/admin/delete", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ token: getToken(), id: id }),
+    })
+      .then(function(r){ return r.json().then(function(d){ return { ok: r.ok, data: d }; }); })
+      .then(function(res){
+        if (res.ok) {
+          itemEl.remove();
+          if (!approvedListEl.querySelectorAll(".item").length) {
+            approvedListEl.innerHTML = '<p class="empty">Nenhum comentário aprovado encontrado.</p>';
+          }
+        } else {
+          buttons.forEach(function(b){ b.disabled = false; });
+          alert("Não foi possível excluir: " + (res.data.error || "erro"));
+        }
+      })
+      .catch(function(){
+        buttons.forEach(function(b){ b.disabled = false; });
+        alert("Erro de conexão. Tenta de novo.");
+      });
+  }
+
+  function showTab(name){
+    var isPending = name === "pending";
+    tabPendingBtn.classList.toggle("active", isPending);
+    tabApprovedBtn.classList.toggle("active", !isPending);
+    tabPending.classList.toggle("active", isPending);
+    tabApproved.classList.toggle("active", !isPending);
+    if (!isPending && !approvedListEl.querySelectorAll(".item").length) loadApproved();
+  }
+
   loginBtn.addEventListener("click", function(){
     var t = tokenInput.value.trim();
     if (!t) return;
@@ -236,6 +373,10 @@ export const ADMIN_PAGE_HTML = `<!doctype html>
   tokenInput.addEventListener("keydown", function(e){ if (e.key === "Enter") loginBtn.click(); });
   refreshBtn.addEventListener("click", loadPending);
   logoutBtn.addEventListener("click", function(){ clearToken(); showLogin(false); tokenInput.value = ""; });
+  tabPendingBtn.addEventListener("click", function(){ showTab("pending"); });
+  tabApprovedBtn.addEventListener("click", function(){ showTab("approved"); });
+  searchApprovedBtn.addEventListener("click", loadApproved);
+  slugFilter.addEventListener("keydown", function(e){ if (e.key === "Enter") loadApproved(); });
 
   if (getToken()) { showPanel(); } else { showLogin(false); }
 })();
