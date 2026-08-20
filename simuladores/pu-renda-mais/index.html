@@ -42,6 +42,17 @@
   "isPartOf": {"@type": "WebSite", "name": "Dinheiro em Pauta", "url": "https://dinheiroempauta.com.br/"}
 }
 </script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {"@type": "Question", "name": "Como o simulador calcula o PU do Tesouro RendA+?", "acceptedAnswer": {"@type": "Answer", "text": "O PU é o valor presente das 240 parcelas mensais (20 anos) pagas a partir da data de conversão. Cada parcela é 1/240 do VNA (Valor Nominal Atualizado) projetado para a data daquela parcela, trazida a valor presente usando dias úteis reais (calendário ANBIMA) e a taxa combinada de IPCA projetado + taxa real. Quanto maior a taxa real exigida, menor o PU."}},
+    {"@type": "Question", "name": "Onde encontro o VNA, a data de referência e a data de conversão do meu título?", "acceptedAnswer": {"@type": "Answer", "text": "Na página de preços e taxas do site do Tesouro Direto, abrindo o título RendA+ específico (ex: RendA+ Aposentadoria Extra 2065). O VNA e a data de referência aparecem juntos; a data de conversão é a data da primeira parcela mensal, informada na mesma página."}},
+    {"@type": "Question", "name": "Esse simulador segue a metodologia oficial de precificação?", "acceptedAnswer": {"@type": "Answer", "text": "Sim — replica a metodologia oficial ANBIMA/Tesouro Direto de precificação por fluxo de caixa descontado, incluindo o calendário de feriados nacionais usado no cálculo de dias úteis. Ainda assim é uma ferramenta educacional independente; sempre confira o PU e a taxa oficiais na página do título antes de investir."}}
+  ]
+}
+</script>
 <!-- Privacy-friendly analytics by Umami -->
 <script defer src="https://cloud.umami.is/script.js" integrity="sha384-Q1FEUGCe1A6jpwhNNpZ0b5Dyg9/aU2mQx8VmKWv2hKTMXCr87YGWPDCU534MlYXM" crossorigin="anonymous" data-website-id="5ad06f25-a346-4669-9e09-55a75b4ee26b"></script>
 <link rel="preconnect" href="https://fonts.googleapis.com">

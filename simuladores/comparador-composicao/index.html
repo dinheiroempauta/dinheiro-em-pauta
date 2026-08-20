@@ -42,6 +42,18 @@
   "isPartOf": {"@type": "WebSite", "name": "Dinheiro em Pauta", "url": "https://dinheiroempauta.com.br/"}
 }
 </script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {"@type": "Question", "name": "Como funciona o otimizador de composição de carteira?", "acceptedAnswer": {"@type": "Answer", "text": "Em vez de ajustar os pesos manualmente, você define restrições (CAGR mínimo, perda máxima tolerável, Sharpe, Sortino, Ulcer Index, volatilidade ou tempo de recuperação) e um critério de prioridade. O otimizador testa composições em múltiplos de 5% e depois refina em 1% ao redor da melhor encontrada — não é um ótimo matemático exato, é a melhor composição testada na grade."}},
+    {"@type": "Question", "name": "Como é calculada a taxa de retirada (PWR/SWR) do comparador?", "acceptedAnswer": {"@type": "Answer", "text": "O simulador reamostra blocos do histórico real de retornos mensais da carteira (bootstrap estacionário de Politis & Romano, 1994) para gerar 10.000 trajetórias sintéticas, e busca por bisseção a maior taxa de retirada anual fixa que atinge o percentual de sucesso escolhido. PWR mira uma retirada perpétua (proxy de 60 anos); SWR mira um horizonte fixo (30 a 70 anos), sem zerar o patrimônio dentro dele."}},
+    {"@type": "Question", "name": "O que é CAGR e como o comparador calcula esse número?", "acceptedAnswer": {"@type": "Answer", "text": "CAGR é a taxa de retorno anual que, se repetida igual todo ano, teria transformado o capital inicial no capital final observado. O comparador calcula pegando o produto de (1 + retorno) de cada mês da janela, elevando a 12/n (n = número de meses) e subtraindo 1 — aplicado tanto ao histórico completo quanto a janelas móveis de 1 a 18 anos."}},
+    {"@type": "Question", "name": "Qual é a base de dados usada nas comparações?", "acceptedAnswer": {"@type": "Answer", "text": "Dados reais de janeiro de 2006 a junho de 2026 (cerca de 20 anos), a mesma base usada nos artigos do blog. Por ser um histórico de ~20 anos, os resultados de PWR/SWR são uma estimativa estatística baseada no período observado, não uma garantia — rodar a mesma composição e o mesmo alvo sempre dá o mesmo número (semente fixa), mas o resultado muda se os pesos ou o alvo de sucesso mudarem."}}
+  ]
+}
+</script>
 <!-- Privacy-friendly analytics by Umami -->
 <script defer src="https://cloud.umami.is/script.js" integrity="sha384-Q1FEUGCe1A6jpwhNNpZ0b5Dyg9/aU2mQx8VmKWv2hKTMXCr87YGWPDCU534MlYXM" crossorigin="anonymous" data-website-id="5ad06f25-a346-4669-9e09-55a75b4ee26b"></script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
