@@ -49,9 +49,15 @@ de escrever o HTML do zero.
       dateModified, articleSection, keywords, about, author/publisher,
       mainEntityOfPage, isPartOf)
 - [ ] JSON-LD **BreadcrumbList** (Home → categoria → artigo)
-- [ ] JSON-LD **FAQPage** — se o conteúdo tiver perguntas respondíveis de
-      forma autocontida (a maioria dos artigos técnicos tem 2-4 boas
-      candidatas); se não fizer sentido para este artigo, ok pular. Snippet:
+- [ ] JSON-LD **FAQPage** — **obrigatório em todo artigo e simulador
+      novo** (mesmo status do `#nivelamento-basico`), com 3-4 perguntas
+      geradas a partir do próprio conteúdo — nunca inventadas ou
+      genéricas. É schema puro, sem seção visível correspondente no
+      corpo da página (mesmo padrão dos artigos existentes). O Google
+      aposentou o rich result de FAQ em maio de 2026, mas o schema
+      continua útil para IAs (Perplexity, ChatGPT) extraírem
+      pergunta/resposta com mais precisão ao citar o artigo — por isso
+      manter. Snippet:
       ```html
       <script type="application/ld+json">
       {
