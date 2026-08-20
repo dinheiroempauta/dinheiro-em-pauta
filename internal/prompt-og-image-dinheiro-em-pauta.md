@@ -129,18 +129,68 @@ Declare via `@font-face` no `<style>` do HTML da capa, apontando para esses arqu
 
 **Cuidado com CSS flexbox + `gap` em torno de nós de texto misturados com `<b>`**: isso já causou espaçamento indevido no wordmark. Sempre envolva o texto do wordmark em um único `<span>` (`<span><b>Dinheiro em</b> Pauta</span>`) para evitar que o `gap` do flex container se aplique entre nós de texto anônimos.
 
-### 7. Renderize via Chromium headless (Puppeteer), nunca ImageMagick/rsvg direto
+### 7. Renderize via Chromium headless, nunca ImageMagick/rsvg direto
 
-ImageMagick não renderiza bem `@font-face`/texto customizado em HTML. Use o Chrome já disponível no ambiente:
+ImageMagick não renderiza bem `@font-face`/texto customizado em HTML — a
+renderização **tem** que passar por um browser real.
+
+**Regra crítica, motivada por um erro real (19/08/2026 → corrigido
+20/08/2026): "este ambiente não tem geração de imagem" quase nunca é
+verdade — é falta de checar antes de desistir.** Um artigo publicado
+sem og-image por essa razão (`alocacao-explica-desempenho`) ficou sem
+prévia de compartilhamento por horas até o usuário perguntar por quê.
+Antes de concluir que a geração é impossível, **sempre** rode este
+checklist de descoberta primeiro:
+
+```bash
+# 1. Existe algum Chromium/Chrome já instalado no ambiente?
+command -v google-chrome chromium chromium-browser 2>/dev/null
+echo "$PLAYWRIGHT_BROWSERS_PATH"
+find /opt /usr /home -maxdepth 5 \( -iname "chrome" -o -iname "chromium*" \) -type f 2>/dev/null | grep -i linux
+# Nas sessões de Claude Code neste ambiente remoto, o caminho típico é:
+#   /opt/pw-browsers/chromium-*/chrome-linux/chrome   (via PLAYWRIGHT_BROWSERS_PATH)
+```
+
+Se qualquer um desses achar um binário, **ele é suficiente** — nem
+precisa de Puppeteer/Playwright como pacote npm. O próprio binário do
+Chrome tem uma flag de screenshot embutida, então o caminho mais simples
+e com menos dependências é:
+
+```bash
+CHROME=/opt/pw-browsers/chromium-*/chrome-linux/chrome   # ajuste pro caminho encontrado acima
+$CHROME --headless --disable-gpu --no-sandbox --hide-scrollbars \
+  --force-color-profile=srgb --font-render-hinting=none \
+  --window-size=1200,630 \
+  --screenshot=og-cover-nome-do-artigo.png \
+  file:///caminho/absoluto/para/cover.html
+```
+
+(Os avisos de `dbus`/`org.freedesktop.DBus` no stderr são inofensivos —
+não indicam falha; confira o arquivo de saída e o exit code do
+screenshot, não o stderr.) Isso já sai em 1200×630 exatos, sem precisar
+de downscale — confirme com um leitor de dimensões de PNG (`identify`,
+se disponível, ou lendo o cabeçalho IHDR manualmente com Python) que o
+resultado é **exatamente 1200×630** antes de aceitar.
+
+Se por algum motivo real (não hipotético) nenhum Chromium existir e não
+houver como instalar um, **isso é uma exceção rara que precisa ser
+relatada explicitamente ao usuário como bloqueio**, nunca silenciada
+como "pendência fora do escopo" ou publicada sem mais explicação — e
+mesmo nesse caso, tentar `npx playwright install chromium` ou variantes
+de puppeteer-core antes de desistir.
+
+Alternativa via Puppeteer (útil se for preciso supersampling 2x e
+downscale com filtro, ou se o ambiente específico só expõe o Chrome via
+um pacote node, como em alguns setups do app desktop):
 
 ```javascript
 // shot.js
-const puppeteer = require('/home/claude/.npm-global/lib/node_modules/@mermaid-js/mermaid-cli/node_modules/puppeteer-core');
+const puppeteer = require('puppeteer-core'); // ou o caminho do puppeteer-core já instalado localmente
 const path = require('path');
 
 (async () => {
   const browser = await puppeteer.launch({
-    executablePath: '/home/claude/.cache/puppeteer/chrome/linux-131.0.6778.204/chrome-linux64/chrome',
+    executablePath: process.env.CHROME_PATH || '/opt/pw-browsers/chromium-1194/chrome-linux/chrome',
     headless: 'new',
     args: ['--no-sandbox', '--disable-setuid-sandbox', '--force-color-profile=srgb', '--font-render-hinting=none']
   });
@@ -154,13 +204,17 @@ const path = require('path');
 })();
 ```
 
-Rode: `node shot.js artigo.html og-cover-bruto.png` (sai em 2400×1260) e então reduza com filtro Lanczos para o tamanho final:
+Rode: `node shot.js artigo.html og-cover-bruto.png` (sai em 2400×1260) e então reduza com filtro Lanczos para o tamanho final, **se** `convert`/`magick` (ImageMagick) estiver disponível:
 
 ```bash
 convert og-cover-bruto.png -filter Lanczos -resize 1200x630 -quality 95 og-cover-nome-do-artigo-vN.png
 ```
 
-Confirme as dimensões finais com `identify` (precisa ser exatamente **1200x630**) antes de entregar.
+Se ImageMagick não estiver disponível, use a abordagem direta da seção
+acima (viewport 1x, sem downscale) em vez de travar no passo de resize —
+o resultado sem supersampling já é nítido o suficiente para OG image.
+
+Confirme as dimensões finais (precisa ser exatamente **1200x630**) antes de entregar.
 
 ### 8. Verificação final antes de entregar
 

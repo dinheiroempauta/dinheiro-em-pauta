@@ -129,6 +129,22 @@ card na home, atualizar `sitemap.xml`/`feed.xml` e gerar a og:image
 fluxo é: commit → push → PR → conferir diff → merge — sem pausar pra
 aprovação em cada etapa, como descrito acima.
 
+**A og:image não é opcional e "não tenho ferramenta de geração de
+imagem" não é uma saída válida sem checar primeiro.** Já aconteceu de eu
+mergear um artigo (`alocacao-explica-desempenho`, 20/08/2026) sem a
+og:image, listando isso como "pendência fora do escopo desta sessão" —
+mas o ambiente tinha, o tempo todo, um Chromium headless disponível
+(`/opt/pw-browsers/chromium-*/chrome-linux/chrome` nas sessões remotas
+deste projeto) capaz de renderizar o HTML da capa e tirar um screenshot
+via `chrome --headless --screenshot=...`, sem precisar de nenhuma
+ferramenta especial de geração de imagem — só não foi verificado antes
+de desistir. Antes de publicar um artigo (ou de dizer ao usuário que a
+og:image ficou pendente), seguir o passo de descoberta no início da
+seção 7 de `internal/prompt-og-image-dinheiro-em-pauta.md`: procurar por
+um binário de Chromium/Chrome já instalado no ambiente antes de concluir
+que a geração é impossível. Só relatar como bloqueio real se essa busca
+não encontrar nada.
+
 Quando o usuário fornece o conteúdo do artigo (ex: um `.md`) pra eu montar
 em HTML, **estimar o tempo de leitura faz parte do processo de construção,
 sem precisar ser pedido** — o usuário fornece o conteúdo, não o tempo de
