@@ -134,16 +134,35 @@ um artigo **nunca são commitados aqui** — eles têm copyright do editor
 vivem num repositório irmão, privado, dedicado só a isso:
 `dinheiroempauta/dinheiro-em-pauta-fontes`.
 
-Sempre que for lidar com PDFs-fonte de um artigo — escrevendo um artigo
-novo a partir de papers, rodando a skill `conferencia-tecnica-artigo`, ou
-revisitando de quais PDFs um artigo antigo partiu — anexar esse
-repositório à sessão (`add_repo`, se ainda não estiver anexado) antes de
-processar os PDFs. Estrutura dentro dele: uma pasta por slug de artigo
-(`<slug>/`), com os PDFs originais mais um `README.md` com a referência
-bibliográfica completa de cada um (autor, título, periódico, volume,
-número, páginas, ano, DOI). Como esse repositório é privado, subir o PDF
-de verdade lá é seguro — é um arquivo pessoal, não redistribuição
-pública — ao contrário deste repositório aqui.
+Estrutura dentro dele: uma pasta por slug de artigo (`<slug>/`), com os
+PDFs originais mais um `README.md` com a referência bibliográfica
+completa de cada um (autor, título, periódico, volume, número, páginas,
+ano, DOI). Como esse repositório é privado, subir o PDF de verdade lá é
+seguro — é um arquivo pessoal, não redistribuição pública — ao contrário
+deste repositório aqui.
+
+**Importante sobre como acessar esse segundo repositório:** não existe
+uma ferramenta `add_repo` (ou equivalente) que anexe um repositório novo
+a uma sessão já aberta — testado e confirmado que não funciona. Nesta
+plataforma (Claude Code), o acesso a repositório é escolhido no seletor
+**no momento em que a sessão é criada** e não muda depois. Então:
+
+- Se o seletor de repositório permitir marcar mais de um ao abrir uma
+  sessão nova, prefira abrir a sessão de trabalho já com
+  `dinheiro-em-pauta` **e** `dinheiro-em-pauta-fontes` selecionados
+  juntos sempre que a tarefa envolver lidar com PDFs-fonte (escrever
+  artigo novo a partir de papers, rodar `conferencia-tecnica-artigo`,
+  revisitar de quais PDFs um artigo antigo partiu) — assim dá pra
+  commitar em ambos na mesma sessão.
+- Se não for possível selecionar os dois de uma vez, o fluxo é em duas
+  etapas: (1) nesta sessão (só `dinheiro-em-pauta`), processar os PDFs
+  normalmente e, ao final, empacotar a pasta `<slug>/` (PDFs + README)
+  num `.zip` e entregar ao usuário via `SendUserFile`; (2) numa sessão
+  separada, aberta já com `dinheiro-em-pauta-fontes` selecionado, pedir
+  o zip de volta ao usuário e commitar o conteúdo lá.
+- Nunca tentar `git clone`/API do GitHub para o repo de fontes a partir
+  de uma sessão que só tem `dinheiro-em-pauta` — falha por falta de
+  credencial/escopo, não é um problema temporário.
 
 ## Publicação de artigo novo
 
