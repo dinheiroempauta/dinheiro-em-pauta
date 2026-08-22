@@ -120,6 +120,31 @@ Nunca preencher o vazio com um número de seção, ano, autor ou URL plausível
 só para a nota parecer completa. Uma referência errada é pior para a
 credibilidade do artigo do que a ausência de referência.
 
+## Repositório separado para os PDFs das fontes (não commitar PDF aqui)
+
+Este repositório (`dinheiro-em-pauta`) **precisa continuar público** — o
+GitHub só serve Pages a partir de repositório privado em contas pessoais
+com plano Pro, e o dono deste projeto decidiu ficar 100% no plano
+gratuito. Então nunca proponha ou execute deixar este repositório
+privado.
+
+Por causa disso, PDFs de papers/artigos acadêmicos usados como fonte de
+um artigo **nunca são commitados aqui** — eles têm copyright do editor
+(JFQE, Journal of Portfolio Management etc.), e este repo é público. Eles
+vivem num repositório irmão, privado, dedicado só a isso:
+`dinheiroempauta/dinheiro-em-pauta-fontes`.
+
+Sempre que for lidar com PDFs-fonte de um artigo — escrevendo um artigo
+novo a partir de papers, rodando a skill `conferencia-tecnica-artigo`, ou
+revisitando de quais PDFs um artigo antigo partiu — anexar esse
+repositório à sessão (`add_repo`, se ainda não estiver anexado) antes de
+processar os PDFs. Estrutura dentro dele: uma pasta por slug de artigo
+(`<slug>/`), com os PDFs originais mais um `README.md` com a referência
+bibliográfica completa de cada um (autor, título, periódico, volume,
+número, páginas, ano, DOI). Como esse repositório é privado, subir o PDF
+de verdade lá é seguro — é um arquivo pessoal, não redistribuição
+pública — ao contrário deste repositório aqui.
+
 ## Publicação de artigo novo
 
 Siga `internal/CHECKLIST-NOVO-ARTIGO.md` à risca, partindo de
