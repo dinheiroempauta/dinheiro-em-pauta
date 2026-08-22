@@ -1,3 +1,11 @@
 .wrangler/
 node_modules/
 .DS_Store
+
+# PDFs de papers acadêmicos usados como fonte de artigos (ver
+# internal/fontes/<slug>/README.md em cada pasta) — não versionados por
+# direitos autorais dos editores (JFQE, Journal of Portfolio Management
+# etc.). O README ao lado documenta a referência completa (autor, título,
+# periódico, DOI) para que a fonte possa ser re-obtida sem redistribuir o
+# PDF num repositório público.
+internal/fontes/*/*.pdf
