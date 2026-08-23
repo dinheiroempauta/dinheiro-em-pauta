@@ -438,6 +438,15 @@ blockquote.pull cite{ display:block; font-family: var(--font-mono); font-style: 
 .refs ol{ padding-left: 18px; margin:0; }
 .refs li{ margin-bottom: 8px; }
 
+/* Citação numerada em nota de rodapé, tipo livro: <sup class="cite"><a href="#ref-N">N</a></sup>
+   dentro do corpo do texto, apontando pro item correspondente em
+   "Referências técnicas" (que precisa de id="ref-N" em cada <li>). */
+sup.cite{ font-size: 0.68em; line-height: 0; margin-left: 1px; }
+sup.cite a{ color: var(--green); text-decoration: none; padding: 0 1px; font-weight: 600; }
+sup.cite a:hover{ color: var(--brick); text-decoration: underline; }
+.disclaimer ol li:target, .refs ol li:target{ color: var(--ink); background: var(--gold-soft); border-radius: 2px; padding: 2px 6px; margin-left: -6px; }
+.disclaimer ol li[id]{ scroll-margin-top: 90px; }
+
 /* ---------- Curtir + compartilhar ---------- */
 .engage{ margin: 46px 0 32px; padding: 22px 24px; border: 1px solid var(--line-strong); border-radius: 3px; background: var(--paper-raised); }
 .engage-row{ display:flex; align-items:center; justify-content: space-between; gap: 20px; flex-wrap: wrap; }

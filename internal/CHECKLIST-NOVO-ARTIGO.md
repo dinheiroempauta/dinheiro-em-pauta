@@ -243,6 +243,19 @@ idioma no automático.
       — não deixar o leitor reconstruir sozinho de onde veio um número
       (bug real: tabela do artigo `dca-vs-lump-sum` mostrava só os
       resultados finais, sem a conta)
+- [ ] **Toda menção a um estudo/paper no corpo do artigo precisa de uma
+      nota numerada** apontando pra "Referências técnicas"/"Notas e
+      referências", no estilo livro: `<sup class="cite"><a
+      href="#ref-N">N</a></sup>` logo após o nome do autor (ou logo após
+      "um estudo de <ano>" quando o autor não é citado por nome na frase),
+      e o `<li>` correspondente na lista de referências com `id="ref-N"`
+      — CSS (`sup.cite`, `:target`) já existe em `assets/site.css`, só
+      aplicar. A numeração segue a ordem em que os itens aparecem na
+      lista de referências (não a ordem de menção no texto). Bug real já
+      corrigido duas vezes (`quanto-posso-retirar-aposentadoria` tinha
+      `<sup>1</sup>`/`<sup>2</sup>` soltos, sem link e sem `id`
+      correspondente — nunca fez o número apontar pra referência de
+      verdade): não deixar esse padrão pela metade, ou não usar
 - [ ] Reler cada título de seção (`h2`) contra o parágrafo de fechamento
       dela: o título cria uma expectativa ("isso vai favorecer X", "isso
       resolve Y") que a seção de fato cumpre? Título e conclusão puxando
