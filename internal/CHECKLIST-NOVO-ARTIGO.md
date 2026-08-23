@@ -216,3 +216,17 @@ idioma no automático.
 - [ ] Se o domínio próprio ainda não estiver ativo, confirmar que os itens
       gerados aqui entram também no checklist de migração do
       `internal/BACKLOG.md` (não criam um segundo lugar de verdade)
+- [ ] **Para artigos baseados em papers/fontes técnicas**: toda tabela ou
+      stat-card com resultado numérico calculado (não copiado direto da
+      fonte) precisa do passo a passo da conta em texto corrido por perto
+      — não deixar o leitor reconstruir sozinho de onde veio um número
+      (bug real: tabela do artigo `dca-vs-lump-sum` mostrava só os
+      resultados finais, sem a conta)
+- [ ] Reler cada título de seção (`h2`) contra o parágrafo de fechamento
+      dela: o título cria uma expectativa ("isso vai favorecer X", "isso
+      resolve Y") que a seção de fato cumpre? Título e conclusão puxando
+      em direções diferentes é uma falha de coerência narrativa que a
+      auditoria técnica (`conferencia-tecnica-artigo`) não pega, porque
+      cada frase pode estar factualmente correta isoladamente (bug real:
+      seção "Onde a comparação é injusta com o DCA" continha um argumento
+      que ia na direção oposta ao que o título prometia)
