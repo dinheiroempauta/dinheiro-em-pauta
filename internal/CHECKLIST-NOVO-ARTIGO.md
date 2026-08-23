@@ -214,13 +214,21 @@ idioma no automático.
 - [ ] **Para artigo embasado em papers/fontes técnicas: rodar
       `conferencia-tecnica-artigo` antes de tudo o mais nesta seção**,
       não depois. A ordem correta é rascunho → conferência técnica →
-      ajustes decorrentes do relatório → humanizer → card/sitemap/feed/
-      og-image/zip de fontes (seção 5). Rodar a conferência técnica por
-      último desperdiça o trabalho de publicação sempre que ela encontrar
-      algo que exija reescrever um trecho — já aconteceu (artigo
-      `market-timing-funciona`, 23/08/2026) de a ordem ser invertida e só
-      não custar retrabalho por sorte, os achados serem pequenos o
-      bastante pra corrigir numa frase sem desfazer nada já publicado
+      ajustes decorrentes do relatório → `clareza-e-fluidez` → humanizer
+      → `citacao-numerada` → card/sitemap/feed/og-image/zip de fontes
+      (seção 5). Rodar a conferência técnica por último desperdiça o
+      trabalho de publicação sempre que ela encontrar algo que exija
+      reescrever um trecho — já aconteceu (artigo `market-timing-funciona`,
+      23/08/2026) de a ordem ser invertida e só não custar retrabalho por
+      sorte, os achados serem pequenos o bastante pra corrigir numa frase
+      sem desfazer nada já publicado
+- [ ] Rodar a skill `clareza-e-fluidez` sobre o corpo do artigo — revisão
+      de storytelling (gancho de abertura, transição entre seções, título
+      de seção batendo com o fechamento) e de densidade de leitura
+      (parágrafos com número demais empilhado, jargão técnico sem
+      tradução em português simples). Nunca corta número, citação ou
+      ressalva — só reorganiza prosa. Rodar antes do humanizer, porque
+      pode gerar prosa nova que ainda precisa passar pelo crivo anti-clichê
 - [ ] Rodar a skill `humanizer` sobre o texto do artigo (corpo, título,
       subtítulo, resumo, meta description/og/JSON-LD) antes de publicar —
       remove clichês e maneirismos de escrita de IA sem cortar conteúdo,
@@ -243,24 +251,19 @@ idioma no automático.
       — não deixar o leitor reconstruir sozinho de onde veio um número
       (bug real: tabela do artigo `dca-vs-lump-sum` mostrava só os
       resultados finais, sem a conta)
-- [ ] **Toda menção a um estudo/paper no corpo do artigo precisa de uma
-      nota numerada** apontando pra "Referências técnicas"/"Notas e
-      referências", no estilo livro: `<sup class="cite"><a
-      href="#ref-N">N</a></sup>` logo após o nome do autor (ou logo após
-      "um estudo de <ano>" quando o autor não é citado por nome na frase),
-      e o `<li>` correspondente na lista de referências com `id="ref-N"`
-      — CSS (`sup.cite`, `:target`) já existe em `assets/site.css`, só
-      aplicar. A numeração segue a ordem em que os itens aparecem na
-      lista de referências (não a ordem de menção no texto). Bug real já
-      corrigido duas vezes (`quanto-posso-retirar-aposentadoria` tinha
-      `<sup>1</sup>`/`<sup>2</sup>` soltos, sem link e sem `id`
-      correspondente — nunca fez o número apontar pra referência de
-      verdade): não deixar esse padrão pela metade, ou não usar
-- [ ] Reler cada título de seção (`h2`) contra o parágrafo de fechamento
-      dela: o título cria uma expectativa ("isso vai favorecer X", "isso
-      resolve Y") que a seção de fato cumpre? Título e conclusão puxando
-      em direções diferentes é uma falha de coerência narrativa que a
-      auditoria técnica (`conferencia-tecnica-artigo`) não pega, porque
-      cada frase pode estar factualmente correta isoladamente (bug real:
-      seção "Onde a comparação é injusta com o DCA" continha um argumento
-      que ia na direção oposta ao que o título prometia)
+- [ ] Rodar a skill `citacao-numerada` — liga toda menção a um estudo/
+      paper no corpo do artigo a uma nota numerada estilo livro na
+      "Referências técnicas"/"Notas e referências", em vez de deixar o
+      leitor caçar o autor manualmente na lista. Ver
+      `.claude/skills/citacao-numerada/SKILL.md` para o padrão exato e a
+      checagem estrutural obrigatória depois de aplicar (nenhum link
+      órfão, nenhum `id` duplicado). Bug real já corrigido duas vezes
+      antes de essa skill existir (`quanto-posso-retirar-aposentadoria`
+      tinha `<sup>1</sup>`/`<sup>2</sup>` soltos, sem link nenhum): não
+      deixar esse padrão pela metade, ou não usar
+- [ ] A skill `clareza-e-fluidez` já cobre a releitura de cada `h2`
+      contra o parágrafo de fechamento dela (o título cria uma expectativa
+      que a seção de fato cumpre?) — ver
+      `.claude/skills/clareza-e-fluidez/SKILL.md`. Bug real que motivou
+      isso: a seção "Onde a comparação é injusta com o DCA" continha um
+      argumento que ia na direção oposta ao que o título prometia

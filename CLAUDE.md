@@ -224,29 +224,43 @@ depois.
 Siga `internal/CHECKLIST-NOVO-ARTIGO.md` à risca, partindo de
 `internal/template-artigo.html`. Para artigo embasado em papers/fontes
 técnicas, a ordem entre as etapas de acabamento importa e **não é livre**:
-rascunho → **`conferencia-tecnica-artigo` (se o artigo cita papers)** →
-ajustes decorrentes do relatório → `humanizer` → card na home/`artigos/`,
-`sitemap.xml`/`feed.xml`, og:image (prompt em
+
+rascunho → **`conferencia-tecnica-artigo`** (se o artigo cita papers) →
+ajustes decorrentes do relatório → **`clareza-e-fluidez`** → `humanizer` →
+**`citacao-numerada`** (se o artigo cita papers) → card na
+home/`artigos/`, `sitemap.xml`/`feed.xml`, og:image (prompt em
 `internal/prompt-og-image-dinheiro-em-pauta.md`) → zip de fontes (ver
-seção acima). Rodar a conferência técnica **antes** do humanizer e dos
-passos de publicação, nunca depois — é a própria skill
-`conferencia-tecnica-artigo` que recomenda essa ordem, mas o motivo prático
-é o que importa: se a auditoria encontrar algo que exija reescrever um
-trecho, fazer isso antes do humanizer e antes de já ter espelhado o
-card/sitemap/feed evita ter que desfazer/refazer trabalho de publicação já
-feito. Já aconteceu (artigo `market-timing-funciona`, 23/08/2026) de eu
-inverter essa ordem — humanizer e todos os passos de publicação antes da
-conferência técnica —, que só por sorte encontrou achados pequenos o
-bastante pra corrigir em uma frase sem precisar desfazer nada já
-publicado. Rodar a skill `humanizer` sobre o texto do artigo (corpo,
-título, subtítulo, resumo, meta description/og/JSON-LD) faz parte do
-processo de construção, sem precisar ser pedido — mesmo espírito da
-estimativa de tempo de leitura e do bloco "Nivelamento básico" descritos
-abaixo. Só não decidir sozinho um corte de parágrafo, mudança de sentido
-de uma alegação ou algo que toque numa referência — isso é decisão
-editorial, chamar o usuário. O fluxo é: commit → push → PR → conferir
-diff → merge — sem pausar pra aprovação em cada etapa, como descrito
-acima.
+seção acima).
+
+Cada uma dessas quatro skills faz parte do processo de construção de
+todo artigo novo, sem precisar ser pedida — mesmo espírito da estimativa
+de tempo de leitura e do bloco "Nivelamento básico" descritos abaixo.
+Rodar a conferência técnica **antes** do humanizer e dos passos de
+publicação, nunca depois — é a própria skill `conferencia-tecnica-artigo`
+que recomenda essa ordem, mas o motivo prático é o que importa: se a
+auditoria encontrar algo que exija reescrever um trecho, fazer isso antes
+do humanizer e antes de já ter espelhado o card/sitemap/feed evita ter
+que desfazer/refazer trabalho de publicação já feito. Já aconteceu
+(artigo `market-timing-funciona`, 23/08/2026) de eu inverter essa ordem —
+humanizer e todos os passos de publicação antes da conferência técnica —,
+que só por sorte encontrou achados pequenos o bastante pra corrigir em
+uma frase sem precisar desfazer nada já publicado.
+
+`clareza-e-fluidez` vem depois dos ajustes da conferência técnica e antes
+do `humanizer`, porque ela pode reestruturar parágrafos e criar prosa
+nova (transições, traduções de jargão) que ainda precisa passar pelo
+crivo anti-clichê do humanizer. `citacao-numerada` vem por último, depois
+do humanizer, porque ela depende da ordem final do texto para saber onde
+fica a "primeira menção" de cada fonte — rodar antes obrigaria a refazer
+os marcadores se o humanizer ou a revisão de clareza reordenarem
+qualquer parágrafo.
+
+Só não decidir sozinho um corte de parágrafo, mudança de sentido de uma
+alegação ou algo que toque numa referência — isso é decisão editorial,
+chamar o usuário (a `clareza-e-fluidez` reforça essa mesma regra: ela
+nunca sacrifica precisão técnica por fluidez, só reorganiza prosa). O
+fluxo é: commit → push → PR → conferir diff → merge — sem pausar pra
+aprovação em cada etapa, como descrito acima.
 
 **A og:image não é opcional e "não tenho ferramenta de geração de
 imagem" não é uma saída válida sem checar primeiro.** Já aconteceu de eu
