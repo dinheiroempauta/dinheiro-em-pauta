@@ -120,6 +120,21 @@ Nunca preencher o vazio com um número de seção, ano, autor ou URL plausível
 só para a nota parecer completa. Uma referência errada é pior para a
 credibilidade do artigo do que a ausência de referência.
 
+A mesma disciplina vale pra qualquer alegação sobre **premissa ou
+metodologia** de uma fonte — não só citação formal. "Esse paper assume
+retornos independentes", "esse teste usa dado histórico real", "essa
+proposição vale independente da distribuição" são afirmações técnicas tão
+checáveis quanto uma citação, e errar nelas é o mesmo tipo de dano à
+credibilidade. Isso vale mesmo dentro de uma sessão em que a auditoria
+técnica (`conferencia-tecnica-artigo`) já rodou uma vez: escrever ou
+corrigir uma nota, um caveat ou uma explicação sobre o que uma fonte
+assume ou não assume exige reabrir o PDF correspondente e confirmar ali
+— nunca reconstruir de memória o que "provavelmente" o paper diz, nem
+reusar a lembrança da auditoria anterior sem reconferir. Já aconteceu
+(artigo `dca-vs-lump-sum`) de eu atribuir a dois papers a mesma premissa
+de independência de retorno quando só um deles de fato assumia isso — só
+descobri reabrindo os PDFs, não checando de cabeça.
+
 ## Repositório separado para os PDFs das fontes (não commitar PDF aqui)
 
 Este repositório (`dinheiro-em-pauta`) **precisa continuar público** — o
