@@ -191,33 +191,27 @@ plataforma (Claude Code), o acesso a repositório é escolhido no seletor
   de uma sessão que só tem `dinheiro-em-pauta` — falha por falta de
   credencial/escopo, não é um problema temporário.
 
-## Manter um índice de fontes desde a primeira leitura, não só na conferência final
+## De PDFs ao primeiro rascunho — skill `redacao-artigo-de-fontes`
 
-Quando a pesquisa de um artigo envolve avaliar vários PDFs ao longo de
-várias rodadas da conversa (comum quando o usuário vai enviando papers aos
-poucos, ou pede pesquisa adicional depois de uma primeira leitura), não
-confiar só na memória da conversa pra lembrar qual arquivo é qual paper.
-Manter, desde a primeira leitura de cada PDF, um arquivo de trabalho no
-diretório de scratchpad da sessão — algo como `fontes-<slug-provisorio>.md`
-— com uma linha por PDF: nome do arquivo enviado, autor/título/ano/veículo
-confirmados no próprio cabeçalho do PDF (nunca de memória), e um resumo de
-3-5 linhas dos achados. Atualizar esse arquivo a cada novo PDF avaliado, em
-vez de reconstruir a lista de cabeça em cada resposta.
+Quando o material de partida de um artigo novo é um ou mais PDFs/papers
+que o usuário envia, o caminho até o primeiro HTML — avaliar cada fonte
+com honestidade, manter um índice de fontes desde a primeira leitura,
+parar para curadoria/outline com o usuário, e só então montar o
+rascunho — está formalizado na skill `redacao-artigo-de-fontes`
+(`.claude/skills/redacao-artigo-de-fontes/SKILL.md`). Use-a em vez de
+reconstruir esse processo de cabeça a cada artigo novo.
 
-Isso é o mesmo índice que o passo 1 da skill `conferencia-tecnica-artigo`
-já recomenda montar — a mudança é fazer isso **desde a fase de pesquisa**,
-não só quando a conferência técnica final for rodada. Motivo concreto:
-nomes de arquivo genéricos (`ssrn219228.pdf`, `ssrn262076.pdf`) não
-carregam a identidade do paper, e ler vários PDFs em lote no mesmo turno
-(ex: 5 PDFs de uma vez) é um cenário propenso a trocar o conteúdo de um
-arquivo pelo de outro nas anotações mentais/resumos dados ao usuário. Já
-aconteceu (pesquisa do artigo `market-timing-funciona`, ago/2026) de eu
-identificar errado, em turnos diferentes da mesma conversa, qual arquivo
-era Graham & Harvey (1997), qual era Barber & Odean (2000) e qual era, na
-verdade, Shiller (1980) — só descoberto na conferência técnica final,
-por sorte sem ter contaminado o artigo publicado. Um índice mantido desde
-o início teria pego a inconsistência na hora, não semanas de trabalho
-depois.
+O índice de fontes mantido desde a primeira leitura (não só na
+conferência técnica final) existe por um motivo concreto: nomes de
+arquivo genéricos (`ssrn219228.pdf`, `ssrn262076.pdf`) não carregam a
+identidade do paper, e ler vários PDFs em lote no mesmo turno é um
+cenário propenso a trocar o conteúdo de um arquivo pelo de outro nas
+anotações dadas ao usuário. Já aconteceu (pesquisa do artigo
+`market-timing-funciona`, ago/2026) de eu identificar errado, em turnos
+diferentes da mesma conversa, qual arquivo era Graham & Harvey (1997),
+qual era Barber & Odean (2000) e qual era, na verdade, Shiller (1980) —
+só descoberto na conferência técnica final, por sorte sem contaminar o
+artigo publicado.
 
 ## Publicação de artigo novo
 
@@ -225,7 +219,8 @@ Siga `internal/CHECKLIST-NOVO-ARTIGO.md` à risca, partindo de
 `internal/template-artigo.html`. Para artigo embasado em papers/fontes
 técnicas, a ordem entre as etapas de acabamento importa e **não é livre**:
 
-rascunho → **`conferencia-tecnica-artigo`** (se o artigo cita papers) →
+**`redacao-artigo-de-fontes`** (PDFs → rascunho, ver seção acima) →
+**`conferencia-tecnica-artigo`** (se o artigo cita papers) →
 ajustes decorrentes do relatório → **`clareza-e-fluidez`** → `humanizer` →
 **`citacao-numerada`** (se o artigo cita papers) → card na
 home/`artigos/`, `sitemap.xml`/`feed.xml`, og:image (prompt em
