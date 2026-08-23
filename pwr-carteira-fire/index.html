@@ -300,7 +300,7 @@ input[type="range"]{ width: 100%; margin: 6px 0 8px; accent-color: var(--gold); 
 
   <div class="meta fade-in d2">
     <span><b>Publicado em</b> 9 ago. 2026</span>
-    <span><b>~12 min</b> de leitura</span>
+    <span><b>~13 min</b> de leitura</span>
     <span>inclui <b>calculadora interativa</b></span>
   </div>
 
@@ -321,7 +321,7 @@ input[type="range"]{ width: 100%; margin: 6px 0 8px; accent-color: var(--gold); 
       <li>Qual é a carteira de longo prazo que eu utilizo para a minha própria aposentadoria, seu desempenho real ano a ano de 2006 - 2026 e seu CAGR real em janelas móveis de diferentes tamanhos</li>
       <li>Como lidei com a restrição do tamanho do histórico de dados na simulação da PWR</li>
       <li>Qual foi o passo a passo para simular a PWR usando bootstrap estacionário</li>
-      <li>Os resulados da PWR em várias taxas de sucesso, não apenas um número único, com <strong>calculadora interativa</strong></li>
+      <li>Os resultados da PWR em várias taxas de sucesso, não apenas um número único, com <strong>calculadora interativa</strong></li>
       <li>As verificações de robustez do método e as limitações honestas do estudo</li>
       <li>Referências clássicas e atuais sobre cálculo de PWR</li>
     </ul>
@@ -332,7 +332,7 @@ input[type="range"]{ width: 100%; margin: 6px 0 8px; accent-color: var(--gold); 
     <p>
       Em <a href="../quanto-posso-retirar-aposentadoria/">outro artigo desta série</a>, expliquei a
       diferença entre SWR (taxa segura de retirada, horizonte finito) e PWR (taxa perpétua de retirada, horizonte
-      infinito), demonstrando os conceitos com exemplos mais simples. Neste artigo, vamos aprofundar um pouco mais e fazer cálculos para uma carteira real, a que eu mesmo uso nos meus próprios investimentos. Para nivelamento rápido, entenda que a PWR é a taxa de retirada que mantém, perpetuamente e em valores reais, o capital do início da aposentadoria.
+      infinito), demonstrando os conceitos com exemplos mais simples. Neste artigo, vamos aprofundar um pouco mais e fazer cálculos para uma carteira real — a que eu mesmo uso nos meus próprios investimentos. Para nivelamento rápido: a PWR é a taxa de retirada que mantém, perpetuamente e em valores reais, o capital do início da aposentadoria.
     </p>
   </div>
 
@@ -383,7 +383,10 @@ input[type="range"]{ width: 100%; margin: 6px 0 8px; accent-color: var(--gold); 
     <summary>Qual é o tamanho/período do histórico de dados e quais as consequências práticas dessa escolha para a análise?</summary>
     <div class="toggle-body">
       <p>
-        Para rodar simulações computacionais a fim de encontrar a PWR da carteira, é importante um volume substancial de dados históricos. Assim, ao idealizar a metodologia deste exercício, busquei por uma série de pelo menos duas décadas. Quis capturar a performance da carteira de Jan/2006 até Junho/2026, porque este é um período com cinco acontecimentos de grande stress no mercado de capitais - Subprime (2008), Crise Europeia (2011), Recessão Brasil (2015), Covid-19 (2020) e Inflação Global (2022). Por outro lado, esse período não contempla a época de Meta-Selic muito acima de 15% ao ano no Brasil, o que é positivo, porque tal cenário não parece fazer mais sentido na macroeconomia brasileira.
+        Para rodar simulações computacionais a fim de encontrar a PWR da carteira, é importante um volume substancial de dados históricos. Assim, ao idealizar a metodologia deste exercício, busquei por uma série de pelo menos duas décadas. Quis capturar a performance da carteira de Jan/2006 até Junho/2026, porque este é um período com cinco acontecimentos de grande stress no mercado de capitais — Subprime (2008), Crise Europeia (2011), Recessão Brasil (2015), Covid-19 (2020) e Inflação Global (2022).
+      </p>
+      <p>
+        Por outro lado, esse período não contempla a época de Meta-Selic muito acima de 15% ao ano no Brasil, o que é positivo, porque tal cenário não parece fazer mais sentido na macroeconomia brasileira.
       </p>
       <p>
         Como nenhum dos cinco ETFs selecionados tem histórico suficiente na B3 para uma análise de 20 anos, precisei utilizar o índice (ou ativo) subjacente de cada um como aproximação, descontando a taxa de administração. É claro que, como toda proxy, há imperfeição, por exemplo: CDIB11 não é CDI puro, porque tem NTN-B Longa junto, assim como B5P211 não segue o IMA-B5, mas sim uma variação dele com mecanismo de controle do Prazo Médio de Repactuação (PMR) dos títulos, o IMA-B5 P2. Isso não é um problema, porque não queremos ser milimétricos nos resultados, queremos ser razoáveis. Para fins de planejamento financeiro, ainda mais se tratando de PWR, essa lógica é absolutamente suficiente.
@@ -395,7 +398,7 @@ input[type="range"]{ width: 100%; margin: 6px 0 8px; accent-color: var(--gold); 
     <summary>Ver gráfico: desempenho da carteira ano a ano (backtest 2006–2026)</summary>
     <div class="toggle-body">
       <p>
-        Retorno real (já descontado o IPCA) de cada ano do backtest. Passe o cursor sobre uma barra para ver o valor exato daquele ano.
+        Retorno real (já descontado o IPCA) de cada ano do backtest — a simulação retroativa da carteira sobre o histórico real de preços. Passe o cursor sobre uma barra para ver o valor exato daquele ano.
       </p>
       <div class="chart-card" style="margin: 18px 0 8px;">
         <div class="chart-svg-wrap" id="annualChartWrap"></div>
@@ -439,10 +442,10 @@ input[type="range"]{ width: 100%; margin: 6px 0 8px; accent-color: var(--gold); 
   <div class="prose">
     <p>
       O período de 20 anos de dados históricos da carteira
-      não é suficiente pra dizer que "retirar X% é seguro para preservar o patrimônio perpetuamente " — ele é apenas <em>um</em> caminho que os
+      não é suficiente pra dizer que "retirar X% é seguro para preservar o patrimônio perpetuamente" — ele é apenas <em>um</em> caminho que os
       mercados percorreram, entre infinitos outros que poderiam ter acontecido. Se a crise de 2008
       tivesse vindo em outro momento, ou se dois anos ruins seguidos tivessem caído logo no início em
-      vez de no meio, o resultado poderia ser bem diferente. Achar a PWR sem simulação computacional seria pressupor que os próximos 20, 40, 60, 80, X anos, seriam exatamente como foram os 20 anos que acabaram de ocorrer, o que é praticamente impossível.
+      vez de no meio, o resultado poderia ser bem diferente. Achar a PWR sem simulação computacional seria pressupor que os próximos 20, 40, 60, 80 anos — ou qualquer horizonte que se escolha — seriam exatamente como foram os 20 anos que acabaram de ocorrer, o que é praticamente impossível.
     </p>
     <p>
       A técnica de bootstrap resolve isso assim: imagine cortar esses 20 anos em pedaços de cerca de 1 ano cada — como cartas de baralho, só que cada carta é "um ano de retornos reais da carteira". Agora
@@ -479,9 +482,12 @@ input[type="range"]{ width: 100%; margin: 6px 0 8px; accent-color: var(--gold); 
   <div class="prose">
     <p>
       Porque é assim que uma pessoa de fato vive: aposentados não sacam o dinheiro do ano inteiro em janeiro e
-      guarda embaixo do colchão até dezembro. A cada mês, sai uma fatia (1/12 da taxa de retirada
+      guardam embaixo do colchão até dezembro. A cada mês, sai uma fatia (1/12 da taxa de retirada
       anual), sempre no mesmo valor em poder de compra — se a inflação sobe, o valor sacado acompanha,
-      porque toda a simulação já trabalha em termos reais desde o início. É também a abordagem mais
+      porque toda a simulação já trabalha em termos reais desde o início.
+    </p>
+    <p>
+      É também a abordagem mais
       usada em réplicas modernas dos estudos clássicos de aposentadoria, que hoje em dia têm acesso a
       dados mensais (os estudos originais dos anos 1990 só tinham dados anuais disponíveis, e por
       isso retiravam uma vez por ano).
@@ -776,10 +782,10 @@ input[type="range"]{ width: 100%; margin: 6px 0 8px; accent-color: var(--gold); 
   <div class="recap">
     <div class="cap">Para levar com você</div>
     <ol>
-      <li>PWR e SWR são coisas completamente diferentes! A ideia da "regra dos 4%" não tem conexão direta com este artigo, porque ela é uma SWR de 30 anos, simulada com dados anuais de 1926 a 1995 para uma carteira de 50% RV e 50% RF dos EUA.</li>
+      <li>PWR e SWR são coisas completamente diferentes! A ideia da "regra dos 4%" não tem conexão direta com este artigo, porque ela é uma SWR de 30 anos, simulada com dados anuais de 1926 a 1995 para uma carteira de 50% renda variável (ações) e 50% renda fixa (títulos) dos EUA.</li>
       <li>Carteiras devem servir às necessidades específicas de cada objetivo de cada investidor. Todas são diferentes entre si e têm um histórico (backtest) diferente, logo, não faz sentido tentar achar uma "PWR para o Brasil" ou "PWR Universal". </li>
       <li>Um bom cálculo de PWR precisa de simulação computacional, onde os dados históricos são utilizados para criar milhares de futuros possíveis.</li>
-      <li>Encontrar a PWR depende da taxa de sucesso desejada, ela não é um número único. Quanto mais próximo do 100% de sucesso (o que é desnecesariamente cauteloso), muito menor será a PWR.</li>
+      <li>Encontrar a PWR depende da taxa de sucesso desejada, ela não é um número único. Quanto mais próximo do 100% de sucesso (o que é desnecessariamente cauteloso), muito menor será a PWR.</li>
       <li>A limitação da amostra de dados pode ser contornada usando proxies e técnicas como bootstrap estacionário, mas não muda o fato de que a limitação ainda está lá.</li>
       <li>Com Python e Inteligência Artificial, você mesmo pode calcular a PWR para a sua carteira de aposentadoria. Achar esse dado de maneira personalizada é muito melhor do que usar regras de bolso.</li>
       <li>PWR e SWR são assuntos que só fazem sentido se você possui uma estratégia de investimento muito bem montada e seguida com disciplina. Não faz sentido pensar em taxa de retirada se nem uma carteira "sólida" você tem.</li>
