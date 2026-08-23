@@ -174,6 +174,17 @@ idioma no automático.
 
 ## 5. Fora do `index.html` do artigo
 
+- [ ] **Se o artigo cita papers/fontes técnicas com copyright de editor**:
+      empacotar os PDFs efetivamente citados + um `README.md` com a
+      referência bibliográfica completa de cada um (ver
+      `internal/fontes/<slug>/README.md` de um artigo anterior como
+      modelo) num `.zip` e entregar ao usuário via ferramenta de envio de
+      arquivo disponível, **antes de considerar o artigo publicado** — não
+      basta deixar só o `README.md` sem PDF no repositório, os PDFs em si
+      não sobrevivem ao fim da sessão. Ver `CLAUDE.md`, seção
+      "Repositório separado para os PDFs das fontes", para o fluxo
+      completo (inclusive quando o repositório de fontes já está anexado
+      à sessão, caso em que o zip não é necessário — commitar direto lá)
 - [ ] Gerar a **og:image** (1200×630) seguindo
       `internal/prompt-og-image-dinheiro-em-pauta.md` à risca —
       nome do arquivo tem que bater exatamente com o `og:image` do HTML
@@ -200,6 +211,16 @@ idioma no automático.
 
 ## 6. Verificação final antes de considerar publicado
 
+- [ ] **Para artigo embasado em papers/fontes técnicas: rodar
+      `conferencia-tecnica-artigo` antes de tudo o mais nesta seção**,
+      não depois. A ordem correta é rascunho → conferência técnica →
+      ajustes decorrentes do relatório → humanizer → card/sitemap/feed/
+      og-image/zip de fontes (seção 5). Rodar a conferência técnica por
+      último desperdiça o trabalho de publicação sempre que ela encontrar
+      algo que exija reescrever um trecho — já aconteceu (artigo
+      `market-timing-funciona`, 23/08/2026) de a ordem ser invertida e só
+      não custar retrabalho por sorte, os achados serem pequenos o
+      bastante pra corrigir numa frase sem desfazer nada já publicado
 - [ ] Rodar a skill `humanizer` sobre o texto do artigo (corpo, título,
       subtítulo, resumo, meta description/og/JSON-LD) antes de publicar —
       remove clichês e maneirismos de escrita de IA sem cortar conteúdo,

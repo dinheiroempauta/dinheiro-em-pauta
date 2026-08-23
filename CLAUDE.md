@@ -175,24 +175,78 @@ plataforma (Claude Code), o acesso a repositório é escolhido no seletor
   num `.zip` e entregar ao usuário via `SendUserFile`; (2) numa sessão
   separada, aberta já com `dinheiro-em-pauta-fontes` selecionado, pedir
   o zip de volta ao usuário e commitar o conteúdo lá.
+  **Esse `.zip` é obrigatório, não opcional, sempre que o artigo tiver
+  sido embasado em papers com copyright de editor** — não considerar a
+  publicação do artigo "concluída" tendo criado só o
+  `internal/fontes/<slug>/README.md` com a bibliografia e deixado os
+  PDFs perdidos no disco da sessão. Já aconteceu (artigo
+  `market-timing-funciona`, 23/08/2026) de eu publicar o artigo inteiro
+  — commit, PR, merge — sem nunca gerar esse zip, e só perceber a
+  lacuna porque o usuário perguntou depois "o que pode ser aprimorado
+  no fluxo?". Gerar e entregar o zip faz parte do checklist de
+  publicação (`internal/CHECKLIST-NOVO-ARTIGO.md`, seção 5), no mesmo
+  commit/sessão em que os PDFs ainda estão no disco — depois que a
+  sessão termina, os arquivos originais não são mais recuperáveis.
 - Nunca tentar `git clone`/API do GitHub para o repo de fontes a partir
   de uma sessão que só tem `dinheiro-em-pauta` — falha por falta de
   credencial/escopo, não é um problema temporário.
 
+## Manter um índice de fontes desde a primeira leitura, não só na conferência final
+
+Quando a pesquisa de um artigo envolve avaliar vários PDFs ao longo de
+várias rodadas da conversa (comum quando o usuário vai enviando papers aos
+poucos, ou pede pesquisa adicional depois de uma primeira leitura), não
+confiar só na memória da conversa pra lembrar qual arquivo é qual paper.
+Manter, desde a primeira leitura de cada PDF, um arquivo de trabalho no
+diretório de scratchpad da sessão — algo como `fontes-<slug-provisorio>.md`
+— com uma linha por PDF: nome do arquivo enviado, autor/título/ano/veículo
+confirmados no próprio cabeçalho do PDF (nunca de memória), e um resumo de
+3-5 linhas dos achados. Atualizar esse arquivo a cada novo PDF avaliado, em
+vez de reconstruir a lista de cabeça em cada resposta.
+
+Isso é o mesmo índice que o passo 1 da skill `conferencia-tecnica-artigo`
+já recomenda montar — a mudança é fazer isso **desde a fase de pesquisa**,
+não só quando a conferência técnica final for rodada. Motivo concreto:
+nomes de arquivo genéricos (`ssrn219228.pdf`, `ssrn262076.pdf`) não
+carregam a identidade do paper, e ler vários PDFs em lote no mesmo turno
+(ex: 5 PDFs de uma vez) é um cenário propenso a trocar o conteúdo de um
+arquivo pelo de outro nas anotações mentais/resumos dados ao usuário. Já
+aconteceu (pesquisa do artigo `market-timing-funciona`, ago/2026) de eu
+identificar errado, em turnos diferentes da mesma conversa, qual arquivo
+era Graham & Harvey (1997), qual era Barber & Odean (2000) e qual era, na
+verdade, Shiller (1980) — só descoberto na conferência técnica final,
+por sorte sem ter contaminado o artigo publicado. Um índice mantido desde
+o início teria pego a inconsistência na hora, não semanas de trabalho
+depois.
+
 ## Publicação de artigo novo
 
 Siga `internal/CHECKLIST-NOVO-ARTIGO.md` à risca, partindo de
-`internal/template-artigo.html`. Depois de gerar o artigo, adicionar o
-card na home, atualizar `sitemap.xml`/`feed.xml` e gerar a og:image
-(prompt em `internal/prompt-og-image-dinheiro-em-pauta.md`), rodar a
-skill `humanizer` sobre o texto do artigo (corpo, título, subtítulo,
-resumo, meta description/og/JSON-LD) faz parte do processo de
-construção, sem precisar ser pedido — mesmo espírito da estimativa de
-tempo de leitura e do bloco "Nivelamento básico" descritos abaixo. Só
-não decidir sozinho um corte de parágrafo, mudança de sentido de uma
-alegação ou algo que toque numa referência — isso é decisão editorial,
-chamar o usuário. O fluxo é: commit → push → PR → conferir diff →
-merge — sem pausar pra aprovação em cada etapa, como descrito acima.
+`internal/template-artigo.html`. Para artigo embasado em papers/fontes
+técnicas, a ordem entre as etapas de acabamento importa e **não é livre**:
+rascunho → **`conferencia-tecnica-artigo` (se o artigo cita papers)** →
+ajustes decorrentes do relatório → `humanizer` → card na home/`artigos/`,
+`sitemap.xml`/`feed.xml`, og:image (prompt em
+`internal/prompt-og-image-dinheiro-em-pauta.md`) → zip de fontes (ver
+seção acima). Rodar a conferência técnica **antes** do humanizer e dos
+passos de publicação, nunca depois — é a própria skill
+`conferencia-tecnica-artigo` que recomenda essa ordem, mas o motivo prático
+é o que importa: se a auditoria encontrar algo que exija reescrever um
+trecho, fazer isso antes do humanizer e antes de já ter espelhado o
+card/sitemap/feed evita ter que desfazer/refazer trabalho de publicação já
+feito. Já aconteceu (artigo `market-timing-funciona`, 23/08/2026) de eu
+inverter essa ordem — humanizer e todos os passos de publicação antes da
+conferência técnica —, que só por sorte encontrou achados pequenos o
+bastante pra corrigir em uma frase sem precisar desfazer nada já
+publicado. Rodar a skill `humanizer` sobre o texto do artigo (corpo,
+título, subtítulo, resumo, meta description/og/JSON-LD) faz parte do
+processo de construção, sem precisar ser pedido — mesmo espírito da
+estimativa de tempo de leitura e do bloco "Nivelamento básico" descritos
+abaixo. Só não decidir sozinho um corte de parágrafo, mudança de sentido
+de uma alegação ou algo que toque numa referência — isso é decisão
+editorial, chamar o usuário. O fluxo é: commit → push → PR → conferir
+diff → merge — sem pausar pra aprovação em cada etapa, como descrito
+acima.
 
 **A og:image não é opcional e "não tenho ferramenta de geração de
 imagem" não é uma saída válida sem checar primeiro.** Já aconteceu de eu
