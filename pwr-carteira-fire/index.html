@@ -765,10 +765,12 @@ input[type="range"]{ width: 100%; margin: 6px 0 8px; accent-color: var(--gold); 
     <div id="pwrcmp-result" class="pwrcmp-result" role="status" aria-live="polite"></div>
 
     <p class="sim-note">
-      Mesma metodologia deste artigo (bootstrap estacionário, 10.000 trajetórias, 60 anos, base real) e do
-      <a href="../simuladores/comparador-composicao/">comparador de composição de carteira</a> — mas rodando
-      aqui mesmo, no seu navegador (Web Worker), sobre os retornos históricos de 2006–2026. Pode levar
-      alguns segundos. Não é recomendação de investimento.
+      Mesma metodologia deste artigo (bootstrap estacionário, 10.000 trajetórias, 60 anos, base real,
+      rebalanceamento mensal fixo, sem imposto) — rodando aqui mesmo, no seu navegador (Web Worker), sobre
+      os retornos históricos de 2006–2026. Não é a mesma metodologia do
+      <a href="../simuladores/comparador-composicao/">comparador de composição de carteira</a>, que também
+      tem rebalanceamento por banda e desconta 15% de IR sobre o ganho de capital — veja lá se quiser
+      comparar com esses ajustes. Pode levar alguns segundos. Não é recomendação de investimento.
     </p>
   </div>
 
@@ -1388,7 +1390,9 @@ input[type="range"]{ width: 100%; margin: 6px 0 8px; accent-color: var(--gold); 
     updateSum();
   });
 
-  /* ---------- bootstrap estacionário em Web Worker (mesmo motor do comparador de composição) ---------- */
+  /* ---------- bootstrap estacionário em Web Worker (mesma técnica de bootstrap do comparador de
+     composição, mas rebalanceamento mensal fixo sem imposto — o comparador ganhou banda + IR depois
+     deste artigo ser publicado e este worker não foi atualizado) ---------- */
   var PWRCMP_WORKER_SRC = [
     'function mulberry32(seed){',
     '  return function(){',
