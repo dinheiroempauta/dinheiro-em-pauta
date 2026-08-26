@@ -821,7 +821,7 @@ svg.chart-svg{ width: 100%; height: auto; display:block; overflow: visible; }
     <p>Limitação importante: todo o histórico usado (jan/2006–jun/2026, ~20 anos) é uma única janela específica da economia brasileira — período de juro real historicamente alto via CDI, entre outras particularidades desse ciclo. O bootstrap estacionário reamostra blocos desse mesmo histórico; ele não cria informação nova sobre cenários que não aconteceram nesses 20 anos, só reordena e recombina os que aconteceram. Isso vale sobretudo para PWR/SWR, que projeta sustentabilidade de retiradas por 30 a 70 anos a partir de uma amostra bem mais curta — trate os números como uma estimativa estatística sobre o passado observado, não uma garantia sobre o futuro.</p>
   </details>
 
-  <p class="footnote">Metodologia base idêntica à usada nos artigos do blog: conversão nominal→real via Fisher aplicada depois de combinar os 5 ativos, não antes; CDI oficial como taxa livre de risco para Sharpe/Sortino (não varia com a composição). Dois métodos de rebalanceamento disponíveis (alterna no topo da página): <b>mensal fixo</b> — todo mês, cada ativo é vendido/comprado de volta ao peso-alvo; <b>por banda</b> — sem calendário fixo, um ativo só é vendido/comprado quando sai da faixa peso-alvo ± banda (em pontos percentuais, largura própria por ativo), e só até a borda da faixa, nunca até o alvo. Como só há retorno mensal por ativo (não diário), "sem calendário fixo" é aproximado checando a banda uma vez por mês, no início de cada mês — não é banda contínua real. Nos dois métodos, toda venda de rebalanceamento paga 15% de IR sobre o ganho de capital apurado por custo médio, líquido de prejuízo acumulado no mesmo balde (renda fixa: B5P211+CDIB11; renda variável: VWRA11+DIVO11+GOLD11 — classificação do GOLD11 não verificada numa fonte tributária específica), sem a isenção de R$20 mil/mês de vendas de ações (simplificação deliberada: o simulador trabalha em %, não em R$ absolutos). O otimizador e a calculadora PWR/SWR usam o método e o imposto selecionados; o PWR/SWR faz bootstrap sobre a série de retorno mensal já líquida de imposto do histórico real, sem reconstruir custo médio/venda por ativo dentro de cada trajetória sintética — uma simplificação adicional, só para essa calculadora. Cálculo roda inteiramente no navegador. Fonte dos dados: mesma base de <a href="../../artigos/">internal/estatisticas-carteira-aposentadoria</a> usada nos artigos do blog. Conteúdo educacional, não é recomendação de investimento.</p>
+  <p class="footnote">Metodologia base idêntica à usada nos artigos do blog: conversão nominal→real via Fisher aplicada depois de combinar os 5 ativos, não antes; CDI oficial como taxa livre de risco para Sharpe/Sortino (não varia com a composição). Dois métodos de rebalanceamento disponíveis (alterna no topo da página): <b>mensal fixo</b> — todo mês, cada ativo é vendido/comprado de volta ao peso-alvo; <b>por banda</b> — sem calendário fixo, um ativo só é vendido/comprado quando sai da faixa peso-alvo ± banda (em pontos percentuais, largura própria por ativo), e só até a borda da faixa, nunca até o alvo. Como só há retorno mensal por ativo (não diário), "sem calendário fixo" é aproximado checando a banda uma vez por mês, no início de cada mês — não é banda contínua real. Nos dois métodos, toda venda de rebalanceamento paga 15% de IR sobre o ganho de capital apurado por custo médio, líquido de prejuízo acumulado no mesmo balde (renda fixa: B5P211+CDIB11; renda variável: VWRA11+DIVO11+GOLD11 — classificação do GOLD11 não verificada numa fonte tributária específica), sem a isenção de R$20 mil/mês de vendas de ações (simplificação deliberada: o simulador trabalha em %, não em R$ absolutos). O otimizador e a calculadora PWR/SWR usam o método e o imposto selecionados; o PWR/SWR faz bootstrap estacionário sobre os 5 retornos brutos por ativo (mais IPCA, mesmo índice de mês pros 6, preservando a correlação entre eles), e só depois disso simula o rebalanceamento e o IR — mês a mês, com custo médio e baldes de prejuízo próprios — dentro de cada uma das 10 mil trajetórias sintéticas, não uma vez só sobre o histórico real antes do bootstrap. Cálculo roda inteiramente no navegador. Fonte dos dados: mesma base de <a href="../../artigos/">internal/estatisticas-carteira-aposentadoria</a> usada nos artigos do blog. Conteúdo educacional, não é recomendação de investimento.</p>
   <div class="engage">
     <div class="engage-row">
       <button type="button" class="like-btn" id="likeBtn" data-slug="comparador-composicao" aria-pressed="false">
@@ -2365,6 +2365,20 @@ svg.chart-svg{ width: 100%; height: auto; display:block; overflow: visible; }
   /* ---------- PWR / SWR: bootstrap estacionário rodando em Web Worker ---------- */
   // Código do worker embutido como string (site é HTML puro, sem etapa de build,
   // então o worker nasce de um Blob em vez de um arquivo .js separado).
+  //
+  // Ordem correta (bootstrap → rebalanceamento, não o contrário): o bootstrap
+  // reamostra os 5 retornos brutos por ativo + IPCA em conjunto (mesmo índice
+  // de mês pros 6, preservando a correlação entre ativos e inflação — "paired
+  // sampling", padrão da literatura de simulação de sustentabilidade de
+  // retirada). O motor de rebalanceamento/IR (mesma lógica de `combine()`,
+  // portada aqui pra rodar em Web Worker com arrays numéricos por índice em
+  // vez de objetos, por performance) roda DEPOIS, uma vez por trajetória
+  // sintética — cada uma das 10.000 reconstrói seu próprio custo médio e seus
+  // próprios baldes de prejuízo do zero. Rodar o motor uma vez só sobre o
+  // histórico real e bootstrapar o resultado já pronto (jeito antigo) não é
+  // válido aqui: o retorno de cada mês passaria a carregar dentro dele o
+  // custo médio acumulado da história real, sem sentido numa trajetória
+  // sintética diferente.
   const PWRSWR_WORKER_SRC = `
     function mulberry32(seed){
       return function(){
@@ -2374,21 +2388,91 @@ svg.chart-svg{ width: 100%; height: auto; display:block; overflow: visible; }
         return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
       };
     }
-    // Bootstrap estacionário (Politis-Romano): reamostra blocos do histórico real,
-    // com prob. 1/meanBlockLength de "pular" pra um novo ponto aleatório a cada mês.
-    function stationaryBootstrapPaths(returns, nPaths, nMonths, meanBlockLength, rng){
-      var n = returns.length, p = 1/meanBlockLength;
-      var paths = new Float64Array(nPaths*nMonths);
+    // Bootstrap estacionário (Politis-Romano) sobre os 5 ativos + IPCA juntos:
+    // mesmo índice de mês pros 6, com prob. 1/meanBlockLength de "pular" pra
+    // um novo ponto aleatório a cada mês (preserva correlação cross-asset).
+    function bootstrapAssetPaths(assetSeries, ipcaSeries, nPaths, nMonths, meanBlockLength, rng){
+      var nAssets = assetSeries.length, n = assetSeries[0].length, p = 1/meanBlockLength;
+      var out = []; for (var a=0;a<nAssets;a++) out.push(new Float64Array(nPaths*nMonths));
+      var ipcaOut = new Float64Array(nPaths*nMonths);
       for (var i=0;i<nPaths;i++){
         var idx = Math.floor(rng()*n);
         var base = i*nMonths;
         for (var j=0;j<nMonths;j++){
-          paths[base+j] = returns[idx];
+          for (var a=0;a<nAssets;a++) out[a][base+j] = assetSeries[a][idx];
+          ipcaOut[base+j] = ipcaSeries[idx];
           idx = (idx+1) % n;
           if (rng() < p) idx = Math.floor(rng()*n);
         }
       }
-      return paths;
+      return { assets: out, ipca: ipcaOut };
+    }
+    // Roda o motor de rebalanceamento (mensal fixo ou banda) + IR de 15% com
+    // custo médio e balde de prejuízo (0=renda fixa, 1=renda variável) sobre
+    // UMA trajetória de nMonths meses, gravando o retorno mensal em out[].
+    // Porte de combine() (linha ~883) pra arrays numéricos por índice —
+    // paridade exata verificada contra combine() sobre o histórico real.
+    function engineOnPath(assetPaths, ipcaPath, base, nMonths, target, bandWidths, method, bucket, taxRate, useReal, out, outBase){
+      var nAssets = target.length;
+      var value = new Float64Array(nAssets), cost = new Float64Array(nAssets);
+      for (var a=0;a<nAssets;a++){ value[a]=target[a]; cost[a]=target[a]; }
+      var lossRf=0, lossRv=0, prevTotal=1;
+      var designated = new Float64Array(nAssets), hasDesignated = new Uint8Array(nAssets);
+      var needs = new Float64Array(nAssets), hasNeed = new Uint8Array(nAssets);
+      for (var j=0;j<nMonths;j++){
+        for (a=0;a<nAssets;a++) value[a] *= (1 + assetPaths[a][base+j]);
+        var total = 0; for (a=0;a<nAssets;a++) total += value[a];
+        for (a=0;a<nAssets;a++){
+          hasDesignated[a] = 0;
+          if (method === 1){
+            var band = bandWidths[a]/100;
+            var lo = (target[a]-band)*total, hi = (target[a]+band)*total;
+            if (value[a] > hi){ designated[a]=hi; hasDesignated[a]=1; }
+            else if (value[a] < lo){ designated[a]=lo; hasDesignated[a]=1; }
+          } else { designated[a] = target[a]*total; hasDesignated[a]=1; }
+        }
+        var cash = 0;
+        for (a=0;a<nAssets;a++){
+          if (!hasDesignated[a]) continue;
+          var d = designated[a];
+          if (value[a] <= d + 1e-12) continue;
+          var sellAmt = value[a]-d;
+          var gain = sellAmt*(value[a]-cost[a])/value[a];
+          var tax = 0;
+          if (gain > 0){
+            if (bucket[a]===0){ var offset=Math.min(gain,lossRf); lossRf-=offset; tax=(gain-offset)*taxRate; }
+            else { var offset2=Math.min(gain,lossRv); lossRv-=offset2; tax=(gain-offset2)*taxRate; }
+          } else if (gain < 0){
+            if (bucket[a]===0) lossRf += -gain; else lossRv += -gain;
+          }
+          cost[a] -= sellAmt*cost[a]/value[a];
+          value[a] = d;
+          cash += sellAmt - tax;
+        }
+        var totalNeed = 0;
+        for (a=0;a<nAssets;a++){
+          hasNeed[a]=0;
+          if (hasDesignated[a]){
+            if (value[a] < designated[a]-1e-12){ needs[a]=designated[a]-value[a]; hasNeed[a]=1; totalNeed+=needs[a]; }
+          } else if (method===1){
+            var alvo = target[a]*total;
+            if (value[a] < alvo-1e-12){ needs[a]=alvo-value[a]; hasNeed[a]=1; totalNeed+=needs[a]; }
+          }
+        }
+        if (totalNeed > 1e-12){
+          var ratio = Math.min(1, cash/totalNeed);
+          for (a=0;a<nAssets;a++){ if (hasNeed[a]){ var amt=needs[a]*ratio; value[a]+=amt; cost[a]+=amt; } }
+          var leftover = cash - totalNeed*ratio;
+          if (leftover > 1e-9) for (a=0;a<nAssets;a++){ value[a]+=leftover*target[a]; cost[a]+=leftover*target[a]; }
+        } else if (cash > 1e-9){
+          for (a=0;a<nAssets;a++){ value[a]+=cash*target[a]; cost[a]+=cash*target[a]; }
+        }
+        total = 0; for (a=0;a<nAssets;a++) total += value[a];
+        var r = total/prevTotal - 1;
+        if (useReal) r = (1+r)/(1+ipcaPath[base+j]) - 1;
+        out[outBase+j] = r;
+        prevTotal = total;
+      }
     }
     // Fração de trajetórias bem-sucedidas pra uma taxa de retirada anual "w",
     // usando só os primeiros "months" meses de cada trajetória (recorte do
@@ -2426,7 +2510,11 @@ svg.chart-svg{ width: 100%; height: auto; display:block; overflow: visible; }
       var rng = mulberry32(d.seed);
       var maxMonths = 0;
       d.targets.forEach(function(t){ if (t.months > maxMonths) maxMonths = t.months; });
-      var paths = stationaryBootstrapPaths(d.returns, d.nPaths, maxMonths, d.meanBlockLength, rng);
+      var boot = bootstrapAssetPaths(d.assetSeries, d.ipcaSeries, d.nPaths, maxMonths, d.meanBlockLength, rng);
+      var paths = new Float64Array(d.nPaths*maxMonths);
+      for (var i=0;i<d.nPaths;i++){
+        engineOnPath(boot.assets, boot.ipca, i*maxMonths, maxMonths, d.target, d.bandWidths, d.method, d.bucket, d.taxRate, d.useReal, paths, i*maxMonths);
+      }
       var results = [];
       for (var k=0;k<d.targets.length;k++){
         var t = d.targets[k];
@@ -2545,9 +2633,14 @@ svg.chart-svg{ width: 100%; height: auto; display:block; overflow: visible; }
     let doneCount = 0;
     const totalSteps = targets.length * 13 * 2; // 13 iterações de bisseção por alvo, 2 carteiras
 
+    // Bucket de compensação de prejuízo por ativo, na ordem de ASSET_KEYS
+    // (0 = renda fixa, 1 = renda variável) — mesmo mapeamento de ASSET_BUCKET.
+    const PWRSWR_BUCKET = ASSET_KEYS.map(k => ASSET_BUCKET[k] === 'rf' ? 0 : 1);
     pwrswrWorkers = sides.map(side => {
-      const { nominal, real } = combine(state.weights[side]);
-      const returns = state.mode === 'nominal' ? nominal : real;
+      const w = state.weights[side];
+      const target = ASSET_KEYS.map(k => w[k]/100);
+      const bandWidthsArr = ASSET_KEYS.map(k => bandWidths[k]);
+      const assetSeries = ASSET_KEYS.map(k => DATA[k]);
       const worker = new Worker(blobUrl);
       worker.onerror = (err) => {
         URL.revokeObjectURL(blobUrl);
@@ -2582,7 +2675,11 @@ svg.chart-svg{ width: 100%; height: auto; display:block; overflow: visible; }
         }
       };
       worker.postMessage({
-        returns: returns, nPaths: 10000, meanBlockLength: 12, seed: 2026,
+        assetSeries: assetSeries, ipcaSeries: DATA.ipca,
+        target: target, bandWidths: bandWidthsArr,
+        method: rebalanceMethod === 'banda' ? 1 : 0,
+        bucket: PWRSWR_BUCKET, taxRate: TAX_RATE, useReal: state.mode !== 'nominal',
+        nPaths: 10000, meanBlockLength: 12, seed: 2026,
         targets: targets, targetSuccess: targetSuccess,
       });
       return worker;
