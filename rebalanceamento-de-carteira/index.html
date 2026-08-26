@@ -1,0 +1,433 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<script src="../assets/theme-init.js"></script>
+<title>Qual é a maneira ótima de rebalancear uma carteira? — Dinheiro em Pauta</title>
+<meta name="description" content="Não existe uma regra universal de rebalanceamento — existe uma banda de tolerância calibrada pelo custo de transação, pela tributação e por como os ativos da carteira se comportam entre si. Veja o que a literatura acadêmica mostra.">
+<meta name="robots" content="index, follow, max-image-preview:large">
+<meta name="author" content="Dinheiro em Pauta">
+<link rel="canonical" href="https://dinheiroempauta.com.br/rebalanceamento-de-carteira/">
+<link rel="alternate" type="application/rss+xml" title="Dinheiro em Pauta" href="../feed.xml">
+
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="Dinheiro em Pauta">
+<meta property="og:locale" content="pt_BR">
+<meta property="og:url" content="https://dinheiroempauta.com.br/rebalanceamento-de-carteira/">
+<meta property="og:title" content="Qual é a maneira ótima de rebalancear uma carteira?">
+<meta property="og:description" content="Não existe uma regra universal de rebalanceamento — existe uma banda de tolerância calibrada pelo custo de transação, pela tributação e por como os ativos da carteira se comportam entre si. Veja o que a literatura acadêmica mostra.">
+<meta property="og:image" content="https://dinheiroempauta.com.br/assets/og-cover-rebalanceamento-de-carteira.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Dinheiro em Pauta — Qual é a maneira ótima de rebalancear uma carteira?">
+<meta property="article:published_time" content="2026-08-26">
+<meta property="article:section" content="Investimentos">
+
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Qual é a maneira ótima de rebalancear uma carteira?">
+<meta name="twitter:description" content="Não existe uma regra universal de rebalanceamento — existe uma banda de tolerância calibrada pelo custo de transação, pela tributação e por como os ativos da carteira se comportam entre si. Veja o que a literatura acadêmica mostra.">
+<meta name="twitter:image" content="https://dinheiroempauta.com.br/assets/og-cover-rebalanceamento-de-carteira.png">
+
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://cloud.umami.is; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data:; connect-src 'self' https://cloud.umami.is https://gateway.umami.is https://dinheiro-em-pauta-likes.dinheiroempauta.workers.dev https://dinheiro-em-pauta-comments.dinheiroempauta.workers.dev https://api.web3forms.com; form-action 'self' https://buttondown.com; base-uri 'self';">
+<meta name="theme-color" content="#1E6B4F">
+<meta name="color-scheme" content="light dark">
+<link rel="icon" type="image/png" href="../favicon.png">
+<!-- Privacy-friendly analytics by Umami -->
+<script defer src="https://cloud.umami.is/script.js" integrity="sha384-Q1FEUGCe1A6jpwhNNpZ0b5Dyg9/aU2mQx8VmKWv2hKTMXCr87YGWPDCU534MlYXM" crossorigin="anonymous" data-website-id="5ad06f25-a346-4669-9e09-55a75b4ee26b"></script>
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Article",
+  "headline": "Qual é a maneira ótima de rebalancear uma carteira?",
+  "description": "Não existe uma regra universal de rebalanceamento — existe uma banda de tolerância calibrada pelo custo de transação, pela tributação e por como os ativos da carteira se comportam entre si. Veja o que a literatura acadêmica mostra.",
+  "image": "https://dinheiroempauta.com.br/assets/og-cover-rebalanceamento-de-carteira.png",
+  "datePublished": "2026-08-26",
+  "dateModified": "2026-08-26",
+  "inLanguage": "pt-BR",
+  "articleSection": "Investimentos",
+  "keywords": "rebalanceamento de carteira, banda de tolerância, tracking error, turnover, ganho de capital, alocação de ativos, imposto sobre ganho de capital, região de não-negociação",
+  "about": ["Rebalanceamento de carteira", "Banda de tolerância", "Tracking error", "Turnover", "Imposto sobre ganho de capital"],
+  "author": {"@type": "Organization", "name": "Dinheiro em Pauta", "url": "https://dinheiroempauta.com.br"},
+  "publisher": {"@type": "Organization", "name": "Dinheiro em Pauta"},
+  "mainEntityOfPage": {"@type": "WebPage", "@id": "https://dinheiroempauta.com.br/rebalanceamento-de-carteira/"},
+  "isPartOf": {"@type": "WebSite", "name": "Dinheiro em Pauta", "url": "https://dinheiroempauta.com.br"}
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {"@type": "ListItem", "position": 1, "name": "Dinheiro em Pauta", "item": "https://dinheiroempauta.com.br"},
+    {"@type": "ListItem", "position": 2, "name": "Investimentos", "item": "https://dinheiroempauta.com.br/rebalanceamento-de-carteira/"},
+    {"@type": "ListItem", "position": 3, "name": "Qual é a maneira ótima de rebalancear uma carteira?", "item": "https://dinheiroempauta.com.br/rebalanceamento-de-carteira/"}
+  ]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {"@type": "Question", "name": "Qual é a melhor forma de rebalancear uma carteira?", "acceptedAnswer": {"@type": "Answer", "text": "A evidência acadêmica e empírica aponta para rebalancear por banda de tolerância — só mexer na carteira quando um ativo se afasta do alvo além de um percentual definido — em vez de por calendário fixo. Para o mesmo nível de desvio do alvo tolerado, banda de tolerância exige menos movimentação (logo, menos custo) do que rebalancear em datas fixas."}},
+    {"@type": "Question", "name": "Rebalancear a carteira aumenta o retorno esperado?", "acceptedAnswer": {"@type": "Answer", "text": "Não de forma confiável. Um estudo da gestora Dimensional testou 14 métodos diferentes de rebalanceamento numa carteira 60/40 entre 1979 e 2019 e não encontrou evidência de que a escolha do método aumente retorno esperado — as diferenças de retorno entre métodos vêm de style drift (deixar a carteira andar com mais peso no ativo que subiu), não de nenhum método ser mais esperto. O critério certo para escolher entre métodos é o trade-off entre turnover (custo) e tracking error (desvio do alvo), não o retorno."}},
+    {"@type": "Question", "name": "Por que rebalancear por calendário fixo é menos eficiente?", "acceptedAnswer": {"@type": "Answer", "text": "Porque decide quando mexer na carteira por um critério — a data — que não tem relação com o motivo real de rebalancear, que é a carteira ter desviado do alvo. Às vezes a data chega e a carteira mal desviou, gerando custo desnecessário; às vezes a carteira desvia bastante logo após uma data de rebalanceamento e fica exposta a mais risco do que o pretendido até a próxima data."}},
+    {"@type": "Question", "name": "O imposto sobre ganho de capital muda a forma de rebalancear?", "acceptedAnswer": {"@type": "Answer", "text": "Sim, de forma assimétrica. Como o imposto só é cobrado quando a posição é vendida, adiar a venda tem valor — e esse valor cresce com o tamanho do ganho acumulado. Isso significa que a banda de tolerância ideal não deveria ter a mesma largura para toda a carteira: posições com ganho acumulado grande merecem mais tolerância antes de serem vendidas do que posições com pouco ou nenhum ganho."}}
+  ]
+}
+</script>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@0,400;0,500;0,600;0,700;1,500;1,600&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500;600&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@0,400;0,500;0,600;0,700;1,500;1,600&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500;600&display=swap" media="print" onload="this.media='all'">
+<noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@0,400;0,500;0,600;0,700;1,500;1,600&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500;600&display=swap"></noscript>
+<link rel="stylesheet" href="../assets/site.css">
+<style>
+  :root{ --maxw: 1000px; }
+  main{ max-width: var(--maxw); margin: 0 auto; padding: 0 24px 90px; }
+</style>
+</head>
+<body>
+
+<div class="progress-rail"><div class="progress-fill" id="progressFill"></div></div>
+
+<nav class="toc-rail" id="tocRail" aria-label="Navegação do artigo">
+  <a href="#sec-01" data-label="01" aria-label="O método mais comum é o menos eficiente"><span class="toc-label">O método mais comum é o menos eficiente</span></a>
+  <a href="#sec-02" data-label="02" aria-label="Rebalancear é escolha de risco, não de retorno"><span class="toc-label">Rebalancear é escolha de risco, não de retorno</span></a>
+  <a href="#sec-03" data-label="03" aria-label="Por que a resposta certa é uma banda"><span class="toc-label">Por que a resposta certa é uma banda</span></a>
+  <a href="#sec-04" data-label="04" aria-label="A banda não é fixa"><span class="toc-label">A banda não é fixa</span></a>
+  <a href="#sec-05" data-label="05" aria-label="O que a evidência empírica real mostra"><span class="toc-label">O que a evidência empírica real mostra</span></a>
+  <a href="#sec-06" data-label="06" aria-label="Imposto muda a conta"><span class="toc-label">Imposto muda a conta</span></a>
+  <a href="#sec-07" data-label="07" aria-label="Até onde dá para ir além da banda simples"><span class="toc-label">Até onde dá para ir além da banda simples</span></a>
+  <a href="#sec-08" data-label="08" aria-label="Sim, mas o que eu faço?"><span class="toc-label">Sim, mas o que eu faço?</span></a>
+</nav>
+
+<button type="button" class="back-to-top" id="backToTop" aria-label="Voltar ao topo">
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M12 19V5M5 12l7-7 7 7"/></svg>
+</button>
+
+<div class="masthead">
+  <div class="masthead-inner">
+    <a href="../" class="wordmark"><span>Dinheiro em</span> Pauta</a>
+    <div class="masthead-actions">
+      <button type="button" class="icon-btn theme-toggle" id="themeToggle" aria-label="Alternar entre tema claro e escuro">
+        <svg class="icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"/></svg>
+        <svg class="icon-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79Z"/></svg>
+      </button>
+      <button type="button" class="icon-btn menu-toggle" id="menuToggle" aria-haspopup="true" aria-expanded="false" aria-controls="siteMenu" aria-label="Abrir menu">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 7h16M4 12h16M4 17h16"/></svg>
+      </button>
+      <nav class="site-menu" id="siteMenu" hidden aria-label="Navegação principal">
+        <a href="../sobre/">Sobre</a>
+        <a href="../artigos/">Artigos</a>
+        <a href="../simuladores/">Simuladores</a>
+      </nav>
+    </div>
+  </div>
+</div>
+
+<main>
+  <div class="eyebrow fade-in">Investimentos · Rebalanceamento de carteira</div>
+  <h1 class="title fade-in d1">Qual é a maneira ótima de rebalancear uma carteira?</h1>
+  <p class="subtitle fade-in d1">Não existe uma regra universal — existe uma banda de tolerância calibrada pelo seu custo de transação, sua situação tributária e como os ativos da sua carteira se comportam entre si.</p>
+  <div class="meta fade-in d2">
+    <span><b>Publicado em</b> 26 ago. 2026</span>
+    <span><b>~16 min</b> de leitura</span>
+  </div>
+
+  <div class="promise">
+    <div class="promise-label">Neste artigo, você vai entender</div>
+    <ul>
+      <li>Por que calendário fixo — o método mais comum — é o critério menos eficiente de rebalanceamento</li>
+      <li>Por que a resposta certa é uma "banda de tolerância", não um gatilho único</li>
+      <li>Como previsibilidade de retorno muda essa banda (e por que isso não se aplica a quem não segue sinais de mercado)</li>
+      <li>O que a evidência empírica real diz sobre turnover, tracking error e retorno</li>
+      <li>Como o imposto sobre ganho de capital muda a conta de forma assimétrica</li>
+    </ul>
+  </div>
+
+  <div id="nivelamento-basico" class="note green">
+    <div class="cap">Nivelamento básico</div>
+    <p>Se você ainda não definiu como dividir sua carteira entre classes de ativos, o artigo <a href="../montar-carteira-estudo-de-caso/">Passo a passo para montar uma carteira de investimentos</a> cobre essa etapa anterior. Aqui a pergunta já pressupõe que você tem um alvo definido (por exemplo, 60% em ações e 40% em renda fixa): rebalancear é o ato de trazer a carteira de volta perto dessa divisão quando ela se afasta por causa da valorização ou desvalorização dos ativos.</p>
+  </div>
+
+  <div class="prose">
+
+    <div class="glossary">
+      <div class="gloss-item">
+        <div class="abbr">Rebalanceamento</div>
+        <div class="full">Rebalancing</div>
+        <p>Trazer os pesos da carteira de volta perto da alocação-alvo, vendendo parte do que subiu e comprando parte do que ficou para trás.</p>
+      </div>
+      <div class="gloss-item">
+        <div class="abbr">Banda de tolerância</div>
+        <div class="full">Tolerance band / no-trade region</div>
+        <p>Intervalo ao redor do peso-alvo dentro do qual a carteira pode variar sem que nenhuma ação seja tomada — só se rebalanceia quando o desvio ultrapassa essa faixa.</p>
+      </div>
+      <div class="gloss-item">
+        <div class="abbr">Tracking error</div>
+        <div class="full">Erro de rastreamento</div>
+        <p>O quanto a carteira efetivamente administrada se afasta, ao longo do tempo, da alocação-alvo que ela deveria seguir.</p>
+      </div>
+      <div class="gloss-item">
+        <div class="abbr">Turnover</div>
+        <div class="full">Giro de carteira</div>
+        <p>Volume de compra e venda necessário para rebalancear — usado como proxy do custo de transação de uma estratégia.</p>
+      </div>
+      <div class="gloss-item">
+        <div class="abbr">Ganho de capital</div>
+        <div class="full">Capital gain</div>
+        <p>Valorização de um ativo desde a compra; ao vender, esse ganho pode gerar fato gerador de imposto de renda, dependendo do ativo e da legislação.</p>
+      </div>
+      <div class="gloss-item">
+        <div class="abbr">Drawdown</div>
+        <div class="full">Perda máxima acumulada</div>
+        <p>A maior queda, do topo até o fundo, que uma carteira sofreu num período — mede o pior cenário de perda vivido pelo investidor, não a média.</p>
+      </div>
+      <div class="gloss-item">
+        <div class="abbr">Índice de Sharpe</div>
+        <div class="full">Sharpe ratio</div>
+        <p>Mede o retorno obtido por unidade de risco assumido (volatilidade) — quanto maior, melhor a relação entre o que se ganhou e o quanto se oscilou para ganhar.</p>
+      </div>
+    </div>
+
+    <h2 id="sec-01"><span class="num">01</span>O método mais comum é, ao mesmo tempo, o menos eficiente</h2>
+    <p>Toda carteira com mais de um ativo sai do lugar sozinha. Você define, por exemplo, 60% em ações e 40% em renda fixa — mas se as ações sobem mais que a renda fixa, sem você fazer nada, a carteira vira 65/35, depois 70/30. Rebalancear é trazê-la de volta perto da divisão que você escolheu, vendendo um pouco do que subiu e comprando um pouco do que ficou para trás (ou direcionando os aportes novos para o que está "atrasado").</p>
+    <p>A pergunta parece simples — "de quanto em quanto tempo eu rebalanceio?" — mas a resposta certa não é sobre tempo. É sobre um trade-off entre dois custos que puxam para direções opostas, e sobre um punhado de fatores que mudam onde fica o ponto de equilíbrio entre eles para cada investidor.</p>
+    <p>Antes de entrar na teoria, vale nomear o que a maioria das pessoas realmente faz: rebalancear em uma data fixa — todo aniversário da carteira, todo início de ano, todo trimestre — independentemente de a carteira ter desviado muito ou pouco do alvo. É fácil de lembrar, fácil de automatizar e, por isso mesmo, é o padrão de fato do investidor comum.</p>
+    <p>O problema é que essa regra decide <em>quando</em> mexer na carteira por um critério — a data no calendário — que não tem relação nenhuma com o motivo pelo qual você rebalancearia em primeiro lugar, que é a carteira ter saído do alvo. Duas coisas ruins acontecem: às vezes a data chega e a carteira mal desviou do alvo, mas você rebalanceia do mesmo jeito, pagando corretagem (e potencialmente imposto) por uma correção que quase não era necessária; e às vezes a carteira desvia bastante logo depois de uma data de rebalanceamento, ficando exposta a mais risco do que você pretendia por meses, até a próxima data chegar.</p>
+    <p>Um estudo da gestora Dimensional testou isso diretamente: comparou rebalancear por calendário (mensal, trimestral, anual) contra rebalancear por banda de tolerância — só mexer na carteira quando um ativo se afasta do alvo além de um percentual definido (1%, 2,5%, 5%, e assim por diante) — em uma carteira 60% ações / 40% renda fixa, de 1979 a 2019.<sup class="cite"><a href="#ref-6">6</a></sup></p>
+
+    <div class="note">
+      <div class="cap">O que o estudo encontrou</div>
+      <p>Para o mesmo nível de desvio em relação ao alvo, calendário fixo gera mais movimentação (e mais custo) do que banda de tolerância. Dito de outro modo: banda de tolerância entrega o mesmo controle de risco por um custo menor — ou, gastando o mesmo em corretagem, entrega um controle de risco melhor.</p>
+    </div>
+
+    <p>Isso não significa que calendário fixo seja uma escolha irracional — é simples, previsível e fácil de manter na prática, o que tem valor. Mas, do ponto de vista puramente de eficiência, ele perde para uma regra baseada em quanto a carteira realmente se moveu. Antes de chegar a essa regra, porém, vale um passo atrás: por que rebalancear, afinal?</p>
+
+    <h2 id="sec-02"><span class="num">02</span>Rebalancear é, no fundo, uma escolha de risco — não de retorno</h2>
+    <p>Em um artigo clássico de 1988, os pesquisadores André Perold e William Sharpe<sup class="cite"><a href="#ref-1">1</a></sup> mostraram uma forma simples de enxergar o problema: pense em como o valor final da sua carteira depende do desempenho do mercado, desenhando essa relação num gráfico.</p>
+    <p>Se você nunca mexe na carteira (buy-and-hold), essa relação é uma linha reta: quanto mais o mercado sobe, mais sua carteira sobe, na mesma proporção, sempre. Se você rebalanceia para manter pesos fixos (por exemplo, sempre voltar a 60/40), essa relação vira uma curva: você está, na prática, vendendo um pouco do que subiu toda vez que sobe, e comprando um pouco do que caiu toda vez que cai.</p>
+    <p>Rebalancear para pesos fixos funciona bem quando o mercado oscila para cima e para baixo sem uma direção clara — porque cada compra na baixa e venda na alta "captura" parte da oscilação. Funciona mal quando o mercado tem uma tendência forte e sustentada (só sobe, ou só cai) — porque você vai vendendo sistematicamente o que está indo bem, ou comprando sistematicamente o que está indo mal, antes da hora.</p>
+    <p>O ponto central desse trabalho é que nenhuma das duas abordagens — nunca mexer, ou sempre voltar ao alvo — é objetivamente "melhor". A escolha certa depende de quanto risco você está disposto a tolerar e, em menor medida, de que tipo de mercado você espera enfrentar. Na prática, isso quer dizer que rebalancear não deveria ser encarado como uma técnica para ganhar mais dinheiro; é uma técnica para manter o nível de risco que você escolheu.</p>
+    <p>Aceita essa premissa — que rebalancear é sobre risco, e que tem custo —, sobra uma pergunta prática: com que frequência isso deveria acontecer?</p>
+
+    <h2 id="sec-03"><span class="num">03</span>Por que a resposta certa é uma "banda", e não um gatilho único</h2>
+    <p>Se rebalancear tem custo (corretagem, spread, e às vezes imposto), faz sentido que a resposta ótima não seja "corrigir a carteira toda vez que ela desvia um pouco", porque isso geraria custo demais para um benefício pequeno. Também não faz sentido "nunca corrigir", porque aí a carteira se afasta cada vez mais do perfil de risco que você escolheu.</p>
+    <p>Esse raciocínio foi formalizado matematicamente por George Constantinides<sup class="cite"><a href="#ref-2">2</a></sup> em 1986. A conclusão central: quando existe custo de transação proporcional ao valor negociado, a estratégia ótima não é um ponto, é uma faixa — uma "região de não-negociação" ao redor do alvo. Enquanto a carteira estiver dentro dessa faixa, o melhor a fazer é não fazer nada. Só quando ela sai da faixa é que vale a pena pagar o custo de trazê-la de volta — e mesmo aí, a teoria diz que o ideal é trazer só até a borda da faixa, não até o alvo exato, para não gastar mais do que o necessário.</p>
+    <p>Segundo a literatura que resolveu esse problema de forma mais completa em tempo contínuo — o trabalho de Michael Davis e Andrew Norman<sup class="cite"><a href="#ref-3">3</a></sup>, de 1990, citado como referência seminal por boa parte da literatura subsequente sobre o tema —, a mesma conclusão se sustenta com rigor matemático adicional: existe uma região de não-negociação ótima, definida por uma fronteira que só é cruzada quando compensa financeiramente.</p>
+
+    <div class="note">
+      <div class="cap">Um resultado surpreendente</div>
+      <p>Mesmo quando o custo de transação é relativamente alto, o "prejuízo" de manter a carteira desviada do alvo dentro da faixa é pequeno. Isso acontece porque o investidor se adapta ao custo reduzindo a frequência com que negocia — não porque ficar fora do alvo não importe, mas porque o próprio mecanismo da banda já limita o estrago. Na prática, isso é uma boa notícia: não é preciso acertar o alvo com precisão cirúrgica o tempo todo para ter um resultado quase tão bom quanto o ideal.</p>
+    </div>
+
+    <h2 id="sec-04"><span class="num">04</span>A banda não é fixa — ela se move quando você acredita saber algo sobre o futuro</h2>
+    <p>Até aqui, a teoria assume que você não tem nenhuma informação sobre para onde os preços vão. Mas e se você tiver uma visão — por exemplo, que ações "baratas" (com dividend yield alto) tendem a se recuperar, ou que um ativo em alta tende a continuar em alta por um tempo (momentum)?</p>
+    <p>Anthony Lynch e Pierluigi Balduzzi<sup class="cite"><a href="#ref-4">4</a></sup> mostraram, em 2000, que quando os retornos têm algum grau de previsibilidade, a região de não-negociação descrita acima deixa de ser fixa: ela se desloca e muda de largura conforme as condições de mercado mudam, e o investidor acaba rebalanceando com mais frequência (não menos) para aproveitar essas janelas.</p>
+    <p>Nicolae Gârleanu e Lasse Heje Pedersen<sup class="cite"><a href="#ref-5">5</a></sup> levam essa ideia mais longe, em um artigo de 2013, com uma imagem que ajuda a entender a intuição: comparam o investidor a um caçador mirando um pato em voo, ou a um jogador de hóquei que "patina para onde o disco vai estar, não para onde ele está" — a famosa frase de Wayne Gretzky, citada no próprio estudo. Se o seu alvo de alocação ideal está sempre mudando um pouco (porque as condições de mercado mudam), a melhor estratégia não é perseguir o alvo de hoje, e sim negociar parcialmente na direção de uma média entre o alvo de hoje e o alvo esperado no futuro próximo — sem nunca chegar 100% do caminho de uma vez.</p>
+
+    <div class="note">
+      <div class="cap">Ressalva para quem não segue sinais de mercado ativamente</div>
+      <p>Esses dois trabalhos pressupõem que o investidor tem alguma capacidade real de prever retornos — o que é difícil, arriscado e não é o caso da maioria das pessoas. Para quem investe com uma alocação estratégica simples e não pretende adivinhar o mercado, o ensinamento prático que fica é mais modesto: a banda de tolerância não precisa ser um número único e eterno — pode fazer sentido recalibrá-la de tempos em tempos, sem transformar isso em desculpa para nunca rebalancear porque "acho que o mercado ainda vai subir".</p>
+    </div>
+
+    <h2 id="sec-05"><span class="num">05</span>O que a evidência empírica real mostra</h2>
+    <p>Teoria à parte, o que acontece quando você testa essas ideias em dados de mercado de verdade?</p>
+    <p>Retorno não é o critério certo para escolher um método de rebalanceamento. O mesmo estudo da Dimensional citado acima testou 14 métodos diferentes (calendário e banda de tolerância, em várias larguras) numa carteira 60/40 de 1979 a 2019, e a maior diferença de retorno mensal médio entre quaisquer dois dos 14 métodos foi de apenas 0,02 pontos percentuais.</p>
+    <p>Um segundo teste do mesmo estudo reforça essa conclusão por outro ângulo: comparando 12 versões de rebalanceamento anual, cada uma feita em um mês diferente do ano, numa carteira global 60/40, a diferença chegou a 0,03 p.p. e passou no teste de significância estatística. Ainda assim, os próprios autores atribuem esse resultado a acaso estatístico — o efeito de testar 12 comparações ao mesmo tempo —, não a alguma vantagem real de rebalancear num mês específico.</p>
+    <p>Em ambos os casos, as diferenças de retorno que aparecem entre métodos vêm principalmente do fato de que rebalancear com menos frequência deixa a carteira "andar" mais tempo com mais peso no ativo que está subindo (geralmente ações) — não de nenhum método ser mais esperto que o outro.</p>
+    <p>O critério certo é o trade-off entre turnover e tracking error. O mesmo estudo mostra que, para qualquer nível de desvio do alvo que se esteja disposto a aceitar, bandas de tolerância entregam esse nível de controle com menos movimentação de carteira (logo, menos custo) do que calendário fixo. Indo um passo além: aplicar bandas diferentes para blocos diferentes da carteira — uma banda mais larga entre "ações" e "renda fixa" no geral, e uma banda separada dentro de cada bloco (por exemplo, entre ações nacionais e internacionais) — melhora ainda mais esse trade-off, porque evita mexer na carteira toda só porque um componente pequeno desviou.</p>
+    <p>Em dados reais, com custos reais, rebalancear tende a compensar. Um estudo de Rim El Bernoussi e Michael Rockinger<sup class="cite"><a href="#ref-7">7</a></sup>, de 2023, aplicou o mesmo tipo de análise a uma carteira real (a de um fundo de pensão suíço, com mais de uma dezena de classes de ativos — ações, bonds, commodities, imobiliário —, de 1999 a meados de 2021).</p>
+
+    <div class="table-wrap">
+      <table class="data">
+        <caption>Rebalancear (fixed-weight) vs. buy-and-hold, carteira real suíça — El Bernoussi &amp; Rockinger (2023)</caption>
+        <thead>
+          <tr><th>Custo de transação</th><th>Quem vence em Sharpe e drawdown</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>Até ~2% por operação</td><td>Rebalancear (fixed-weight)</td></tr>
+          <tr><td>~0,5% (faixa mais realista)</td><td>Rebalancear, com vantagem clara</td></tr>
+          <tr><td>Acima de ~2%</td><td>Buy-and-hold volta a vencer</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <p>O mesmo estudo mostra que isso depende de como os ativos da carteira se comportam entre si: carteiras com ativos que tendem a "voltar para a média" se beneficiam mais de rebalancear; carteiras com ativos correlacionados negativamente entre si (que já se compensam naturalmente) tendem a gerar mais custo de transação ao rebalancear, reduzindo essa vantagem.</p>
+
+    <h2 id="sec-06"><span class="num">06</span>Imposto muda a conta — e muda de um jeito assimétrico</h2>
+    <p>Até aqui, quase tudo pressupôs que o único custo de rebalancear é a corretagem. Mas em muitos mercados (incluindo o brasileiro, para a maior parte dos investimentos), vender um ativo que subiu de preço gera fato gerador de imposto sobre o ganho de capital. Isso muda o cálculo de um jeito que vale a pena entender.</p>
+    <p>Um conjunto de trabalhos de Robert Dammon, Chester Spatt e Harold Zhang — o principal deles publicado em 2001<sup class="cite"><a href="#ref-8">8</a></sup>, acompanhado de um estudo companheiro que estende o modelo para múltiplos ativos de risco<sup class="cite"><a href="#ref-9">9</a></sup> — formaliza esse efeito: como o imposto só é cobrado quando você realiza o ganho (vende), adiar a venda tem valor — é como ter um empréstimo sem juros do governo enquanto você não vende. Esse valor cresce com o tamanho do ganho acumulado na posição: quanto mais uma ação ou fundo subiu desde que você comprou, mais caro (em termos de imposto) fica trazê-la de volta ao peso-alvo, e menos vale a pena fazer isso por um desvio pequeno.</p>
+    <p>Na prática, isso significa que a banda de tolerância ideal não deveria ser a mesma largura para toda a carteira — deveria ser mais larga (mais tolerante a deixar o ativo "correr") para posições com ganho acumulado grande, e mais estreita para posições com pouco ou nenhum ganho ainda realizável. Um raciocínio prático que decorre disso, embora não seja algo testado diretamente nesses estudos: como aporte novo não envolve vender nada, direcionar dinheiro novo para o que está abaixo do alvo (em vez de vender o que está acima) é uma forma óbvia de reequilibrar a carteira sem gerar fato gerador de imposto.</p>
+
+    <div class="note">
+      <div class="cap">Ponto de atenção: isso é regime tributário americano</div>
+      <p>Os números específicos desses estudos — e uma conclusão interessante que eles trazem, de que pode fazer sentido aumentar a exposição a ações conforme o investidor envelhece, ao contrário do conselho convencional — vêm do sistema tributário americano, que perdoa o imposto sobre ganho de capital na sucessão (herança). O sistema brasileiro é diferente: não há esse perdão automático na mesma forma, as regras e faixas de isenção de imposto de renda sobre ganho de capital são outras, e produtos como fundos têm sua própria dinâmica de tributação (como o "come-cotas"). A lógica geral — quanto maior o ganho acumulado, maior a resistência racional a vender só para rebalancear — se sustenta; os números e a recomendação específica sobre idade, não.</p>
+    </div>
+
+    <h2 id="sec-07"><span class="num">07</span>Até onde dá para ir além da banda de tolerância simples</h2>
+    <p>Vale mencionar, ainda que brevemente, que existe uma fronteira de sofisticação além de "definir uma banda e seguir": pesquisas recentes usam otimização numérica pesada para encontrar a região de não-negociação ideal caso a caso — por exemplo, resolvendo o problema como uma grade computacional otimizada (Dai et al., 2024)<sup class="cite"><a href="#ref-10">10</a></sup> ou calibrando a largura da banda estatisticamente para estratégias de volatilidade-alvo (Bai et al., 2025)<sup class="cite"><a href="#ref-11">11</a></sup>. Essas abordagens superam a banda de tolerância simples em testes retrospectivos, mas exigem poder computacional, dados históricos robustos e recalibração constante — o que as torna mais adequadas para gestores institucionais do que para o investidor pessoa física gerenciando a própria carteira.</p>
+
+    <h2 id="sec-08"><span class="num">08</span>Sim, mas o que eu faço? — Uma síntese prática</h2>
+    <p>Juntando tudo, os fatores que realmente deveriam pesar na sua decisão de como rebalancear são:</p>
+    <ol class="steps-list">
+      <li>Olhe o custo real de negociar na sua corretora/produto, não um número teórico. Se o custo por operação é baixo (como costuma ser hoje em ações e ETFs líquidos no Brasil), a banda pode ser mais estreita; se é alto, mais larga.</li>
+      <li>Use banda de tolerância, não calendário fixo, como critério de disparo. Se a carteira tiver blocos claros (ex.: renda variável vs. renda fixa, e dentro de cada um vários fundos/ativos), considere uma banda mais larga entre os blocos e uma banda própria dentro de cada bloco.</li>
+      <li>Olhe o ganho acumulado por posição, não só o desvio percentual do peso: uma posição com muito imposto embutido merece mais tolerância antes de ser vendida do que uma com pouco ou nenhum ganho.</li>
+      <li>Priorize aportes novos para reequilibrar antes de vender posições que estão acima do alvo, evitando gerar imposto desnecessariamente.</li>
+      <li>Não escolha o método pensando em maximizar retorno — a evidência é clara de que isso não é confiável. Escolha pensando em manter o risco da carteira dentro do que você definiu, ao menor custo possível.</li>
+      <li>Lembre que simplicidade tem valor. Não é necessário perseguir a otimização computacional de ponta para ter um resultado bom: os estudos mostram ganho de eficiência já a partir de bandas estreitas (1%), com melhora gradual conforme a banda aumenta. Como ponto de partida razoável (isso é uma sugestão prática, não um número validado como ótimo por nenhum dos estudos citados), uma banda de tolerância de alguns pontos percentuais, checada com regularidade, mensal ou trimestralmente, já é preferível ao calendário fixo puro.</li>
+    </ol>
+    <p>Nenhum desses seis pontos depende de você adivinhar o mercado ou de ter acesso a ferramentas sofisticadas — depende só de trocar "calendário" por "banda" como critério, e de olhar para a sua própria situação tributária antes de copiar uma regra genérica.</p>
+
+    <div class="recap">
+      <div class="cap">Para levar com você</div>
+      <ol>
+        <li>Calendário fixo é o método mais comum, mas o menos eficiente: para o mesmo controle de risco, gera mais custo do que banda de tolerância.</li>
+        <li>Rebalancear é escolha de risco, não de retorno — não existe método "melhor" universal, existe o que se encaixa na sua tolerância a risco.</li>
+        <li>A resposta ótima é uma banda de não-negociação ao redor do alvo, não um gatilho único — e mesmo custos de transação altos geram um "prejuízo" pequeno por ficar dentro dela.</li>
+        <li>Se você acredita ter previsibilidade real sobre retornos, a banda se desloca; se não acredita, isso não deveria virar desculpa para nunca rebalancear.</li>
+        <li>A evidência empírica não sustenta escolher método de rebalanceamento por retorno esperado — o critério é turnover vs. tracking error.</li>
+        <li>Imposto sobre ganho de capital torna a banda assimétrica: mais tolerância para posições com ganho grande. No Brasil, a lógica se sustenta, mas os números específicos da literatura (regime americano) não se transplantam diretamente.</li>
+      </ol>
+    </div>
+
+  </div>
+
+  <div class="cta">
+    <div class="cta-text">
+      <h3>O que você pode aprender na sequência?</h3>
+      <p>Se este artigo te ajudou a entender quando mexer na carteira, esses dois artigos ajudam a decidir os próximos detalhes práticos.</p>
+    </div>
+
+    <div class="cta-buttons">
+      <button type="button" class="cta-btn" id="newsletterToggle" aria-expanded="false" aria-controls="newsletterForm">Assinar a newsletter</button>
+      <button type="button" class="cta-btn" id="suggestToggle" aria-expanded="false" aria-controls="suggestForm">Sugira um tema</button>
+    </div>
+
+    <form action="https://buttondown.com/api/emails/embed-subscribe/independencia_calculada" method="post" target="newsletterHiddenFrame"
+      class="newsletter-form" id="newsletterForm" hidden>
+      <div class="newsletter-fields" id="newsletterFields">
+        <label for="bd-email" class="newsletter-label">E-mail</label>
+        <input type="email" name="email" id="bd-email" placeholder="seu@email.com" required>
+        <input type="hidden" value="1" name="embed">
+        <button type="submit" class="newsletter-submit">Inscrever</button>
+      </div>
+      <p class="newsletter-note" id="newsletterNote">Um aviso por e-mail a cada artigo novo — sem spam, cancele quando quiser.</p>
+    </form>
+    <iframe name="newsletterHiddenFrame" class="newsletter-hidden-frame" title="" aria-hidden="true" tabindex="-1"></iframe>
+
+    <form class="suggest-form" id="suggestForm" hidden>
+      <input type="hidden" name="access_key" value="7f403414-f060-4b88-a711-bb856d1a062a">
+      <input type="hidden" name="subject" value="Sugestão de tema — via artigo &quot;Qual é a maneira ótima de rebalancear uma carteira?&quot;">
+      <input type="checkbox" name="botcheck" class="suggest-honeypot" tabindex="-1" autocomplete="off">
+      <div class="suggest-fields" id="suggestFields">
+        <label for="suggest-message" class="newsletter-label">Sua sugestão</label>
+        <textarea id="suggest-message" name="message" maxlength="500" required placeholder="Que tema você gostaria de ver por aqui?"></textarea>
+        <div class="suggest-actions">
+          <span class="suggest-counter" id="suggestCounter">500 caracteres restantes</span>
+          <button type="submit" class="newsletter-submit">Enviar sugestão</button>
+        </div>
+      </div>
+      <p class="newsletter-note" id="suggestNote">Cai direto no nosso e-mail — sem cadastro, sem rastreamento.</p>
+    </form>
+
+    <div class="cta-related">
+      <div class="cta-related-label">Continue lendo</div>
+      <a class="cta-related-link" href="../montar-carteira-estudo-de-caso/">
+        <span class="cta-related-title">Passo a passo para montar uma carteira de investimentos: um estudo de caso</span>
+        <span class="cta-related-arrow">→</span>
+      </a>
+      <a class="cta-related-link" href="../alocacao-explica-desempenho/">
+        <span class="cta-related-title">A alocação de ativos explica 40%, 90% ou 100% do seu retorno?</span>
+        <span class="cta-related-arrow">→</span>
+      </a>
+    </div>
+  </div>
+
+  <div class="disclaimer-spacer"></div>
+
+  <div class="disclaimer">
+    <div class="cap">Referências técnicas</div>
+    <ol>
+      <li id="ref-1">PEROLD, André F.; SHARPE, William F. Dynamic strategies for asset allocation. <em>Financial Analysts Journal</em>, v. 44, n. 1, p. 16-27, jan./fev. 1988.</li>
+      <li id="ref-2">CONSTANTINIDES, George M. Capital market equilibrium with transaction costs. <em>Journal of Political Economy</em>, v. 94, n. 4, p. 842-862, 1986.</li>
+      <li id="ref-3">DAVIS, M. H. A.; NORMAN, A. R. Portfolio selection with transaction costs. <em>Mathematics of Operations Research</em>, v. 15, n. 4, p. 676-713, 1990. PDF-fonte digitalizado sem camada de texto; conteúdo citado neste artigo com base em como é descrito pela literatura subsequente (Constantinides, Lynch &amp; Balduzzi, El Bernoussi &amp; Rockinger), não por leitura direta do documento primário.</li>
+      <li id="ref-4">LYNCH, Anthony W.; BALDUZZI, Pierluigi. Predictability and transaction costs: the impact on rebalancing rules and behavior. <em>The Journal of Finance</em>, v. 55, n. 5, p. 2285-2309, out. 2000.</li>
+      <li id="ref-5">GÂRLEANU, Nicolae; PEDERSEN, Lasse Heje. Dynamic trading with predictable returns and transaction costs. <em>The Journal of Finance</em>, v. 68, n. 6, p. 2309-2340, dez. 2013.</li>
+      <li id="ref-6">HONG, Xing. Portfolio rebalancing: tradeoffs and decisions. Nota de pesquisa institucional, Dimensional Fund Advisors, jun. 2021.</li>
+      <li id="ref-7">EL BERNOUSSI, Rim; ROCKINGER, Michael. Rebalancing with transaction costs: theory, simulations, and actual data. <em>Financial Markets and Portfolio Management</em>, v. 37, p. 121-160, 2023. DOI: https://doi.org/10.1007/s11408-022-00419-6.</li>
+      <li id="ref-8">DAMMON, Robert M.; SPATT, Chester S.; ZHANG, Harold H. Optimal consumption and investment with capital gains taxes. <em>The Review of Financial Studies</em>, v. 14, n. 3, p. 583-616, 2001.</li>
+      <li id="ref-9">DAMMON, Robert M.; SPATT, Chester S.; ZHANG, Harold H. Diversification and capital gains taxes with multiple risky assets. Working paper, Carnegie Mellon University e University of North Carolina at Chapel Hill, 2000. Extração de texto do PDF-fonte parcialmente corrompida (fonte customizada); citação restrita à lógica geral do modelo, confirmada por leitura visual direta do documento.</li>
+      <li id="ref-10">DAI, Tian-Shyr; CHEN, Bo-Jen; SUN, You-Jia; YANG, Dong-Yuh; WU, Mu-En. Constructing optimal portfolio rebalancing strategies with a two-stage multiresolution-grid model. <em>Computational Economics</em>, v. 64, p. 3117-3142, 2024.</li>
+      <li id="ref-11">BAI, Zefeng; PACHAMANOVA, Dessislava; STEBLOVSKAYA, Victoria; WALLBAUM, Kai. Target volatility strategies: optimal rebalancing boundary for transaction cost minimization. <em>Financial Markets and Portfolio Management</em>, v. 40, p. 245-272, 2026 (publicado online em 2025).</li>
+    </ol>
+  </div>
+
+  <div class="disclaimer">
+    <div class="cap">Isenção de responsabilidade</div>
+    <p>Este artigo tem finalidade exclusivamente educacional e não constitui recomendação de investimento, tributária ou de planejamento financeiro personalizada. O conteúdo publicado neste espaço é fornecido exclusivamente para fins educacionais e de entretenimento, com base na liberdade de expressão garantida pelos artigos 5º, inciso IV, e 220 da Constituição Federal de 1988. Nada contido neste site deve ser interpretado como recomendação direta de compra/venda de ativos ou aconselhamento financeiro individualizado. Os ativos, estratégias, cenários ou ferramentas apresentados refletem apenas minhas opiniões, simulações e experiências pessoais, que podem não ser adequadas ao seu perfil de risco ou aos seus objetivos. Rendimentos e resultados passados não garantem retornos futuros. Calculadoras e ferramentas de simulação geram apenas estimativas probabilísticas, e não previsões exatas de mercado. Como autor deste site, não me responsabilizo por eventuais perdas, danos ou consequências financeiras decorrentes de decisões tomadas com base no conteúdo lido. As opiniões registradas por leitores na área de comentários são de responsabilidade exclusiva de quem as publica e não representam meu posicionamento oficial. Todo o conteúdo é direcionado primariamente ao público residente no Brasil - acessos originados de outros países exigem a verificação de conformidade com as leis e regulamentações locais.</p>
+  </div>
+
+  <div class="engage">
+    <div class="engage-row">
+      <button type="button" class="like-btn" id="likeBtn" data-slug="rebalanceamento-de-carteira" aria-pressed="false">
+        <svg class="like-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 10v11"/><path d="M7 10 11 2a2.5 2.5 0 0 1 2.5 2.5V9h5.3a2 2 0 0 1 1.98 2.3l-1.2 8A2 2 0 0 1 17.6 21H7"/></svg>
+        <span>Achei útil</span>
+        <span class="like-count" id="likeCount">&ndash;</span>
+      </button>
+      <div class="share-group">
+        <span class="share-label">Compartilhar</span>
+        <a class="share-btn" href="https://api.whatsapp.com/send?text=Qual%20%C3%A9%20a%20maneira%20%C3%B3tima%20de%20rebalancear%20uma%20carteira%3F%20https%3A//dinheiroempauta.com.br/rebalanceamento-de-carteira/" target="_blank" rel="noopener" aria-label="Compartilhar no WhatsApp"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M17.5 14.4c-.3-.1-1.7-.9-2-1-.3-.1-.5-.1-.7.1-.2.3-.8 1-.9 1.2-.2.2-.3.2-.6.1-.3-.1-1.2-.4-2.3-1.4-.9-.8-1.4-1.7-1.6-2-.2-.3 0-.5.1-.6.1-.1.3-.3.4-.5.1-.1.2-.3.3-.5.1-.2 0-.4 0-.5C10 9 9.5 7.8 9.3 7.3c-.2-.5-.4-.4-.6-.4h-.5c-.2 0-.5.1-.7.3-.2.3-.9.9-.9 2.2s1 2.5 1.1 2.7c.1.2 2 3 4.8 4.3.7.3 1.2.5 1.6.6.7.2 1.3.2 1.8.1.5-.1 1.7-.7 1.9-1.3.2-.6.2-1.2.2-1.3-.1-.1-.3-.2-.6-.3z"/><path d="M12 2a10 10 0 0 0-8.5 15.2L2 22l4.9-1.5A10 10 0 1 0 12 2zm0 18a8 8 0 0 1-4.3-1.3l-.3-.2-3 .9.9-2.9-.2-.3A8 8 0 1 1 12 20z"/></svg></a>
+        <a class="share-btn" href="https://www.linkedin.com/sharing/share-offsite/?url=https%3A//dinheiroempauta.com.br/rebalanceamento-de-carteira/" target="_blank" rel="noopener" aria-label="Compartilhar no LinkedIn"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M6.94 5a2 2 0 1 1-4-.02 2 2 0 0 1 4 .02zM7 8.48H3V21h4V8.48zM13.32 8.48H9.5V21h3.8v-6.4c0-1.7.32-3.34 2.42-3.34 2.07 0 2.1 1.94 2.1 3.45V21H21.8v-7.02c0-3.63-.78-6.42-5.02-6.42-2.04 0-3.4 1.12-3.96 2.18h-.05V8.48z"/></svg></a>
+        <a class="share-btn" href="https://twitter.com/intent/tweet?url=https%3A//dinheiroempauta.com.br/rebalanceamento-de-carteira/&amp;text=Qual%20%C3%A9%20a%20maneira%20%C3%B3tima%20de%20rebalancear%20uma%20carteira%3F" target="_blank" rel="noopener" aria-label="Compartilhar no X"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M18.9 2H22l-7.6 8.7L23.3 22h-7l-5.5-7.2L4.5 22H1.4l8.1-9.3L1 2h7.2l5 6.6L18.9 2zm-1.2 18h1.7L7.4 3.9H5.6L17.7 20z"/></svg></a>
+        <button type="button" class="share-btn" id="copyLinkBtn" aria-label="Copiar link"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.5.5l2-2a5 5 0 0 0-7-7l-1.2 1.1"/><path d="M14 11a5 5 0 0 0-7.5-.5l-2 2a5 5 0 0 0 7 7l1.1-1.1"/></svg></button>
+      </div>
+    </div>
+  </div>
+
+  <div class="comments-section" id="comentarios">
+    <div class="cap">Comentários</div>
+    <p class="comments-note">Deixe seu comentário abaixo — ele passa por moderação manual antes de aparecer publicamente.</p>
+
+    <div class="comment-widget" data-slug="rebalanceamento-de-carteira" data-comments-api="https://dinheiro-em-pauta-comments.dinheiroempauta.workers.dev">
+      <form class="comment-form">
+        <div class="comment-form-row">
+          <div class="comment-form-field">
+            <label for="c-nickname-rebalanceamento-de-carteira" class="newsletter-label">Nome de usuário (anonimato)</label>
+            <input type="text" id="c-nickname-rebalanceamento-de-carteira" name="nickname" maxlength="60" required>
+          </div>
+          <div class="comment-form-field">
+            <label for="c-email-rebalanceamento-de-carteira" class="newsletter-label">E-mail (opcional)</label>
+            <input type="email" id="c-email-rebalanceamento-de-carteira" name="email" maxlength="120">
+          </div>
+        </div>
+        <div class="comment-form-field">
+          <label for="c-message-rebalanceamento-de-carteira" class="newsletter-label">Escreva seu comentário...</label>
+          <textarea id="c-message-rebalanceamento-de-carteira" name="message" maxlength="2000" required rows="4"></textarea>
+        </div>
+        <input type="checkbox" name="botcheck" class="suggest-honeypot" tabindex="-1" autocomplete="off" aria-hidden="true">
+        <div class="comment-form-actions">
+          <span class="suggest-counter comment-counter">2000 caracteres restantes</span>
+          <button type="submit" class="btn btn-primary">Comentar</button>
+        </div>
+        <p class="newsletter-note comment-status" hidden></p>
+      </form>
+
+      <div class="comment-list" aria-live="polite"></div>
+    </div>
+  </div>
+
+</main>
+
+<footer>
+  Dinheiro em Pauta — conteúdo educacional, não é recomendação de investimento.
+</footer>
+
+<script src="../assets/site.js"></script>
+
+</body></html>
