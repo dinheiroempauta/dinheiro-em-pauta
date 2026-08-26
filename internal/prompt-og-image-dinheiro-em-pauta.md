@@ -151,26 +151,39 @@ find /opt /usr /home -maxdepth 5 \( -iname "chrome" -o -iname "chromium*" \) -ty
 #   /opt/pw-browsers/chromium-*/chrome-linux/chrome   (via PLAYWRIGHT_BROWSERS_PATH)
 ```
 
-Se qualquer um desses achar um binário, **ele é suficiente** — nem
-precisa de Puppeteer/Playwright como pacote npm. O próprio binário do
-Chrome tem uma flag de screenshot embutida, então o caminho mais simples
-e com menos dependências é:
+**Regra crítica #2, motivada por um erro real (26/08/2026, artigo
+`rebalanceamento-de-carteira`): NÃO use o flag `--screenshot=` direto do
+binário do Chrome — use sempre a rota via Puppeteer descrita abaixo.**
+O flag `--screenshot=` embutido do Chrome tem dois bugs sérios neste
+ambiente, os dois silenciosos (sem erro, sem aviso no stderr, exit code
+0):
 
-```bash
-CHROME=/opt/pw-browsers/chromium-*/chrome-linux/chrome   # ajuste pro caminho encontrado acima
-$CHROME --headless --disable-gpu --no-sandbox --hide-scrollbars \
-  --force-color-profile=srgb --font-render-hinting=none \
-  --window-size=1200,630 \
-  --screenshot=og-cover-nome-do-artigo.png \
-  file:///caminho/absoluto/para/cover.html
-```
+1. **Cache de perfil entre execuções.** Rodar `--screenshot=` duas vezes
+   seguidas apontando pro mesmo HTML, mesmo depois de editar o CSS/texto
+   do arquivo, pode devolver um PNG **bit-a-bit idêntico** ao anterior
+   (hash MD5 igual). O binário reaproveita o profile/cache padrão entre
+   invocações mesmo sem `--user-data-dir` explícito, e nem sempre um
+   `--user-data-dir` novo resolve sozinho. Se você editar o HTML e o
+   PNG de saída não mudar (confira sempre com `md5sum` antes/depois, não
+   só o tamanho do arquivo — dois arquivos diferentes já saíram com o
+   mesmo byte count por coincidência), é esse bug, não um erro seu de
+   edição.
+2. **Truncamento silencioso de viewport.** `--window-size=1200,630`
+   *reporta* um PNG de 1200×630 (confirmado até no cabeçalho IHDR), mas
+   a área realmente capturada com conteúdo fica em torno de
+   **530-540px de altura**, não 630 — qualquer elemento posicionado
+   depois disso (ex: metadados/gráfico no rodapé de uma capa OG) some
+   silenciosamente do PNG final, com o resto da página aparentando
+   normal. Confirmado por bisseção: em teste isolado, um elemento em
+   `top:520px` aparece, o mesmo elemento em `top:540px` não aparece —
+   em nenhum dos dois casos há qualquer sinal de erro.
 
-(Os avisos de `dbus`/`org.freedesktop.DBus` no stderr são inofensivos —
-não indicam falha; confira o arquivo de saída e o exit code do
-screenshot, não o stderr.) Isso já sai em 1200×630 exatos, sem precisar
-de downscale — confirme com um leitor de dimensões de PNG (`identify`,
-se disponível, ou lendo o cabeçalho IHDR manualmente com Python) que o
-resultado é **exatamente 1200×630** antes de aceitar.
+Por causa dos dois bugs acima, o flag `--screenshot=` direto **não deve
+mais ser o caminho padrão** neste projeto — trate a seção "Alternativa
+via Puppeteer" logo abaixo como a rota principal, não como alternativa
+para casos especiais de supersampling. Reserve o flag direto só para um
+teste rápido de fumaça (ex: confirmar que o Chromium abre e renderiza
+fontes), nunca para o PNG final que vai pro `assets/`.
 
 Se por algum motivo real (não hipotético) nenhum Chromium existir e não
 houver como instalar um, **isso é uma exceção rara que precisa ser
@@ -179,9 +192,8 @@ como "pendência fora do escopo" ou publicada sem mais explicação — e
 mesmo nesse caso, tentar `npx playwright install chromium` ou variantes
 de puppeteer-core antes de desistir.
 
-Alternativa via Puppeteer (útil se for preciso supersampling 2x e
-downscale com filtro, ou se o ambiente específico só expõe o Chrome via
-um pacote node, como em alguns setups do app desktop):
+Rota padrão via Puppeteer (não é mais só para supersampling 2x — é a
+única forma confirmada de capturar os 630px inteiros sem truncamento):
 
 ```javascript
 // shot.js
@@ -219,7 +231,10 @@ Confirme as dimensões finais (precisa ser exatamente **1200x630**) antes de ent
 ### 8. Verificação final antes de entregar
 
 - [ ] Nome do arquivo é uma versão **nova** (nunca reaproveita o nome já publicado — ver tabela de versionamento na seção 1)
+- [ ] Renderizado via Puppeteer (`shot.js`), não via `--screenshot=` direto do Chrome — ver Regra crítica #2 na seção 7
 - [ ] Dimensões exatas: 1200×630
+- [ ] **Olhou visualmente o PNG final antes de aceitar** (com a ferramenta de leitura de imagem, não só checou o cabeçalho IHDR) — o bug de truncamento da seção 7 não aparece no cabeçalho, só é visível olhando o conteúdo. Se algo perto do rodapé (metadados, motivo gráfico) estiver ausente ou cortado, é esse bug
+- [ ] Se editou o HTML da capa e vai re-renderizar, confira que o novo PNG tem hash MD5 diferente do anterior antes de aceitar (ver Regra crítica #2)
 - [ ] Wordmark mostra "Dinheiro em Pauta" com a divisão de peso certa ("Dinheiro em" destacado, "Pauta" normal) — **não** "Independência Calculada"
 - [ ] Nenhum ícone/emoji/foto de banco de imagem — só tipografia + o motivo gráfico SVG
 - [ ] O motivo gráfico e o H1 batem com a versão já aprovada e publicada (a menos que o conteúdo do artigo tenha mudado)
