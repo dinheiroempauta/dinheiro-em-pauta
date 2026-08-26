@@ -35,6 +35,23 @@ Ainda assim, pare e pergunte antes se:
   histórico publicado)
 - Envolver custo real (compra de domínio, upgrade de plano pago, etc.)
 
+**Draft vs. merge — nota adicionada em 26/08/2026, artigo
+`rebalanceamento-de-carteira`:** a plataforma (Claude Code) instrui, em
+nível de sessão, que todo PR seja aberto **como draft** por padrão —
+essa regra vem de fora deste repositório e tem prioridade sobre a
+autonomia de merge descrita acima. Isso significa que "mergear o PR"
+acima **não** é automático assim que o PR é aberto — o fluxo real, sem
+pausar pra perguntar, é:
+1. Abrir o PR como draft (padrão da plataforma).
+2. Revisar o próprio diff normalmente.
+3. Só marcar como "ready for review" e mergear quando o usuário pedir
+   explicitamente para publicar/subir pra produção/promover o artigo —
+   um pedido como "sobe pra produção" já conta como esse pedido
+   explícito, não precisa reformular como "pode mergear o PR".
+Sem esse pedido explícito, o PR fica aberto como draft — isso não é uma
+falha nem um passo esquecido, é o comportamento esperado até o usuário
+confirmar que quer publicar.
+
 ## Git: checkout seguro de branch de trabalho existente
 
 `git checkout -B <branch>` sozinho, sem apontar pra `origin/<branch>`, cria
@@ -156,30 +173,39 @@ ano, DOI). Como esse repositório é privado, subir o PDF de verdade lá é
 seguro — é um arquivo pessoal, não redistribuição pública — ao contrário
 deste repositório aqui.
 
-**Importante sobre como acessar esse segundo repositório:** não existe
-uma ferramenta `add_repo` (ou equivalente) que anexe um repositório novo
-a uma sessão já aberta — testado e confirmado que não funciona. Nesta
-plataforma (Claude Code), o acesso a repositório é escolhido no seletor
-**no momento em que a sessão é criada** e não muda depois. Então:
+**Sobre como acessar esse segundo repositório — premissa antiga corrigida
+em 26/08/2026:** uma versão anterior desta nota afirmava que não existe
+ferramenta para anexar um repositório novo a uma sessão já aberta. Isso
+estava **errado** — confirmado na prática no artigo
+`rebalanceamento-de-carteira` (26/08/2026): a ferramenta `add_repo`
+(nome pode variar por client/versão da plataforma) anexa um repositório
+adicional a uma sessão em andamento, inclusive com `access:"push"` para
+escrita. O fluxo que funcionou:
 
-- Se o seletor de repositório permitir marcar mais de um ao abrir uma
-  sessão nova, prefira abrir a sessão de trabalho já com
-  `dinheiro-em-pauta` **e** `dinheiro-em-pauta-fontes` selecionados
-  juntos sempre que a tarefa envolver lidar com PDFs-fonte (escrever
-  artigo novo a partir de papers, rodar `conferencia-tecnica-artigo`,
-  revisitar de quais PDFs um artigo antigo partiu) — assim dá pra
-  commitar em ambos na mesma sessão.
-- Se não for possível selecionar os dois de uma vez, o fluxo é em duas
-  etapas: (1) nesta sessão (só `dinheiro-em-pauta`), processar os PDFs
-  normalmente e, ao final, empacotar a pasta `<slug>/` (PDFs + README)
-  num `.zip` e entregar ao usuário via `SendUserFile`; (2) numa sessão
-  separada, aberta já com `dinheiro-em-pauta-fontes` selecionado, pedir
-  o zip de volta ao usuário e commitar o conteúdo lá.
+1. `add_repo(owner: "dinheiroempauta", repo: "dinheiro-em-pauta-fontes", access: "push")`
+2. Clonar no caminho que a própria ferramenta indicar na resposta (tipicamente
+   `/home/user/<repo>`, **diferente** do checkout somente-leitura que a sessão
+   já possa ter em outro caminho — não reutilize o checkout antigo, clone de novo)
+3. `register_repo_root` com esse caminho, para o `CLAUDE.md`/skills do repo
+   recém-anexado carregarem
+4. Commitar e dar push normalmente — a partir daí a sessão tem push nos
+   dois repositórios ao mesmo tempo, então PDFs + `README.md` vão direto
+   pro `dinheiro-em-pauta-fontes` sem precisar de zip nem de segunda sessão
+
+Sempre tente esse caminho primeiro. **Só caia no fluxo de zip abaixo se
+`add_repo` genuinamente falhar** (erro explícito da ferramenta, não
+suposição) — nesse caso, ainda vale como plano B:
+
+- Nesta sessão (só `dinheiro-em-pauta`), processar os PDFs normalmente e,
+  ao final, empacotar a pasta `<slug>/` (PDFs + README) num `.zip` e
+  entregar ao usuário via `SendUserFile`; numa sessão separada, aberta já
+  com `dinheiro-em-pauta-fontes` selecionado (ou anexada via `add_repo`),
+  pedir o zip de volta ao usuário e commitar o conteúdo lá.
   **Esse `.zip` é obrigatório, não opcional, sempre que o artigo tiver
-  sido embasado em papers com copyright de editor** — não considerar a
-  publicação do artigo "concluída" tendo criado só o
-  `internal/fontes/<slug>/README.md` com a bibliografia e deixado os
-  PDFs perdidos no disco da sessão. Já aconteceu (artigo
+  sido embasado em papers com copyright de editor e `add_repo` não
+  funcionar** — não considerar a publicação do artigo "concluída" tendo
+  criado só o `internal/fontes/<slug>/README.md` com a bibliografia e
+  deixado os PDFs perdidos no disco da sessão. Já aconteceu (artigo
   `market-timing-funciona`, 23/08/2026) de eu publicar o artigo inteiro
   — commit, PR, merge — sem nunca gerar esse zip, e só perceber a
   lacuna porque o usuário perguntou depois "o que pode ser aprimorado
@@ -187,9 +213,6 @@ plataforma (Claude Code), o acesso a repositório é escolhido no seletor
   publicação (`internal/CHECKLIST-NOVO-ARTIGO.md`, seção 5), no mesmo
   commit/sessão em que os PDFs ainda estão no disco — depois que a
   sessão termina, os arquivos originais não são mais recuperáveis.
-- Nunca tentar `git clone`/API do GitHub para o repo de fontes a partir
-  de uma sessão que só tem `dinheiro-em-pauta` — falha por falta de
-  credencial/escopo, não é um problema temporário.
 
 ## De PDFs ao primeiro rascunho — skill `redacao-artigo-de-fontes`
 
